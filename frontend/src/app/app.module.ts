@@ -5,6 +5,7 @@ import {AppRoutingModule, routes} from './app-routing.module';
 import { AppComponent } from './app.component';
 import {MaterialModule} from "./material.module";
 import {RouterModule} from "@angular/router";
+import {RedevanceModule} from "./redevanceModule/redevance.module";
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import {RouterModule} from "@angular/router";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    //RouterModule.forRoot(routes, {useHash: true, relativeLinkResolution: 'legacy'}),
+    RedevanceModule,
     MaterialModule,
   ],
   providers: [],

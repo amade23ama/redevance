@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import {ExtraOptions, RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from "./shared-Module/home/home.component";
 
 
 /**
  * listing des routes public accessible en mode non connecté
  */
 const routesPublic: Routes = [
-  ///{path: '', component: HomeComponent},
+  {path: '', component: HomeComponent},
   //{path: 'home', component: HomeComponent},
   //{path: 'user-info', component: UserInfoComponent},
   //{path: 'deconnexion', component: DisconnectedHomeComponent},
@@ -26,7 +27,7 @@ const routesPrivate: Routes = [
 export const routes: Routes = [
   ...routesPublic,
   ...routesPrivate,
-  //{path: '**', component: HomeComponent}
+  {path: '**', component: HomeComponent}
 ];
 
 const routerOptions: ExtraOptions = {

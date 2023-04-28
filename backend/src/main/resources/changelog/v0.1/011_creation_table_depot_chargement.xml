@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+
+    <changeSet id="011_creation_table_depot_chargement" author="amade">
+    <createTable tableName="DEPOT_CHARGEMENT">
+        <column name="ID_DEPOT" type="bigint">
+            <constraints nullable="false"/>
+        </column>
+        <column name="ID_CHARGEMENT" type="bigint">
+            <constraints nullable="false"/>
+        </column>
+    </createTable>
+        <addPrimaryKey columnNames="ID_DEPOT,ID_CHARGEMENT" tableName="DEPOT_CHARGEMENT"/>
+
+        <addForeignKeyConstraint baseColumnNames="ID_DEPOT"
+                                 baseTableName="DEPOT_CHARGEMENT"
+                                 constraintName="fk_DEPOT"
+                                 referencedColumnNames="ID_DEPOT,"
+                                 referencedTableName="DEPOT"/>
+
+        <addForeignKeyConstraint baseColumnNames="ID_CHARGEMENT"
+                                 baseTableName="DEPOT_CHARGEMENT"
+                                 constraintName="fk_ID_CHARGEMENT"
+                                 referencedColumnNames="ID_CHARGEMENT"
+                                 referencedTableName="CHARGEMENT"/>
+    </changeSet>
+
+</databaseChangeLog>
+

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+  <!-- mettre a jour la base de donnnees -->
+  <include file="changelog/v0.1/01_creation_table_utilisateur_et_profil.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/02_insert_data_table_utilisateur_et_profil.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/03_creation_table_site.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/04_creation_table_produit.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/05_creation_table_transporteur.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/06_creation_table_vehicule.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/07_creation_table_depot.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/08_creation_table_site_exploitation.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/09_creation_table_chargement.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/011_creation_table_depot_chargement.xml" relativeToChangelogFile="false"/>
+</databaseChangeLog>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="07_creation_table_depot_01" author="amade">
+        <sql dbms="postgresql">
+            CREATE SEQUENCE SEQ_DEPOT START WITH 1 INCREMENT BY 1 MINVALUE 1
+                MAXVALUE 999999999999999999 ;
+        </sql>
+    </changeSet>
+
+    <changeSet id="07_creation_table_depot_02" author="amade">
+    <createTable tableName="DEPOT">
+        <column name="ID_DEPOT" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="ID_UTILISATEUR" type="bigint"/>
+            <!--remarks="Identifiant technique du deposeur">
+            <constraints foreignKeyName="FK_DEPOSEUR" nullable="false"/>
+        </column>
+        -->
+        <column name="NOM_DEPOT" type="varchar(60)"/>
+        <column name="DATEHEUREDEBUT" type="timestamp" defaultValueDate="${now}">
+            <constraints nullable="false"/>
+        </column>
+        <column name="DATEHEUREFIN" type="timestamp">
+            <constraints nullable="true"/>
+        </column>
+        <column name="NOM_FICHIER" type="varchar(50)"/>
+        <column name="NB_CHARGEMENT_DEPOT" type="DOUBLE"/>
+        <column name="NB_CHARGEMENT_REDEBOT" type="DOUBLE"/>
+        <column name="NB_ERREUR" type="DOUBLE"/>
+
+    </createTable>
+        <addForeignKeyConstraint baseColumnNames="ID_UTILISATEUR"
+                                 baseTableName="DEPOT"
+                                 constraintName="fk_UTILISATEUR"
+                                 referencedColumnNames="ID_UTILISATEUR"
+                                 referencedTableName="UTILISATEUR"/>
+    </changeSet>
+
+</databaseChangeLog>

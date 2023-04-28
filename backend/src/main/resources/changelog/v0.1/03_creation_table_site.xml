@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="03_creation_table_site_01" author="amade">
+        <sql dbms="postgresql">
+            CREATE SEQUENCE SEQ_SITE START WITH 1 INCREMENT BY 1 MINVALUE 1
+                MAXVALUE 999999999999999999;
+        </sql>
+    </changeSet>
+    <changeSet id="03_creation_table_site" author="amade">
+    <createTable tableName="SITE">
+        <column name="ID_SITE" type="bigint" autoIncrement="true">
+            <constraints primaryKey="true"/>
+        </column>
+        <column name="NOM" type="varchar(50)">
+            <constraints nullable="false"/>
+        </column>
+        <column name="LOCALITE" type="varchar(50)">
+        <constraints nullable="false"/>
+        </column>
+        <column name="DATECREATION" type="timestamp" defaultValueDate="${now}">
+            <constraints nullable="false"/>
+        </column>
+        <column name="DATEMODIFICATION" type="timestamp">
+            <constraints nullable="true"/>
+        </column>
+    </createTable>
+        <addUniqueConstraint
+                columnNames="NOM, LOCALITE"
+                constraintName="UQ_NOMLOCALITE"
+                tableName="SITE"
+        />
+    </changeSet>
+
+</databaseChangeLog>

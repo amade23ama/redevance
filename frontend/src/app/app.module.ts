@@ -12,7 +12,7 @@ import {MaterialModule} from "./material.module";
   imports: [
     BrowserModule,
     AppRoutingModule,
-    //MaterialModule
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

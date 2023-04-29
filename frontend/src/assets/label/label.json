@@ -1,5 +1,10 @@
 {
   "properties": {
+    "label.ministere":"Ministères",
+    "label.ministere.mines":"Des Mines",
+    "label.ministere.geologie":"Et de la Géologies",
+    "label.devise":"Un Peuple-Un But-Une Foi",
+    "label.xx": "Ministere des Mines et de la Geologie",
     "authentification": "Connexion",
     "login.info": "Avec votre compte Windows dscom",
     "login.label.identifiant": "Identifiant",

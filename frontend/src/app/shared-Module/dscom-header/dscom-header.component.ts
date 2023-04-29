@@ -4,7 +4,7 @@ import {AppConfigService} from "../../core-module/services/app-config.service";
 @Component({
   selector: 'app-dscom-header',
   templateUrl: './dscom-header.component.html',
-  styleUrls: ['./dscom-header.component.css']
+  styleUrls: ['./dscom-header.component.scss']
 })
 export class DscomHeaderComponent implements OnInit  {
   constructor(public appConfig:AppConfigService) {

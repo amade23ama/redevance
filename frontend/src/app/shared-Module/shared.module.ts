@@ -9,7 +9,7 @@ import { DscomMessageComponent } from './dscom-message/dscom-message.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { ConfirmationDialogComponent } from './dialog/confirmation-dialog/confirmation-dialog.component';
 import { ActionBtnsComponent } from './action-btns/action-btns.component';
-import {CommonModule} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {MaterialModule} from "../material.module";
 
 @NgModule({
@@ -27,7 +27,8 @@ import {MaterialModule} from "../material.module";
   ],
   imports: [
     CommonModule,
-    MaterialModule
+    MaterialModule,
+    NgOptimizedImage
   ],
   exports: [
     DscomFooterComponent,

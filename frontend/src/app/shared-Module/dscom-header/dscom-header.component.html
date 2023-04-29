@@ -1,3 +1,17 @@
-<p> todo pieds de page a faire</p>
 <title>{{appConfig.getLabel('header.title')}}</title>
-<div> xx  {{appConfig.getLabel('header.title')}}</div>
+<div class="flex-container header"  fxLayout="row" fxLayout fxLayoutAlign="space-between center">
+  <div fxHide fxShow.gt-sm fxLayout="column">
+    <img src="./assets/img/drapeau_senegal.png"  height="20" width="30"
+         ngSrcset="50w, 100w, 200w, 200w"/>
+    <div>{{appConfig.getLabel('label.ministere')}}</div>
+    <div>{{appConfig.getLabel('label.ministere.mines')}}</div>
+    <div>{{appConfig.getLabel('label.ministere.geologie')}}</div>
+    <div class="devise">{{appConfig.getLabel('label.devise')}}</div>
+  </div>
+  <div fxHide fxShow.gt-sm class="titre titre-position">
+    <!--<h1><strong>{{appConfig.getLabel('label.ministere')}}</strong></h1> -->
+  </div>
+  <div fxHide fxShow.gt-sm class="de">
+  </div>
+  <div class="fill-space"></div>
+</div>

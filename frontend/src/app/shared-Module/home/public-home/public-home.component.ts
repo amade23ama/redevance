@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-public-home',
   templateUrl: './public-home.component.html',
   styleUrls: ['./public-home.component.css']
 })
-export class PublicHomeComponent {
-
+export class PublicHomeComponent implements OnInit  {
+  ngOnInit(): void {
+  }
 }

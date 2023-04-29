@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-dscom-message',
   templateUrl: './dscom-message.component.html',
   styleUrls: ['./dscom-message.component.css']
 })
-export class DscomMessageComponent {
-
+export class DscomMessageComponent implements OnInit {
+  ngOnInit(): void {
+  }
 }

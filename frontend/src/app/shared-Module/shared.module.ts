@@ -9,6 +9,8 @@ import { DscomMessageComponent } from './dscom-message/dscom-message.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { ConfirmationDialogComponent } from './dialog/confirmation-dialog/confirmation-dialog.component';
 import { ActionBtnsComponent } from './action-btns/action-btns.component';
+import {CommonModule} from "@angular/common";
+import {MaterialModule} from "../material.module";
 
 @NgModule({
   declarations: [
@@ -24,8 +26,13 @@ import { ActionBtnsComponent } from './action-btns/action-btns.component';
     ActionBtnsComponent
   ],
   imports: [
+    CommonModule,
+    MaterialModule
   ],
   exports: [
+    DscomFooterComponent,
+    SpinnerComponent,
+    DscomHeaderComponent
   ],
   providers: [],
 })

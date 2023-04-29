@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-dscom-footer',
   templateUrl: './dscom-footer.component.html',
-  styleUrls: ['./dscom-footer.component.css']
+  styleUrls: ['./dscom-footer.component.scss']
 })
-export class DscomFooterComponent {
+export class DscomFooterComponent implements OnInit  {
+  ngOnInit(): void {
+  }
 
 }

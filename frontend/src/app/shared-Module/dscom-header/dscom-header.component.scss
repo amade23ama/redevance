@@ -1,28 +1,16 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 .header {
-  /*height: 160px;*/
   display: flex;
   flex-direction: row;
   background: white;
   color: $red-200;
-  margin-left:7%;
+  color:black;
+
 }
 .devise{
   color:black;
   font-size: 10px;
   font-family:Impact;
   font-family:"Brush Script MT";
-}
-// Titre h1
-.titre h1 {
-  font-size: 1.6875rem;
-  font-weight: 700;
-}
-// Titre position
-.titre-position {
-  margin-left: 10%;
-  font-family: 'pOpenSans', 'Arial', 'MS Trebuchet', sans-serif;
-  // color
-  color: $red-200;
 }

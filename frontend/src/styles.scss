@@ -1,5 +1,9 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+
 .btn-container {
   display: flex;
   float: right;
@@ -29,17 +33,18 @@
   background-color: transparent;
   border: none;
 
-&:hover {
-   cursor: pointer;
- }
+  &:hover {
+    cursor: pointer;
+  }
 
-mat-icon {
-  color: #6a6a6a;
-}
+  mat-icon {
+    color: #6a6a6a;
+  }
 }
 
 mat-form-field mat-label {
   color: $blue-label-input;
+  color: red;
 }
 
 .label {
@@ -47,7 +52,7 @@ mat-form-field mat-label {
 }
 
 .pink-label {
-  color:$pink-main !important;
+  color: $pink-main !important;
 }
 
 .float-right {
@@ -68,7 +73,7 @@ mat-form-field mat-label {
   font-weight: bold;
   margin: 0 auto;
   text-align: center !important;
-//min-width: 100px;
+  //min-width: 100px;
 }
 
 .table-header-left {
@@ -77,7 +82,7 @@ mat-form-field mat-label {
   font-weight: bold;
   margin: 0 auto;
   text-align: left !important;
-//min-width: 100px;
+  //min-width: 100px;
 }
 
 .table-checkbox-class {
@@ -207,41 +212,41 @@ mat-form-field mat-label {
 
 .input-reset-style {
 
-& .mat-form-field-infix {
+  & .mat-form-field-infix {
     border: none;
     padding: 0;
     margin: 0;
     width: 100%;
   }
 
-& .mat-form-field-wrapper {
+  & .mat-form-field-wrapper {
     border: none;
     padding: 0;
     margin: 0;
     width: 100%;
   }
 
-& .mat-form-field-flex {
+  & .mat-form-field-flex {
     width: 100%;
   }
 }
 
 
-/* CHIPS*/
+// CHIPS
 
-   .form--chip {
-     color: #243262;
-     border: 1px solid #243262;
-     border-radius: 16px;
-     padding: 6px 12px;
-     font-size: 14px;
+.form--chip {
+  color: #243262;
+  border: 1px solid #243262;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 14px;
 
-&:hover {
-   cursor: pointer;
-   color: #9643b5;
-   border: 1px solid #ad68ca;
-   background-color: #efe1f5;
- }
+  &:hover {
+    cursor: pointer;
+    color: #9643b5;
+    border: 1px solid #ad68ca;
+    background-color: #efe1f5;
+  }
 }
 
 .form--chip--active {

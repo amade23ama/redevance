@@ -1,7 +1,9 @@
-<div *ngIf="!globals.loading" class="page">
-  <app-dscom-header></app-dscom-header>
+<div *ngIf="!globals.loading" class="flex-container page" fxLayout="column" >
+  <app-dscom-header class="header"></app-dscom-header>
   <!-- div start -->
-  <div class="content">
+
+
+  <div class=" content">
     <router-outlet></router-outlet>
   </div>
   <!-- div end -->

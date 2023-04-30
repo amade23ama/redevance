@@ -1,0 +1,20 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+.mat-card {
+  text-align: center;
+  box-shadow: none; // NOSONAR
+  padding: 0;
+  padding-top: 2em;
+  background: white;
+}
+.card-container {
+  margin-top: 3.5em;
+}
+.direction{
+  display: flex;
+  flex-direction: row;
+  background: white;
+  color: $red-200;
+  color:black;
+  font-size: 12px;
+}

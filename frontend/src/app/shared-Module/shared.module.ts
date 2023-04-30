@@ -11,6 +11,10 @@ import { ConfirmationDialogComponent } from './dialog/confirmation-dialog/confir
 import { ActionBtnsComponent } from './action-btns/action-btns.component';
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {MaterialModule} from "../material.module";
+import { DscomLoginComponent } from './dscom-login/dscom-login.component';
+import {FlexLayoutModule} from "@angular/flex-layout";
+import {ReactiveFormsModule} from "@angular/forms";
+import { DscomInfoComponent } from './dscom-info/dscom-info.component';
 
 @NgModule({
   declarations: [
@@ -23,12 +27,16 @@ import {MaterialModule} from "../material.module";
     DscomMessageComponent,
     SpinnerComponent,
     ConfirmationDialogComponent,
-    ActionBtnsComponent
+    ActionBtnsComponent,
+    DscomLoginComponent,
+    DscomInfoComponent
   ],
   imports: [
     CommonModule,
     MaterialModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    MaterialModule,
+    ReactiveFormsModule
   ],
   exports: [
     DscomFooterComponent,

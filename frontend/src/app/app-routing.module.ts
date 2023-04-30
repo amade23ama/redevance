@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import {ExtraOptions, RouterModule, Routes} from '@angular/router';
 import {HomeComponent} from "./shared-Module/home/home.component";
+import {DisconnectedHomeComponent} from "./shared-Module/home/disconnected-home/disconnected-home.component";
 
 
 /**
@@ -10,7 +11,7 @@ const routesPublic: Routes = [
   {path: '', component: HomeComponent},
   //{path: 'home', component: HomeComponent},
   //{path: 'user-info', component: UserInfoComponent},
-  //{path: 'deconnexion', component: DisconnectedHomeComponent},
+  {path: 'deconnexion', component: DisconnectedHomeComponent},
 ];
 
 /**
@@ -31,7 +32,7 @@ export const routes: Routes = [
 ];
 
 const routerOptions: ExtraOptions = {
-  useHash: true,
+  useHash: false,
   scrollPositionRestoration: 'enabled' // restauration de la position de défilement lors de la navigation
 
 };

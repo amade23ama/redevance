@@ -1,7 +1,13 @@
 {
   "properties": {
+    "label.info.application": "Bienvenue sur l'application de REDEVANCE",
+     "label.direction.nom": "Direction du Controle et de la Surveillance des Opérations Minières",
     "label.ministere":"Ministères",
     "label.ministere.mines":"Des Mines",
+    "label.ministere.geologie":"Et de la Géologies",
+    "label.devise":"Un Peuple-Un But-Une Foi",
+    "label.republique ":"République du Sénégal",
+    "label.republique.senegal":"Des Mines",
     "label.ministere.geologie":"Et de la Géologies",
     "label.devise":"Un Peuple-Un But-Une Foi",
     "label.xx": "Ministere des Mines et de la Geologie",
@@ -9,6 +15,8 @@
     "login.info": "Avec votre compte Windows dscom",
     "login.label.identifiant": "Identifiant",
     "login.label.motdepasse": "Mot de passe",
+    "login.label.oublier": "Mots de passe oublier ?",
+    "header.login": "Se connecter",
     "identifiant.obligatoire": "La saisie de l'identifiant est obligatoire.",
     "label.deconnexion.success": "D\u00e9connexion réussie",
     "msg.deconnexion.success": "Vous vous êtes bien d\u00e9connect\u00e9",

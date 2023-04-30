@@ -1,7 +1,43 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 //********************************* global ************************
-// body
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0px;
+  padding: 0px;
+}
+// content
+.content {
+  flex-grow: 1;
+  margin: 0px;
+  padding: 0px;
+
+}
+.header{
+  padding-left:5%;
+  padding-right:5% ;
+}
+@media screen and (max-width: 600px) {
+  .content {
+    display: flex;
+    flex-direction: column;
+    font-size:11px;
+  }
+  .header{
+    font-size:11px;
+  }
+}
+/* Appliquer une mise en page de type grille pour les écrans de taille moyenne */
+@media screen and (min-width: 600px) and (max-width: 959px) {
+  .content {
+    font-size:11px;
+  }
+  .header{
+    font-size:11px;
+  }
+}
 body {
   // color
   color: #243262;
@@ -9,28 +45,6 @@ body {
   font-size: 1rem;
   margin: 0;
 }
-
-// widget
-body .ui-widget {
-  // color
-  color: #d61a83;
-  font-family: 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 1rem;
-}
-
-// p
-p {
-  // color
-  color: #243262;
-}
-
-// opensans
-.opensans {
-  // color
-  color: #243262;
-  font-size: 1.1rem;
-}
-
 .loading-indicator {
   position: fixed;
   z-index: 999;
@@ -43,7 +57,6 @@ p {
   bottom: 0;
   right: 0;
 }
-
 // Transparent Overlay
 .loading-indicator:before {
   content: '';
@@ -56,117 +69,11 @@ p {
   // color
   background-color: rgba(0, 0, 0, .53);
 }
-
 // clear
 .clear {
   clear: both;
-  height: 60px;
+  height:40px;
 }
-
-.message-position {
-  position: absolute;
-  position: fixed;
-  left: 30%;
-  top: 200px;
-  // color
-  color: #ffffff;
-  justify-content: center;
-}
-
-// success
-.success {
-  // color
-  background: #339900;
-}
-
-// info
-.info {
-  // color
-  background: #2196f3;
-}
-
-// error
-.error {
-  // color
-  background: #cc3300;
-}
-
-// warn
-.warn {
-  // color
-  background: #ffcc00;
-}
-
-//**************************** Accordion *********************
-
-.fieldset-header {
-  // color
-  color: #243262;
-  font-size: 1.3rem;
-  font-weight: bold;
-}
-
-.mat-expanded .fieldset-header {
-  // color
-  color: #d61a83;
-}
-
-.mat-expansion-panel {
-  width: 97%;
-}
-
-// card
-.card { // NOSONAR
-  padding-left: 20px;
-  width: 98.5%;
-}
-
-// h3
-h3 {
-  // color
-  color: #243262;
-}
-
-//**************************** Raised Button *********************
-
-.mat-raised-button {
-  border: 1px solid #d61a83 !important; // NOSONAR
-  // color
-  color: #d61a83;
-  min-width: 200px !important; // NOSONAR
-}
-
-.mat-raised-button:disabled {
-  border: 1px solid gray !important; // NOSONAR
-  background-color: #ffffff !important; // NOSONAR
-  // color
-  color: gray !important; // NOSONAR
-}
-
-.mat-raised-button:disabled:hover {
-  // color
-  background-color: #ffffff;
-}
-
-.mat-raised-button:hover {
-  // color
-  background-color: #f1eeee;
-}
-
-//**************************** Footer at bottom *********************
-
-// page
-.page {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-// content
-.content {
-  flex-grow: 1;
-}
-
 //******************** Fix IE 11 *********************
 *::-ms-backdrop, .ie-fixFlex { // NOSONAR
   display: block !important; // NOSONAR
@@ -177,157 +84,4 @@ h3 {
   &.mat-progress-bar {
     height: 2px;
   }
-
-  .mat-progress-bar-fill::after {
-    background-color: #fff;
-  }
-
-  .mat-progress-bar-buffer {
-    background-color: #90a4ae;
-  }
-
-  /* remove animation and the dots*/
-  .mat-progress-bar-background {
-    animation: none;
-    background-color: #eceff1;
-    fill: #eceff1;
-  }
 }
-
-// *************** MARGINS *********************
-.mb-1 {
-  margin-bottom: 2px;
-}
-
-.mb-2 {
-  margin-bottom: 5px;
-}
-
-.mb-3 {
-  margin-bottom: 16px;
-}
-
-.mt-4 {
-  margin-top: 24px;
-}
-
-.mt-3 {
-  margin-top: 16px;
-}
-
-// COMPOSANT STEPPER CONTRAT MODULE
-.stepper--conteneur .mat-horizontal-stepper-header-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-top: 20px;
-
-  .mat-step-icon {
-    width: clamp(1.5rem, 4vw, 2.5rem);
-    height: clamp(1.5rem, 4vw, 2.5rem);
-    border-radius: 50%;
-    background-color: #fff;
-    color: #68b2f6;
-    border: 1px solid #68b2f6;
-  }
-
-  .mat-step-text-label {
-    color: #68b2f6;
-  }
-
-  .mat-step-icon-state-edit {
-    background-color: #42a5f5;
-    color: #fff;
-    border: none;
-  }
-
-  .mat-step-icon-selected {
-    background-color: #42a5f5;
-    color: #fff;
-    border: none;
-  }
-
-  .mat-stepper-horizontal-line {
-    color: #ebebeb;
-    border-top-color: #ebebeb;
-  }
-
-}
-
-// COMPOSANT STEPPER CONTRAT MODULE
-.mat-form-field.mat-focused .mat-form-field-label {
-  color: #68b2f6;
-}
-
-.mat-horizontal-content-container {
-  border: 1px solid #68b2f6;
-  min-height: 186px;
-  border-radius: 8px;
-}
-
-// COMPOSANT STEPPER RECHERCHE MODULE
-.stepper-recherche .mat-horizontal-stepper-header-container {
-  width: 50% !important;
-  border-radius: 2em;
-  margin-bottom: 5px;
-}
-
-.stepper-recherche .mat-horizontal-content-container {
-  display: none;
-  margin-top: 10px !important;
-  padding-top: 10px;
-  border: 1px solid white;
-  border-radius: 8px;
-}
-
-.round-btn {
-  width: clamp(1.5rem, 4vw, 2.5rem);
-  height: clamp(1.5rem, 4vw, 2.5rem);
-  border-radius: 50%;
-  background-color: #fff;
-  color: #68b2f6;
-  border: 1px solid #68b2f6;
-}
-
-.disabled--icon {
-  color: #b4b6bf !important;
-  border-color: #b4b6bf !important;
-}
-
-.disabled--icon--bk {
-  background-color: #b4b6bf !important;
-  border-color: #b4b6bf !important;
-}
-
-
-// CHIPS
-
-.form--chip {
-  color: #243262;
-  border: 1px solid #243262;
-  border-radius: 16px;
-  padding: 6px 12px;
-  font-size: 14px;
-
-  &:hover {
-    cursor: pointer;
-    color: #9643b5;
-    border: 1px solid #ad68ca;
-    background-color: #efe1f5;
-  }
-}
-
-.form--chip--active {
-  color: #9643b5;
-  border: 1px solid #ad68ca;
-  background-color: #efe1f5;
-}
-
-.form--chip--disabled {
-  border-radius: 16px;
-  padding: 6px 25px;
-  font-size: 14px;
-  color: #d2d2d2;
-  border: 1px solid #d2d2d2;
-  background-color: #fff;
-}
-

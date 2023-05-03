@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Globals} from "./app.constants";
+import {AuthService} from "./core/services/auth.service";
 
 @Component({
   selector: 'app-root',
@@ -8,11 +9,14 @@ import {Globals} from "./app.constants";
 })
 export class AppComponent  implements OnInit {
   title = 'frontend';
-  constructor(public globals: Globals) {
+  isLoggedIn = false;
+  constructor(public authService :AuthService,public globals: Globals) {
     // Affichage d`un spinner lors du chargement
     globals.loading = false;
+    this.authService.isLoggedIn()
   }
   ngOnInit(): void {
-    console.log(" bonjour")
+  this.isLoggedIn=this.authService.isLoggedIn()
+    console.log(" AppComponent ")
   }
 }

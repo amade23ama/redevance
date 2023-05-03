@@ -1,21 +1,25 @@
+<!--
 <div *ngIf="!globals.loading" class="flex-container page" fxLayout="column" >
-  <app-dscom-header class="header"></app-dscom-header>
-  <!-- div start -->
-
-
+  <app-dscom-header   class="header" ></app-dscom-header>
   <div class=" content">
     <router-outlet></router-outlet>
   </div>
-  <!-- div end -->
-  <!-- div start -->
   <div class="clear"></div>
-  <!-- div end -->
   <app-dscom-footer></app-dscom-footer>
 </div>
-<!-- div end -->
-<!-- div start -->
 <app-spinner></app-spinner>
 <div class="loading-indicator" *ngIf="globals.loading">
   <mat-spinner></mat-spinner>
 </div>
-<!-- div end -->
+-->
+<!--
+<mat-sidenav-container>
+  <mat-sidenav [opened]="true">
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+-->
+<router-outlet></router-outlet>

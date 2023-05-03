@@ -1,0 +1,40 @@
+
+<div class="flex-container page" fxLayout="column" >
+    <app-dscom-header   class="header" ></app-dscom-header>
+    <mat-toolbar color="">
+      <div fxShow="true" fxHide.gt-sm="true">
+        <button mat-icon-button (click)="sidenav.toggle()">
+          <mat-icon>menu</mat-icon>
+        </button>
+      </div>
+      <a mat-button class="" routerLink="">
+        <span>Acceuil</span>
+      </a>
+      <span class="example-spacer"></span>
+      <div fxShow="true" fxHide.lt-md="true">
+        <a mat-button routerLink="/admin">creer utilisateur</a>
+        <a mat-button routerLink="/admin/site">creer site</a>
+        <a mat-button routerLink="/admin/vehicule">creer vehicule</a>
+      </div>
+      <div class="toolbar-item-spacer" fxShow fxHide.gt-sm [fxFlex]="65"></div>
+      <button mat-icon-button fxShow fxHide.gt-sm (click)="logout()" href="#">
+        <mat-icon class="deconnexion-action">power_settings_new</mat-icon>
+      </button>
+    </mat-toolbar>
+    <mat-sidenav-container fxFlexFill class="example-container">
+      <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
+        <div fxLayout="column">
+          <a mat-button routerLink="/admin" (click)="sidenav.toggle()">creer utilisateur</a>
+          <a mat-button routerLink="/admin/site" (click)="sidenav.toggle()">creer site</a>
+          <a mat-button routerLink="/admin/vehicule" (click)="sidenav.toggle()">creer vehicule</a>
+
+        </div>
+      </mat-sidenav>
+      <mat-sidenav-content fxFlexFill>
+        <router-outlet></router-outlet>
+      </mat-sidenav-content>
+    </mat-sidenav-container>
+  <div class="clear"></div>
+  <app-dscom-footer></app-dscom-footer>
+</div>
+

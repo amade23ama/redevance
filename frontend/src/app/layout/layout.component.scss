@@ -8,6 +8,7 @@
   flex-direction: column;
   margin: 0px;
   padding: 0px;
+
 }
 // content
 .content {
@@ -80,9 +81,42 @@ body {
   display: block !important; // NOSONAR
 }
 
-//******************* CONTRAT PROGRESS BAR ***********
+//******************* PROGRESS BAR ***********
 .contrat--progress--bar {
   &.mat-progress-bar {
     height: 2px;
   }
+}
+.mat-sidenav-container{
+  flex-grow: 1;
+  /*background-color: lightskyblue;*/
+  background: white;
+  min-height: 30vh !important;
+  //padding-left:4rem;
+
+}
+.mat-toolbar{
+  padding-left:3em;
+}
+.mat-sidenav-content{
+  padding-left:4.5em;
+}
+
+@media screen and (max-width: 600px) {
+  .mat-toolbar{
+    padding-left:0em;
+  }
+  .mat-sidenav-content{
+    padding-left:0em;
+  }
+}
+/* Appliquer une mise en page de type grille pour les écrans de taille moyenne */
+@media screen and (min-width: 600px) and (max-width: 959px) {
+  .mat-toolbar{
+    padding-left:0em;
+  }
+  .mat-sidenav-content{
+
+  }
+
 }

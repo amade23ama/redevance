@@ -1,0 +1,17 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+.header {
+  display: flex;
+  flex-direction: row;
+  background: white;
+  color: $red-200;
+  color:black;
+  font-size: 12px;
+}
+
+.devise{
+  color:black;
+  font-size: 10px;
+  font-family:Impact;
+  font-family:"Brush Script MT";
+}

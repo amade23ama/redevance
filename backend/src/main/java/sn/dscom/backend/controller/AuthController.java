@@ -19,6 +19,7 @@ public class AuthController {
     @PostMapping("/login")
     public String login(@RequestBody Credentials credentials){
         String token=this.connectedUtilisateurService.genereTokenAuthentificationUtilisateur(credentials);
+
         return  token;
     }
     @GetMapping("/updateConnected")

@@ -1,17 +1,25 @@
 import { NgModule } from '@angular/core';
-import {ExtraOptions, RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from "./shared-Module/home/home.component";
-import {DisconnectedHomeComponent} from "./shared-Module/home/disconnected-home/disconnected-home.component";
+import {ExtraOptions, provideRouter, RouterModule, Routes} from '@angular/router';
+import {HomeComponent} from "./layout/shared-Module/home/home.component";
+import {DisconnectedHomeComponent} from "./layout/shared-Module/home/disconnected-home/disconnected-home.component";
+import {LoginComponent} from "./login/login.component";
+import {RouteGuard} from "./core/guards/route-guard.service";
 
 
 /**
  * listing des routes public accessible en mode non connecté
  */
 const routesPublic: Routes = [
-  {path: '', component: HomeComponent},
+  {path: 'login', component: LoginComponent},
+  {
+    path: '',loadChildren: () => import('./layout/layout.module')
+      .then(modules => modules.LayoutModule),canActivate:[RouteGuard]
+  }
+
+  //{path: '', component: HomeComponent},
   //{path: 'home', component: HomeComponent},
   //{path: 'user-info', component: UserInfoComponent},
-  {path: 'deconnexion', component: DisconnectedHomeComponent},
+  //{path: 'deconnexion', component: DisconnectedHomeComponent},
 ];
 
 /**
@@ -28,18 +36,22 @@ const routesPrivate: Routes = [
 export const routes: Routes = [
   ...routesPublic,
   ...routesPrivate,
-  {path: '**', component: HomeComponent}
+  //{path: '**', component: HomeComponent}
 ];
 
 const routerOptions: ExtraOptions = {
-  useHash: false,
+  useHash: true,
   scrollPositionRestoration: 'enabled' // restauration de la position de défilement lors de la navigation
 
 };
 
 //const routes: Routes = [];
 @NgModule({
-  imports: [RouterModule.forRoot(routes,routerOptions)],
+  imports: [
+    RouterModule.forRoot(routes,routerOptions)
+
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

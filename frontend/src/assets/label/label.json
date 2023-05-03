@@ -16,6 +16,8 @@
     "login.label.identifiant": "Identifiant",
     "login.label.motdepasse": "Mot de passe",
     "login.label.oublier": "Mots de passe oublier ?",
+    "label.login": "login",
+    "label.password": "password",
     "header.login": "Se connecter",
     "identifiant.obligatoire": "La saisie de l'identifiant est obligatoire.",
     "label.deconnexion.success": "D\u00e9connexion réussie",

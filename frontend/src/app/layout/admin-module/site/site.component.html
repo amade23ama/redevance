@@ -1,1 +1,12 @@
-<p>site works!</p>
+<form (submit)="siteDataInput()" [formGroup]="mySiteform" id="siteform" >
+
+    <input type = "text" class = "sitename"  placeholder = "Nom du site" 
+    [formControl]="siteName">
+    <br/>
+    <input type = "text" class = "fortextbox" name="passwd" 
+       placeholder = "Localité" [formControl]="locality">
+    <br/>
+
+    <!-- <input type = "submit" class = "forsubmit" value = "Log In"> -->
+    <button  mat-raised-button>{{appConfig.getLabel('global.valider')}}</button>
+ </form>

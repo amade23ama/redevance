@@ -17,6 +17,7 @@ import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatIconModule} from "@angular/material/icon";
 import {RouterOutlet} from "@angular/router";
+import {RedevanceModule} from "../redevanceModule/redevance.module";
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import {RouterOutlet} from "@angular/router";
     NgOptimizedImage,
     ReactiveFormsModule,
     RouterOutlet,
+    RedevanceModule
   ],
   exports: [
     DscomFooterComponent,

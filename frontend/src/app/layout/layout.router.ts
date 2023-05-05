@@ -13,7 +13,7 @@ const routes: Routes = [{
   children: [
     {
       path: '',
-      component: DscomMessageComponent
+      component: HomeComponent
     },
     {
       path: 'test',

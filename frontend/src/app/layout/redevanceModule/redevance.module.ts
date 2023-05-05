@@ -1,12 +1,17 @@
 import {NgModule} from "@angular/core";
 import {SharedModule} from "../shared-Module/shared.module";
+import { HomeCardComponent } from './home-card/home-card.component';
+import { UserInfoComponent } from './user-info/user-info.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+    HomeCardComponent,
+    UserInfoComponent
+  ],
   imports: [
-    SharedModule
   ],
   exports: [
+    HomeCardComponent
   ],
   providers: [],
 })

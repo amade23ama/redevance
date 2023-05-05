@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Globals} from "../../../app.constants";
 import {AuthService} from "../../../core/services/auth.service";
+import {UtilisateurService} from "../../../core/services/utilisateur.service";
 
 @Component({
   selector: 'app-home',
@@ -15,13 +16,15 @@ export class HomeComponent  implements OnInit{
    */
   isLoggedIn = false;
 
-  constructor(public authService :AuthService) {
+  constructor(public authService :AuthService,private utilisateurService:UtilisateurService) {
     // Affichage d`un spinner lors du chargement
     this.isLoggedIn=this.authService.isLoggedIn()
+
   }
   ngOnInit(): void {
     console.log(" HomeComponent 1")
    this.isLoggedIn=this.authService.isLoggedIn()
+    this.utilisateurService.getUtilisateurConnecte().subscribe()
   }
 
 }

@@ -10,15 +10,15 @@ import {AppConfigService} from "../../core/services/app-config.service";
 export class DscomLoginComponent implements OnInit{
   @Output() formLogin = new EventEmitter<FormGroup>();
 
-  propLogin: FormControl = new FormControl("eve.holt@reqres.in", {
+  propLogin: FormControl = new FormControl("admin", {
     validators: [Validators.required]
   })
-  propPassword: FormControl = new FormControl("cityslicka")
+  propPassword: FormControl = new FormControl("admin")
   myform: FormGroup
 
   constructor(private builder: FormBuilder,public appConfig:AppConfigService) {
     this.myform= this.builder.group({
-      email: this.propLogin,
+      login: this.propLogin,
       password: this.propPassword
     })
   }

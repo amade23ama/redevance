@@ -15,8 +15,8 @@ const TOKEN_KEY_NAME='authentication_token'
   providedIn:'root'
 })
 export  class AuthService {
-  //readonly url =environment.apiUrl
-  readonly url='https://reqres.in/api'
+  readonly url =environment.apiUrl
+  //readonly url='https://reqres.in/api'
   static readonly BEARER = 'Bearer ';
   // nom de la clef contenant le token JWT cas
   private readonly TOKEN_KEY_NAME = 'authentication_token';
@@ -118,7 +118,7 @@ export  class AuthService {
     return tokenInfo;
   }
   private majUserConnecte() {
-    this.utilisateurService.updateConnected();
+    this.utilisateurService.updateConnected().subscribe();
   }
   /**
    *

@@ -22,8 +22,13 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +36,10 @@ import java.io.IOException;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http
+        http.headers().frameOptions().sameOrigin();
+        return http.
+                cors().configurationSource(corsConfigurationSource())
+                .and()
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                 .requestMatchers("/api/**").authenticated()
@@ -64,6 +72,21 @@ public class SecurityConfig {
     public JwtLogoutHandler jwtLogoutHandler(){
         return  new JwtLogoutHandler();
    }
+
+    @Bean
+    protected CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+       // configuration.setAllowCredentials(Boolean.TRUE);
+        configuration.addAllowedOrigin("http://localhost:4200");
+        configuration.setAllowedOrigins(Collections.singletonList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATH", "HEAD"));
+        configuration.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
+
 
     /*
     @Bean

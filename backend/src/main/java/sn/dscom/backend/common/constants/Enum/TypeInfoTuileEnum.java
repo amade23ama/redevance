@@ -8,9 +8,9 @@ import lombok.Getter;
 @Getter
 public enum TypeInfoTuileEnum {
     DEPOT("DEPOT"),
-    SITE("DEPOT"),
-    /** En cours. */
-    EN_COURS("EN.COURS");
+    SITE("SITE"),
+    TRANSPORTEUR("TRANSPORTEUR"),
+    CHARGEMENT("CHARGEMENT");
 
     /**
      * Code de l'info tuile.

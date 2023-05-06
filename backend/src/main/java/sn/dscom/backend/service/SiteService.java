@@ -11,6 +11,7 @@ import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.SiteRepository;
 import sn.dscom.backend.service.converter.SiteConverter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -38,5 +39,10 @@ public class SiteService {
         SiteEntity site =siteRepository.save(siteEntity);
         return  SiteConverter.toSiteDTO(site);
     }
+    @Transactional
+    public Integer compterSite(final LocalDateTime dateMiseEnService) {
+        // todo
+        return siteRepository.compterSitePardate(dateMiseEnService);
 
+    }
 }

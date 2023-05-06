@@ -54,7 +54,7 @@ export  class AuthService {
   }
   logout():Observable<any>{
 
-    return this.http.get<any>(this.url)
+    return this.http.get<any>(this.url+"/logout")
       .pipe(
         tap((res:any) => {
           this.stockage.clear();

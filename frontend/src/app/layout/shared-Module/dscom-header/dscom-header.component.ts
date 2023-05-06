@@ -20,17 +20,11 @@ export class DscomHeaderComponent implements OnInit  {
     this.isLoggedIn=this.authService.isLoggedIn()
     this.utilisateurService.updateConnected().subscribe()
 
-  }
-  /*logout(){
+  }logout(){
     this.authService.logout().subscribe(()=>{
-      console.log(" deconnexion 1")
-      this.router.navigate(["/deconnexion"]);
+      this.router.navigate(["/login"]);
     })
   }
-  */
 
-  logout(){
-    this.authService.logoutTest()
-      this.router.navigate(["/login"]);
-  }
+
 }

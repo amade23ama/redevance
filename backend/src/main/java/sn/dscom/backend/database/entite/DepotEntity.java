@@ -29,6 +29,8 @@ public class DepotEntity {
     private Date dateHeureDepot;
     @Column(name = "DATEHEUREFIN")
     private Date dateHeureFinDepot;
+    @Column(name = "STATUT")
+    private String statut;
     @Column(name = "NOM_FICHIER")
     private String nomFichier;
     @ManyToOne

@@ -11,8 +11,6 @@ import {Utilisateur} from "../interfaces/utilisateur";
 })
 export class UtilisateurService {
   readonly url =environment.apiUrl
-  // @ts-ignore
-  // @ts-ignore
   /** Observable sur l'utilisateur connecté. **/
   private _utilisateurConnecte: BehaviorSubject<Utilisateur> = new BehaviorSubject<Utilisateur>( null);
   constructor(private http:HttpClient,private router:Router,

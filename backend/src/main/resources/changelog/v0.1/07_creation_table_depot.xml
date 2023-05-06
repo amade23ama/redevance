@@ -24,6 +24,7 @@
         </column>
         -->
         <column name="NOM_DEPOT" type="varchar(60)"/>
+        <column name="STATUT" type="varchar(60)"/>
         <column name="DATEHEUREDEBUT" type="timestamp" defaultValueDate="${now}">
             <constraints nullable="false"/>
         </column>

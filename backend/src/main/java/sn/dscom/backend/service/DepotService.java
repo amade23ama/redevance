@@ -12,6 +12,7 @@ import sn.dscom.backend.database.entite.DepotEntity;
 import sn.dscom.backend.database.repository.DepotRepository;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,12 @@ public class DepotService {
     public DepotDTO sauvegarderDepot(final DepotDTO depotDTO) {
         // todo
         return null;
+    }
+    @Transactional
+   public Integer compterDepot(final LocalDateTime dateMiseEnService) {
+        // todo
+        return depotRepository.compterDepotPardate(dateMiseEnService);
+
     }
 
     private DepotEntity chargerDepot(final Long idDepot) {

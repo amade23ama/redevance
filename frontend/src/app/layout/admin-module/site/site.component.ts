@@ -10,7 +10,7 @@ import { SiteService } from 'src/app/core/services/site.service';
 })
 export class SiteComponent implements OnInit{
 
-  @Output() formLogin = new EventEmitter<FormGroup>();
+  // @Output() formLogin = new EventEmitter<FormGroup>();
 
   siteName: FormControl = new FormControl("Site")
   locality: FormControl = new FormControl("thiès")
@@ -32,7 +32,7 @@ export class SiteComponent implements OnInit{
     if (this.mySiteform.valid) {
       // Emit an event with the form data
       console.log("this.mySiteform", this.mySiteform)
-      this.formLogin.emit(this.mySiteform);
+      // this.formLogin.emit(this.mySiteform);
       this.siteService.testMyFunction(this.mySiteform.value )
     }
   }

@@ -1,1 +1,46 @@
-<p>home-card works!</p>
+
+<div class="card--container mt-1" fxLayout="row" fxLayout fxLayoutAlign="space-around none"
+     *ngIf="infoTuiles$ | async as infoTuiles" fxLayout.lt-md="column"
+     fxLayoutAlign.lt-md="center none" fxLayoutGap="5"   >
+  <mat-card class="menu-card" *ngFor="let card of infoTuiles" >
+    <section class="content--card--section" fxLayout="column"
+             fxLayoutAlign="center none">
+      <mat-card-content fxLayout fxLayoutAlign="space-between center">
+        <h4 fxLayout fxLayoutAlign=""[ngClass]="getClasseTitre(card.typeTuile)">
+          {{appConfig.getLabel(getTitreTuile(card.typeTuile), anneeCourante())}}
+        </h4>
+        <span class="fab--button" [ngClass]="getBoutonClasseTuile(card.typeTuile)"
+              [ngStyle]="{'font-size':card.valeur > 99 ? '1em' : '1.4em' }"
+              (keypress)="chargerdepot(card.typeTuile,0)"
+              (click)="chargerdepot(card.typeTuile,0)">{{card.valeur}}</span>
+      </mat-card-content>
+      <mat-card-content  class="card-description" fxLayout fxLayoutAlign.lt-md="center none" >
+        <div>{{appConfig.getLabel(getDescriptionTuile(card.typeTuile))}}</div>
+      </mat-card-content>
+      <mat-card-actions class="bottom--button">
+        <button mat-button
+                class="mat-raised-outline-button mat-accent"
+                (keypress)="chargerdepot(card.typeTuile,0)"
+                (click)="chargerdepot(card.typeTuile,0)">
+          {{appConfig.getLabel('card.button.label')}}</button>
+      </mat-card-actions>
+    </section>
+    <section class="detail--section" *ngIf="card.details?.length > 0">
+      <hr/>
+      <!--<h3 class="mb-3 mt-4">{{appConfig.getLabel('card.detail.title')}}</h3>-->
+      <mat-chip-list>
+
+      </mat-chip-list>
+    </section>
+    <section class="campaign--section" *ngIf="card.campagnes?.length > 0">
+      <hr/>
+     <!-- <h3 class="mb-3 mt-4">{{appConfig.getLabel('card.campaign.title')}}</h3>-->
+      <mat-chip-list>
+
+      </mat-chip-list>
+    </section>
+  </mat-card>
+</div>
+<div class="mt-1">
+
+</div>

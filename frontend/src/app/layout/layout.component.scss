@@ -99,14 +99,20 @@ body {
   padding-left:3em;
 }
 .mat-sidenav-content{
-  padding-left:4.5em;
+  //padding-left:4.5em;
 }
-
+.example-container{
+  padding-left:4.5em;
+  padding-right:4.5em;
+}
 @media screen and (max-width: 600px) {
   .mat-toolbar{
     padding-left:0em;
   }
   .mat-sidenav-content{
+    padding-left:0em;
+  }
+  .example-container{
     padding-left:0em;
   }
 }
@@ -118,5 +124,7 @@ body {
   .mat-sidenav-content{
 
   }
-
+  .example-container{
+    padding-left:0em;
+  }
 }

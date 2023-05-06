@@ -28,6 +28,16 @@
     "label.online": "Vous êtes en ligne",
     "label.offline": "Vous êtes hors ligne",
     "msg.success": "Votre demande à été traité avec succès",
+
+    "card.chargement.title": "Chargement",
+    "card.site.title": "Site",
+    "card.transporteur.title": "Transporteur",
+    "card.depot.title": "Depot",
+    "card.chargement.description":"les informations relatives au transport de substances minières",
+    "card.site.description":"les zones d'exploitation minières",
+    "card.depot.description":"les fichiers deposés pour le chargement",
+    "card.transporteur.description":"les particuliers et les entreprises enregistrés au niveau des sites de pesage",
+
     "card.detail.title": "D\u00e9tail",
     "card.campaign.title": "Campagnes ant\u00e9rieures",
     "card.button.label": "OUVRIR",

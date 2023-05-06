@@ -1,0 +1,107 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+
+.mat-button {
+  height: auto;
+}
+.ongoing--tile {
+  color: $green;
+}
+.ongoing--round {
+  background-color: transparent;
+  color: $green;
+  border: 1px solid $green;
+}
+
+.ongoing--round {
+  cursor: pointer;
+  background-color: $light-green;
+}
+
+/*h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+}
+*/
+
+
+
+.detail--section h3 {
+  color: $dark-blue;
+}
+
+// TUILE SAISIE EN COURS
+.ongoing--tile {
+  color: $green;
+}
+
+.ongoing--round {
+  background-color: transparent;
+  color: $green;
+  border: 1px solid $green;
+  transition: transform 250ms ease-in;
+}
+
+
+//// TUILE EN ATTENTE
+
+.site--tile {
+  color: $red-A200;
+}
+
+.site--round {
+  background-color: transparent;
+  color: $red-A200;
+}
+
+
+// TUILE A TRAITER
+.todo--tile {
+  color: $red-900;
+}
+
+.todo--round {
+  background-color: $red-900;
+  color: #ffffff;
+  border: 1px solid $red-900;
+}
+
+.stamped--tile {
+  color: $purple-500;
+}
+
+.stamped--round {
+  background-color: transparent;
+  color: $purple-500;
+  border: 1px solid $purple-500;
+}
+.instruct--tile {
+  color: $purple-300;
+}
+
+.instruct--round {
+  background-color: transparent;
+  color: $purple-300;
+  border: 1px solid $purple-300;
+}
+// ROUND BUTTON
+.fab--button {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  font-weight:200;
+  border: none;
+}
+.purple--300 {
+  color: $purple-300;
+}
+.card-description{
+  font-size: 13px;
+}
+
+
+
+
+
+
+
+

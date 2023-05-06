@@ -74,7 +74,6 @@ export  class AuthService {
    * @memberof AuthenticationService
    */
   isLoggedIn() {
-    console.log("!!this.stockage.getItem(this.TOKEN_KEY_NAME):"+!!this.stockage.getItem(this.TOKEN_KEY_NAME))
     return !!this.stockage.getItem(this.TOKEN_KEY_NAME);
   }
   storeAuthenticationToken(jwt: any) {

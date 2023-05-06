@@ -1,4 +1,4 @@
-import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {CommonModule, NgIf, NgOptimizedImage} from "@angular/common";
 import {layoutRouter} from "./layout.router";
 import {NgModule} from "@angular/core";
 import { LayoutComponent } from './layout.component';
@@ -15,15 +15,16 @@ import {RedevanceModule} from "./redevanceModule/redevance.module";
   declarations: [
     LayoutComponent
   ],
-  imports: [
-    layoutRouter,
-    MaterialModule,
-    NgOptimizedImage,
-    ReactiveFormsModule,
-    SharedModule,
-    MatSidenavModule,
-    MaterialModule,
-    AdminModule,
-  ]
+    imports: [
+        layoutRouter,
+        MaterialModule,
+        NgOptimizedImage,
+        ReactiveFormsModule,
+        SharedModule,
+        MatSidenavModule,
+        MaterialModule,
+        AdminModule,
+        NgIf,
+    ]
 })
 export class LayoutModule {}

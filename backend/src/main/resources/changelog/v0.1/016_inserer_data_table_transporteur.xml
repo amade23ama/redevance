@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="016_inserer_data_table_transporteur_1" author="waly">
+        <insert tableName="TRANSPORTEUR">
+            <column name="TYPE" value="Personne morale" />
+            <column name="NOM_RAISON_SOCIALE" value="DMB" />
+            <column name="PRENOM" value="" />
+            <column name="TELEPHONE" value="00221775678987" />
+            <column name="EMAIL" value="dmd@gmail.com" />
+            <column name="ADRESSE" value="" />
+        </insert>
+        <insert tableName="TRANSPORTEUR">
+            <column name="TYPE" value="Personne physique" />
+            <column name="NOM_RAISON_SOCIALE" value="DIOUF" />
+            <column name="PRENOM" value="Djibril" />
+            <column name="TELEPHONE" value="00221789764534" />
+            <column name="EMAIL" value="diouf.djibril@yahoo.com" />
+            <column name="ADRESSE" value="" />
+        </insert>
+        <insert tableName="TRANSPORTEUR">
+            <column name="TYPE" value="Personne morale" />
+            <column name="NOM_RAISON_SOCIALE" value="EIFFAGE MARINE" />
+            <column name="PRENOM" value="" />
+            <column name="TELEPHONE" value="00221768789045" />
+            <column name="EMAIL" value="eiffage.marine@gmail.com" />
+            <column name="ADRESSE" value="Dakar Nav" />
+        </insert>
+        <insert tableName="TRANSPORTEUR">
+            <column name="TYPE" value="Personne physique" />
+            <column name="NOM_RAISON_SOCIALE" value="MBODJ" />
+            <column name="PRENOM" value="ABDOU" />
+            <column name="TELEPHONE" value="00221787567895" />
+            <column name="EMAIL" value="abdou.mbodj@gmail.com" />
+            <column name="ADRESSE" value="" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

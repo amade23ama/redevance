@@ -16,6 +16,7 @@
             <column name="PASSWORD" value="admin" />
             <column name="EMAIL" value="admin@localhost.fr" />
             <column name="DATECREATION" value="2023-04-19" />
+            <column name="ACTIF" value="true" />
             <!--<column name="DATEMODIFICATION" value="" /> -->
         </insert>
     </changeSet>
@@ -29,6 +30,7 @@
             <column name="PASSWORD" value="consult" />
             <column name="EMAIL" value="consult@localhost.fr" />
             <column name="DATECREATION" value="2023-04-19" />
+            <column name="ACTIF" value="true" />
             <!--<column name="DATEMODIFICATION" value="" /> -->
         </insert>
     </changeSet>
@@ -42,6 +44,7 @@
             <column name="PASSWORD" value="utilisateur" />
             <column name="EMAIL" value="utilisateur@localhost.fr" />
             <column name="DATECREATION" value="2023-04-19" />
+            <column name="ACTIF" value="true" />
             <!--<column name="DATEMODIFICATION" value="" /> -->
         </insert>
     </changeSet>

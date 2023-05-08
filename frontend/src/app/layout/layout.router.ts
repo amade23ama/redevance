@@ -3,7 +3,7 @@ import {LayoutComponent} from "./layout.component";
 import {DscomMessageComponent} from "./shared-Module/dscom-message/dscom-message.component";
 import {HomeComponent} from "./shared-Module/home/home.component";
 import {RouteGuard} from "../core/guards/route-guard.service";
-import {UtilisateurUpdateComponent} from "./admin-module/utilisateur-update/utilisateur-update.component";
+import {UtilisateurUpdateComponent} from "./admin-module/utilisateur/utilisateur-update/utilisateur-update.component";
 import {SiteComponent} from "./admin-module/site/site.component";
 import {VehiculeComponent} from "./admin-module/vehicule/vehicule.component";
 

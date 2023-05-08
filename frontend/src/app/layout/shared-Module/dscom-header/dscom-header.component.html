@@ -11,6 +11,9 @@
     <div>{{appConfig.getLabel('label.ministere.geologie')}}</div>
     <div class="devise">{{appConfig.getLabel('label.devise')}}</div>
   </div>
+  <div class="titre titre-position" fxLayout="row " fxLayoutAlign="center center" >
+    <h2>{{appConfig.getLabel('label.direction.cycle')}}</h2>
+  </div>
   <div fxLayout="row " fxLayoutAlign="center center">
     <button mat-icon-button>
       <mat-icon class="disabled--icon">settings</mat-icon>
@@ -23,7 +26,7 @@
       <mat-icon>account_circle</mat-icon>
     </button>
   </div>
-  <mat-menu  #menu="matMenu" >
+  <mat-menu class="mat-menu" #menu="matMenu" >
     <button mat-menu-item class="user--menu--name">
       <mat-icon>account_circle</mat-icon>
       <span>{{utilisateurConnecte.label}}</span>
@@ -37,7 +40,7 @@
       <span>{{utilisateurConnecte.email}}</span>
     </button>
     <hr/>
-    <button mat-menu-item (click)="logout()" href="#">
+    <button mat-menu-item class="button-login" (click)="logout()" href="#">
       <mat-icon class="deconnexion-action">power_settings_new</mat-icon>
       <span class="deconnexion-action">se déconnecter</span>
     </button>

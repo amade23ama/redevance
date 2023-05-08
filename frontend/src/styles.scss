@@ -42,12 +42,12 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
   }
   */
 }
-/*
+
 mat-form-field mat-label {
   color: $blue-label-input;
-  color: red;
+  color: black;
 }
-*/
+
 
 .label {
   font-size: 13px;
@@ -224,6 +224,7 @@ mat-form-field mat-label {
     padding: 0;
     margin: 0;
     width: 100%;
+
   }
 
   & .mat-form-field-wrapper {

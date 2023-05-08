@@ -22,8 +22,6 @@ export class TuileService {
     return this.http.get<HomeCard[]>(this.url + '/chargementInfoTuiles')
       .pipe(
         tap((res: HomeCard[]) => {
-          console.log(" HomeCard")
-          const result = [];
           res.map(a=>HomeCard.fromJson(res, HomeCard))
           this.setInfoTuiles(res)
         }),
@@ -31,15 +29,6 @@ export class TuileService {
           return throwError(() => err) // RXJS 7+
         })
       )
-    /*.pipe(
-  map((res: HomeCard[]) => {
-     const result = [];
-     for (let homecard of res) {
-       result.push(HomeCard.fromJson(homecard, HomeCard));
-     }
-     return result;
-   }));
- */
   }
 
   get infoTuiles$(): Observable<HomeCard[]> { // getter ou selector

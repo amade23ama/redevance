@@ -7,12 +7,12 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
   prenom: string;
   login: string;
   email:string;
+  password:string;
 
   /**
    * Méthode permettant de retourner le nom prénom d'un utilisateur.
    */
   get label(): string {
-    console.log(" erreor")
     let nomPrenom = '';
     if (this.nom) {
       nomPrenom=nomPrenom.concat("",this.nom);

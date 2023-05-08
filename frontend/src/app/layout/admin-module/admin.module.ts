@@ -12,16 +12,17 @@ import {ActionBtnsComponent} from "../shared-Module/action-btns/action-btns.comp
 import {CommonModule} from "@angular/common";
 import {MaterialModule} from "../../material.module";
 import {ConfigurationComponent} from "./configuration/configuration.component";
-import {UtilisateurUpdateComponent} from "./utilisateur-update/utilisateur-update.component";
+import {UtilisateurUpdateComponent} from "./utilisateur/utilisateur-update/utilisateur-update.component";
 import {LogsComponent} from "./logs/logs.component";
 import {MonitoreComponent} from "./monitore/monitore.component";
 import {AdminRouter} from "./admin.router";
 import { SiteComponent } from './site/site.component';
 import { VehiculeComponent } from './vehicule/vehicule.component';
+import {UserModule} from "./utilisateur/utilisateur.module";
 
 @NgModule({
   declarations: [
-    UtilisateurUpdateComponent,
+    //UtilisateurUpdateComponent,
     LogsComponent,
     ConfigurationComponent,
     MonitoreComponent,
@@ -32,6 +33,7 @@ import { VehiculeComponent } from './vehicule/vehicule.component';
     //AdminRouter,
     CommonModule,
     MaterialModule,
+    UserModule
 
   ],
   exports: [

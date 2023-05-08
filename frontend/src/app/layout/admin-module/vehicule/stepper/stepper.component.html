@@ -1,14 +1,14 @@
 <div class="stepper--conteneur mt-1">
   <mat-horizontal-stepper >
     <mat-step class="data--form"  [stepControl]="stepperTransporteurComponent?.myform">
-      <ng-template matStepLabel>transporteur</ng-template>
+      <ng-template matStepLabel><div fxHide fxShow.gt-sm>transporteur</div></ng-template>
       <app-stepper-transporteur></app-stepper-transporteur>
       <div class="stepper--boutton--conteneur">
         <button mat-button matStepperNext><mat-icon>chevron_right</mat-icon>etape suivante</button>
       </div>
     </mat-step>
     <mat-step class="data--form"[stepControl]="stepperVehiculeComponent?.myform">
-      <ng-template matStepLabel>Vehicule</ng-template>
+      <ng-template matStepLabel><div fxHide fxShow.gt-sm>Vehicule</div></ng-template>
       <app-stepper-vehicule></app-stepper-vehicule>
       <div class="stepper--boutton--conteneur">
         <button mat-button matStepperNext><mat-icon>chevron_right</mat-icon>etape suivante</button>
@@ -16,7 +16,10 @@
     </mat-step>
 
     <mat-step class="data--form">
-      <ng-template matStepLabel>valide</ng-template>
+      <ng-template matStepLabel><div fxHide fxShow.gt-sm>valide</div></ng-template>
+      <div fxLayout="row" fxLayoutAlign="center center">
+        validation de la saisie
+      </div>
       <div class="stepper--boutton--conteneur">
         <button mat-button matStepperNext
                 (click)="submit(stepperTransporteurComponent?.myform.value,

@@ -1,12 +1,29 @@
-<form (submit)="siteDataInput()" [formGroup]="mySiteform" id="siteform" >
 
-    <input type = "text" class = "sitename"  placeholder = "Nom du site" 
-    [formControl]="siteName">
-    <br/>
-    <input type = "text" class = "fortextbox" name="passwd" 
-       placeholder = "Localité" [formControl]="locality">
-    <br/>
+<div class="container">
+    <div class="brand-logo"></div>
+    <div class="brand-title">Création de site</div>
+    <div class="inputs">
+      <!-- <label>EMAIL</label>
+      <input type="email" placeholder="example@test.com" />
+      <label>PASSWORD</label>
+      <input type="password" placeholder="Min 6 charaters long" />
+      <button type="submit">LOGIN</button> -->
 
-    <!-- <input type = "submit" class = "forsubmit" value = "Log In"> -->
-    <button  mat-raised-button>{{appConfig.getLabel('global.valider')}}</button>
- </form>
+      <form (submit)="siteDataInput()" [formGroup]="mySiteform" id="siteform" >
+        <div class="form-group">
+        <label class="labtext" for="sitename">Site</label>
+        <input type = "text" class = "sitename"  name="sitename" placeholder = "Nom du site" 
+        [formControl]="siteName">
+        </div>
+        <label class="labtext" for="locname">Localité</label>
+        <input type = "text" class = "fortextbox" name="locname" 
+           placeholder = "Localité" [formControl]="locality">
+        <br/>
+    
+        <!-- <input type = "submit" class = "forsubmit" value = "Log In"> -->
+        <button  mat-raised-button>{{appConfig.getLabel('global.valider')}}</button>
+     </form>
+    </div>
+  </div>
+
+

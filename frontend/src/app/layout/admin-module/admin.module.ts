@@ -19,6 +19,7 @@ import {AdminRouter} from "./admin.router";
 import { SiteComponent } from './site/site.component';
 import { VehiculeComponent } from './vehicule/vehicule.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+
 @NgModule({
   declarations: [
     UtilisateurUpdateComponent,

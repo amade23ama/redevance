@@ -12,8 +12,8 @@ export class SiteComponent implements OnInit{
 
   // @Output() formLogin = new EventEmitter<FormGroup>();
 
-  siteName: FormControl = new FormControl("Site")
-  locality: FormControl = new FormControl("thiès")
+  siteName: FormControl = new FormControl("")
+  locality: FormControl = new FormControl("")
   mySiteform: FormGroup
   
   constructor(private builder: FormBuilder,public appConfig:AppConfigService, private siteService : SiteService) {

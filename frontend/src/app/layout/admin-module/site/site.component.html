@@ -1,1 +1,43 @@
-<p>site works!</p>
+
+<mat-card class="mt-1">
+  <mat-card-header class="mat-card-header">
+    <mat-card-title class="mat-card-title">Création de Site d'exploitation </mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mt-1">
+    <form  (submit)="sauvegarder()"  class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around">
+      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>nom </mat-label>
+          <input matInput  type="text"
+                 [formControl]="nom"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('prenom')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>localite</mat-label>
+          <input matInput  type="text"
+                 [formControl]="localite"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('nom')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div fxLayout fxLayoutAlign="space-between none">
+        <button  mat-button  mat-raised-button type="submit" >
+          {{appConfig.getLabel('dcsom.actions.enregistrer')}}
+          <mat-icon>save</mat-icon>
+        </button>
+        <button  mat-button  mat-raised-button type="reset">
+          {{appConfig.getLabel('dcsom.actions.annuler')}}
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+
+

@@ -1,3 +1,4 @@
+
 <mat-card class="mt-1">
   <mat-card-header class="mat-card-header">
     <mat-card-title class="mat-card-title">Création d'un transport </mat-card-title>
@@ -6,11 +7,11 @@
     <form  (submit)="sauvegarder()"  class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around">
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>immatriculation</mat-label>
+          <mat-label>Prenom </mat-label>
           <input matInput  type="text"
-                 [formControl]="immatriculation"/>
+                 [formControl]="prenom"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('immatriculation')">
+                   (click)="reset('prenom')">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
@@ -26,15 +27,46 @@
       </div>
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>volume </mat-label>
+          <mat-label>email </mat-label>
           <input matInput  type="text"
-                 [formControl]="volume"/>
+                 [formControl]="email"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
                    (click)="reset('email')">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>telephone</mat-label>
+          <input matInput  type="text"
+                 [formControl]="telephone"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('telephone')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
       </div>
+
+      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>type </mat-label>
+          <input matInput  type="text"
+                 [formControl]="type"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('login')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Adresse</mat-label>
+          <input matInput
+                 [formControl]="adresse"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('password')">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+
 
       <div fxLayout fxLayoutAlign="space-between none">
         <button  mat-button  mat-raised-button type="submit" >
@@ -49,3 +81,5 @@
     </form>
   </mat-card-content>
 </mat-card>
+
+

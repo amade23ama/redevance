@@ -1,4 +1,5 @@
-import {BuilderDtoJsonAbstract} from "./BuilderDtoJsonAbstract";
+import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
+import {Profil} from "./profil";
 
 export class Utilisateur extends BuilderDtoJsonAbstract{
 
@@ -8,7 +9,12 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
   login: string;
   email:string;
   password:string;
-
+  telephone:string;
+  active:boolean;
+  profil:Profil[];
+  dateCreation:Date;
+  dateModification:Date;
+  droits: string[] = [];
   /**
    * Méthode permettant de retourner le nom prénom d'un utilisateur.
    */
@@ -21,5 +27,14 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
       nomPrenom=nomPrenom.concat(" ", this.prenom);
     }
     return nomPrenom;
+  }
+  static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
+    const user: any = BuilderDtoJsonAbstract.fromJson(json, Utilisateur);
+
+    // init valeur par defaut
+    if (json.profil) {
+      user.profil = Profil.fromJson(json.profil, Profil);
+    }
+    return user;
   }
 }

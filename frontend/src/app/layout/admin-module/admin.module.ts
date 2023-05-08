@@ -19,6 +19,8 @@ import {AdminRouter} from "./admin.router";
 import { SiteComponent } from './site/site.component';
 import { VehiculeComponent } from './vehicule/vehicule.component';
 import {UserModule} from "./utilisateur/utilisateur.module";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { TransporteurComponent } from './transporteur/transporteur.component';
 
 @NgModule({
   declarations: [
@@ -27,14 +29,16 @@ import {UserModule} from "./utilisateur/utilisateur.module";
     ConfigurationComponent,
     MonitoreComponent,
     SiteComponent,
-    VehiculeComponent
+    VehiculeComponent,
+    TransporteurComponent
   ],
   imports: [
     //AdminRouter,
     CommonModule,
     MaterialModule,
-    UserModule
-
+    UserModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
   ],

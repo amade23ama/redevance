@@ -26,5 +26,5 @@ public class TransporteurDTO {
     private String adresse;
     private Date dateCreation;
     private Date dateModification;
-    private List<VehiculeEntity> vehiculeEntityListes;
+    private List<VehiculeDTO> vehiculeListes;
 }

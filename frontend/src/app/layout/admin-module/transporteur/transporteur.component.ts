@@ -1,32 +1,37 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {AppConfigService} from "../../../core/services/app-config.service";
-import {Transporteur} from "../../../core/interfaces/transporteur";
 
 @Component({
-  selector: 'app-vehicule',
-  templateUrl: './vehicule.component.html',
-  styleUrls: ['./vehicule.component.scss']
+  selector: 'app-transporteur',
+  templateUrl: './transporteur.component.html',
+  styleUrls: ['./transporteur.component.scss']
 })
-export class VehiculeComponent implements OnInit {
 
+export class TransporteurComponent implements OnInit{
 
   id: FormControl = new FormControl();
-  immatriculation: FormControl = new FormControl();
+  prenom: FormControl = new FormControl();
   nom: FormControl = new FormControl();
-  volume: FormControl = new FormControl();
+  type: FormControl = new FormControl();
+  telephone: FormControl = new FormControl();
+  email:FormControl = new FormControl();
+  adresse: FormControl = new FormControl();
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();
   myform: FormGroup = this.builder.group({
     id: this. id,
-    immatriculation: this.immatriculation,
+    prenom: this.prenom,
     nom: this.nom,
-    volume:this.volume,
+    telephone:this.telephone,
+    email:this.email,
+    type:this.type,
+    adresse:this.adresse,
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
   })
-  constructor(public builder:FormBuilder,public appConfig:AppConfigService) {
-  }
+constructor(public builder:FormBuilder,public appConfig:AppConfigService) {
+}
   ngOnInit(): void {
   }
   sauvegarder(){
@@ -38,5 +43,6 @@ export class VehiculeComponent implements OnInit {
   annuler(){
     console.log(" annuller")
   }
-}
 
+
+}

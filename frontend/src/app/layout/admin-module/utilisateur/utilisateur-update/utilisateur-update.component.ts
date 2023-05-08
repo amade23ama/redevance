@@ -9,7 +9,7 @@ import {AppConfigService} from "../../../../core/services/app-config.service";
   styleUrls: ['./utilisateur-update.component.scss']
 })
 export class UtilisateurUpdateComponent implements OnInit{
-
+  id: FormControl = new FormControl()
   prenom: FormControl = new FormControl('',[Validators.required,Validators.minLength(3)])
   nom: FormControl = new FormControl('',[Validators.required,Validators.minLength(2)])
   email: FormControl = new FormControl('',[Validators.required, Validators.email]);
@@ -22,6 +22,7 @@ export class UtilisateurUpdateComponent implements OnInit{
   profil:FormControl = new FormControl('',[Validators.required])
 
   myform: FormGroup = this.builder.group({
+    id:this.id,
     prenom: this.prenom,
     nom: this.nom,
     email: this.email,
@@ -34,7 +35,8 @@ export class UtilisateurUpdateComponent implements OnInit{
     dateModification:this.dateModification
   })
   statusActive:boolean;
-  labelval="";
+  hide:boolean = true;
+  labelActive="";
   profils$=this.paramService.profils$
   constructor(private builder: FormBuilder,private paramService:ParamService,
               public appConfig:AppConfigService) {
@@ -49,7 +51,7 @@ export class UtilisateurUpdateComponent implements OnInit{
     this.myform.controls[formToReset]?.setValue('');
   }
   getStatus(){
-    return this.labelval=this.statusActive==true?"activé":"désactivé";
+    return this.labelActive=this.statusActive==true?"activé":"désactivé";
   }
   sauvegarder(){
     console.log(" save")

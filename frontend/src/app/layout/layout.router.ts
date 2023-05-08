@@ -6,6 +6,7 @@ import {RouteGuard} from "../core/guards/route-guard.service";
 import {UtilisateurUpdateComponent} from "./admin-module/utilisateur/utilisateur-update/utilisateur-update.component";
 import {SiteComponent} from "./admin-module/site/site.component";
 import {VehiculeComponent} from "./admin-module/vehicule/vehicule.component";
+import {TransporteurComponent} from "./admin-module/transporteur/transporteur.component";
 
 const routes: Routes = [{
   path: '',
@@ -30,6 +31,10 @@ const routes: Routes = [{
     {
       path: 'admin/vehicule',
       component: VehiculeComponent
+    },
+    {
+      path: 'admin/transpoteur',
+      component: TransporteurComponent
     },
   ]
 }]

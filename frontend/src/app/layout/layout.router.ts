@@ -7,6 +7,7 @@ import {UtilisateurUpdateComponent} from "./admin-module/utilisateur/utilisateur
 import {SiteComponent} from "./admin-module/site/site.component";
 import {VehiculeComponent} from "./admin-module/vehicule/vehicule.component";
 import {TransporteurComponent} from "./admin-module/transporteur/transporteur.component";
+import {StepperComponent} from "./admin-module/vehicule/stepper/stepper.component";
 
 const routes: Routes = [{
   path: '',
@@ -35,6 +36,10 @@ const routes: Routes = [{
     {
       path: 'admin/transpoteur',
       component: TransporteurComponent
+    },
+    {
+      path: 'admin/vehiculeNouveau',
+      component: StepperComponent
     },
   ]
 }]

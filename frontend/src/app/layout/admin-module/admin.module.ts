@@ -21,6 +21,9 @@ import { VehiculeComponent } from './vehicule/vehicule.component';
 import {UserModule} from "./utilisateur/utilisateur.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TransporteurComponent } from './transporteur/transporteur.component';
+import { StepperVehiculeComponent } from './vehicule/stepper/stepper-vehicule/stepper-vehicule.component';
+import { StepperTransporteurComponent } from './vehicule/stepper/stepper-transporteur/stepper-transporteur.component';
+import { StepperComponent } from './vehicule/stepper/stepper.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,10 @@ import { TransporteurComponent } from './transporteur/transporteur.component';
     MonitoreComponent,
     SiteComponent,
     VehiculeComponent,
-    TransporteurComponent
+    TransporteurComponent,
+    StepperVehiculeComponent,
+    StepperTransporteurComponent,
+    StepperComponent
   ],
   imports: [
     //AdminRouter,

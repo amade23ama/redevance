@@ -1,0 +1,30 @@
+<div class="stepper--conteneur mt-1">
+  <mat-horizontal-stepper >
+    <mat-step class="data--form"  [stepControl]="stepperTransporteurComponent?.myform">
+      <ng-template matStepLabel>transporteur</ng-template>
+      <app-stepper-transporteur></app-stepper-transporteur>
+      <div class="stepper--boutton--conteneur">
+        <button mat-button matStepperNext><mat-icon>chevron_right</mat-icon>etape suivante</button>
+      </div>
+    </mat-step>
+    <mat-step class="data--form"[stepControl]="stepperVehiculeComponent?.myform">
+      <ng-template matStepLabel>Vehicule</ng-template>
+      <app-stepper-vehicule></app-stepper-vehicule>
+      <div class="stepper--boutton--conteneur">
+        <button mat-button matStepperNext><mat-icon>chevron_right</mat-icon>etape suivante</button>
+      </div>
+    </mat-step>
+
+    <mat-step class="data--form">
+      <ng-template matStepLabel>valide</ng-template>
+      <div class="stepper--boutton--conteneur">
+        <button mat-button matStepperNext
+                (click)="submit(stepperTransporteurComponent?.myform.value,
+                stepperVehiculeComponent?.myform?.value)">
+          {{appConfig.getLabel('dcsom.actions.enregistrer')}}
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

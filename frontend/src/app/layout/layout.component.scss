@@ -9,6 +9,7 @@
   margin: 0px;
   padding: 0px;
   //font-size: 13px;
+  background-color: $orange-5;
 
 }
 // content
@@ -67,6 +68,8 @@
 }
 .mat-toolbar{
   padding-left:3em;
+  background-color: $orange-300 !important;
+  color: white;
 }
 .mat-sidenav-content{
   //padding-left:4.5em;

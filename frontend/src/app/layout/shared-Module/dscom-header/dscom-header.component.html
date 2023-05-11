@@ -12,8 +12,13 @@
     <div class="devise">{{appConfig.getLabel('label.devise')}}</div>
   </div>
   <div class="titre titre-position" fxLayout="row " fxLayoutAlign="center center" >
+    <img class="bandeau-medium" src="./assets/img/logo.svg"
+         srcset="./assets/img/logo.svg 60w,  ./assets/img/logomaison.svg 60w" width="60"
+         height="50"
+         sizes="(min-width: 60px) 60px, 50vw" alt="bandeau"/>
     <h2>{{appConfig.getLabel('label.direction.cycle')}}</h2>
   </div>
+
   <div fxLayout="row " fxLayoutAlign="center center">
     <button mat-icon-button>
       <mat-icon class="disabled--icon">settings</mat-icon>
@@ -46,7 +51,7 @@
     </button>
   </mat-menu>
 </div>
-<div  class="mt-05" fxHide fxShow.gt-sm ></div>
+<!--<div  class="mt-05" fxHide fxShow.gt-sm ></div>-->
 <!--<hr/> -->
 
 

@@ -46,11 +46,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
 mat-form-field mat-label {
   color: $blue-label-input;
   color: black;
+  color: $orange-400!important;
 }
 
 
 .label {
   font-size: 13px;
+  font-weight: bold;
 }
 
 .pink-label {
@@ -271,6 +273,9 @@ mat-form-field mat-label {
   border: 1px solid #d2d2d2;
   background-color: #fff;
 }
-
+mat-card-title{
+  color: #3f51b5;
+  //background-color: #3f51b5;
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

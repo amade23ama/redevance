@@ -1,6 +1,6 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-@import "@angular/material/prebuilt-themes/indigo-pink.css";
+//@import "@angular/material/prebuilt-themes/indigo-pink.css";
 //********************************* global ************************
 .page {
   min-height: 100vh;
@@ -69,7 +69,13 @@
 .mat-toolbar{
   padding-left:3em;
   background-color: $orange-300 !important;
+  background-color: $orange-500!important;
   color: white;
+  font-style: italic;
+  font-weight: bold;
+}
+.mat-toolbar .mat-button:nth-child(1) {
+  border-left: 1px solid #bec2d0;
 }
 .mat-sidenav-content{
   //padding-left:4.5em;
@@ -77,6 +83,9 @@
 .example-container{
   padding-left:4.5em;
   padding-right:4.5em;
+}
+a{
+  font-weight: bold;
 }
 @media screen and (max-width: 600px) {
 

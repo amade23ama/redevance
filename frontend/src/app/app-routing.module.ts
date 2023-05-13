@@ -14,7 +14,7 @@ const routesPublic: Routes = [
   {
     path: '',loadChildren: () => import('./layout/layout.module')
       .then(modules => modules.LayoutModule),canActivate:[RouteGuard]
-  }
+  },
 
   //{path: '', component: HomeComponent},
   //{path: 'home', component: HomeComponent},

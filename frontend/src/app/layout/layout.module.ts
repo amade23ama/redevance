@@ -10,6 +10,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {AdminModule} from "./admin-module/admin.module";
 import {RedevanceModule} from "./redevanceModule/redevance.module";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -23,8 +24,9 @@ import {RedevanceModule} from "./redevanceModule/redevance.module";
         SharedModule,
         MatSidenavModule,
         MaterialModule,
-        AdminModule,
+
         NgIf,
-    ]
+    ],
+  exports: [RouterModule]
 })
 export class LayoutModule {}

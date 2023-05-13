@@ -16,6 +16,7 @@ export class StepperComponent implements OnInit, AfterViewInit  {
   constructor(private changeDetector: ChangeDetectorRef,
               public appConfig:AppConfigService){}
   ngOnInit(): void {
+  this.changeDetector.detectChanges()
   }
   ngAfterViewInit(): void {
   }

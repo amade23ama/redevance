@@ -24,6 +24,8 @@ import { TransporteurComponent } from './transporteur/transporteur.component';
 import { StepperVehiculeComponent } from './vehicule/stepper/stepper-vehicule/stepper-vehicule.component';
 import { StepperTransporteurComponent } from './vehicule/stepper/stepper-transporteur/stepper-transporteur.component';
 import { StepperComponent } from './vehicule/stepper/stepper.component';
+import {AdminComponent} from "./admin.component";
+import {RouterModule, RouterOutlet} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -36,18 +38,20 @@ import { StepperComponent } from './vehicule/stepper/stepper.component';
     TransporteurComponent,
     StepperVehiculeComponent,
     StepperTransporteurComponent,
-    StepperComponent
+    StepperComponent,
+    AdminComponent,
   ],
   imports: [
-    //AdminRouter,
+
+    AdminRouter,
     CommonModule,
     MaterialModule,
     UserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RouterOutlet,
   ],
-  exports: [
-  ],
+  exports: [RouterModule],
   providers: [],
 })
 export class AdminModule {

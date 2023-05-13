@@ -8,40 +8,21 @@ import {SiteComponent} from "./admin-module/site/site.component";
 import {VehiculeComponent} from "./admin-module/vehicule/vehicule.component";
 import {TransporteurComponent} from "./admin-module/transporteur/transporteur.component";
 import {StepperComponent} from "./admin-module/vehicule/stepper/stepper.component";
+import {AdminComponent} from "./admin-module/admin.component";
 
 const routes: Routes = [{
   path: '',
   component: LayoutComponent,
   children: [
-    {
-      path: '',
-      component: HomeComponent
+    { path: '',
+    component: HomeComponent
     },
-    {
-      path: 'test',
-      component: HomeComponent
-    },
-    {
-      path: 'admin',
-      component: UtilisateurUpdateComponent
-    },
-    {
-      path: 'admin/site',
-      component: SiteComponent
-    },
-    {
-      path: 'admin/vehicule',
-      component: VehiculeComponent
-    },
-    {
-      path: 'admin/transpoteur',
-      component: TransporteurComponent
-    },
-    {
-      path: 'admin/vehiculeNouveau',
-      component: StepperComponent
-    },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin-module/admin.module').then(m => m.AdminModule)
+  },
   ]
 }]
 
 export const layoutRouter = RouterModule.forChild(routes)
+

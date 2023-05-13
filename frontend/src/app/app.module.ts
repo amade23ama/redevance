@@ -18,6 +18,8 @@ import {MatIconModule} from "@angular/material/icon";
 import {IntercepteurService} from "./core/intercepteur/intercepteur.service";
 import {LoginModule} from "./login/login.module";
 import {RouteGuard} from "./core/guards/route-guard.service";
+import {AdminModule} from "./layout/admin-module/admin.module";
+import {LayoutModule} from "./layout/layout.module";
 
 @NgModule({
   declarations: [
@@ -36,7 +38,8 @@ import {RouteGuard} from "./core/guards/route-guard.service";
     BrowserAnimationsModule,
     MatButtonModule,
     MatIconModule,
-    LoginModule
+    LoginModule,
+    LayoutModule
   ],
   providers: [Globals,RouteGuard,{
               provide: HTTP_INTERCEPTORS,

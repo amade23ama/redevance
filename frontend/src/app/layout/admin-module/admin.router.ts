@@ -13,11 +13,10 @@ const routes: Routes = [{
   path: '',
   component: AdminComponent,
   children: [
-          /*{
-            path: '',
+          {
+            path: 'user',
             component: UtilisateurUpdateComponent
           },
-    */
           {
             path: 'site',
             component: SiteComponent

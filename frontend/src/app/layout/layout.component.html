@@ -7,12 +7,12 @@
           <mat-icon>menu</mat-icon>
         </button>
       </div>
-      <a mat-button class="" routerLink="/">
+      <a mat-button class="" routerLink="">
         <span>Acceuil</span>
       </a>
       <span class="example-spacer"></span>
       <div fxShow="true" fxHide.lt-md="true">
-        <a mat-button routerLink="/admin">creer utilisateur</a>
+        <a mat-button routerLink="/admin/user">creer utilisateur</a>
         <a mat-button routerLink="/admin/site">creer site</a>
         <a mat-button routerLink="/admin/vehicule">creer vehicule</a>
         <a mat-button routerLink="/admin/transpoteur">creer transpoteur</a>
@@ -26,7 +26,7 @@
     <mat-sidenav-container  class="example-container">
       <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
         <div fxLayout="column">
-          <a mat-button routerLink="/" (click)="sidenav.toggle()">home</a>
+          <a mat-button routerLink="" (click)="sidenav.toggle()">home</a>
           <a mat-button routerLink="/admin" (click)="sidenav.toggle()">creer utilisateur</a>
           <a mat-button routerLink="/admin/site" (click)="sidenav.toggle()">creer site</a>
           <a mat-button routerLink="/admin/vehicule" (click)="sidenav.toggle()">creer vehicule</a>

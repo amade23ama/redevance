@@ -4,14 +4,14 @@
       <ng-template matStepLabel><div fxHide fxShow.gt-sm>transporteur</div></ng-template>
       <app-stepper-transporteur></app-stepper-transporteur>
       <div class="stepper--boutton--conteneur">
-        <button mat-button matStepperNext><mat-icon>chevron_right</mat-icon>etape suivante</button>
+        <button mat-button matStepperNext class="btn-global-pink"><mat-icon>chevron_right</mat-icon>etape suivante</button>
       </div>
     </mat-step>
     <mat-step class="data--form"[stepControl]="stepperVehiculeComponent?.myform">
       <ng-template matStepLabel><div fxHide fxShow.gt-sm>Vehicule</div></ng-template>
       <app-stepper-vehicule></app-stepper-vehicule>
       <div class="stepper--boutton--conteneur">
-        <button mat-button matStepperNext><mat-icon>chevron_right</mat-icon>etape suivante</button>
+        <button mat-button matStepperNext class="btn-global-pink"><mat-icon>chevron_right</mat-icon>etape suivante</button>
       </div>
     </mat-step>
 
@@ -21,7 +21,7 @@
         validation de la saisie
       </div>
       <div class="stepper--boutton--conteneur">
-        <button mat-button matStepperNext
+        <button mat-button matStepperNext class="btn-global-pink"
                 (click)="submit(stepperTransporteurComponent?.myform.value,
                 stepperVehiculeComponent?.myform?.value)">
           {{appConfig.getLabel('dcsom.actions.enregistrer')}}

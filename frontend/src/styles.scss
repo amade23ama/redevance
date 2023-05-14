@@ -302,6 +302,9 @@ mat-form-field mat-label {
 .mat-step-header .mat-step-icon-selected{
   background-color:$orange-500!important;
 }
+.header{
+  background-color:$orange-300!important;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

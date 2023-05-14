@@ -55,7 +55,7 @@
             <column name="LIBELLE" value="profil de modification"/>
         </insert>
         <insert tableName="PROFIL">
-            <column name="DROIT" value="UTILISATEUR"/>
+            <column name="DROIT" value="EDIT"/>
             <column name="LIBELLE" value="profil de depot "/>
         </insert>
         <insert tableName="PROFIL">
@@ -73,7 +73,7 @@
             <column name="ID_UTILISATEUR" value="2"/>
         </insert>
         <insert tableName="UTILISATEUR_PROFIL">
-            <column name="DROIT" value="UTILISATEUR"/>
+            <column name="DROIT" value="EDIT"/>
             <column name="ID_UTILISATEUR" value="3"/>
         </insert>
     </changeSet>

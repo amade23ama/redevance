@@ -10,26 +10,22 @@
         <insert tableName="VEHICULE">
             <column name="IMMATRICULATION" value="MLT5365A" />
             <column name="ID_TRANSPORTEUR" value="4" />
-            <column name="NOM" value="T11S3" />
-            <column name="VOLUME" value="20" />
+            <column name="ID_CATEGORIE" value="1" />
         </insert>
         <insert tableName="VEHICULE">
             <column name="IMMATRICULATION" value="8727TTD1" />
             <column name="ID_TRANSPORTEUR" value="3" />
-            <column name="NOM" value="T12S4" />
-            <column name="VOLUME" value="20" />
+            <column name="ID_CATEGORIE" value="2" />
         </insert>
         <insert tableName="VEHICULE">
             <column name="IMMATRICULATION" value="TH6987L" />
             <column name="ID_TRANSPORTEUR" value="2" />
-            <column name="NOM" value="T11S2" />
-            <column name="VOLUME" value="20" />
+            <column name="ID_CATEGORIE" value="1" />
         </insert>
         <insert tableName="VEHICULE">
             <column name="IMMATRICULATION" value="AA540DS" />
             <column name="ID_TRANSPORTEUR" value="1" />
-            <column name="NOM" value="T12S3" />
-            <column name="VOLUME" value="20" />
+            <column name="ID_CATEGORIE" value="1" />
         </insert>
     </changeSet>
 </databaseChangeLog>

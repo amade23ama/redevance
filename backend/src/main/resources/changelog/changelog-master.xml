@@ -11,6 +11,7 @@
   <include file="changelog/v0.1/03_creation_table_site.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/04_creation_table_produit.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/05_creation_table_transporteur.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/05_1_creation_table_categorie.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/06_creation_table_vehicule.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/07_creation_table_depot.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/08_creation_table_site_exploitation.xml" relativeToChangelogFile="false"/>
@@ -22,6 +23,7 @@
   <include file="changelog/v0.1/014_inserer_data_table_site_exploitation.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/015_inserer_data_table_produit.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/016_inserer_data_table_transporteur.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/017_1_inserer_data_table_categorie.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/017_inserer_data_table_vehicule.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/018_inserer_data_table_chargement.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

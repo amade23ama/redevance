@@ -7,12 +7,5 @@
 
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
-
-    <changeSet id="012_inserer_data_table_profil_1" author="waly">
-        <insert tableName="PROFIL">
-            <column name="DROIT" value="EDIT" />
-            <column name="LIBELLE" value="Modification et Chargement" />
-        </insert>
-    </changeSet>
 </databaseChangeLog>
 

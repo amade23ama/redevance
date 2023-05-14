@@ -22,12 +22,17 @@
         <column name="ID_TRANSPORTEUR" type="bigint" remarks="Identifiant technique du transporteur">
             <constraints foreignKeyName="FK_TRANSPORTEUR" nullable="false"/>
         </column>
+        <column name="ID_CATEGORIE" type="bigint" remarks="Identifiant technique du categorie">
+            <constraints foreignKeyName="FK_CATEGORIE" nullable="false"/>
+        </column>
+        <!--
         <column name="NOM" type="varchar(50)">
             <constraints nullable="false"/>
         </column>
         <column name="VOLUME" type="DOUBLE">
             <constraints nullable="false"/>
         </column>
+        -->
 
         <column name="DATECREATION" type="timestamp" defaultValueDate="${now}">
             <constraints nullable="false"/>
@@ -40,9 +45,14 @@
 
         <addForeignKeyConstraint baseColumnNames="ID_TRANSPORTEUR"
                                  baseTableName="VEHICULE"
-                                 constraintName="fk_ID_TRANSPORTEUR_"
+                                 constraintName="fk_ID_TRANSPORTEUR"
                                  referencedColumnNames="ID_TRANSPORTEUR"
                                  referencedTableName="TRANSPORTEUR"/>
+        <addForeignKeyConstraint baseColumnNames="ID_CATEGORIE"
+                                 baseTableName="VEHICULE"
+                                 constraintName="fk_ID_CATEGORIE"
+                                 referencedColumnNames="ID_CATEGORIE"
+                                 referencedTableName="CATEGORIE"/>
 
     </changeSet>
 

@@ -28,13 +28,16 @@ public class VehiculeEntity {
     @ManyToOne
     @JoinColumn(name = "ID_TRANSPORTEUR", nullable = false)
     private TransporteurEntity transporteurEntity;
-    @Column(name = "NOM")
-    private  String nom;
-    @Column(name = "VOLUME")
-    private  Double volume;
+    //@Column(name = "NOM")
+    //private  String nom;
+    //@Column(name = "VOLUME")
+    //private  Double volume;
     @Column(name ="DATECREATION")
     private Date dateCreation;
     @Column(name ="DATEMODIFICATION")
     private Date dateModification;
+    @ManyToOne
+    @JoinColumn(name = "ID_CATEGORIE", nullable = false)
+    private CategorieEntity categorieEntity;
 
 }

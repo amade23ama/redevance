@@ -19,8 +19,10 @@ public class VehiculeDTO {
     private Long id;
     private  String immatriculation;
     private TransporteurDTO transporteur;
-    private  String nom;
+    private  CategorieDTO categorie;
+    /*private  String nom;
     private  Double volume;
+    */
     private Date dateCreation;
     private Date dateModification;
 

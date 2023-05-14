@@ -88,7 +88,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     MatTreeModule,
     PortalModule,
     ScrollingModule,
-    FlexLayoutModule
+    FlexLayoutModule,
 
   ]
 })

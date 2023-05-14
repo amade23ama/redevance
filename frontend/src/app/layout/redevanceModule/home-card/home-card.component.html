@@ -3,7 +3,7 @@
      *ngIf="infoTuiles$ | async as infoTuiles" fxLayout.lt-md="column"
      fxLayoutAlign.lt-md="center none" fxLayoutGap="5"   >
   <mat-card class="menu-card" *ngFor="let card of infoTuiles" >
-    <section class="content--card--section" fxLayout="column"
+    <section class="content--card--section mat-elevation-z8" fxLayout="column"
              fxLayoutAlign="center none">
       <mat-card-content fxLayout fxLayoutAlign="space-between center">
         <h4 fxLayout fxLayoutAlign=""[ngClass]="getClasseTitre(card.typeTuile)">

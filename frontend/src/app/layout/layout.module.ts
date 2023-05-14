@@ -5,12 +5,9 @@ import { LayoutComponent } from './layout.component';
 import {SharedModule} from "./shared-Module/shared.module";
 import {MaterialModule} from "../material.module";
 import {ReactiveFormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatSidenavModule} from "@angular/material/sidenav";
-import {AdminModule} from "./admin-module/admin.module";
-import {RedevanceModule} from "./redevanceModule/redevance.module";
 import {RouterModule} from "@angular/router";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -24,7 +21,6 @@ import {RouterModule} from "@angular/router";
         SharedModule,
         MatSidenavModule,
         MaterialModule,
-
         NgIf,
     ],
   exports: [RouterModule]

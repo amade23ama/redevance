@@ -1,6 +1,6 @@
 
 <div *ngIf="isLoggedIn" class="flex-container page " fxLayout="column" >
-      <app-dscom-header class="header"></app-dscom-header>
+      <app-dscom-header class="header "></app-dscom-header>
     <mat-toolbar color="">
       <div fxShow="true" fxHide.gt-sm="true">
         <button mat-icon-button (click)="sidenav.toggle()">
@@ -17,6 +17,10 @@
         <a mat-button routerLink="/admin/vehicule">creer vehicule</a>
         <a mat-button routerLink="/admin/transpoteur">creer transpoteur</a>
         <a mat-button routerLink="/admin/vehiculeNouveau">nouveau Vehicule</a>
+        <a mat-button routerLink="/recherche/user">liste utilisateur</a>
+        <a mat-button routerLink="/recherche/site">liste site</a>
+        <a mat-button routerLink="/admin">liste site</a>
+
       </div>
       <div class="toolbar-item-spacer" fxShow fxHide.gt-sm [fxFlex]="70"></div>
       <button mat-icon-button fxShow fxHide.gt-sm (click)="logout()" href="#">
@@ -31,13 +35,18 @@
           <a mat-button routerLink="/admin/site" (click)="sidenav.toggle()">creer site</a>
           <a mat-button routerLink="/admin/vehicule" (click)="sidenav.toggle()">creer vehicule</a>
           <a mat-button routerLink="/admin/transpoteur" (click)="sidenav.toggle()">creer transpoteur</a>
+          <a mat-button routerLink="/recherche/user"  (click)="sidenav.toggle()">liste utilisateur</a>
         </div>
       </mat-sidenav>
-      <mat-sidenav-content>
+      <mat-sidenav-content >
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
   <div class="clear"></div>
   <app-dscom-footer></app-dscom-footer>
 </div>
+
+
+
+
 

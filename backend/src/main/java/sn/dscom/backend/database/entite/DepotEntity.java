@@ -38,7 +38,7 @@ public class DepotEntity {
     private UtilisateurEntity deposeur;
     @Column(name = "NB_CHARGEMENT_DEPOT")
     private Integer nbChargementDeposes;
-    @Column(name = "NB_CHARGEMENT_REDEBOT")
+    @Column(name = "NB_CHARGEMENT_REDEPOT")
     private Integer nbChargementReDeposes;
     @Column(name = "NB_ERREUR")
     private Integer nbChargementErreur;

@@ -33,7 +33,7 @@
         </column>
         <column name="NOM_FICHIER" type="varchar(50)"/>
         <column name="NB_CHARGEMENT_DEPOT" type="DOUBLE"/>
-        <column name="NB_CHARGEMENT_REDEBOT" type="DOUBLE"/>
+        <column name="NB_CHARGEMENT_REDEPOT" type="DOUBLE"/>
         <column name="NB_ERREUR" type="DOUBLE"/>
 
     </createTable>

@@ -22,17 +22,21 @@
                    (click)="reset('nom')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(nom.touched) && nom.errors?.['required']">Le nom est obligatoire</span>
+          <span class="validation-error" *ngIf="(nom.touched)  && nom.errors?.['minlength'] || nom.errors?.['maxlenth']">Vous devez saisir au minimun 3 charactères</span><br>
         </mat-form-field>
       </div>
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>volume </mat-label>
-          <input matInput  type="text"
+          <input matInput  type="number"
                  [formControl]="volume"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
                    (click)="reset('email')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(volume.touched) && volume.errors?.['required']">Le champ Volume est obligatoire et doit être un nombre</span>
+          <span class="validation-error" *ngIf="volume.errors?.['min']">Le nombre doit être supérieur à 3</span><br>
         </mat-form-field>
       </div>
 

@@ -15,7 +15,7 @@ export class UtilisateurUpdateComponent implements OnInit{
   email: FormControl = new FormControl('',[Validators.required, Validators.email]);
   login: FormControl = new FormControl('',[Validators.required,Validators.minLength(6),Validators.maxLength(10)]);
   password:FormControl = new FormControl('',[Validators.required,Validators.minLength(6),Validators.maxLength(10)]);
-  telephone:FormControl = new FormControl('',[Validators.required]);
+  telephone:FormControl = new FormControl('',[Validators.required,  Validators.minLength(9), Validators.maxLength(10)]);
   dateCreation:FormControl = new FormControl();
   dateModification:FormControl = new FormControl();
   active:FormControl = new FormControl();

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Transporteur} from "../../../core/interfaces/transporteur";
 
@@ -13,8 +13,8 @@ export class VehiculeComponent implements OnInit {
 
   id: FormControl = new FormControl();
   immatriculation: FormControl = new FormControl();
-  nom: FormControl = new FormControl();
-  volume: FormControl = new FormControl();
+  nom: FormControl = new FormControl('',[Validators.required,Validators.minLength(3)]);
+  volume: FormControl = new FormControl('',[Validators.required,Validators.min(3)]);
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();
   myform: FormGroup = this.builder.group({

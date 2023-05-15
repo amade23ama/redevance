@@ -14,6 +14,8 @@
                    (click)="reset('prenom')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(nom.touched) && nom.errors?.['required']">Le nom du site est obligatoire</span>
+          <span class="validation-error" *ngIf="(nom.touched)  && nom.errors?.['minlength'] || nom.errors?.['maxlenth']">Vous devez saisir au minimun 3 charactères</span><br>
         </mat-form-field>
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>localite</mat-label>

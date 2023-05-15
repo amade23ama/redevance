@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppConfigService} from "../../../core/services/app-config.service";
 
 @Component({
@@ -11,11 +11,11 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 export class TransporteurComponent implements OnInit{
 
   id: FormControl = new FormControl();
-  prenom: FormControl = new FormControl();
-  nom: FormControl = new FormControl();
-  type: FormControl = new FormControl();
-  telephone: FormControl = new FormControl();
-  email:FormControl = new FormControl();
+  prenom: FormControl = new FormControl('', [Validators.required,Validators.minLength(3)]);
+  nom: FormControl = new FormControl('', [Validators.required,Validators.minLength(3)]);
+  type: FormControl = new FormControl('', [Validators.required,Validators.minLength(3)]);
+  telephone: FormControl = new FormControl('', [Validators.min(0), Validators.minLength(9)]);
+  email:FormControl = new FormControl('',[Validators.email]);
   adresse: FormControl = new FormControl();
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();

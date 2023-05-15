@@ -14,6 +14,8 @@
                    (click)="reset('prenom')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(prenom.touched) && prenom.errors?.['required']">Le champ prénom est obligatoire</span>
+          <span class="validation-error" *ngIf="(prenom.touched)  && prenom.errors?.['minlength'] || prenom.errors?.['maxlength']">Vous devez saisir au minimun 3 charactères</span><br>
         </mat-form-field>
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>nom </mat-label>
@@ -23,6 +25,8 @@
                    (click)="reset('nom')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(nom.touched) && nom.errors?.['required']">Le champ Nom est obligatoire</span>
+          <span class="validation-error" *ngIf="(nom.touched)  && nom.errors?.['minlength'] || nom.errors?.['maxlength']">Vous devez saisir au minimun 3 charactères</span><br>
         </mat-form-field>
         </div>
         <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
@@ -34,6 +38,7 @@
                    (click)="reset('email')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(email.touched)  && email.errors?.['email']">Vous devez saisir un Email valide</span><br>
         </mat-form-field>
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>telephone</mat-label>
@@ -43,6 +48,8 @@
                    (click)="reset('telephone')">
             <mat-icon>close</mat-icon>
           </button>
+          <span class="validation-error" *ngIf="(telephone.touched) && telephone.errors?.['required']">Le champ Téléphone est obligatoire et doit contenir des chiffres</span>
+          <span class="validation-error" *ngIf="(telephone.touched) && telephone.errors?.['invalid'] || telephone.errors?.['minlength'] || telephone.errors?.['maxlength']">Vous devez saisir au minimun 9 chiffres</span><br>
         </mat-form-field>
         </div>
 
@@ -55,6 +62,8 @@
                      (click)="reset('login')">
               <mat-icon>close</mat-icon>
             </button>
+            <span class="validation-error" *ngIf="(login.touched) && login.errors?.['required']">Le champ Login est obligatoire</span>
+            <span class="validation-error" *ngIf="(login.touched)  && login.errors?.['minlength'] || login.errors?.['maxlength']">Le nombre de charactères doit être compris entre 6 et 10 </span><br>
           </mat-form-field>
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
             <mat-label>password</mat-label>
@@ -67,6 +76,8 @@
                      (click)="reset('password')">
               <mat-icon>close</mat-icon>
             </button>
+            <span class="validation-error" *ngIf="(password.touched) && password.errors?.['required']">Le champ Password est obligatoire</span>
+            <span class="validation-error" *ngIf="(password.touched)  && password.errors?.['minlength'] || password.errors?.['maxlength']">Le nombre de charactères doit être compris entre 6 et 10 </span><br>
           </mat-form-field>
         </div>
 

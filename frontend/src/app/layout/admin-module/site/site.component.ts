@@ -10,7 +10,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 })
 export class SiteComponent implements OnInit{
   id: FormControl = new FormControl()
-  nom: FormControl = new FormControl()
+  nom: FormControl = new FormControl('',[Validators.required,Validators.minLength(3)])
   localite: FormControl = new FormControl();
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();

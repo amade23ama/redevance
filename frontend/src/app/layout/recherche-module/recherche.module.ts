@@ -5,13 +5,13 @@ import {RechercheUtilisateurComponent} from "./recherche-utilisateur/recherche-u
 import { RechercheSiteComponent } from './recherche-site/recherche-site.component';
 import { RechercheProduitComponent } from './recherche-produit/recherche-produit.component';
 import {MatTableModule} from "@angular/material/table";
-import {NgForOf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {MaterialModule} from "../../material.module";
 
 @NgModule({
   declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent],
-  imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule],
+  imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf],
   exports:[]
 })
 export class  RechercheModule{}

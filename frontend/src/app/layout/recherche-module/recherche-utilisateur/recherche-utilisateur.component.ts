@@ -18,7 +18,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   dataSource: MatTableDataSource<Utilisateur>;
   pageSizeOptions: number[] = [5, 10, 20];
   rechercheUtilisateurListe: Utilisateur[] = [];
-  displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil'];
+  displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil',"actions"];
   pageSize = 5;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;

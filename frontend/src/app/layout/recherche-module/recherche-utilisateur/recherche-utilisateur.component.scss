@@ -7,16 +7,6 @@
 
 
 
-.table-container ::ng-deep  .mat-sort-header-container {
-  transform: translateX(70px);
-}
-
-.data-container {
-  width: 100%;
-  justify-content: center;
-}
-
-
 .nb-pastille {
   width: fit-content;
   border-radius: 2em;
@@ -36,31 +26,13 @@
   transform: translateY(5%);
 }
 
-.paginator-container {
-  margin: 0 auto;
-}
 
 .form--chip {
   pointer-events: none;
 }
 
-.statut-checkbox {
-  margin-top: 15px;
-}
-
-.calendar-icon {
-  transform: translateX(-216px);
-}
-
-.table-contact-header {
-  font-weight: normal !important;
-}
 
 .blue-label {
   color: $orange-500!important;
-}
-
-.statut-container {
-  margin-left: 1.9rem;
 }
 

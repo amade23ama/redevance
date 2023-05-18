@@ -12,43 +12,43 @@
 
 <table mat-table matSort [dataSource]="dataSource"  class="mat-elevation-z8 table-parent" matSort>
   <ng-container matColumnDef="id">
-    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
-      <div>N°</div>
+    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+      <div class="d-flex">N°</div>
     </th>
     <td mat-cell *matCellDef="let element">
-      <div class="data-container d-flex">{{element.id}}</div>
+      <div class="d-flex">{{element.id}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="prenom" >
-    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
-      <div>Prenom</div>
+    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+      <div class="d-flex">Prenom</div>
     </th>
     <td mat-cell *matCellDef="let element">
-      <div class="data-container d-flex">{{element.prenom}}</div>
+      <div class="d-flex">{{element.prenom}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="nom">
-    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef mat-sort-header>
-      <div>Nom</div>
+    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef mat-sort-header>
+      <div class="d-flex">Nom</div>
     </th>
     <td mat-cell *matCellDef="let element">
-      <div class="data-container d-flex">{{element.nom}}</div>
+      <div class=" d-flex">{{element.nom}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="email">
-    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
-      <div>Email</div>
+    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+      <div class="d-flex">Email</div>
     </th>
     <td mat-cell *matCellDef="let element">
-      <div class="data-container d-flex">{{element.email}}</div>
+      <div class="d-flex">{{element.email}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="profil">
-    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
-      <div>Profil</div>
+    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+      <div class="d-flex">Profil</div>
     </th>
     <td mat-cell *matCellDef="let element">
-      <div class="data-container d-flex" >
+      <div class=" d-flex" >
         <div *ngFor="let va of element.profils">
         {{ convertToLowercase(va.code) }} </div>
       </div>

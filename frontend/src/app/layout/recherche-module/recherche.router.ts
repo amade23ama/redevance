@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
 import {AdminComponent} from "../admin-module/admin.component";
-import {UtilisateurUpdateComponent} from "../admin-module/utilisateur/utilisateur-update/utilisateur-update.component";
+import {UtilisateurCreateComponent} from "../admin-module/utilisateur/utilisateur-create/utilisateur-create.component";
 import {SiteComponent} from "../admin-module/site/site.component";
 import {VehiculeComponent} from "../admin-module/vehicule/vehicule.component";
 import {TransporteurComponent} from "../admin-module/transporteur/transporteur.component";

@@ -12,7 +12,7 @@ import {ActionBtnsComponent} from "../shared-Module/action-btns/action-btns.comp
 import {CommonModule} from "@angular/common";
 import {MaterialModule} from "../../material.module";
 import {ConfigurationComponent} from "./configuration/configuration.component";
-import {UtilisateurUpdateComponent} from "./utilisateur/utilisateur-update/utilisateur-update.component";
+import {UtilisateurCreateComponent} from "./utilisateur/utilisateur-create/utilisateur-create.component";
 import {LogsComponent} from "./logs/logs.component";
 import {MonitoreComponent} from "./monitore/monitore.component";
 import {AdminRouter} from "./admin.router";
@@ -29,7 +29,7 @@ import {RouterModule, RouterOutlet} from "@angular/router";
 
 @NgModule({
   declarations: [
-    //UtilisateurUpdateComponent,
+    //UtilisateurCreateComponent,
     LogsComponent,
     ConfigurationComponent,
     MonitoreComponent,

@@ -2,7 +2,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {LayoutComponent} from "../layout.component";
 import {DscomMessageComponent} from "../shared-Module/dscom-message/dscom-message.component";
 import {HomeComponent} from "../shared-Module/home/home.component";
-import {UtilisateurUpdateComponent} from "./utilisateur/utilisateur-update/utilisateur-update.component";
+import {UtilisateurCreateComponent} from "./utilisateur/utilisateur-create/utilisateur-create.component";
 import {SiteComponent} from "./site/site.component";
 import {AdminComponent} from "./admin.component";
 import {TransporteurComponent} from "./transporteur/transporteur.component";
@@ -15,7 +15,7 @@ const routes: Routes = [{
   children: [
           {
             path: 'user',
-            component: UtilisateurUpdateComponent
+            component: UtilisateurCreateComponent
           },
           {
             path: 'site',

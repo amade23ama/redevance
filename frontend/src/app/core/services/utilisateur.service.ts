@@ -3,8 +3,9 @@ import {Globals, SERVER_API_URL} from "../../app.constants";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
-import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, lastValueFrom, tap, throwError} from "rxjs";
 import {Utilisateur} from "../interfaces/utilisateur";
+import {AbstractControl} from "@angular/forms";
 
 @Injectable({
   providedIn:'root'
@@ -43,4 +44,25 @@ export class UtilisateurService {
   setUtilisateurConnecte(value: Utilisateur) {
     this._utilisateurConnecte.next(value);
   }
+
+  async checkEmail(input: AbstractControl): Promise<null | { emailExists: boolean }> {
+    const email = input.value;
+    const url = `${this.url}/users/${encodeURIComponent(email)}`;
+    const user = await lastValueFrom(this.http.get<Utilisateur>(this.url +`/utilisateur/${email}`))
+    return input.value == user?.email ? { emailExists: true } : null
+  }
+  sauvegarder(utilsateur:Utilisateur){
+    return this.http.post<Utilisateur>(this.url+"/utilisateur/enregistrer",utilsateur)
+      .pipe(
+        tap((res:Utilisateur) => {
+          console.log(" deconnexion 2")
+          //this.setUtilisateurConnecte(Utilisateur.fromJson(res, Utilisateur));
+        }),
+        catchError((err) => {
+          return throwError(() => err) // RXJS 7+
+        })
+      )
+  }
+
 }
+

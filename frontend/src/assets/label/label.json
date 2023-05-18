@@ -82,6 +82,10 @@
     "depot.bloc.donneecharge.lieu.produits.nom.placeholder": "Saisir les 1ères lettres du lieu d'élaboration",
     "depot.bloc.donneecharge.lieu.produits.code.postale": "Code postal",
     "depot.bloc.donneecharge.lieu.produits.code.placeholder": "CP",
-    "depot.bloc.donneecharge.lieu.produits.commune": "Commune"
+    "depot.bloc.donneecharge.lieu.produits.commune": "Commune",
+
+    "error.email.exist":"Email déjà existant !",
+    "error.champ.obligatoire": "Le champ est obligatoire"
+
   }
 }

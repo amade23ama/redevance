@@ -4,7 +4,7 @@
     <mat-card-title class="mat-card-title">Création d'utilisateur</mat-card-title>
   </mat-card-header>
     <mat-card-content class="mt-1">
-      <form  (submit)="sauvegarder()"  class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around">
+      <form    class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around">
         <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>Prenom </mat-label>
@@ -14,6 +14,9 @@
                    (click)="reset('prenom')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="prenom.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>nom </mat-label>
@@ -23,10 +26,14 @@
                    (click)="reset('nom')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="nom.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
         </mat-form-field>
         </div>
         <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+
           <mat-label>email </mat-label>
           <input matInput  type="text"
                  [formControl]="email"/>
@@ -34,6 +41,12 @@
                    (click)="reset('email')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="email?.hasError('emailExists')">
+            {{appConfig.getLabel('error.email.exist')}}
+          </mat-error>
+          <mat-error *ngIf="email.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>telephone</mat-label>
@@ -43,14 +56,17 @@
                    (click)="reset('telephone')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="telephone.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
         </mat-form-field>
         </div>
-
+ <!--
         <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
             <mat-label>login </mat-label>
             <input matInput  type="text"
-                   [formControl]="login"/>
+                   [formControl]="login" readonly/>
             <button  matSuffix mat-icon-button aria-label="Clear"
                      (click)="reset('login')">
               <mat-icon>close</mat-icon>
@@ -63,31 +79,37 @@
             <button mat-icon-button matSuffix (click)="hide = !hide">
               <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
             </button>
+
             <button  matSuffix mat-icon-button aria-label="Clear"
                      (click)="reset('password')">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
         </div>
-
+ -->
         <div fxLayout fxLayoutGap="2px" fxLayout.xs="row"fxLayout.sm="row" >
-          <mat-form-field  *ngIf="profils$ | async as profils"
+          <mat-form-field  *ngIf="profils$ | async as profiles"
             class="champ--operateur" appearance="outline" fxFlex="80" fxFlex.lt-md="90" floatLabel="always">
             <mat-label>profil</mat-label>
-            <mat-select [formControl]="profil" multiple>
-              <mat-option *ngFor="let profil of profils" [value]="profil">
+            <mat-select [formControl]="profils" multiple>
+              <mat-option *ngFor="let profil of profiles" [value]="profil">
                 {{ profil.code }}- {{ profil.libelle }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="profils.hasError('required')">
+              {{appConfig.getLabel('error.champ.obligatoire')}}
+            </mat-error>
           </mat-form-field>
           <mat-checkbox [formControl]="active">{{getStatus()}}</mat-checkbox>
         </div>
         <div fxLayout fxLayoutAlign="space-between none">
-          <button  mat-button  mat-raised-button type="submit"  class="btn-global-pink">
+          <button  mat-button   type="submit" (submit)="sauvegarder()"
+          [disabled]="myform.invalid?true:false"
+                   [ngClass]="[myform.invalid? 'btn-global-white':'btn-global-pink']">
             {{appConfig.getLabel('dcsom.actions.enregistrer')}}
             <mat-icon>save</mat-icon>
           </button>
-          <button  mat-button  mat-raised-button type="reset" (click)=annuler()>
+          <button  mat-button  mat-raised-button type="reset" (click)=annuler() class="btn-global-pink">
             {{appConfig.getLabel('dcsom.actions.annuler')}}
             <mat-icon>delete</mat-icon>
           </button>

@@ -10,5 +10,6 @@ import sn.dscom.backend.database.entite.UtilisateurEntity;
 public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,Long>{
     @Query(value = "select u from UtilisateurEntity u where u.email = :login or  u.login=:login")
     UtilisateurEntity findUtilisateurEntitiesByLoginExists(@Param("login") String login);
-
+    @Query(value = "select count(u) from UtilisateurEntity u where u.login=:login")
+    Integer  checkUtilisateurEntitiesByLoginExists(@Param("login") String login);
 }

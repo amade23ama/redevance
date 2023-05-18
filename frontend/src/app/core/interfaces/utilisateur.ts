@@ -11,7 +11,7 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
   password:string;
   telephone:string;
   active:boolean;
-  profil:Profil[];
+  profils:Profil[];
   dateCreation:Date;
   dateModification:Date;
   droits: string[] = [];
@@ -32,8 +32,8 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
     const user: any = BuilderDtoJsonAbstract.fromJson(json, Utilisateur);
 
     // init valeur par defaut
-    if (json.profil) {
-      user.profil = Profil.fromJson(json.profil, Profil);
+    if (json.profils) {
+      user.profils = Profil.fromJson(json.profils, Profil);
     }
     return user;
   }

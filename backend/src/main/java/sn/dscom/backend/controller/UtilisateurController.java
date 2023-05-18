@@ -23,8 +23,8 @@ public class UtilisateurController {
     }
 
     //@ApiOperation(value = "Enregistrer un utilisateur")
-    @PutMapping(value = "/utilisateur/enregistrer")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PostMapping (value = "/utilisateur/enregistrer")
+    //@PreAuthorize("hasAnyAuthority('ADMIN')")
    /* @ApiResponses(value = {@ApiResponse(code = 200, message = "Succès de la requête"),
             @ApiResponse(code = 401, message = "Ressource non autorisée"),
             @ApiResponse(code = 403, message = "Ressource interdite"),
@@ -34,4 +34,9 @@ public class UtilisateurController {
     public UtilisateurDTO enregistrerUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
         return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
     }
+    @GetMapping(value = "/utilisateur/{email}")
+    public UtilisateurDTO chargerUtilisateurParMail(@PathVariable String email) {
+        return utilisateurService.chargerUtilisateur(email);
+    }
+
 }

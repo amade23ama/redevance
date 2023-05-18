@@ -1,0 +1,66 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+.table-container {
+  overflow: auto;
+  overflow-y: auto;
+}
+
+
+
+.table-container ::ng-deep  .mat-sort-header-container {
+  transform: translateX(70px);
+}
+
+.data-container {
+  width: 100%;
+  justify-content: center;
+}
+
+
+.nb-pastille {
+  width: fit-content;
+  border-radius: 2em;
+  border-color: $orange-500!important;
+  border-width: 1px;
+  border-style: solid;
+  color: $orange-500!important;
+}
+
+.nb-label {
+  margin: 12px;
+  font-size: 14px;
+}
+
+
+.pagination-btn-nb-label {
+  transform: translateY(5%);
+}
+
+.paginator-container {
+  margin: 0 auto;
+}
+
+.form--chip {
+  pointer-events: none;
+}
+
+.statut-checkbox {
+  margin-top: 15px;
+}
+
+.calendar-icon {
+  transform: translateX(-216px);
+}
+
+.table-contact-header {
+  font-weight: normal !important;
+}
+
+.blue-label {
+  color: $orange-500!important;
+}
+
+.statut-container {
+  margin-left: 1.9rem;
+}
+

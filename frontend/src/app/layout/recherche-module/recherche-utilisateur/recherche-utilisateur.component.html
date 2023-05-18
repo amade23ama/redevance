@@ -1,1 +1,64 @@
-<p>recherche-utilisateur works!</p>
+<div>
+  <!-- RDG_RCH_CNT_005 (V1.0 du 06/08/2021) -->
+  <div class="nb-pastille mt-1">
+    <label class="nb-label blue-label">
+      {{rechercheUtilisateurListe?.length}}
+      {{rechercheUtilisateurListe?.length === 1 ? appConfig.getLabel('recherche.utilisateur.singulier.label') :
+      appConfig.getLabel('recherche.utilisateur.pluriel.label')}}
+    </label>
+  </div>
+</div>
+<div class="table-container mt-2">
+
+<table mat-table matSort [dataSource]="dataSource"  class="mat-elevation-z8 table-parent" matSort>
+  <ng-container matColumnDef="id">
+    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
+      <div>N°</div>
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="data-container d-flex">{{element.id}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="prenom" >
+    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
+      <div>Prenom</div>
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="data-container d-flex">{{element.prenom}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="nom">
+    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef mat-sort-header>
+      <div>Nom</div>
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="data-container d-flex">{{element.nom}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="email">
+    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
+      <div>Email</div>
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="data-container d-flex">{{element.email}}</div>
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="profil">
+    <th class="table-contact-header table-header numcuve-class" mat-header-cell *matHeaderCellDef>
+      <div>Profil</div>
+    </th>
+    <td mat-cell *matCellDef="let element">
+      <div class="data-container d-flex" >
+        <div *ngFor="let va of element.profils">
+        {{ convertToLowercase(va.code) }} </div>
+      </div>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+  <mat-paginator [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 showFirstLastButtons>
+  </mat-paginator>
+</div>

@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {BehaviorSubject, catchError, lastValueFrom, tap, throwError} from "rxjs";
 import {Utilisateur} from "../interfaces/utilisateur";
 import {AbstractControl} from "@angular/forms";
+import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn:'root'
@@ -14,8 +15,9 @@ export class UtilisateurService {
   readonly url =environment.apiUrl
   /** Observable sur l'utilisateur connecté. **/
   private _utilisateurConnecte: BehaviorSubject<Utilisateur> = new BehaviorSubject<Utilisateur>( null);
+  private _utilisateurs: BehaviorSubject<Utilisateur[]> = new BehaviorSubject<Utilisateur[]>( []);
   constructor(private http:HttpClient,private router:Router,
-              public globals: Globals) {
+              public globals: Globals,private notification: NotificationService,) {
   }
   updateConnected(){
     return this.http.get<Utilisateur>(this.url+"/updateConnected")
@@ -55,14 +57,32 @@ export class UtilisateurService {
     return this.http.post<Utilisateur>(this.url+"/utilisateur/enregistrer",utilsateur)
       .pipe(
         tap((res:Utilisateur) => {
-          console.log(" deconnexion 2")
+          this.notification.success(" Utilisateur créé ")
           //this.setUtilisateurConnecte(Utilisateur.fromJson(res, Utilisateur));
         }),
         catchError((err) => {
+          this.notification.error(" erreurr de creation Utilisateur ")
+          return throwError(() => err)
+        })
+      )
+  }
+  getAllUtilisateur(){
+    return this.http.get<Utilisateur[]>(this.url+"/utilisateur/users")
+      .pipe(
+        tap((res:Utilisateur[]) => {
+          this.setUtilisateurs(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err) // RXJS 7+
         })
       )
   }
-
+  get utilisateurs$(){
+    return this._utilisateurs.asObservable()
+  }
+  setUtilisateurs(utilisateurs:Utilisateur[] ){
+    return this._utilisateurs.next(utilisateurs)
+  }
 }
 

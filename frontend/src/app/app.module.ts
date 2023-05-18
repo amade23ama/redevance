@@ -20,6 +20,7 @@ import {LoginModule} from "./login/login.module";
 import {RouteGuard} from "./core/guards/route-guard.service";
 import {AdminModule} from "./layout/admin-module/admin.module";
 import {LayoutModule} from "./layout/layout.module";
+import {NotificationService} from "./core/services/notification.service";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import {LayoutModule} from "./layout/layout.module";
     MatButtonModule,
     MatIconModule,
     LoginModule,
-    LayoutModule
+    LayoutModule,
   ],
   providers: [Globals,RouteGuard,{
               provide: HTTP_INTERCEPTORS,

@@ -11,6 +11,7 @@ import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.service.UtilisateurService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,6 +38,11 @@ public class UtilisateurController {
     @GetMapping(value = "/utilisateur/{email}")
     public UtilisateurDTO chargerUtilisateurParMail(@PathVariable String email) {
         return utilisateurService.chargerUtilisateur(email);
+    }
+    @GetMapping(value = "/utilisateur/users")
+    public List<UtilisateurDTO> chargerUtilisateurs() {
+        List<UtilisateurDTO>  users= utilisateurService.getAllUtilisateurs();
+        return users;
     }
 
 }

@@ -3,6 +3,8 @@ import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from 
 import {ParamService} from "../../../../core/services/param.service";
 import {AppConfigService} from "../../../../core/services/app-config.service";
 import {UtilisateurService} from "../../../../core/services/utilisateur.service";
+import {Notyf} from "notyf";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-utilisateur-update',
@@ -46,7 +48,8 @@ export class UtilisateurCreateComponent implements OnInit {
   profils$ = this.paramService.profils$
 
   constructor(private builder: FormBuilder, private paramService: ParamService,
-              public appConfig: AppConfigService, public utilisateurService: UtilisateurService) {
+              public appConfig: AppConfigService, public utilisateurService: UtilisateurService,
+  public router:Router) {
   }
 
   ngOnInit(): void {
@@ -65,8 +68,9 @@ export class UtilisateurCreateComponent implements OnInit {
   }
 
   sauvegarder() {
-    this.utilisateurService.sauvegarder(this.myform.value).subscribe()
-    console.log(" save")
+    this.utilisateurService.sauvegarder(this.myform.value).subscribe(()=>{
+      this.router.navigateByUrl("recherche/user")
+    })
   }
 
   annuler() {

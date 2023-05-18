@@ -85,7 +85,8 @@
     "depot.bloc.donneecharge.lieu.produits.commune": "Commune",
 
     "error.email.exist":"Email déjà existant !",
-    "error.champ.obligatoire": "Le champ est obligatoire"
-
+    "error.champ.obligatoire": "Le champ est obligatoire",
+    "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
+    "recherche.utilisateur.singulier.label": "utilisateur trouvé"
   }
 }

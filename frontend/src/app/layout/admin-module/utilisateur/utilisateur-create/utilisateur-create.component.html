@@ -103,7 +103,7 @@
           <mat-checkbox [formControl]="active">{{getStatus()}}</mat-checkbox>
         </div>
         <div fxLayout fxLayoutAlign="space-between none">
-          <button  mat-button   type="submit" (submit)="sauvegarder()"
+          <button  mat-button   type="submit" (click)="sauvegarder()"
           [disabled]="myform.invalid?true:false"
                    [ngClass]="[myform.invalid? 'btn-global-white':'btn-global-pink']">
             {{appConfig.getLabel('dcsom.actions.enregistrer')}}

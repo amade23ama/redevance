@@ -56,6 +56,10 @@
 
     "dcsom.actions.enregistrer": "ENREGISTRER",
     "dcsom.actions.annuler": "ANNULER",
+    "dcsom.actions.enregistrer": "ENREGISTRER",
+    "dcsom.actions.modifier": "MODIFIER",
+    "dcsom.actions.desactiver": "DESACTIVER",
+    "dcsom.actions.activer": "ACTIVER",
     "depot.actions.rattachercpa": "RATTACHEMENT A UN CONTRAT PLURI-ANNUEL",
     "depot.actions.conditions": "CONDITIONS GENERALES",
     "depot.actions.valider": "VALIDER LA SAISIE",
@@ -87,6 +91,9 @@
     "error.email.exist":"Email déjà existant !",
     "error.champ.obligatoire": "Le champ est obligatoire",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
-    "recherche.utilisateur.singulier.label": "utilisateur trouvé"
+    "recherche.utilisateur.singulier.label": "utilisateur trouvé",
+    "btn.utilisateur.bloquer.tooltip": "bloquer l'utilisateur",
+    "btn.utilisateur.debloquer.tooltip": "debloquer l'utilisateur",
+    "btn.utilisateur.modif.tooltip": "modifier l'utilisateur"
   }
 }

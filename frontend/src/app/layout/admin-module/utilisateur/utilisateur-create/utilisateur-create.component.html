@@ -91,8 +91,8 @@
           <mat-form-field  *ngIf="profils$ | async as profiles"
             class="champ--operateur" appearance="outline" fxFlex="80" fxFlex.lt-md="90" floatLabel="always">
             <mat-label>profil</mat-label>
-            <mat-select [formControl]="profils" multiple>
-              <mat-option *ngFor="let profil of profiles" [value]="profil">
+            <mat-select [formControl]="profils" multiple [value]="profils">
+              <mat-option *ngFor="let profil of profiles" [value]="profil.code">
                 {{ profil.code }}- {{ profil.libelle }}
               </mat-option>
             </mat-select>

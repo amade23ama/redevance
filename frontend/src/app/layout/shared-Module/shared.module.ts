@@ -12,12 +12,13 @@ import { ActionBtnsComponent } from './action-btns/action-btns.component';
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {MaterialModule} from "../../material.module";
 import {FlexLayoutModule} from "@angular/flex-layout";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatIconModule} from "@angular/material/icon";
 import {RouterOutlet} from "@angular/router";
 import {RedevanceModule} from "../redevanceModule/redevance.module";
+import { FormulaireUtilisateurComponent } from './formulaire-utilisateur/formulaire-utilisateur.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import {RedevanceModule} from "../redevanceModule/redevance.module";
     SpinnerComponent,
     ConfirmationDialogComponent,
     ActionBtnsComponent,
+    FormulaireUtilisateurComponent,
   ],
   imports: [
     CommonModule,
@@ -38,12 +40,15 @@ import {RedevanceModule} from "../redevanceModule/redevance.module";
     NgOptimizedImage,
     ReactiveFormsModule,
     RouterOutlet,
-    RedevanceModule
+    RedevanceModule,
+    FormsModule,
   ],
   exports: [
     DscomFooterComponent,
     SpinnerComponent,
-    DscomHeaderComponent
+    DscomHeaderComponent,
+    ActionBtnsComponent,
+    FormulaireUtilisateurComponent
   ],
   providers: [],
 })

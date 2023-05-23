@@ -1,0 +1,84 @@
+<mat-card class="mt-1">
+  <mat-card-header class="mat-card-header" fxLayout="row" fxLayoutAlign="start center">
+    <mat-card-title class="mat-card-title">Création d'utilisateur</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="mt-1">
+    <form    class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around">
+      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Prenom </mat-label>
+          <input matInput  type="text"
+                 [formControl]="prenom"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('prenom')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="prenom?.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+
+
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>nom </mat-label>
+          <input matInput  type="text"
+                 [formControl]="nom"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('nom')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="nom?.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+
+     </div>
+
+     <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+       <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+         <mat-label>email </mat-label>
+         <input matInput  type="text"
+                [formControl]="email"/>
+         <button  matSuffix mat-icon-button aria-label="Clear"
+                  (click)="reset('email')">
+           <mat-icon>close</mat-icon>
+         </button>
+         <mat-error *ngIf="email?.hasError('emailExists')">
+           {{appConfig.getLabel('error.email.exist')}}
+         </mat-error>
+         <mat-error *ngIf="email?.hasError('required')">
+           {{appConfig?.getLabel('error.champ.obligatoire')}}
+         </mat-error>
+       </mat-form-field>
+       <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+         <mat-label>telephone</mat-label>
+         <input matInput  type="text"
+                [formControl]="telephone"/>
+         <button  matSuffix mat-icon-button aria-label="Clear"
+                  (click)="reset('telephone')">
+           <mat-icon>close</mat-icon>
+         </button>
+         <mat-error *ngIf="telephone?.hasError('required')">
+           {{appConfig.getLabel('error.champ.obligatoire')}}
+         </mat-error>
+       </mat-form-field>
+      </div>
+      <div fxLayout fxLayoutGap="2px" fxLayout.xs="row"fxLayout.sm="row" >
+        <mat-form-field  *ngIf="profils$ | async as profiles"
+                         class="champ--operateur" appearance="outline" fxFlex="80" fxFlex.lt-md="90" floatLabel="always">
+          <mat-label>profil</mat-label>
+          <mat-select [formControl]="profils" multiple [value]="profils">
+            <mat-option *ngFor="let profil of profiles" [value]="profil.code">
+              {{ profil.code }}- {{ profil.libelle }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="profils.hasError('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+             <mat-checkbox [formControl]="active">{{getStatus()}}</mat-checkbox>
+
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

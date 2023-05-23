@@ -1,1 +1,15 @@
-<p>utilisateur works!</p>
+
+
+ <form  [formGroup]="myform">
+    <app-formulaire-utilisateur [formGroup]="myform"
+                                [prenom]="prenom"
+                                [nom]="nom"
+                                [email]="email"
+                                [telephone]="telephone"
+                                [active]="active"
+                                [profils]="profils">
+
+    </app-formulaire-utilisateur>
+ </form>
+
+

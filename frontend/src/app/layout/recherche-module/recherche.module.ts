@@ -8,10 +8,11 @@ import {MatTableModule} from "@angular/material/table";
 import {NgForOf, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {MaterialModule} from "../../material.module";
+import {LayoutModule} from "../layout.module";
 
 @NgModule({
   declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent],
-  imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf],
+  imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule],
   exports:[]
 })
 export class  RechercheModule{}

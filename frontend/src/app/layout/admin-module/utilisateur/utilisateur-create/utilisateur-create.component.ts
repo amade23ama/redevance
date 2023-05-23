@@ -6,6 +6,11 @@ import {UtilisateurService} from "../../../../core/services/utilisateur.service"
 import {Notyf} from "notyf";
 import {Router} from "@angular/router";
 
+
+export class Food {
+  value:string;
+  viewValue:string
+}
 @Component({
   selector: 'app-utilisateur-update',
   templateUrl: './utilisateur-create.component.html',
@@ -27,7 +32,7 @@ export class UtilisateurCreateComponent implements OnInit {
   dateCreation: FormControl = new FormControl();
   dateModification: FormControl = new FormControl();
   active: FormControl = new FormControl(true);
-  profils: FormControl = new FormControl('', [Validators.required])
+  profils: FormControl = new FormControl(['ADMIN'])
 
   myform: FormGroup = this.builder.group({
     id: this.id,
@@ -40,7 +45,7 @@ export class UtilisateurCreateComponent implements OnInit {
     active: this.active,
     profils: this.profils,
     dateCreation: this.dateCreation,
-    dateModification: this.dateModification
+    dateModification: this.dateModification,
   })
   statusActive: boolean;
   hide: boolean = true;
@@ -53,6 +58,7 @@ export class UtilisateurCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //this.profils.setValue(selectedSkills)
     this.paramService.chargementProfils().subscribe()
     this.active.valueChanges.subscribe((res) => {
       this.statusActive = res

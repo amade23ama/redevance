@@ -8,6 +8,7 @@ import {AdminComponent} from "./admin.component";
 import {TransporteurComponent} from "./transporteur/transporteur.component";
 import {StepperComponent} from "./vehicule/stepper/stepper.component";
 import {VehiculeComponent} from "./vehicule/vehicule.component";
+import {UtilisateurComponent} from "./utilisateur/utilisateur.component";
 
 const routes: Routes = [{
   path: '',
@@ -33,7 +34,10 @@ const routes: Routes = [{
             path: 'vehiculeNouveau',
             component: StepperComponent
           },
-
+          {
+            path: 'utilisateur',
+            component: UtilisateurComponent
+          },
   ]
 }]
 

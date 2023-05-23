@@ -27,6 +27,7 @@ public class UtilisateurDTO {
     private Date dateCreation;
     private Date dateModification;
     private boolean active;
-    private List<ProfilDTO> profils;
+    //private List<ProfilDTO> profils;
+    private List<String> profils;
     private List<DepotDTO> depotEntityListDTO;
 }

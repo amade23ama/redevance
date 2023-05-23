@@ -24,6 +24,7 @@
         <mat-icon class="deconnexion-action">power_settings_new</mat-icon>
       </button>
     </mat-toolbar>
+  <div class="bandeau--small"></div>
     <mat-sidenav-container  class="example-container">
       <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
         <div fxLayout="column">
@@ -32,7 +33,8 @@
           <a mat-button routerLink="/admin/site" (click)="sidenav.toggle()">creer site</a>
           <a mat-button routerLink="/admin/vehicule" (click)="sidenav.toggle()">creer vehicule</a>
           <a mat-button routerLink="/admin/transpoteur" (click)="sidenav.toggle()">creer transpoteur</a>
-          <a mat-button routerLink="/recherche/user"  (click)="sidenav.toggle()">liste utilisateur</a>
+          <a  mat-button routerLink="/recherche/user"  (click)="sidenav.toggle()"
+              >liste utilisateur</a>
         </div>
       </mat-sidenav>
       <mat-sidenav-content >
@@ -50,7 +52,7 @@
   <a mat-menu-item  routerLink="/admin/vehiculeNouveau">nouveau Vehicule</a>
   <a mat-menu-item routerLink="/admin/vehicule">creer vehicule</a>
   <a mat-menu-item  routerLink="/admin/transpoteur">creer transpoteur</a>
-  <a mat-menu-item  routerLink="/recherche/vehicule">liste vehicule</a>
+  <a mat-menu-item  routerLink="/recherche/vehicule" >liste vehicule</a>
 
 </mat-menu>
 
@@ -71,3 +73,4 @@
   <a mat-menu-item routerLink="/admin/depot">creer depot</a>
   <a mat-menu-item  routerLink="/recherche/depot">liste depots</a>
 </mat-menu>
+

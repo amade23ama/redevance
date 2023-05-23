@@ -311,5 +311,14 @@ mat-form-field mat-label {
   background-color: white !important;
   color: $pink-btn-main!important;
 }
+.detail-chip-lien  {
+
+  &:hover {
+    cursor: pointer;
+    color: $orange-500!important;
+  }
+}
+
+
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

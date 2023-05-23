@@ -7,7 +7,7 @@ import {BehaviorSubject, catchError, lastValueFrom, tap, throwError} from "rxjs"
 import {Utilisateur} from "../interfaces/utilisateur";
 import {AbstractControl} from "@angular/forms";
 import {NotificationService} from "./notification.service";
-
+import * as clone from 'lodash';
 @Injectable({
   providedIn:'root'
 })
@@ -16,6 +16,9 @@ export class UtilisateurService {
   /** Observable sur l'utilisateur connecté. **/
   private _utilisateurConnecte: BehaviorSubject<Utilisateur> = new BehaviorSubject<Utilisateur>( null);
   private _utilisateurs: BehaviorSubject<Utilisateur[]> = new BehaviorSubject<Utilisateur[]>( []);
+
+  utilisateurCourant: Utilisateur = new Utilisateur();
+  utilisateurOriginal: Utilisateur = new Utilisateur();
   constructor(private http:HttpClient,private router:Router,
               public globals: Globals,private notification: NotificationService,) {
   }
@@ -78,11 +81,103 @@ export class UtilisateurService {
         })
       )
   }
+  getUtilisateurParId(id: number) {
+    //${id}
+    return this.http.get<Utilisateur>(this.url+`/utilisateur/get/1`)
+      .pipe(
+        tap((utilisteur:Utilisateur) => {
+          this.setUtilisateurOriginal(utilisteur)
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Utilisateur ")
+          return throwError(() => err) // RXJS 7+
+        })
+      )
+  }
   get utilisateurs$(){
     return this._utilisateurs.asObservable()
   }
   setUtilisateurs(utilisateurs:Utilisateur[] ){
     return this._utilisateurs.next(utilisateurs)
+  }
+
+  /**
+   * Cloner le contrat original
+   */
+  public clonerUtilisateurOriginal() {
+    this.utilisateurCourant= clone.cloneDeep(this.utilisateurOriginal );
+  }
+  /**
+   * Stocke le contrat passée en paramètre dans contratOriginal et copie les valeurs dans contratCourant
+   * @param contrat
+   */
+  setUtilisateurOriginal(utilisateur: Utilisateur) {
+    this.utilisateurOriginal = utilisateur;
+    this.clonerUtilisateurOriginal();
+  }
+
+  setUtilisateurCourant(utilisateur: Utilisateur) {
+    this.utilisateurCourant = utilisateur;
+  }
+  getUtilisateurCourant() {
+    return this.utilisateurCourant;
+  }
+  /**
+   * retourne le contrat original
+   */
+  getUtilisateurOriginal(){
+    return clone.cloneDeep(this.utilisateurOriginal);
+  }
+
+  /**
+   * Restaurer le contrat courant qui reprend ses valeurs avant les modifications
+   */
+  restaurerUtilisateurCourant() {
+    this.clonerUtilisateurOriginal();
+  }
+
+  /**
+   * Permet de savoir si le contrat courant a été modifié.
+   * @return true si le contrat courant a été modifié
+   */
+  isUtilisateurModifie(): boolean {
+
+    // Si la déclaration courante n'existe pas
+    if (!this.utilisateurCourant) {
+      return false;
+    }
+    // En création, la déclaration est considérée comme étant modifié
+    if (!this.utilisateurCourant.id) {
+      return true;
+    }
+
+    // todo : faut-il trier le journal de changememts avant de comaprer ?
+
+    const utilisateurCourant: Utilisateur = clone.cloneDeep(this.utilisateurCourant);
+    return !clone.isEqual(utilisateurCourant, this.utilisateurOriginal);
+  }
+
+  /**
+   * Permet de savoir si le contrat courant a été persisté
+   * @private
+   */
+  private isUtilisateurSauvegarde() {
+    return this.getUtilisateurCourant().id !== null;
+  }
+
+  /**
+   * Permet de remettre à zéro e contrat Courant et le contrat Original
+   * @private
+   */
+  public purgerContrat() {
+    // purge le contrat courant et le contrat original
+    this.setUtilisateurOriginal(new Utilisateur());
+  }
+  private chargerNouveauContrat() {
+    if (this.isUtilisateurSauvegarde()) {
+      //this.supprimerUtilisateur(this.getUtilisateurCourant());
+    }
+    this.purgerContrat();
   }
 }
 

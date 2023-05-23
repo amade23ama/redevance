@@ -44,5 +44,9 @@ public class UtilisateurController {
         List<UtilisateurDTO>  users= utilisateurService.getAllUtilisateurs();
         return users;
     }
-
+    @GetMapping(value = "/utilisateur/get/{id}")
+    public UtilisateurDTO chargerUtilisateurParId(@PathVariable Long id) {
+        UtilisateurDTO user=  utilisateurService.chargerUtilisateurParId(id);
+        return user;
+    }
 }

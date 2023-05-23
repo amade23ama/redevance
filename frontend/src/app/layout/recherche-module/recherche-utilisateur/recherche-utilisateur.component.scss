@@ -35,4 +35,11 @@
 .blue-label {
   color: $orange-500!important;
 }
+.blue-label-icon {
+  color: #2196f3 !important;
+  &:hover {
+    cursor: pointer;
+    color: $orange-500!important;
+  }
+}
 

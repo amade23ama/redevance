@@ -11,7 +11,8 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
   password:string;
   telephone:string;
   active:boolean;
-  profils:Profil[];
+  profils:[];
+  //profils:Profil[];
   dateCreation:Date;
   dateModification:Date;
   droits: string[] = [];

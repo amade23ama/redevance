@@ -58,7 +58,6 @@ export  class AuthService {
       .pipe(
         tap((res:any) => {
           this.stockage.clear();
-          console.log(" deconnexion 2")
         }),
         catchError((err) => {
           return throwError(() => err) // RXJS 7+
@@ -101,7 +100,6 @@ export  class AuthService {
           //const bearerToken = resp.headers.get(AuthenticationService.JWT_HEADER);
           // Recuperation du token JWT depuis l'header
           const token = this.authenticateSuccess(res);
-          //this.droits = token.authorities;
         }),
         catchError((err) => {
           // return throwError(err) // RXJS <= 6
@@ -111,7 +109,8 @@ export  class AuthService {
   }
   authenticateSuccess(res: TokenObject){
     this.storeAuthenticationToken(res.token)
-    //const tokenInfo = this.getDecodedAccessToken(res.token);
+    const tokendecrypter = this.getDecodedAccessToken(res.token);
+    this.droits = tokendecrypter.authorities;
     const tokenInfo = res.token;
     this.majUserConnecte();
     return tokenInfo;
@@ -128,12 +127,10 @@ export  class AuthService {
     return this.droits.includes(droit);
   }
   get droits() {
-    if (this._droits === undefined) {
-      const value = this.stockage.getItem(this.ROLE_KEY_NAME);
-      const droits = value ? JSON.parse(value) : null;
-      if (droits) {
-        this._droits = droits;
-      }
+    const value = this.stockage.getItem(this.ROLE_KEY_NAME);
+    const droits = value ? JSON.parse(value) : null;
+    if (droits) {
+      this._droits = droits;
     }
     return this._droits;
   }
@@ -143,7 +140,7 @@ export  class AuthService {
     this.stockage.setItem(this.ROLE_KEY_NAME, JSON.stringify(this._droits));
   }
 
-  hasAnyDroits(multipleDroits: string[]): boolean {
+  /*hasAnyDroits(multipleDroits: string[]): boolean {
     let hasAuMoinsUnDroit = false;
     if (multipleDroits !== undefined) {
       multipleDroits.forEach(dr => {
@@ -155,9 +152,9 @@ export  class AuthService {
 
     return hasAuMoinsUnDroit;
   }
-
-  logoutTest(){
-    this.stockage.clear();
-
+  */
+  hasAnyDroits(multipleDroits: string[]){
+    return multipleDroits.some(role => this.droits.includes(role));
   }
+
 }

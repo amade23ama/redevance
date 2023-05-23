@@ -21,10 +21,12 @@ import {RouteGuard} from "./core/guards/route-guard.service";
 import {AdminModule} from "./layout/admin-module/admin.module";
 import {LayoutModule} from "./layout/layout.module";
 import {NotificationService} from "./core/services/notification.service";
+//import {AutorisationDirective} from "./core/directives/autorisation.directive";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    //AutorisationDirective,
   ],
   imports: [
     BrowserModule,
@@ -42,17 +44,19 @@ import {NotificationService} from "./core/services/notification.service";
     LoginModule,
     LayoutModule,
   ],
-  providers: [Globals,RouteGuard,{
-              provide: HTTP_INTERCEPTORS,
-              useClass: IntercepteurService,
-              multi: true
-            },
-            {
-              provide: APP_INITIALIZER,
-              useFactory: initLabel,
-              deps: [AppConfigService],
-              multi: true
-            }],
+  providers: [Globals, RouteGuard, {
+    provide: HTTP_INTERCEPTORS,
+    useClass: IntercepteurService,
+    multi: true
+  },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initLabel,
+      deps: [AppConfigService],
+      multi: true
+    }],
+  exports: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,1 +1,20 @@
-<p>action-btns works!</p>
+<div classe="btns">
+  <div *ngFor="let btn of btns"  style=" background: red">
+    <div *ngIf="btn.display" class="btn-container" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
+      <button
+              mat-raised-button
+              (click)="onClick(btn.id)"
+              [disabled]="btn.disabled"
+              [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']"
+              type="button">
+        <mat-icon *ngIf="btn.icon"
+                  [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']">
+          {{btn.icon}}
+        </mat-icon>
+        {{btn.label}}
+      </button>
+
+    </div>
+
+  </div>
+</div>

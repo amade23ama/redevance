@@ -8,10 +8,14 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {MatSidenavModule} from "@angular/material/sidenav";
 import {RouterModule} from "@angular/router";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {AdminModule} from "./admin-module/admin.module";
+import {AppModule} from "../app.module";
+import {AutorisationDirective} from "../core/directives/autorisation.directive";
 
 @NgModule({
   declarations: [
-    LayoutComponent
+    LayoutComponent,
+    AutorisationDirective
   ],
     imports: [
         layoutRouter,
@@ -23,6 +27,6 @@ import {MatExpansionModule} from "@angular/material/expansion";
         MaterialModule,
         NgIf,
     ],
-  exports: [RouterModule]
+  exports: [RouterModule,AutorisationDirective]
 })
 export class LayoutModule {}

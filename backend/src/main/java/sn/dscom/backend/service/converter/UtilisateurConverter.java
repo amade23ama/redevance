@@ -37,13 +37,22 @@ public class UtilisateurConverter {
                 .dateModification(utilisateurEntity == null ? null :utilisateurEntity.getDateModification())
                 //.depotEntityListDTO(null)
                 .build();
-        List<ProfilDTO> listeProfils = new ArrayList<>();
+        List<String> listeProfils = new ArrayList<>();
+       if (!CollectionUtils.isEmpty(utilisateurEntity.getProfils())) {
+            utilisateurEntity.getProfils()
+                    .forEach((ProfilEntity profilEntity) ->
+                            listeProfils.add(profilEntity.getCode()));
+        }
+        utilisateurDTO.setProfils(listeProfils);
+
+        /*List<ProfilDTO> listeProfils = new ArrayList<>();
         if (!CollectionUtils.isEmpty(utilisateurEntity.getProfils())) {
             utilisateurEntity.getProfils()
                     .forEach((ProfilEntity profilEntity) ->
                             listeProfils.add(ProfilConverter.toProfilDTO(profilEntity)));
         }
         utilisateurDTO.setProfils(listeProfils);
+        */
         return utilisateurDTO;
     }
     public static UtilisateurEntity toUtilisateurEntity( UtilisateurDTO utilisateurDTO) {
@@ -65,14 +74,21 @@ public class UtilisateurConverter {
                 .build();
 
 
-        final List<ProfilEntity> listeProfils = new ArrayList<>();
+        /*final List<ProfilEntity> listeProfils = new ArrayList<>();
         if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {
             utilisateurDTO.getProfils()
                     .forEach((ProfilDTO profilDTO) ->
                             listeProfils.add(ProfilConverter.toProfilEntity(profilDTO)));
         }
-        utilisateurEntity.setProfils(listeProfils);
+        */
+        final List<ProfilEntity> listeProfils = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {
+            utilisateurDTO.getProfils()
+                    .forEach((String val) ->
+                            listeProfils.add(ProfilEntity.builder().code(val).build()));
+        }
 
+        utilisateurEntity.setProfils(listeProfils);
 
 
         return utilisateurEntity;
@@ -97,6 +113,20 @@ public class UtilisateurConverter {
 
     }
 
-
-
+/*
+        List<ProfilDTO> listeProfils = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(utilisateurEntity.getProfils())) {
+            utilisateurEntity.getProfils()
+                    .forEach((ProfilEntity profilEntity) ->
+                            listeProfils.add(ProfilConverter.toProfilDTO(profilEntity)));
+        }
+        utilisateurDTO.setProfils(listeProfils);
+ */
+/*
+     if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {
+            utilisateurDTO.getProfils()
+                    .forEach((ProfilDTO profilDTO) ->
+                            listeProfils.add(ProfilConverter.toProfilEntity(ProfilEntity.profilDTO)));
+        }
+ */
 }

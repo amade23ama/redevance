@@ -58,7 +58,7 @@
     </th>
     <td mat-cell *matCellDef="let element">
       <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-        <mat-icon class="blue-label-icon" (click)="chargerUtilisateur(element)"
+        <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon" (click)="chargerUtilisateur(element)"
         matTooltip="{{appConfig.getLabel('btn.utilisateur.modif.tooltip')}}">create</mat-icon>
         <div  *ngIf="element.active" fxHide.xs>
           <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon"

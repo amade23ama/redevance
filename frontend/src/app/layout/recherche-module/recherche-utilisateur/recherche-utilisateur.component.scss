@@ -36,10 +36,20 @@
   color: $orange-500!important;
 }
 .blue-label-icon {
-  color: #2196f3 !important;
+  color: $orange-500!important;
   &:hover {
     cursor: pointer;
     color: $orange-500!important;
   }
+}
+.new--contract--button {
+  position: absolute;
+
+  left: 45%;
+  transform: translate(50%, -42%);
+  &.mat-button-disabled {
+    background-color: gray;
+  }
+  background-color: $orange-500!important;
 }
 

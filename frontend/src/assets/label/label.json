@@ -54,7 +54,6 @@
     "global.confirmer": "JE CONFIRME",
     "global.sortie": "JE SORS",
 
-    "dcsom.actions.enregistrer": "ENREGISTRER",
     "dcsom.actions.annuler": "ANNULER",
     "dcsom.actions.enregistrer": "ENREGISTRER",
     "dcsom.actions.modifier": "MODIFIER",
@@ -94,6 +93,7 @@
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",
     "btn.utilisateur.bloquer.tooltip": "bloquer l'utilisateur",
     "btn.utilisateur.debloquer.tooltip": "debloquer l'utilisateur",
-    "btn.utilisateur.modif.tooltip": "modifier l'utilisateur"
+    "btn.utilisateur.modif.tooltip": "modifier l'utilisateur",
+    "header.btn.utilisateur.creer.tooltip": " creer un utilisateur"
   }
 }

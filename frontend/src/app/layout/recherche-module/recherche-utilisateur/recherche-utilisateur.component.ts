@@ -55,8 +55,10 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
   }
 
   chargerUtilisateur(utilisteur:Utilisateur){
- //this.utilisateurService.setUtilisateurOriginal(Utilisateur.fromJson(utilisteur, Utilisateur));
- //this.router.navigate(['admin/utilisateur'])
     this.router.navigate(['admin/utilisateur'], {queryParams: {'contextInfo':utilisteur.id }});
 }
+  ouvreNouveauUtilisateur(){
+    this.utilisateurService.purgerUtilisateur()
+    this.router.navigate(['admin/utilisateur']);
+  }
 }

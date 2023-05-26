@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActionBtn} from "../../../../core/interfaces/actionBtn";
 import {Actions} from "../../../../core/enum/actions";
 import {AppConfigService} from "../../../../core/services/app-config.service";
+import {Utilisateur} from "../../../../core/interfaces/utilisateur";
+import {UtilisateurService} from "../../../../core/services/utilisateur.service";
 
 @Component({
   selector: 'app-utilisateur-actions',
@@ -10,7 +12,8 @@ import {AppConfigService} from "../../../../core/services/app-config.service";
 })
 export class UtilisateurActionsComponent implements OnInit{
   btns: ActionBtn[] = [];
-  constructor(public appConfig: AppConfigService) {
+  utilisateurCourant:Utilisateur
+  constructor(public appConfig: AppConfigService,public utilisateurService:UtilisateurService) {
   }
 
   ngOnInit(): void {
@@ -22,25 +25,28 @@ export class UtilisateurActionsComponent implements OnInit{
    * @private
    */
   private initListbtns() {
-
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.valider'),
-      Actions.VALIDER_SAISIE, false, false, true, true));
-
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), false, true, true, 'save'));
-
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.desactiver'),
-      Actions.SUPPRIMER, this.isSupprBtnAffiche(), false, true, true, 'delete'));
-
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'),
-      Actions.MODIFIER, this.isSupprBtnAffiche(), false, true, true, 'delete'));
-
+      Actions.MODIFIER, this.isModifBtnAffiche(), false, true, true, 'create'));
     return this.btns;
   }
   isEnrgBtnDisplayed(){
-    return true
+    this.utilisateurCourant = this.utilisateurService.getUtilisateurCourant();
+    if(!this.utilisateurCourant?.id){
+      return true
+    }
+    return false
   }
-  isSupprBtnAffiche(){
-    return true
+  isModifBtnAffiche(){
+    this.utilisateurCourant = this.utilisateurService.getUtilisateurCourant();
+    if(this.utilisateurCourant?.id){
+      return true
+    }
+    return false
+  }
+
+  utilisateurAction(event: Actions){
+
   }
 }

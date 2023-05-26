@@ -82,8 +82,7 @@ export class UtilisateurService {
       )
   }
   getUtilisateurParId(id: number) {
-    //${id}
-    return this.http.get<Utilisateur>(this.url+`/utilisateur/get/1`)
+    return this.http.get<Utilisateur>(this.url+`/utilisateur/get/${id}`)
       .pipe(
         tap((utilisteur:Utilisateur) => {
           this.setUtilisateurOriginal(utilisteur)
@@ -169,7 +168,7 @@ export class UtilisateurService {
    * Permet de remettre à zéro e contrat Courant et le contrat Original
    * @private
    */
-  public purgerContrat() {
+  public purgerUtilisateur() {
     // purge le contrat courant et le contrat original
     this.setUtilisateurOriginal(new Utilisateur());
   }
@@ -177,7 +176,7 @@ export class UtilisateurService {
     if (this.isUtilisateurSauvegarde()) {
       //this.supprimerUtilisateur(this.getUtilisateurCourant());
     }
-    this.purgerContrat();
+    this.purgerUtilisateur();
   }
 }
 

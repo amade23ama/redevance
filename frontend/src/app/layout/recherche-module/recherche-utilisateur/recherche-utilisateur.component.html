@@ -1,11 +1,19 @@
-
-  <!-- RDG_RCH_CNT_005 (V1.0 du 06/08/2021) -->
-  <div class="nb-pastille mt-1">
+<div class=" mt-1">
+  <div class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
     <label class="nb-label blue-label">
       {{rechercheUtilisateurListe?.length}}
       {{rechercheUtilisateurListe?.length === 1 ? appConfig.getLabel('recherche.utilisateur.singulier.label') :
       appConfig.getLabel('recherche.utilisateur.pluriel.label')}}
     </label>
+    <button mat-mini-fab
+            matTooltipPosition="left"
+            matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
+            matTooltipClass="custom-tooltip"
+            (keydown)="ouvreNouveauUtilisateur()" (click)="ouvreNouveauUtilisateur()"
+            class="new--contract--button">
+
+      <mat-icon>add</mat-icon>
+    </button>
   </div>
 <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
 <table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z8 table-parent" matSort>
@@ -87,3 +95,4 @@
   </mat-paginator>
 </div>
 <!--class="detail-chip-lien"-->
+</div>

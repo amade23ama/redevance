@@ -1,19 +1,19 @@
 <div class="">
-<div class="mat-elevation-z2 mt-1">
-  <app-utilisateur-actions></app-utilisateur-actions>
+<div class="mat-elevation-z0 mt-1">
+  <!--<app-utilisateur-actions></app-utilisateur-actions>-->
+  <app-action-btns [btns]="btns"  (btnClick)="utilisateurAction($event)"></app-action-btns>
 </div>
-<div class="">
- <form  [formGroup]="myform">
-    <app-formulaire-utilisateur [formGroup]="myform"
+ <form  class="mat-elevation-z1"[formGroup]="myform">
+    <app-formulaire-utilisateur [titre]="titre" [formGroup]="myform"
                                 [prenom]="prenom"
                                 [nom]="nom"
                                 [email]="email"
                                 [telephone]="telephone"
                                 [active]="active"
-                                [profils]="profils">
+                                [profils]="profils"
+                                (btnClear)="reset($event)">
 
     </app-formulaire-utilisateur>
  </form>
-</div>
 </div>
 

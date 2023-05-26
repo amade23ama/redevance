@@ -20,7 +20,8 @@ export class FormulaireUtilisateurComponent implements OnInit{
   @Input() active: FormControl =new FormControl(true);
   @Input() profils: FormControl =new FormControl();
   @Input() myform: FormGroup   = this.builder.group({})
-
+  @Output() btnClear:EventEmitter<any> =new EventEmitter<any>();
+  @Input() titre: string ;
   statusActive: boolean;
   hide: boolean = true;
   labelActive = "";
@@ -33,8 +34,8 @@ export class FormulaireUtilisateurComponent implements OnInit{
     })
 
   }
-  reset(formToReset: string) {
-    this.myform.controls[formToReset]?.setValue('');
+  reset(formToReset:any) {
+    this.btnClear.emit(formToReset)
   }
 
   getStatus() {

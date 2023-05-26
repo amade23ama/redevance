@@ -62,11 +62,11 @@ mat-form-field mat-label {
 }
 
 .float-right {
-  float: right;
+ // float: right;
 }
 
 .float-left {
-  float: left;
+  //float: left;
 }
 
 .bold {
@@ -318,7 +318,19 @@ mat-form-field mat-label {
     color: $orange-500!important;
   }
 }
-
-
+.btn-container-action {
+  display: flex;
+  float: right;
+  //margin: 0.2em 0.2em 0.5em 0;
+}
+.btn-global-pink {
+  padding: 0.2em 0.2em 0.2em 0.4em !important;
+  color: white !important;
+}
+.btn-global-white {
+  padding: 0.2em 0.2em 0.2em 0.4em !important;
+  background-color: white !important;
+  color: $orange-500!important;
+}
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,7 +1,7 @@
-<div classe="btns">
-  <div *ngFor="let btn of btns"  style=" background: red">
-    <div *ngIf="btn.display" class="btn-container" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
-      <button
+<div classe="btns" fxLayout="row" fxLayoutAlign="end center" >
+  <div *ngFor="let btn of btns">
+    <div *ngIf="btn.display" class="btn-container-action" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
+      <button fxHide fxShow.gt-xs
               mat-raised-button
               (click)="onClick(btn.id)"
               [disabled]="btn.disabled"
@@ -13,8 +13,17 @@
         </mat-icon>
         {{btn.label}}
       </button>
-
+      <button fxShow fxHide.gt-xs
+        mat-raised-button
+        (click)="onClick(btn.id)"
+        [disabled]="btn.disabled"
+        [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']"
+        type="button">
+        <mat-icon *ngIf="btn.icon"
+                  [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']">
+          {{btn.icon}}
+        </mat-icon>
+      </button>
     </div>
-
   </div>
 </div>

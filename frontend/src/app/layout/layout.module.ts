@@ -11,6 +11,7 @@ import {MatExpansionModule} from "@angular/material/expansion";
 import {AdminModule} from "./admin-module/admin.module";
 import {AppModule} from "../app.module";
 import {AutorisationDirective} from "../core/directives/autorisation.directive";
+import {SessionTimerService} from "../core/services/Session.timer.service";
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import {AutorisationDirective} from "../core/directives/autorisation.directive";
         MaterialModule,
         NgIf,
     ],
-  exports: [RouterModule,AutorisationDirective]
+  exports: [RouterModule,AutorisationDirective],
+  providers:[SessionTimerService]
 })
 export class LayoutModule {}

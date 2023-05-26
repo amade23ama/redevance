@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../core/services/auth.service";
 import {Globals} from "../app.constants";
 import {ActivatedRoute, Router} from "@angular/router";
+import {SessionTimerService} from "../core/services/Session.timer.service";
 
 @Component({
   selector: 'app-layout',
@@ -15,9 +16,10 @@ export class LayoutComponent implements OnInit {
    * @memberof HomeComponent
    */
   isLoggedIn = false;
-
+  tempsRestant: number;
   constructor(public authService: AuthService,public globals: Globals,
-              public router:Router,private readonly activatedRoute: ActivatedRoute) {
+              public router:Router,private readonly activatedRoute: ActivatedRoute,
+              private sessionTimerService: SessionTimerService) {
     // Affichage d`un spinner lors du chargement
     globals.loading = false;
     this.isLoggedIn = this.authService.isLoggedIn()
@@ -34,6 +36,16 @@ export class LayoutComponent implements OnInit {
       }
       */
     });
+    /*this.sessionTimerService.startTimer();
+    this.actualiserTempsRestant()
+    this.sessionTimerService.getSessionExpiree().subscribe(() => {
+      // Gérez l'expiration de session ici (ex : déconnexion, redirection, affichage d'une alerte)
+      console.log('Session expirée');
+
+    });
+    */
+
+
     }
   onSidenavClose(){
 
@@ -43,5 +55,9 @@ export class LayoutComponent implements OnInit {
     this.authService.logout().subscribe(()=>{
       this.router.navigate(["/login"]);
     })
+  }
+
+  actualiserTempsRestant() {
+    this.tempsRestant = this.sessionTimerService.getTempsRestant();
   }
 }

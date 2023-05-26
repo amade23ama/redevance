@@ -21,6 +21,7 @@ import {RouteGuard} from "./core/guards/route-guard.service";
 import {AdminModule} from "./layout/admin-module/admin.module";
 import {LayoutModule} from "./layout/layout.module";
 import {NotificationService} from "./core/services/notification.service";
+import {SessionTimerService} from "./core/services/Session.timer.service";
 //import {AutorisationDirective} from "./core/directives/autorisation.directive";
 
 @NgModule({

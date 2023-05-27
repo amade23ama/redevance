@@ -89,6 +89,7 @@
 
     "error.email.exist":"Email déjà existant !",
     "error.champ.obligatoire": "Le champ est obligatoire",
+    "error.email.invalid": "Email est invalid !",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",
     "btn.utilisateur.bloquer.tooltip": "bloquer l'utilisateur",

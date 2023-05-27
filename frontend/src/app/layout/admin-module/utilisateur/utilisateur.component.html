@@ -4,14 +4,16 @@
   <app-action-btns [btns]="btns"  (btnClick)="utilisateurAction($event)"></app-action-btns>
 </div>
  <form  class="mat-elevation-z1"[formGroup]="myform">
-    <app-formulaire-utilisateur [titre]="titre" [formGroup]="myform"
+
+    <app-formulaire-utilisateur [titre]="titre" [userForm]="myform"
                                 [prenom]="prenom"
                                 [nom]="nom"
                                 [email]="email"
                                 [telephone]="telephone"
                                 [active]="active"
                                 [profils]="profils"
-                                (btnClear)="reset($event)">
+                                (btnClear)="reset($event)"
+                                [update]="true">
 
     </app-formulaire-utilisateur>
  </form>

@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UtilisateurService} from "../../../core/services/utilisateur.service";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {ActivatedRoute} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Profil} from "../../../core/interfaces/profil";
 import {ActionBtn} from "../../../core/interfaces/actionBtn";
@@ -15,25 +15,34 @@ import {Actions} from "../../../core/enum/actions";
 })
 export class UtilisateurComponent implements OnInit{
   utilisateurCourant:Utilisateur
-  prenom: FormControl=new FormControl();
-  nom: FormControl=new FormControl();
-  email : FormControl=new FormControl();
+  id: FormControl = new FormControl();
+  prenom: FormControl=new FormControl('',[Validators.required, Validators.minLength(3)]);
+  nom: FormControl=new FormControl('',[Validators.required, Validators.minLength(2)]);
+  email : FormControl=new FormControl('', {
+    validators: [Validators.required, Validators.email],
+    asyncValidators: [this.checkEmail.bind(this)],
+    updateOn: 'blur'
+  });
   telephone: FormControl = new FormControl( );
   active: FormControl = new FormControl(true);
-  profils: FormControl = new FormControl()
+  profils: FormControl = new FormControl('',[Validators.required])
   titre:string
   btns: ActionBtn[] = [];
+  myform :FormGroup
+  isUpdate:boolean
   constructor(public utilisateurService:UtilisateurService,private readonly activatedRoute: ActivatedRoute,
               public builder:FormBuilder,public appConfig: AppConfigService,) {
+    this.myform= this.builder.group({
+      id:this.id,
+      prenom:this.prenom,
+      nom:this.nom,
+      email:this.email,
+      telephone:this.telephone,
+      active: this.active,
+      profils: this.profils
+    });
   }
-  myform:FormGroup= this.builder.group({
-    prenom:this.prenom,
-    nom:this.nom,
-    email:this.email,
-    telephone:this.telephone,
-    active: this.active,
-    profils: this.profils
-  });
+
   ngOnInit(): void {
 
     this.activatedRoute.queryParams?.subscribe(async params => {
@@ -43,10 +52,14 @@ export class UtilisateurComponent implements OnInit{
           this.utilisateurCourant=this.utilisateurService.getUtilisateurCourant();
           this.myform.patchValue(this.utilisateurCourant)
           this.initListbtns();
+          this.isUpdate=true
+          this.majBtnActive()
         })
       } else {
         this.titre="Creation utilisateur"
         this.initListbtns();
+        this.isUpdate=false
+        this.majBtnActive()
       }
     });
 
@@ -64,9 +77,9 @@ export class UtilisateurComponent implements OnInit{
   }
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
-      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), false, true, true, 'save'));
+      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'),
-      Actions.MODIFIER, this.isModifBtnAffiche(), false, true, true, 'create'));
+      Actions.MODIFIER, this.isModifBtnAffiche(), true, true, true, 'create'));
     return this.btns;
   }
   isEnrgBtnDisplayed(){
@@ -85,6 +98,42 @@ export class UtilisateurComponent implements OnInit{
   }
 
   utilisateurAction(event: Actions){
-
+    if (event === Actions.ENREGISTRER) {
+    const b= this.myform.value;
+      this.utilisateurService.enregistrer(this.myform.value).subscribe()
+    }
+    if (event === Actions.MODIFIER) {
+      const b= this.myform.value;
+      this.utilisateurService.enregistrer(this.myform.value).subscribe()
+    }
   }
-}
+  checkEmail(control:AbstractControl){
+    return this.utilisateurService.emailCheck(control,this.utilisateurCourant.id)
+  }
+
+  /*majBtnState(a: Actions, displayed: boolean) {
+    this.btns.forEach(b => {
+      if (b.id === a) {
+        b.display = displayed;
+      }
+    });
+    */
+ majBtnActive(){
+   this.myform?.valueChanges.subscribe((res)=>{
+     if(this.myform.invalid){
+       this.btns.forEach(b=>{
+         b.disabled=true
+       });
+     }else{
+       this.btns.forEach(b=>{
+         b.disabled=false
+       });
+     }
+   })
+   if(!this.myform.invalid){
+     this.btns.forEach(b=>{
+       b.disabled=false
+     });
+   }
+    }
+  }

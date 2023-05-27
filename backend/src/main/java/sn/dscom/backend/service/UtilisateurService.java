@@ -34,6 +34,16 @@ public class UtilisateurService {
 
     @Transactional
     public UtilisateurDTO sauvegarderUtilisateur(UtilisateurDTO utilisateurDTO) {
+        if(utilisateurDTO.getId()!=null){
+            Optional<UtilisateurEntity> user = utilisateurRepository.findById(utilisateurDTO.getId()) ;
+            if(user.isPresent()){
+                UtilisateurEntity utilisateurEntity=user.get();
+                UtilisateurConverter.majUtilisateurDepuisDTO(utilisateurDTO,utilisateurEntity);
+                UtilisateurEntity userSave = utilisateurRepository.save(utilisateurEntity);
+                return UtilisateurConverter.toUtilisateurDTO(userSave);
+            }
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+        }
         if (utilisateurDTO.getEmail().isEmpty() || utilisateurDTO.getPrenom().isEmpty() || utilisateurDTO.getNom().isEmpty()) {
             return null;
         }
@@ -51,7 +61,6 @@ public class UtilisateurService {
             return UtilisateurConverter.toUtilisateurDTO(user);
         }
         return null;
-        //return  miseaJourUtilisateur(utilisateurDTO);
     }
 
 
@@ -123,5 +132,15 @@ public class UtilisateurService {
         } else {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         }
+    }
+    @Transactional
+    public boolean checkEmail(Long id,String email) {
+       Integer nb= utilisateurRepository.checkEmailExists(email,id);
+        return nb>0?true:false;
+    }
+    @Transactional
+    public boolean checkEmail(String email) {
+        Integer nb= utilisateurRepository.checkEmailExists(email);
+        return nb>0?true:false;
     }
 }

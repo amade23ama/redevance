@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {ParamService} from "../../../core/services/param.service";
+import {UtilisateurService} from "../../../core/services/utilisateur.service";
 
 @Component({
   selector: 'app-formulaire-utilisateur',
@@ -12,16 +13,17 @@ import {ParamService} from "../../../core/services/param.service";
 export class FormulaireUtilisateurComponent implements OnInit{
   profils$ = this.paramService.profils$
 
-  @Input() id: FormControl =new FormControl();
-  @Input() prenom: FormControl =new FormControl();
-  @Input() nom: FormControl =new FormControl();
-  @Input() email: FormControl =new FormControl();
-  @Input() telephone: FormControl =new FormControl();
-  @Input() active: FormControl =new FormControl(true);
-  @Input() profils: FormControl =new FormControl();
-  @Input() myform: FormGroup   = this.builder.group({})
+  @Input() id: FormControl
+  @Input() prenom: FormControl
+  @Input() nom: FormControl
+  @Input() email: FormControl
+  @Input() telephone: FormControl
+  @Input() active: FormControl
+  @Input() profils: FormControl
+  @Input() userForm: FormGroup = this.builder.group({})
   @Output() btnClear:EventEmitter<any> =new EventEmitter<any>();
-  @Input() titre: string ;
+  @Input() titre: string
+  @Input() update:boolean;
   statusActive: boolean;
   hide: boolean = true;
   labelActive = "";
@@ -32,7 +34,6 @@ export class FormulaireUtilisateurComponent implements OnInit{
     this.active.valueChanges.subscribe((res) => {
       this.statusActive = res
     })
-
   }
   reset(formToReset:any) {
     this.btnClear.emit(formToReset)
@@ -41,4 +42,5 @@ export class FormulaireUtilisateurComponent implements OnInit{
   getStatus() {
     return this.labelActive = this.statusActive == true ? "activé" : "désactivé";
   }
+
 }

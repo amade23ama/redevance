@@ -112,6 +112,22 @@ public class UtilisateurConverter {
         return utilisateurConnectedDTO;
 
     }
+    public static void majUtilisateurDepuisDTO(UtilisateurDTO utilisateurDTO,UtilisateurEntity utilisateurEntity){
+        utilisateurEntity.setActive(utilisateurDTO.isActive());
+        utilisateurEntity.setNom(utilisateurDTO.getNom());
+        utilisateurEntity.setPrenom(utilisateurDTO.getPrenom());
+        utilisateurEntity.setEmail(utilisateurDTO.getEmail());
+        utilisateurEntity.setTelephone(utilisateurDTO.getTelephone());
+
+        final List<ProfilEntity> listeProfils = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {
+            utilisateurDTO.getProfils()
+                    .forEach((String val) ->
+                            listeProfils.add(ProfilEntity.builder().code(val).build()));
+        }
+        utilisateurEntity.setProfils(listeProfils);
+    }
+
 
 /*
         List<ProfilDTO> listeProfils = new ArrayList<>();

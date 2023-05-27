@@ -49,4 +49,25 @@ public class UtilisateurController {
         UtilisateurDTO user=  utilisateurService.chargerUtilisateurParId(id);
         return user;
     }
+    @GetMapping(value = "/utilisateur/exist/{id}/{email}")
+    public boolean checkEmail(@PathVariable Long id,@PathVariable String email) {
+        boolean status=  utilisateurService.checkEmail(id,email);
+        return status;
+    }
+    @GetMapping(value = "/utilisateur/exist/{email}")
+    public boolean checkEmail(@PathVariable String email) {
+        boolean status=  utilisateurService.checkEmail(email);
+        return status;
+    }
+    @PutMapping (value = "/utilisateur/enregistrer")
+    //@PreAuthorize("hasAnyAuthority('ADMIN')")
+   /* @ApiResponses(value = {@ApiResponse(code = 200, message = "Succès de la requête"),
+            @ApiResponse(code = 401, message = "Ressource non autorisée"),
+            @ApiResponse(code = 403, message = "Ressource interdite"),
+            @ApiResponse(code = 404, message = "Ressource non trouvée"),
+            @ApiResponse(code = 500, message = "Erreur interne du serveur")})
+    */
+    public UtilisateurDTO sauvegarderUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
+        return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
+    }
 }

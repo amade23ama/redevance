@@ -101,13 +101,13 @@ export class UtilisateurService {
   }
 
   /**
-   * Cloner le contrat original
+   * Cloner le Utilisateur original
    */
   public clonerUtilisateurOriginal() {
     this.utilisateurCourant= clone.cloneDeep(this.utilisateurOriginal );
   }
   /**
-   * Stocke le contrat passée en paramètre dans contratOriginal et copie les valeurs dans contratCourant
+   * Stocke le Utilisateur passée en paramètre dans UtilisateurOriginal et copie les valeurs dans UtilisateurCourant
    * @param contrat
    */
   setUtilisateurOriginal(utilisateur: Utilisateur) {
@@ -122,22 +122,22 @@ export class UtilisateurService {
     return this.utilisateurCourant;
   }
   /**
-   * retourne le contrat original
+   * retourne le Utilisateur original
    */
   getUtilisateurOriginal(){
     return clone.cloneDeep(this.utilisateurOriginal);
   }
 
   /**
-   * Restaurer le contrat courant qui reprend ses valeurs avant les modifications
+   * Restaurer le Utilisateur courant qui reprend ses valeurs avant les modifications
    */
   restaurerUtilisateurCourant() {
     this.clonerUtilisateurOriginal();
   }
 
   /**
-   * Permet de savoir si le contrat courant a été modifié.
-   * @return true si le contrat courant a été modifié
+   * Permet de savoir si le Utilisateur courant a été modifié.
+   * @return true si le Utilisateur courant a été modifié
    */
   isUtilisateurModifie(): boolean {
 
@@ -157,7 +157,7 @@ export class UtilisateurService {
   }
 
   /**
-   * Permet de savoir si le contrat courant a été persisté
+   * Permet de savoir si le Utilisateur courant a été persisté
    * @private
    */
   private isUtilisateurSauvegarde() {
@@ -165,18 +165,44 @@ export class UtilisateurService {
   }
 
   /**
-   * Permet de remettre à zéro e contrat Courant et le contrat Original
+   * Permet de remettre à zéro e Utilisateur Courant et le Utilisateur Original
    * @private
    */
   public purgerUtilisateur() {
-    // purge le contrat courant et le contrat original
+    // purge le Utilisateur courant et le contrat original
     this.setUtilisateurOriginal(new Utilisateur());
   }
-  private chargerNouveauContrat() {
+  private chargerNouveauUtilisateur() {
     if (this.isUtilisateurSauvegarde()) {
       //this.supprimerUtilisateur(this.getUtilisateurCourant());
     }
     this.purgerUtilisateur();
+  }
+
+  async emailCheck(input: AbstractControl,id:number): Promise<null | { emailExists: boolean }> {
+    const email = input.value;
+    let urlapi=this.url
+    if(id){
+      urlapi=urlapi.concat(`/utilisateur/exist/${id}/${email}`)
+    }else{
+      urlapi=urlapi.concat(`/utilisateur/exist/${email}`)
+    }
+    const status = await lastValueFrom(this.http.get<boolean>( urlapi))
+    return status ? { emailExists: true } : null
+  }
+  enregistrer(utilsateur:Utilisateur){
+    return this.http.put<Utilisateur>(this.url+"/utilisateur/enregistrer",utilsateur)
+      .pipe(
+        tap((res:Utilisateur) => {
+          this.notification.success(" enregistrer success ")
+          this.setUtilisateurOriginal(Utilisateur.fromJson(res,Utilisateur))
+          return Utilisateur.fromJson(res,Utilisateur)
+        }),
+        catchError((err) => {
+          this.notification.error(" erreur d'enregistrer Utilisateur ")
+          return throwError(() => err)
+        })
+      )
   }
 }
 

@@ -26,7 +26,7 @@
                    (click)="reset('nom')">
             <mat-icon>close</mat-icon>
           </button>
-          <mat-error *ngIf="prenom.errors?.hasOwnProperty('required')">
+          <mat-error *ngIf="nom.errors?.hasOwnProperty('required')">
            {{appConfig.getLabel('error.champ.obligatoire')}}
           </mat-error>
         </mat-form-field>

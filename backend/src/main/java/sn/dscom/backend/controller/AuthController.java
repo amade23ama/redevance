@@ -33,5 +33,8 @@ public class AuthController {
        UtilisateurConnectedDTO userConnectedDTO= this.connectedUtilisateurService.getConnectedUtilisateur();
      return userConnectedDTO;
     }
-
+    @GetMapping("/login/{login}")
+    public boolean login(@PathVariable String login){
+        return this.connectedUtilisateurService.checkEmailOrLogin(login);
+    }
 }

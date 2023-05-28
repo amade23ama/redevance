@@ -1,5 +1,5 @@
 import {LoginComponent} from "./login.component";
-import {CommonModule, NgOptimizedImage} from "@angular/common";
+import {CommonModule, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NgModule} from "@angular/core";
 import {ExtendedModule, FlexModule} from "@angular/flex-layout";
@@ -33,6 +33,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     NgOptimizedImage,
     BrowserModule,
     BrowserAnimationsModule,
+    NgIf,
   ],
 
 })

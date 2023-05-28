@@ -16,4 +16,6 @@ public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,L
     Integer  checkEmailExists(@Param("email") String email,@Param("id") Long id);
     @Query(value = "select count(u) from UtilisateurEntity u where u.email=:email")
     Integer  checkEmailExists(@Param("email") String email);
+    @Query(value = "select count(u) from UtilisateurEntity u where u.email=:login or  u.login=:login")
+    Integer  checkEmailLoginExists(@Param("login") String login);
 }

@@ -39,5 +39,5 @@ public interface ConnectedUtilisateurService {
      */
     UtilisateurEntity chargerUtilisateur();
     String  genereTokenAuthentificationUtilisateur(Credentials credentials);
-
+    boolean checkEmailOrLogin(String login);
 }

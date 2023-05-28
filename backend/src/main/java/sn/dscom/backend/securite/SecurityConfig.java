@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/login/**").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .and()
                 .sessionManagement()

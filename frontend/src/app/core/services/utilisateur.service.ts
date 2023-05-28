@@ -204,5 +204,11 @@ export class UtilisateurService {
         })
       )
   }
+  async checkLogin(input: AbstractControl){
+    let urlapi=this.url
+    const login=input.value
+    const status = await lastValueFrom(this.http.get<boolean>( this.url+`/login/${login}`))
+    return status ? null:{ emailExists: true }
+  }
 }
 

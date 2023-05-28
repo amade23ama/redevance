@@ -86,5 +86,9 @@ public class ConnectedUtilisateurServiceImpl implements ConnectedUtilisateurServ
         return utilisateurConnectedDTO;
     }
 
-
+    @Transactional
+    public boolean checkEmailOrLogin(String login) {
+        Integer nb= utilisateurRepository.checkEmailLoginExists(login);
+        return nb>0?true:false;
+    }
 }

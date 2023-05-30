@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RechercheContactComponent } from './recherche-contact.component';
+import {HttpClientModule} from "@angular/common/http";
 
 describe('RechercheContactComponent', () => {
   let component: RechercheContactComponent;
@@ -8,7 +9,8 @@ describe('RechercheContactComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RechercheContactComponent ]
+      declarations: [ RechercheContactComponent ],
+      imports: [HttpClientModule],
     })
     .compileComponents();
 

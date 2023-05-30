@@ -1,0 +1,61 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { FormulaireUtilisateurComponent } from './formulaire-utilisateur.component';
+import {CommonModule, NgIf, NgOptimizedImage} from "@angular/common";
+import {FormControl, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {ExtendedModule, FlexLayoutModule, FlexModule} from "@angular/flex-layout";
+import {MatButtonModule} from "@angular/material/button";
+import {MatCardModule} from "@angular/material/card";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MaterialModule} from "../../../material.module";
+import {BrowserModule} from "@angular/platform-browser";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
+import {AppConfigService} from "../../../core/services/app-config.service";
+import {RouterTestingModule} from "@angular/router/testing";
+import {UtilisateurService} from "../../../core/services/utilisateur.service";
+import {Globals} from "../../../app.constants";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {ParamService} from "../../../core/services/param.service";
+import {Router, RouterOutlet} from "@angular/router";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {RedevanceModule} from "../../redevanceModule/redevance.module";
+
+describe('FormulaireUtilisateurComponent', () => {
+  let component: FormulaireUtilisateurComponent;
+  let fixture: ComponentFixture<FormulaireUtilisateurComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [ FormulaireUtilisateurComponent ],
+      imports: [ReactiveFormsModule,
+        BrowserAnimationsModule,
+        RouterTestingModule,
+        MaterialModule, // Angular Material
+        FlexLayoutModule,
+        CommonModule,
+        MaterialModule,
+        ReactiveFormsModule,
+        FormsModule],// Angular Flex Layout],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [AppConfigService,HttpClient,HttpHandler,UtilisateurService,Globals,ParamService,
+        {provide: Router, useValue: Router}]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(FormulaireUtilisateurComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    const mockValue =true;
+    const activeFormControl = new FormControl(true);
+    component.active = activeFormControl;
+    //activeFormControl.setValue(mockValue);
+    ///expect(component.statusActive.).toBe(mockValue);
+   expect(component).toBeTruthy();
+  });
+
+});

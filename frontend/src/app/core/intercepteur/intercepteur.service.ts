@@ -13,7 +13,7 @@ export class IntercepteurService implements HttpInterceptor{
     if (!this.auth.getToken()) {
       return next.handle(req)
     }
-   // const authHeaderHandle = defer(() => {
+   const authHeaderHandle = defer(() => {
     const token =this.auth.getToken()
     if (!!token) {
       req = req.clone({
@@ -24,14 +24,15 @@ export class IntercepteurService implements HttpInterceptor{
       });
     }
     return next.handle(req)
-  //});
-   /* return authHeaderHandle.pipe(
+  });
+    return authHeaderHandle.pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        if (!(error instanceof HttpErrorResponse)|| error.status === 401 ||
+          !(error?.url?.concat('/login/'))) {
           // redirect to the login page
           // or refresh the access token and retry the request
           this.auth.clearSession();
-          this.router.navigate(["/deconnexion"]);
+          this.router.navigate(["/login"]);
         }
         else if (error.status === 404) {
           // handle 404 errors
@@ -42,7 +43,7 @@ export class IntercepteurService implements HttpInterceptor{
         return throwError(error);
       })
     );
-    */
+
   }
 
 }

@@ -96,6 +96,7 @@
     "btn.utilisateur.debloquer.tooltip": "debloquer l'utilisateur",
     "btn.utilisateur.modif.tooltip": "modifier l'utilisateur",
     "header.btn.utilisateur.creer.tooltip": " creer un utilisateur",
-    "error.login.or.email.invalid": "Login ou Email est invalid !"
+    "error.login.or.email.invalid": "Login ou Email est invalid !",
+    "error.unsufisiantDroit": " vous n a pas les droits requises"
   }
 }

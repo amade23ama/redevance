@@ -24,7 +24,7 @@ export class ParamService {
     return this.http.get<Profil[]>(this.url + '/profils')
       .pipe(
         tap((res: Profil[]) => {
-          res.map(a=>Profil.fromJson(res, HomeCard))
+           res.map(a=>Profil.fromJson(res, HomeCard))
           this.setProfils(res)
         }),
         catchError((err) => {

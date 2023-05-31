@@ -26,8 +26,8 @@ describe('DscomLoginComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule,
         MaterialModule,
-        FlexLayoutModule,HttpClientModule,HttpClientTestingModule],
-      providers: [AppConfigService,HttpClient,HttpHandler,UtilisateurService,Globals]
+        FlexLayoutModule,HttpClientModule],
+      providers: [AppConfigService,UtilisateurService,Globals]
     })
     .compileComponents();
 
@@ -59,6 +59,7 @@ describe('DscomLoginComponent', () => {
   it('should validate email format', () => {
     const form = component.myform;
     const login = form.controls['login'];
+    form.patchValue({login: 'only',password:'cvfcf'});
     expect(login.errors).toBeNull();
   });
 

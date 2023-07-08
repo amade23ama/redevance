@@ -1,4 +1,45 @@
+<!--
+<div id="radio-example">
+  <div class="row">
+    <label class="radio">
+      <input type="radio" name="group" value="one"> Radio Button One</label>
+    <mat-radio-button></mat-radio-button>
+  </div>
+  <div class="row">
+    <label class="radio">
+      <input type="radio" name="group" value="two"> Radio Button Three</label>
+    <mat-radio-button></mat-radio-button>
+  </div>
+  <div class="row">
+    <label class="radio">
+      <input type="radio" name="group" value="three"> Radio Button Three</label>
+    <mat-radio-button></mat-radio-button>
+  </div>
+</div>
+-->
 
+
+<div>
+  <div class="row">
+      <mat-radio-button (change)="handleRadioChange($event)" value="option1">Option 1</mat-radio-button>
+  </div>
+  <div class="row">
+    <mat-radio-button (change)="handleRadioChange($event)" value="option1">Option 1</mat-radio-button>
+  </div>
+  <div class="row">
+    <mat-radio-button (change)="handleRadioChange($event)" value="option3">Option 3</mat-radio-button>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<!--
 <mat-card class="mt-1">
   <mat-card-header class="mat-card-header">
     <mat-card-title class="mat-card-title">Création de Site d'exploitation </mat-card-title>
@@ -38,6 +79,51 @@
     </form>
   </mat-card-content>
 </mat-card>
+-->
+<!--
+<mat-form-field>
+  <mat-label>Options</mat-label>
+  <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+-->
+<!--
+<mat-form-field>
+  <mat-label>Options</mat-label>
+  <input type="text" matInput [formControl]="myControl" [matAutocomplete]="auto">
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+<mat-form-field>
+  <mat-label>Options sélectionnées</mat-label>
+  <mat-select [formControl]="selectedOptionsControl" multiple>
+    <mat-option *ngFor="let option of selectedOptions" [value]="option">
+      {{ option }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+-->
+<!--
+<mat-form-field>
+  <mat-select [formControl]="bankMultiCtrl" placeholder="Banks"
+              >
+    <ngx-mat-select-search [disabled]="true" [formControl]="bankMultiFilterCtrl"></ngx-mat-select-search>
+    <mat-option *ngFor="let bank of filteredBanksMulti | async" [value]="bank">
+      {{bank.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+-->
+
+
 
 
 

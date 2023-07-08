@@ -27,6 +27,7 @@ import { StepperComponent } from './vehicule/stepper/stepper.component';
 import {AdminComponent} from "./admin.component";
 import {RouterModule, RouterOutlet} from "@angular/router";
 import { UtilisateurActionsComponent } from './utilisateur/utilisateur-actions/utilisateur-actions.component';
+import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 
 @NgModule({
   declarations: [
@@ -42,16 +43,17 @@ import { UtilisateurActionsComponent } from './utilisateur/utilisateur-actions/u
     StepperComponent,
     AdminComponent,
   ],
-  imports: [
+    imports: [
 
-    AdminRouter,
-    CommonModule,
-    MaterialModule,
-    UserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterOutlet,
-  ],
+        AdminRouter,
+        CommonModule,
+        MaterialModule,
+        UserModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterOutlet,
+        NgxMatSelectSearchModule,
+    ],
   exports: [RouterModule, UtilisateurActionsComponent],
   providers: [],
 })

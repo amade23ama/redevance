@@ -5,12 +5,12 @@ import {TestBed} from "@angular/core/testing";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {Observable, of} from "rxjs";
 import {Profil} from "../interfaces/profil";
-
-// @ts-ignore
-const profilsMock: Profil[] = [ {code:"admin",libelle:"string"}];
- class ParamServiceMock extends ParamService{
+import {marbles} from "rxjs-marbles";
+import {Injectable} from "@angular/core";
 
 
+const profilsMock: Profil[] = [Profil.fromJson({code:"admin",libelle:"string"})];
+class ParamServiceMock extends ParamService{
   chargementProfils():Observable<Profil[]> {
     return of(profilsMock)
   }

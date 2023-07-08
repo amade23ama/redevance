@@ -8,3 +8,25 @@
   color: $green;
   border: 1px solid $green;
 }
+.direction{
+  font-family: "Script MT";
+  font-size: 20px;
+  text-align: center;
+  color:$orange-700 !important ;
+  font-weight: 900;
+
+}
+.nom-application{
+  color:$orange-700 !important ;
+  font-size: 12px;
+  font-weight: 900;
+}
+.description{
+  font-size: 12px;
+  font-weight: 900;
+}
+.mat-card{
+ border-bottom: solid $orange-600 !important;
+
+}
+

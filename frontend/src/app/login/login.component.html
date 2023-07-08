@@ -1,12 +1,11 @@
 
 <div class="flex-container login"  fxLayout="row"  fxLayout fxLayoutAlign="space-around center"
-     fxLayout.xs="column" fxLayoutAlign.xs="space-around center"
-     fxLayoutGap="20" fxLayoutGap.x
-     style="background: white">
-  <div  fxFlex="45" fxFlex.xs="100">
+     fxLayout.lt-md="column"fxLayoutAlign.lt-md="space-evenly none"
+     fxLayoutGap="2">
+  <div  fxFlex="50" fxFlex.xs="100">
     <app-dscom-login (formLogin)="login($event)"></app-dscom-login>
   </div>
-  <div >
+  <div fxFlex="50" fxFlex.xs="100">
     <app-dscom-info></app-dscom-info>
   </div>
 </div>

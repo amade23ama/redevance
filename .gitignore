@@ -9,3 +9,31 @@
 .idea/
 /dataSources.local.xml
 *.log
+### Méta data: STS ###
+bin/
+tmp/
+*.tmp
+.settings/
+.factorypath
+
+## vscode ##
+.idea
+.vscode/
+#Eclipse core
+.project
+
+#JDT-specific Eclipse java development Tools
+.classpath
+
+# package files #
+.tar.gz
+.jar
+.zip
+.ear
+
+#log
+.log
+.log.*.gz
+
+#angular
+package-lock.json

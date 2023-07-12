@@ -25,6 +25,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
         }
         return TransporteurDTO.builder()
                 .id(transporteurEntity.getId())
+                .type(transporteurEntity.getType())
                 .nom(transporteurEntity.getNom())
                 .prenom(transporteurEntity.getPrenom())
                 .email(transporteurEntity.getEmail())
@@ -58,6 +59,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
 
         return TransporteurEntity.builder()
                 .id(transporteurDTO.getId())
+                .type(transporteurDTO.getType())
                 .nom(transporteurDTO.getNom())
                 .prenom(transporteurDTO.getPrenom())
                 .email(transporteurDTO.getEmail())

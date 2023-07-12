@@ -1,30 +1,57 @@
 package sn.dscom.backend.service.converter;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import sn.dscom.backend.common.dto.CategorieDTO;
-import sn.dscom.backend.common.dto.ChargementDTO;
+import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
-import sn.dscom.backend.database.entite.ChargementEntity;
 
-import javax.validation.Valid;
+/**
+ * Converteur de {@link CategorieEntity} en {@link CategorieDTO}
+ */
+public class CategorieConverter implements Transformer<CategorieDTO, CategorieEntity> {
 
-@Component
-public class CategorieConverter {
-    @Autowired
-    CategorieConverter(){
-        super();
-    };
+    /**
+     * transformation de {@link CategorieEntity} en {@link CategorieDTO}
+     *
+     * @param categorieEntity l'objet à transformer en {@link CategorieDTO}
+     * @return l'objet {@link CategorieDTO}
+     */
+    @Override
+    public CategorieDTO reverse(CategorieEntity categorieEntity) {
 
-    public static CategorieDTO toCategorieDTO(final @Valid CategorieEntity categorieEntity) {
-        //todo
-        return null;
+        //on retourne null si l'objet d'entré est null
+        if (categorieEntity == null) {
+            return null;
+        }
+
+        return CategorieDTO.builder()
+                            .id(categorieEntity.getId())
+                            .dateCreation(categorieEntity.getDateCreation())
+                            .dateModification(categorieEntity.getDateModification())
+                            .type(categorieEntity.getType())
+                            .volume(categorieEntity.getVolume())
+                            .build();
     }
-    public static CategorieEntity toCategorieEntity(final CategorieDTO categorieDTO) {
-        // todo
-        final CategorieEntity categorieEntity = new CategorieEntity();
-        // chargementEntity.setId(chargementDTO.getId());
 
-        return categorieEntity;
+    /**
+     * transformation de {@link CategorieDTO} en {@link CategorieEntity}
+     *
+     * @param categorieDTO l'objet à transformer en {@link CategorieEntity}
+     * @return l'objet {@link CategorieEntity}
+     */
+    @Override
+    public CategorieEntity transform(CategorieDTO categorieDTO) {
+
+        //on retourne null si l'objet d'entré est null
+        if (categorieDTO == null) {
+            return null;
+        }
+
+        return CategorieEntity.builder()
+                                .id(categorieDTO.getId())
+                                .dateCreation(categorieDTO.getDateCreation())
+                                .dateModification(categorieDTO.getDateModification())
+                                .type(categorieDTO.getType())
+                                .volume(categorieDTO.getVolume())
+                                .build();
     }
 }

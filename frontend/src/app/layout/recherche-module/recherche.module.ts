@@ -9,9 +9,10 @@ import {NgForOf, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {MaterialModule} from "../../material.module";
 import {LayoutModule} from "../layout.module";
+import { RechercheVehiculeComponent } from './recherche-vehicule/recherche-vehicule.component';
 
 @NgModule({
-  declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent],
+  declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent, RechercheVehiculeComponent],
   imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule],
   exports:[]
 })

@@ -1,27 +1,25 @@
 package sn.dscom.backend.service.converter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-import sn.dscom.backend.common.dto.ProfilDTO;
-import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.dto.TransporteurDTO;
-import sn.dscom.backend.common.dto.VehiculeDTO;
-import sn.dscom.backend.database.entite.ProfilEntity;
-import sn.dscom.backend.database.entite.SiteEntity;
+import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.TransporteurEntity;
-import sn.dscom.backend.database.entite.VehiculeEntity;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-@Component
-public class TransporteurConverter {
-    @Autowired
-    TransporteurConverter(){super();}
-    public static TransporteurDTO toTransporteurDTO(@Valid TransporteurEntity transporteurEntity) {
-        //todo
+/**
+ * Converteur de {@link TransporteurEntity} en {@link TransporteurDTO}
+ */
+public class TransporteurConverter implements Transformer<TransporteurDTO, TransporteurEntity> {
+
+    /**
+     * transformation de {@link TransporteurEntity} en {@link TransporteurDTO}
+     *
+     * @param transporteurEntity l'objet à transformer en {@link TransporteurDTO}
+     * @return l'objet {@link TransporteurDTO}
+     */
+    @Override
+    public TransporteurDTO reverse(TransporteurEntity transporteurEntity) {
+
+        //on retourne null si l'objet d'entré est null
         if (transporteurEntity == null) {
             return null;
         }
@@ -32,29 +30,41 @@ public class TransporteurConverter {
                 .email(transporteurEntity.getEmail())
                 .telephone(transporteurEntity.getTelephone())
                 .adresse(transporteurEntity.getAdresse())
-                .dateCreation(transporteurEntity.getId() == null ? new Date() :transporteurEntity.getDateCreation())
-                .dateModification(transporteurEntity == null ? null :transporteurEntity.getDateModification())
+                .dateCreation(transporteurEntity.getDateCreation())
+                .dateModification(transporteurEntity.getDateModification())
                 .build();
     }
-    public static TransporteurEntity toTransporteurEntity(TransporteurDTO transporteurDTO) {
-        // todo
-        final List<VehiculeEntity> listeVehicules = new ArrayList<>();
+
+    /**
+     * transformation de {@link TransporteurDTO} en {@link TransporteurEntity}
+     *
+     * @param transporteurDTO l'objet à transformer en {@link TransporteurEntity}
+     * @return l'objet {@link TransporteurEntity}
+     */
+    @Override
+    public TransporteurEntity transform(TransporteurDTO transporteurDTO) {
+
+        //on retourne null si l'objet d'entré est null
+        if (transporteurDTO == null) {
+            return null;
+        }
+
+       /* final List<VehiculeEntity> listeVehicules = new ArrayList<>();
         if (!CollectionUtils.isEmpty(transporteurDTO.getVehiculeListes())) {
             transporteurDTO.getVehiculeListes()
                     .forEach((VehiculeDTO vehiculeDTO) ->
                             listeVehicules.add(VehiculeConverter.toVehiculeEntity(vehiculeDTO)));
-        }
-        final TransporteurEntity transporteurEntity =TransporteurEntity.builder()
+        }*/
+
+        return TransporteurEntity.builder()
                 .id(transporteurDTO.getId())
                 .nom(transporteurDTO.getNom())
                 .prenom(transporteurDTO.getPrenom())
                 .email(transporteurDTO.getEmail())
                 .telephone(transporteurDTO.getTelephone())
                 .adresse(transporteurDTO.getAdresse())
-                .dateCreation(transporteurDTO.getId() == null ? new Date() :transporteurDTO.getDateCreation())
-                .dateModification(transporteurDTO == null ? null :transporteurDTO.getDateModification())
-                .vehiculeEntityListes(listeVehicules)
+                .dateCreation(transporteurDTO.getDateCreation())
+                .dateModification(transporteurDTO.getDateModification())
                 .build();
-        return transporteurEntity;
     }
 }

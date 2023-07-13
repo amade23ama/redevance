@@ -1,6 +1,6 @@
-<div class=" mt-1">
-    <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-        <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z8 table-parent" matSort>
+<div class="mt-1" style="padding: 2%;">
+    <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+        <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z1 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
             <ng-container matColumnDef="Prenom">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -72,7 +72,7 @@
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="redirect(row)" routerLink="/admin/vehiculeNouveau"></tr>
 
         </table>
         <!-- container de pagination -->

@@ -39,14 +39,11 @@ export class RechercheVehiculeComponent implements OnInit{
     this.listVehicule.paginator=this.paginator;
     this.listVehicule.sort=this.sort;
     });
- let vehi = new Vehicule();
- vehi.id = 1;
- vehi.immatriculation = "MLT5365k"
-    this.vehiculeService.modifierVehicule(vehi).subscribe((toto) => {
-      console.log("zertyu", toto);
-    });
-
     
+  }
+
+  redirect(vehicule: Vehicule) {
+    console.log("ertyhjk", vehicule);
   }
 
 }

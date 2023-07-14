@@ -1,5 +1,5 @@
-<mat-card class="mat-card flex-container" fxLayout="column" fxLayoutAlign="space-between stretch">
-  <mat-card-content>
+<mat-card class="mat-card flex-container" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="20px">
+  <mat-card-content fxLayout fxLayout="column" fxLayoutAlign="space-around">
     <div class="flex-container logo"  fxLayout="row" fxLayoutAlign="center center">
       <div>
         <img src="./assets/img/drapeau_senegal.png"  height="20" width="30"
@@ -11,14 +11,14 @@
       </div>
     </div>
   </mat-card-content>
-  <mat-card-content  fxLayout fxLayout="column" fxLayoutAlign="space-around">
+  <mat-card-content  fxLayout fxLayout="column" fxLayoutAlign="space-around" >
     <form (submit)="login()" [formGroup]="myform" id="form">
       <div class="header-login">
-        <h4>{{appConfig.getLabel('authentification')}}</h4>
+        <span>{{appConfig.getLabel('authentification')}}</span>
       </div>
       <br />
-      <div fxLayout fxLayout="column">
-        <mat-form-field class="mat-form-field" appearance="outline" fxFlex="50" floatLabel="always">
+      <div fxLayout fxLayout="column" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" fxFlex="50" floatLabel="always">
           <mat-label>{{appConfig.getLabel("label.login")}}</mat-label>
           <input  matInput type="text" placeholder="identifiant"
                   [formControl]="propLogin" required>
@@ -26,10 +26,13 @@
             {{appConfig.getLabel('error.login.or.email.invalid')}}
           </mat-error>
         </mat-form-field>
-        <mat-form-field class="mat-form-field" appearance="outline" fxFlex="50" floatLabel="always">
+        <mat-form-field  appearance="outline" fxFlex="50" floatLabel="always">
           <mat-label>{{appConfig.getLabel("label.password")}}</mat-label>
           <input  matInput type="password" placeholder="Mots de passe"
                   [formControl]="propPassword" required>
+          <mat-error *ngIf="propPassword.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.password.obligatoire')}}
+          </mat-error>
         </mat-form-field>
         <div  Layout fxLayout="row" fxLayout.xs="column" fxLayoutGap.xs="20" fxLayoutAlign="space-around center" >
           <a href="#">{{appConfig.getLabel("login.label.oublier")}}</a>

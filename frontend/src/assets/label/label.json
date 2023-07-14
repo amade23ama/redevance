@@ -15,6 +15,7 @@
     "login.label.identifiant": "Identifiant",
     "login.label.motdepasse": "Mot de passe",
     "login.label.oublier": "Mots de passe oublier ?",
+    "login.password.oublier": "Mots de passe obligatoire",
     "label.login": "login",
     "label.password": "password",
     "header.login": "Se connecter",
@@ -95,6 +96,7 @@
     "btn.utilisateur.modif.tooltip": "modifier l'utilisateur",
     "header.btn.utilisateur.creer.tooltip": " creer un utilisateur",
     "error.login.or.email.invalid": "Login ou Email est invalid !",
-    "error.unsufisiantDroit": " vous n a pas les droits requises"
+    "error.unsufisiantDroit": " vous n a pas les droits requises",
+    "error.password.obligatoire": "Le password est obligatoire"
   }
 }

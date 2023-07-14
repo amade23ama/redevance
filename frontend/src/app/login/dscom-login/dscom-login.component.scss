@@ -3,8 +3,6 @@
 .mat-card {
   text-align: center;
   box-shadow: none; // NOSONAR
-  padding: 0;
-  padding-top: 2em;
   background: white;
 }
 .logo {
@@ -39,4 +37,13 @@ a{
   color: $orange-600 !important;
   text-decoration: none;
 }
-
+.mat-card{
+  border-bottom: solid $orange-600 !important;
+}
+.header-login{
+  font-family: "Script MT";
+  font-size: 24px;
+  text-align: center;
+  color: #888888;
+  //margin-bottom: 50px;
+}

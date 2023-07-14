@@ -24,7 +24,7 @@ export class UtilisateurComponent implements OnInit{
     updateOn: 'blur'
   });
   telephone: FormControl = new FormControl( );
-  active: FormControl = new FormControl(true);
+  active: FormControl = new FormControl();
   profils: FormControl = new FormControl('',[Validators.required])
   titre:string
   btns: ActionBtn[] = [];

@@ -332,5 +332,32 @@ mat-form-field mat-label {
   background-color: white !important;
   color: $orange-500!important;
 }
-html, body { height: 100%; }
+html, body { height: 100%;
+  background: #ffffff !important;
+}
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-height: 30px;
+}
+.mat-mdc-form-field-infix {
+  flex: auto;
+  position: relative;
+}
+.mat-mdc-form-field-error {
+  display: block;
+  margin-left:-1.6em
+}
+/* Active state */
+.mdc-text-field--outlined.mdc-text-field--focused:not(:disabled) .mdc-notched-outline__leading,
+.mdc-text-field--outlined.mdc-text-field--focused:not(:disabled) .mdc-notched-outline__notch,
+.mdc-text-field--outlined.mdc-text-field--focused:not(:disabled) .mdc-notched-outline__trailing {
+  border-color: $orange-500!important;
+}
+/* Error state */
+.mdc-text-field--outlined.mdc-text-field--invalid .mdc-notched-outline__leading,
+.mdc-text-field--outlined.mdc-text-field--invalid .mdc-notched-outline__notch,
+.mdc-text-field--outlined.mdc-text-field--invalid .mdc-notched-outline__trailing {
+  border-color: red;
+}

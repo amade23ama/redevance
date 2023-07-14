@@ -1,4 +1,4 @@
-<div class=" mt-1">
+<mat-card class="mt-2">
   <div class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
     <label class="nb-label blue-label">
       {{rechercheUtilisateurListe?.length}}
@@ -16,7 +16,7 @@
     </button>
   </div>
 <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z8 table-parent" matSort>
+<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent" matSort>
   <ng-container matColumnDef="id">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
       <div class="d-flex">N°</div>
@@ -88,7 +88,7 @@
       </div>
     </td>
   </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
   <mat-paginator [pageSize]="pageSize"
@@ -97,4 +97,4 @@
   </mat-paginator>
 </div>
 <!--class="detail-chip-lien"-->
-</div>
+</mat-card>

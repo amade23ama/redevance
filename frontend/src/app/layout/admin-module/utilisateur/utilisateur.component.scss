@@ -3,3 +3,22 @@
 form{
 
 }
+
+
+fieldset {
+  font-family: sans-serif;
+  background: #fffdfd;
+  border-radius: 6px;
+  border: 1px solid $orange-500!important;
+  font-size: 12px;
+}
+
+fieldset legend {
+  background: $orange-500!important;
+  color: #ffffff;
+  padding: 5px 10px ;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid $orange-500!important;
+  border-radius: 0.25em!important;
+}

@@ -1,9 +1,11 @@
 <mat-card class="">
+  <!--
   <mat-card-header class="mat-card-header" fxLayout="row" fxLayoutAlign="start center">
     <mat-card-title class="mat-card-title">{{titre}}</mat-card-title>
   </mat-card-header>
+  -->
   <mat-card-content class="mt-1">
-    <form    class="stepper--conteneur"[formGroup]="userForm" fxLayout fxLayout="column" fxLayoutAlign="space-around">
+    <form    class="stepper--conteneur"[formGroup]="userForm" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>Prenom </mat-label>
@@ -65,7 +67,7 @@
          </mat-error>
        </mat-form-field>
       </div>
-      <div fxLayout fxLayoutGap="2px" fxLayout.xs="row"fxLayout.sm="row" >
+      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="row" >
         <mat-form-field  *ngIf="profils$ | async as profiles"
                          class="champ--operateur" appearance="outline" fxFlex="80" fxFlex.lt-md="90" floatLabel="always">
           <mat-label>profil</mat-label>
@@ -84,6 +86,11 @@
              </mat-checkbox>
         -->
 
+        <div fxLayout fxLayoutAlign="center center" fxLayoutGap="2px" style="height: 30px">
+          <span>desactive</span>
+          <mat-slide-toggle color="primary" [formControl]="active"></mat-slide-toggle>
+          <span>active</span>
+        </div>
       </div>
     </form>
   </mat-card-content>

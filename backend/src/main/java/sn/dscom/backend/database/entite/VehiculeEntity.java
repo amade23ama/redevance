@@ -6,8 +6,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import java.util.Date;
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

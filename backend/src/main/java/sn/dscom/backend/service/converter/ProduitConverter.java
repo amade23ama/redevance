@@ -1,48 +1,59 @@
 package sn.dscom.backend.service.converter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sn.dscom.backend.common.dto.ExploitationDTO;
+
 import sn.dscom.backend.common.dto.ProduitDTO;
-import sn.dscom.backend.database.entite.ExploitationEntity;
+import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ProduitEntity;
 
-import javax.validation.Valid;
-import java.util.Date;
+/**
+ * Produit Converter
+ */
+public class ProduitConverter implements Transformer<ProduitDTO,ProduitEntity> {
 
-@Component
-public class ProduitConverter {
-    @Autowired
-    ProduitConverter(){super();}
-    public static ProduitDTO toProduitDTO(@Valid ProduitEntity produitEntity) {
-        //todo
+    /**
+     * transformation de {@link ProduitEntity} en {@link ProduitDTO}
+     *
+     * @param produitEntity l'objet à transformer en {@link ProduitDTO}
+     * @return l'objet {@link ProduitDTO}
+     */
+    @Override
+    public ProduitDTO reverse(ProduitEntity produitEntity) {
+
+        //on retourne null si l'objet d'entré est null
         if (produitEntity == null) {
             return null;
         }
-        ProduitDTO produitDTO=ProduitDTO.builder()
+        return ProduitDTO.builder()
                 .id(produitEntity.getId())
                 .nomNORM(produitEntity.getNomNORM())
                 .nomSRC(produitEntity.getNomSRC())
                 .densiteGRM(produitEntity.getDensiteGRM())
                 .densiteKGM(produitEntity.getDensiteKGM())
-                .dateCreation(produitEntity.getId() == null ? new Date() :produitEntity.getDateCreation())
-                .dateModification(produitEntity == null ? null :produitEntity.getDateCreation())
+                .dateCreation(produitEntity.getDateCreation())
+                .dateModification(produitEntity.getDateCreation())
                 .build();
-        return produitDTO;
     }
-    public static ProduitEntity toProduitEntity(ProduitDTO produitDTO) {
-        // todo
+
+    /**
+     * transformation de {@link ProduitDTO} en {@link ProduitEntity}
+     *
+     * @param produitDTO l'objet à transformer en {@link ProduitEntity}
+     * @return l'objet {@link ProduitEntity}
+     */
+    @Override
+    public ProduitEntity transform(ProduitDTO produitDTO) {
+
+        //on retourne null si l'objet d'entré est null
         if (produitDTO == null) {
             return null;
         }
-        final ProduitEntity produitEntity =ProduitEntity.builder()
+        return ProduitEntity.builder()
                 .id(produitDTO.getId())
                 .nomNORM(produitDTO.getNomNORM())
                 .nomSRC(produitDTO.getNomSRC())
                 .densiteGRM(produitDTO.getDensiteGRM())
                 .densiteKGM(produitDTO.getDensiteKGM())
-                .dateCreation(produitDTO.getId() == null ? new Date()  :produitDTO.getDateCreation())
-                .dateModification(produitDTO == null ? null :produitDTO.getDateCreation())
+                .dateCreation(produitDTO.getDateCreation())
+                .dateModification(produitDTO.getDateCreation())
                 .build();
-        return produitEntity;
     }
 }

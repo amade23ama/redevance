@@ -1,1 +1,56 @@
-<p>recherche-produit works!</p>
+<div class="mt-1" style="padding: 2%;">
+    <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+        <table mat-table matSort  [dataSource]="listProduit"  class="mat-elevation-z2 table-parent" matSort>
+            <!-- COLONNE : PRENOM -->
+            <ng-container matColumnDef="Nom SRC">
+                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+                  <div class="d-flex">Nom SRC</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex">{{element?.nomSRC}}</div>
+                </td>
+            </ng-container>
+
+            <!-- COLONNE : NOM -->
+            <ng-container matColumnDef="Nom NORM">
+                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+                  <div class="d-flex">Nom NORM</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex">{{element?.nomNORM}}</div>
+                </td>
+            </ng-container>
+
+            <!-- COLONNE : TELEPHONE-->
+            <ng-container matColumnDef="Densité GCM">
+                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+                  <div class="d-flex">Densité GCM</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex">{{element?.densiteGRM}}</div>
+                </td>
+            </ng-container>
+
+            <!-- COLONNE : EMAIL-->
+            <ng-container matColumnDef="Densité KGM">
+                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+                  <div class="d-flex">Densité KGM</div>
+                </th>
+                <td mat-cell *matCellDef="let element">
+                  <div class="d-flex">{{element?.densiteKGM}}</div>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="redirect(row)" routerLink="/admin/vehiculeNouveau"></tr>
+
+        </table>
+        <!-- container de pagination -->
+        <mat-paginator [pageSize]="pageSize"
+                 [pageSizeOptions]="pageSizeOptions"
+                 showFirstLastButtons>
+        </mat-paginator>
+
+    </div>
+</div>
+

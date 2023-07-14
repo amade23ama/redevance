@@ -31,6 +31,7 @@ public class VehiculeController {
     @PostMapping(path = "/enregistrer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<VehiculeDTO> enregistrerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
+        log.info("enregistrer Vehicule");
         return ResponseEntity.ok(this.voitureService.enregistrerVehicule(vehiculeDTO).get());
     }
 
@@ -51,7 +52,7 @@ public class VehiculeController {
      * @param vehiculeDTO
      * @return true l'entité est supprimé
      */
-    @PostMapping(path = "/supprimer")
+    @PostMapping(path = "/supprimer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Boolean> supprimerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
 
@@ -65,7 +66,7 @@ public class VehiculeController {
      * Permet de rechercher la liste des véhicules en base
      * @return la liste des véhicules
      */
-    @GetMapping(path = "/rechercher")
+    @GetMapping(path = "/rechercher", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<List<VehiculeDTO>> rechercherVehicules() {
 

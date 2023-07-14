@@ -36,9 +36,9 @@ public interface IVoitureService {
     /**
      * Fournit l'operation de suppression d'un véhicule
      *
-     * @param id de l'Entité à supprimer
+     * @param voiture de l'Entité à supprimer
      */
-    void supprimerVehicule(String id);
+    void supprimerVehicule(VehiculeDTO voiture);
 
 
 }

@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -7,14 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Controlleur REST exsposant les services véhicule
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/vehicule")
 public class VehiculeController {
@@ -31,9 +31,7 @@ public class VehiculeController {
     @PostMapping(path = "/enregistrer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<VehiculeDTO> enregistrerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
-        return ResponseEntity.ok(VehiculeDTO.builder()
-                                                .immatriculation("AA-123-DT")
-                                                .build());
+        return ResponseEntity.ok(this.voitureService.enregistrerVehicule(vehiculeDTO).get());
     }
 
     /**
@@ -44,18 +42,23 @@ public class VehiculeController {
     @PostMapping(path = "/modifier", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<VehiculeDTO> modifierVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
-        return ResponseEntity.ok(VehiculeDTO.builder().immatriculation("AA-123-DT").build());
+        log.info("Modification de l'entité voiture d'identifiant: {}", vehiculeDTO.getId());
+        return ResponseEntity.ok(this.voitureService.modifierVehicule(vehiculeDTO).get());
     }
 
     /**
-     * Permet de supprimer un véhicule en base avec l'id
-     * @param id
-     * @return
+     * Permet de supprimer un véhicule en base avec le parametre souhaité
+     * @param vehiculeDTO
+     * @return true l'entité est supprimé
      */
-    @DeleteMapping(path = "/supprimer/{id}")
+    @PostMapping(path = "/supprimer")
     @ResponseBody
-    public ResponseEntity<VehiculeDTO> supprimerVehicule( @RequestParam(name = "id", required = true) String id) {
-        return ResponseEntity.ok(VehiculeDTO.builder().immatriculation("AA-123-DT").build());
+    public ResponseEntity<Boolean> supprimerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
+
+        // Appel sur service pour supprimer
+        log.info("Suppression de l'entité voiture d'identifiant: {}", vehiculeDTO.getId());
+        this.voitureService.supprimerVehicule(vehiculeDTO);
+        return ResponseEntity.ok(true);
     }
 
     /**
@@ -71,6 +74,7 @@ public class VehiculeController {
 
         // si on trouve au moins une donnée à la retour
         if (list.isPresent()){
+            log.info("rechercherVehicules");
             return ResponseEntity.ok(list.get());
         }
 

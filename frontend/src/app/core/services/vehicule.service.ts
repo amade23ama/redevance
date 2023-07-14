@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, share } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -50,8 +50,8 @@ export class VehiculeService {
    * @param id du véhicule à supprimer 
    * @returns true si véhicule supprimer
    */
-  supprimerVehicule(id: string): Observable<boolean> {
-    const param = new HttpParams().set('id',id);
-    return this.httpClient.delete<boolean>(this.url + '/supprimer/'+id, {params: param}).pipe(share());
+  supprimerVehicule(vehicule: Vehicule): Observable<boolean> {
+    //const param = new HttpParams().set('id',id);
+    return this.httpClient.post<boolean>(this.url + '/supprimer', vehicule).pipe(share());
   }
 }

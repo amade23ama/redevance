@@ -39,6 +39,11 @@ export class RechercheVehiculeComponent implements OnInit{
     this.listVehicule.paginator=this.paginator;
     this.listVehicule.sort=this.sort;
     });
+    
+  }
+
+  redirect(vehicule: Vehicule) {
+    console.log("ertyhjk", vehicule);
   }
 
 }

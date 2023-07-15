@@ -26,14 +26,6 @@ public interface IProduitService {
      Optional<ProduitDTO> enregistrerProduit(ProduitDTO produitDTO);
 
     /**
-     * modifier Produit
-     *
-     * @param produitDTO
-     * @return le produit
-     */
-    Optional<ProduitDTO> modifierProduit(ProduitDTO produitDTO);
-
-    /**
      * compteur de Produits
      * @return le nombre
      */

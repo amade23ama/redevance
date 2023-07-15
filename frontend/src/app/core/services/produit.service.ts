@@ -37,15 +37,6 @@ export class ProduitService {
   }
 
   /**
-   * appel du service modifierProduit pour modifier un véhicule
-   * @param produit à modifier
-   * @returns véhicule modifier
-   */
-  modifierProduit(produit: Produit): Observable<Produit> {
-    return this.httpClient.post<Produit>(this.url + '/modifier', produit).pipe(share());
-  }
-
-  /**
    * appel du service rechercherProduit pour rechercher la liste des véhicules
    * @returns la liste des véhicules
    */

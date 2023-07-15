@@ -54,20 +54,9 @@ public class ProduitService implements IProduitService {
      */
     @Override
     public Optional<ProduitDTO> enregistrerProduit(ProduitDTO produitDTO) {
-        return Optional.empty();
+        //C'est la séquence qui génère l'id en cas de création
+        return Optional.of(this.produitConverteur.reverse(this.produitRepository.save(this.produitConverteur.transform(produitDTO))));
     }
-
-    /**
-     * modifier Produit
-     *
-     * @param produitDTO
-     * @return le produit
-     */
-    @Override
-    public Optional<ProduitDTO> modifierProduit(ProduitDTO produitDTO) {
-        return Optional.empty();
-    }
-
     /**
      * compteur de Produits
      * @return le nombre

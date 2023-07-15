@@ -38,7 +38,7 @@ public class ProduitController {
     }
 
     /**
-     * Permet de enregistrer le Produit en base
+     * Permet de enregistrer et de modifier le Produit en base
      *
      * @param produitDTO le produit à enregister
      * @return l'entité
@@ -47,18 +47,6 @@ public class ProduitController {
     @ResponseBody
     public ResponseEntity<ProduitDTO> enregistrerProduit(@RequestBody ProduitDTO produitDTO) {
         log.info("Enregistrer Produits");
-        return  ResponseEntity.ok(produitService.enregistrerProduit(produitDTO).get());
-    }
-
-    /**
-     * Permet de modifier le Produit en base
-     * @param produitDTO le produit à modifier
-     * @return l'entité
-     */
-    @PostMapping(path = "/modifier", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<ProduitDTO> modifierProduit(@RequestBody ProduitDTO produitDTO) {
-        log.info("Modifier Produits");
         return  ResponseEntity.ok(produitService.enregistrerProduit(produitDTO).get());
     }
 

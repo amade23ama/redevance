@@ -6,6 +6,12 @@ import {debounceTime, distinctUntilChanged, map, Observable, of, startWith, tap}
 import {animate, group, state, style, transition, trigger} from "@angular/animations";
 import {openCloseTransition} from "../../../core/interfaces/open-close.transition";
 import {MatRadioButton, MatRadioChange} from "@angular/material/radio";
+import {ActionBtn} from "../../../core/interfaces/actionBtn";
+import {Actions} from "../../../core/enum/actions";
+import {Produit} from "../../../core/interfaces/produit";
+import {Site} from "../../../core/interfaces/site";
+import {SiteService} from "../../../core/services/site.service";
+import {ActivatedRoute} from "@angular/router";
 
 class Bank {
   name:string
@@ -17,11 +23,12 @@ class Bank {
   styleUrls: ['./site.component.scss'],
   animations: [openCloseTransition]
 })
-export class SiteComponent implements OnInit,AfterViewInit {
+export class SiteComponent implements OnInit {
+  titre="Creer un Nouveau  Site"
   show = false;
   id: FormControl = new FormControl()
-  nom: FormControl = new FormControl()
-  localite: FormControl = new FormControl();
+  nom: FormControl = new FormControl('',[Validators.required])
+  localite: FormControl = new FormControl('',[Validators.required]);
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();
   myform: FormGroup = this.builder.group({
@@ -37,19 +44,78 @@ export class SiteComponent implements OnInit,AfterViewInit {
     { label: 'Option 3', value: true }
   ];
 
-
+  btns: ActionBtn[] = [];
+  siteCourant:Site;
   constructor(private builder: FormBuilder,
-              public appConfig:AppConfigService,private paramService: ParamService) {
+              public appConfig:AppConfigService,private paramService: ParamService,
+              public siteService:SiteService, private readonly activatedRoute: ActivatedRoute) {
   }
   ngOnInit(): void {
     console.error(" log")
+    this.activatedRoute.queryParams?.subscribe(async params => {
+      this.initListbtns();
+      if (params['contextInfo']) {
+        this.titre="Modification Site"
+         this.siteService.getSiteById(params['contextInfo']).subscribe(()=>{
+         this.siteCourant=this.siteService.getSiteCourant()
+          this.myform.patchValue(this.siteCourant)
+          this.majBtnActive()
+        })
+      } else {
+        this.titre="Creation Site";
+        this.majBtnActive()
+      }
+    });
+  }
+  reset(formToReset:any){
+    this.myform.controls[formToReset]?.setValue('');
   }
 
-  @ViewChildren(MatRadioButton) radioButtons!: QueryList<MatRadioButton>;
-
-  ngAfterViewInit() {
-    //this.setupRadioChangeHandler();
+  private initListbtns() {
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
+      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
+    return this.btns;
   }
+  isEnrgBtnDisplayed(){
+    return true
+    /* this.utilisateurCourant = this.utilisateurService.getUtilisateurCourant();
+     if(!this.utilisateurCourant?.id){
+       return true
+     }*/
+    //return false
+  }
+
+  utilisateurAction(event: Actions){
+    if (event === Actions.ENREGISTRER) {
+      const b= this.myform.value;
+      this.siteService.enregistrerSite(this.myform.value).subscribe()
+    }
+  }
+  majBtnActive(){
+    this.myform?.valueChanges.subscribe((res)=>{
+      if(this.myform.invalid){
+        this.btns.forEach(b=>{
+          b.disabled=true
+        });
+      }else{
+        this.btns.forEach(b=>{
+          b.disabled=false
+        });
+      }
+    })
+    if(!this.myform.invalid){
+      this.btns.forEach(b=>{
+        b.disabled=false
+      });
+    }
+  }
+
+
+
+
+  //@ViewChildren(MatRadioButton) radioButtons!: QueryList<MatRadioButton>;
+
+
 
   /*setupRadioChangeHandler() {
     this.radioButtons.forEach((radioButton) => {
@@ -59,7 +125,7 @@ export class SiteComponent implements OnInit,AfterViewInit {
     });
   }*/
 
-  handleRadioChange(event: MatRadioChange) {
+ /* handleRadioChange(event: MatRadioChange) {
     const selectedValue = event.value;
     const parentElement = event.source._elementRef.nativeElement.closest('.row');
     const highlightElements = document.querySelectorAll('.highlight');
@@ -68,6 +134,7 @@ export class SiteComponent implements OnInit,AfterViewInit {
     });
     parentElement.classList.add('highlight');
   }
+  */
 
 }
 

@@ -1,6 +1,36 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
+fieldset {
+  font-family: sans-serif;
+  background: #fffdfd;
+  border-radius: 6px;
+  border: 1px solid $orange-500!important;
+  font-size: 12px;
+}
 
+fieldset legend {
+  background: $orange-500!important;
+  color: #ffffff;
+  padding: 5px 10px ;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid $orange-500!important;
+  border-radius: 0.25em!important;
+}
+.stepper--conteneur{
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top: 1em;
+}
+.mat-card{
+  border-bottom: solid $orange-600 !important;
+}
+
+
+
+
+
+/*
 mat-card-header{
   padding-top: 0em;
   padding-left: 1em;
@@ -10,15 +40,16 @@ mat-card-header{
   padding:0.5em;
 }
 .parent {
-  border: 1px solid black; /* Default border color */
+  border: 1px solid black;
   padding: 10px;
 }
 
 .blue-border {
 
   border:2px solid blue;
-  border-color:blue /* Border color when the radio button is checked */
+  border-color:blue
 }
 .highlight {
   background: #555;
 }
+*/

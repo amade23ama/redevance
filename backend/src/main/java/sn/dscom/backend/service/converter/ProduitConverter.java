@@ -4,6 +4,8 @@ import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ProduitEntity;
 
+import java.util.Date;
+
 /**
  * Produit Converter
  */
@@ -52,8 +54,8 @@ public class ProduitConverter implements Transformer<ProduitDTO,ProduitEntity> {
                 .nomSRC(produitDTO.getNomSRC())
                 .densiteGRM(produitDTO.getDensiteGRM())
                 .densiteKGM(produitDTO.getDensiteKGM())
-                .dateCreation(produitDTO.getDateCreation())
-                .dateModification(produitDTO.getDateCreation())
+                .dateCreation(produitDTO.getId() == null ? new Date() :produitDTO.getDateCreation())
+                .dateModification(produitDTO.getId() == null? null :produitDTO.getDateModification())
                 .build();
     }
 }

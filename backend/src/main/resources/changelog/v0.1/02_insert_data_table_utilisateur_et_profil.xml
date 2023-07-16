@@ -8,7 +8,7 @@
     <property name="now" value="current_timestamp" dbms="postgresql"/>
     <changeSet id="02_insert_data_table_utilisateur_et_profil_1" author="amade">
         <insert tableName="UTILISATEUR">
-            <column name="ID_UTILISATEUR" value="1" />
+            <column name="ID_UTILISATEUR" valueComputed="NEXTVAL('mydscm.SEQ_UTILISATEUR')"/>
             <column name="PRENOM" value="admin" />
             <column name="NOM" value="admin" />
             <column name="TELEPHONE" value="0706551123" />
@@ -22,7 +22,7 @@
     </changeSet>
     <changeSet id="02_insert_data_table_utilisateur_et_profil_2" author="application">
         <insert tableName="UTILISATEUR">
-            <column name="ID_UTILISATEUR" value="2" />
+            <column name="ID_UTILISATEUR" valueComputed="NEXTVAL('mydscm.SEQ_UTILISATEUR')"/>
             <column name="PRENOM" value="consult" />
             <column name="NOM" value="consult" />
             <column name="TELEPHONE" value="0706551122" />
@@ -36,7 +36,7 @@
     </changeSet>
     <changeSet id="02_insert_data_table_utilisateur_et_profil_3" author="application">
         <insert tableName="UTILISATEUR">
-            <column name="ID_UTILISATEUR" value="3" />
+            <column name="ID_UTILISATEUR" valueComputed="NEXTVAL('mydscm.SEQ_UTILISATEUR')"/>
             <column name="PRENOM" value="utilisateur" />
             <column name="NOM" value="utilisateur" />
             <column name="TELEPHONE" value="0706551124" />

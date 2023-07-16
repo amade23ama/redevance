@@ -9,34 +9,42 @@
 
     <changeSet id="013_inserer_data_table_site_1" author="waly">
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Ngoundiane 1" />
             <column name="LOCALITE" value="Ngoundiane" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Ngoundiane 2" />
             <column name="LOCALITE" value="Ngoundiane" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Ziguinchor" />
             <column name="LOCALITE" value="Ziguinchor" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Thies" />
             <column name="LOCALITE" value="Thies" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Thile" />
             <column name="LOCALITE" value="Thile" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Velingara" />
             <column name="LOCALITE" value="Velingara" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Rosso" />
             <column name="LOCALITE" value="Rosso" />
         </insert>
         <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
             <column name="NOM" value="Ourossogui" />
             <column name="LOCALITE" value="Ourossogui" />
         </insert>

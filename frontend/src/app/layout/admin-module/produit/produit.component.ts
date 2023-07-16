@@ -5,6 +5,9 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {ActionBtn} from "../../../core/interfaces/actionBtn";
 import {Actions} from "../../../core/enum/actions";
 import {ProduitService} from "../../../core/services/produit.service";
+import {ActivatedRoute} from "@angular/router";
+import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {Produit} from "../../../core/interfaces/produit";
 
 
 @Component({
@@ -32,12 +35,26 @@ export class ProduitComponent implements OnInit{
     dateModification: this.dateModification,
   })
   btns: ActionBtn[] = [];
-  constructor(private builder: FormBuilder,public appConfig:AppConfigService,public produitService:ProduitService) {
+  produitCourant:Produit;
+  constructor(private builder: FormBuilder,public appConfig:AppConfigService,public produitService:ProduitService,
+  private readonly activatedRoute: ActivatedRoute,) {
   }
 
   ngOnInit(): void {
-    this.initListbtns()
-    this.majBtnActive()
+    this.activatedRoute.queryParams?.subscribe(async params => {
+      this.initListbtns();
+      if (params['contextInfo']) {
+        this.titre="Modification Produit"
+        this.produitService.getProduitParId(params['contextInfo']).subscribe(()=>{
+          this.produitCourant=this.produitService.getProduitCourant()
+          this.myform.patchValue(this.produitCourant)
+          this.majBtnActive()
+        })
+      } else {
+        this.titre="Creation Produit";
+        this.majBtnActive()
+      }
+    });
   }
   reset(formToReset:any){
     this.myform.controls[formToReset]?.setValue('');
@@ -46,10 +63,6 @@ export class ProduitComponent implements OnInit{
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
-   /* this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'),
-      Actions.MODIFIER, this.isModifBtnAffiche(), true, true, true, 'create'));
-      *
-    */
     return this.btns;
   }
   isEnrgBtnDisplayed(){
@@ -59,13 +72,6 @@ export class ProduitComponent implements OnInit{
       return true
     }*/
     //return false
-  }
-  isModifBtnAffiche(){
-    /*this.utilisateurCourant = this.utilisateurService.getUtilisateurCourant();
-    if(this.utilisateurCourant?.id){
-      return true
-    }*/
-    return false
   }
 
   utilisateurAction(event: Actions){

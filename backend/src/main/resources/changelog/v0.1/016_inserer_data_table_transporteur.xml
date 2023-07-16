@@ -8,6 +8,7 @@
     <property name="now" value="current_timestamp" dbms="postgresql"/>
     <changeSet id="016_inserer_data_table_transporteur_1" author="waly">
         <insert tableName="TRANSPORTEUR">
+            <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
             <column name="TYPE" value="Personne morale" />
             <column name="NOM_RAISON_SOCIALE" value="DMB" />
             <column name="PRENOM" value="" />
@@ -16,6 +17,7 @@
             <column name="ADRESSE" value="" />
         </insert>
         <insert tableName="TRANSPORTEUR">
+            <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
             <column name="TYPE" value="Personne physique" />
             <column name="NOM_RAISON_SOCIALE" value="DIOUF" />
             <column name="PRENOM" value="Djibril" />
@@ -24,6 +26,7 @@
             <column name="ADRESSE" value="" />
         </insert>
         <insert tableName="TRANSPORTEUR">
+            <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
             <column name="TYPE" value="Personne morale" />
             <column name="NOM_RAISON_SOCIALE" value="EIFFAGE MARINE" />
             <column name="PRENOM" value="" />
@@ -32,6 +35,7 @@
             <column name="ADRESSE" value="Dakar Nav" />
         </insert>
         <insert tableName="TRANSPORTEUR">
+            <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
             <column name="TYPE" value="Personne physique" />
             <column name="NOM_RAISON_SOCIALE" value="MBODJ" />
             <column name="PRENOM" value="ABDOU" />

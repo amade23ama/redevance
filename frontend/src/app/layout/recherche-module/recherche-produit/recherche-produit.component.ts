@@ -4,6 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Produit } from 'src/app/core/interfaces/produit';
 import { ProduitService } from 'src/app/core/services/produit.service';
+import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -24,10 +26,10 @@ export class RechercheProduitComponent implements OnInit {
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM'];
+  displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','actions'];
 
   /** constructor */
-  constructor(private produitService: ProduitService){
+  constructor(private produitService: ProduitService,private router:Router){
   }
 
   ngOnInit(): void {
@@ -38,10 +40,13 @@ export class RechercheProduitComponent implements OnInit {
     this.listProduit.paginator=this.paginator;
     this.listProduit.sort=this.sort;
     });
-   
+
   }
 
   redirect(produit: Produit) {
     console.log("produit: ", produit);
+  }
+  chargerProduit(produit: Produit){
+    this.router.navigate(['admin/produit'], {queryParams: {'contextInfo':produit.id }});
   }
 }

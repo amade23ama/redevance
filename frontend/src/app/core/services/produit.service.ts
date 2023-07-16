@@ -22,6 +22,7 @@ export class ProduitService {
   /** Observable sur l'utilisateur connecté. **/
   private _produit$: BehaviorSubject<Produit> = new BehaviorSubject<Produit>( null);
   private _produits$: BehaviorSubject<Produit[]> = new BehaviorSubject<Produit[]>( []);
+  produitCourant: Produit = new Produit();
   /** constructor */
   constructor(private httpClient: HttpClient,private notification: NotificationService) { }
 
@@ -45,6 +46,20 @@ export class ProduitService {
 
   }
 
+
+  getProduitParId(id: number) {
+    return this.httpClient.get<Produit>(this.url+`/${id}`)
+      .pipe(
+        tap((res) => {
+          this.setProduit(Produit.fromJson(res,Produit))
+          this.setProduitCourant(Produit.fromJson(res,Produit))
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Produit ")
+          return throwError(() => err) // RXJS 7+
+        })
+      )
+  }
   /**
    * appel du service rechercherProduit pour rechercher la liste des véhicules
    * @returns la liste des véhicules
@@ -74,5 +89,12 @@ export class ProduitService {
 
   setProduit(res: Produit) {
     this._produit$.next(res)
+  }
+
+  setProduitCourant(produit: Produit) {
+    this.produitCourant = produit;
+  }
+  getProduitCourant() {
+    return this.produitCourant;
   }
 }

@@ -8,14 +8,18 @@
     <property name="now" value="current_timestamp" dbms="postgresql"/>
 
     <changeSet id="04_creation_table_produit_01" author="amade">
+        <!--
         <sql dbms="postgresql">
             CREATE SEQUENCE SEQ_PRODUIT START WITH 1 INCREMENT BY 1 MINVALUE 1
-                MAXVALUE 999999999999999999;
+                MAXVALUE 999999999999999999 ;
+
         </sql>
+        -->
+        <createSequence sequenceName="SEQ_PRODUIT"  startValue="1" incrementBy="1" minValue="1" maxValue="999999999999999999" cycle="false"/>
     </changeSet>
     <changeSet id="04_creation_table_produit_02" author="amade">
     <createTable tableName="PRODUIT">
-        <column name="ID_PRODUIT" type="bigint" autoIncrement="true">
+        <column name="ID_PRODUIT" type="bigint">
             <constraints primaryKey="true"/>
         </column>
         <column name="NOM_SRC" type="varchar(50)">

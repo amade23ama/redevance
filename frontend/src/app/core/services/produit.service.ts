@@ -1,8 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, share } from 'rxjs';
+import {BehaviorSubject, catchError, Observable, share, tap, throwError} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Produit } from '../interfaces/produit';
+import {Utilisateur} from "../interfaces/utilisateur";
+import {NotificationService} from "./notification.service";
+import {Profil} from "../interfaces/profil";
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +19,11 @@ export class ProduitService {
   /** url de base des webservices produit */
   private url = environment.apiUrl + '/v1/produit';
 
+  /** Observable sur l'utilisateur connecté. **/
+  private _produit$: BehaviorSubject<Produit> = new BehaviorSubject<Produit>( null);
+  private _produits$: BehaviorSubject<Produit[]> = new BehaviorSubject<Produit[]>( []);
   /** constructor */
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
 
   /**
    * appel du service enregistrerProduit pour définir un véhicule
@@ -25,7 +31,18 @@ export class ProduitService {
    * @returns produit enregistré
    */
   enregistrerProduit(produit: Produit): Observable<Produit> {
-    return this.httpClient.post<Produit>(this.url + '/enregistrer', produit).pipe(share());
+    return this.httpClient.post<Produit>(this.url + '/enregistrer', produit).pipe(
+      tap((res)=>{
+        this.notification.success(" enregistrer success ")
+        this.setProduit(Produit.fromJson(res,Produit))
+      },
+        catchError((err) => {
+          this.notification.error(" erreur d'enregistrer produit ")
+          return throwError(() => err)
+        })
+        )
+    );
+
   }
 
   /**
@@ -42,5 +59,20 @@ export class ProduitService {
    */
   compterProduits(): Observable<number> {
     return this.httpClient.get<number>(this.url + '/compter').pipe(share());
+  }
+
+  get produits$(): Observable<Produit[]> { // getter ou selector
+    return this._produits$.asObservable()
+  }
+
+  setProduits(res: Produit[]) {
+    this._produits$.next(res)
+  }
+  get produit$(): Observable<Produit> { // getter ou selector
+    return this._produit$.asObservable()
+  }
+
+  setProduit(res: Produit) {
+    this._produit$.next(res)
   }
 }

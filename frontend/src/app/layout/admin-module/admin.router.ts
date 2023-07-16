@@ -9,6 +9,7 @@ import {TransporteurComponent} from "./transporteur/transporteur.component";
 import {StepperComponent} from "./vehicule/stepper/stepper.component";
 import {VehiculeComponent} from "./vehicule/vehicule.component";
 import {UtilisateurComponent} from "./utilisateur/utilisateur.component";
+import {ProduitComponent} from "./produit/produit.component";
 
 const routes: Routes = [{
   path: '',
@@ -38,6 +39,11 @@ const routes: Routes = [{
             path: 'utilisateur',
             component: UtilisateurComponent
           },
+          {
+            path: 'produit',
+            component: ProduitComponent
+          },
+
   ]
 }]
 

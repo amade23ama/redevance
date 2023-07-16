@@ -1,9 +1,11 @@
+import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
+
 /**
  * Produit
  */
-export class Produit{
+export class Produit extends BuilderDtoJsonAbstract{
 
-    
+
     /** identifiant */
     public id : Number;
 
@@ -24,5 +26,8 @@ export class Produit{
 
     /** identifiant */
     public dateModification: Date;
-
+  static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
+    const produit: any = BuilderDtoJsonAbstract.fromJson(json, Produit);
+    return produit;
+  }
 }

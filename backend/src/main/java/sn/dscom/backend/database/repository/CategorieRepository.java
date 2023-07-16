@@ -4,17 +4,21 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import sn.dscom.backend.database.entite.SiteEntity;
+import sn.dscom.backend.database.entite.CategorieEntity;
 
 import java.time.LocalDateTime;
 
+/**
+ * Categorie Repository
+ */
 @Repository
-public interface SiteRepository extends JpaRepository<SiteEntity,Long>{
+public interface CategorieRepository extends JpaRepository<CategorieEntity,Long> {
+
     /**
      * nombre de ligne
      * @param dateMiseEnService dateMiseEnService
      * @return nb site
      */
-    @Query(value = "select count(c) from SiteEntity c")
+    @Query(value = "select count(c) from CategorieEntity c")
     Integer compterSitePardate(@Param("dateMiseEnService") LocalDateTime dateMiseEnService);
 }

@@ -1,9 +1,20 @@
-import {BuilderDtoJsonAbstract} from "./BuilderDtoJsonAbstract";
+import { BuilderDtoJsonAbstract } from "./BuilderDtoJsonAbstract";
 
-export class Site   extends BuilderDtoJsonAbstract{
+/** Site */
+export class Site extends BuilderDtoJsonAbstract{
+
+  /** id */
   id: number;
-  nom:string;
-  localite:string;
-  dateCreation:Date;
-  dateModification:Date;
+
+  /** nom */
+  nom: string;
+
+  /** localite */
+  localite: string;
+
+  /** dateCreation */
+  dateCreation: Date;
+
+  /** dateModification */
+  dateModification: Date;
 }

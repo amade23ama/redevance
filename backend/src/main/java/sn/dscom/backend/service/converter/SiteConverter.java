@@ -1,21 +1,24 @@
 package sn.dscom.backend.service.converter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sn.dscom.backend.common.dto.ProfilDTO;
+
 import sn.dscom.backend.common.dto.SiteDTO;
-import sn.dscom.backend.database.entite.ProfilEntity;
+import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.SiteEntity;
 
-import javax.validation.Valid;
-import java.util.Date;
+/**
+ * Site Converter
+ */
+public class SiteConverter implements Transformer<SiteDTO, SiteEntity> {
 
-@Component
-public class SiteConverter {
-    @Autowired
-    SiteConverter(){super();}
+    /**
+     * transformation de {@link SiteEntity} en {@link SiteDTO}
+     *
+     * @param siteEntity l'objet à transformer en {@link SiteDTO}
+     * @return l'objet {@link SiteDTO}
+     */
+    @Override
+    public SiteDTO reverse(SiteEntity siteEntity) {
 
-    public static SiteDTO toSiteDTO(@Valid SiteEntity siteEntity) {
-        //todo
+        //on retourne null si l'objet d'entré est null
         if (siteEntity == null) {
             return null;
         }
@@ -23,12 +26,21 @@ public class SiteConverter {
                 .id(siteEntity.getId())
                 .nom(siteEntity.getNom())
                 .localite(siteEntity.getLocalite())
-                .dateCreation(siteEntity.getId() == null ? new Date()  :siteEntity.getDateCreation())
-                .dateModification(siteEntity == null ? null :siteEntity.getDateModification())
+                .dateCreation(siteEntity.getDateCreation())
+                .dateModification(siteEntity.getDateModification())
                 .build();
     }
-    public static SiteEntity toSiteEntity( SiteDTO siteDTO) {
-        // todo
+
+    /**
+     * transformation de {@link SiteDTO} en {@link SiteEntity}
+     *
+     * @param siteDTO l'objet à transformer en {@link SiteEntity}
+     * @return l'objet {@link SiteEntity}
+     */
+    @Override
+    public SiteEntity transform(SiteDTO siteDTO) {
+
+        //on retourne null si l'objet d'entré est null
         if (siteDTO == null) {
             return null;
         }
@@ -37,8 +49,8 @@ public class SiteConverter {
                 .id(siteDTO.getId())
                 .nom(siteDTO.getNom())
                 .localite(siteDTO.getLocalite())
-                .dateCreation(siteDTO.getDateCreation() == null ? new Date() :siteDTO.getDateCreation())
-                .dateModification(siteDTO == null ? null :siteDTO.getDateModification())
+                .dateCreation(siteDTO.getDateCreation())
+                .dateModification(siteDTO.getDateModification())
                 .build();
         return siteEntity;
     }

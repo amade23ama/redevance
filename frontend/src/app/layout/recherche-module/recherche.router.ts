@@ -1,5 +1,6 @@
 import { RouterModule, Routes } from "@angular/router";
 import { RechercheDepotComponent } from "./recherche-depot/recherche-depot.component";
+import { RechercheExploitationComponent } from "./recherche-exploitation/recherche-exploitation.component";
 import { RechercheProduitComponent } from "./recherche-produit/recherche-produit.component";
 import { RechercheSiteComponent } from "./recherche-site/recherche-site.component";
 import { RechercheUtilisateurComponent } from "./recherche-utilisateur/recherche-utilisateur.component";
@@ -33,6 +34,10 @@ const routes: Routes = [{
     {
       path: 'vehicule',
       component: RechercheVehiculeComponent
+    },
+    {
+      path: 'exploitation',
+      component: RechercheExploitationComponent
     },
   ]
 }

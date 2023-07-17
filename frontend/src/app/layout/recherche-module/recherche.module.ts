@@ -10,9 +10,10 @@ import {MatIconModule} from "@angular/material/icon";
 import {MaterialModule} from "../../material.module";
 import {LayoutModule} from "../layout.module";
 import { RechercheVehiculeComponent } from './recherche-vehicule/recherche-vehicule.component';
+import { RechercheExploitationComponent } from './recherche-exploitation/recherche-exploitation.component';
 
 @NgModule({
-  declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent, RechercheVehiculeComponent],
+  declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent, RechercheVehiculeComponent, RechercheExploitationComponent],
   imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule],
   exports:[]
 })

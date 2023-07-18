@@ -8,6 +8,8 @@ import java.util.Date;
  * ProduitDTO
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class ProduitDTO implements Serializable {
 

@@ -4,6 +4,8 @@ import sn.dscom.backend.common.dto.CategorieDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
 
+import java.util.Date;
+
 /**
  * Converteur de {@link CategorieEntity} en {@link CategorieDTO}
  */
@@ -48,8 +50,8 @@ public class CategorieConverter implements Transformer<CategorieDTO, CategorieEn
 
         return CategorieEntity.builder()
                                 .id(categorieDTO.getId())
-                                .dateCreation(categorieDTO.getDateCreation())
-                                .dateModification(categorieDTO.getDateModification())
+                                .dateCreation(categorieDTO.getId() == null ? new Date() : categorieDTO.getDateCreation())
+                                .dateModification(categorieDTO.getId() == null ? null : new Date())
                                 .type(categorieDTO.getType())
                                 .volume(categorieDTO.getVolume())
                                 .build();

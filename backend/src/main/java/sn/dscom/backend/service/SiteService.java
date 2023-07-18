@@ -69,8 +69,11 @@ public class SiteService implements ISiteService {
      */
     @Override
     public Optional<List<SiteDTO>> rechercherSites() {
+
+        // On charge l'ensemble des site
         List<SiteEntity> listSitesFind = this.siteRepository.findAll();
 
+        //retourne la liste
         return Optional.of(listSitesFind.stream()
                 .map(siteEntity -> this.siteConverteur.reverse(siteEntity))
                 .filter(Objects::nonNull)

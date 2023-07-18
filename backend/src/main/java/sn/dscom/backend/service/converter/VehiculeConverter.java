@@ -63,8 +63,8 @@ public class VehiculeConverter implements Transformer<VehiculeDTO, VehiculeEntit
                 .immatriculation(vehiculeDTO.getImmatriculation())
                 .categorieEntity(this.categorieConverter.transform(vehiculeDTO.getCategorie()))
                 .transporteurEntity(this.transporteurConverter.transform(vehiculeDTO.getTransporteur()))
-                .dateCreation(vehiculeDTO.getDateCreation() == null ? new Date() :vehiculeDTO.getDateCreation())
-                .dateModification(vehiculeDTO.getDateModification() == null ? new Date() :vehiculeDTO.getDateModification())
+                .dateCreation(vehiculeDTO.getId() == null ? new Date() : vehiculeDTO.getDateCreation())
+                .dateModification(vehiculeDTO.getId() == null ? null : new Date())
                 .build();
     }
 }

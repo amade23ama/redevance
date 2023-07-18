@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.TypeInfoTuileEnum;
 import sn.dscom.backend.common.dto.HomeCardDTO;
 import sn.dscom.backend.service.interfaces.ISiteService;
+import sn.dscom.backend.service.interfaces.ITransporteurService;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -23,7 +24,10 @@ public class InformationTuilesService {
     @Autowired
     private ISiteService siteService;
 
-    private  TransporteurService transporteurService;
+    /** transporteur Service */
+    @Autowired
+    private ITransporteurService transporteurService;
+
     public List<HomeCardDTO> getInfoTuiles() {
         return Arrays.asList(construireTuileDepot(),
                 construireTuileChargement(),
@@ -31,6 +35,7 @@ public class InformationTuilesService {
                 construireTuileTransporteur());
 
     }
+
     /**
      * Méthode pour construire la tuile en cours opérateur.
      */
@@ -63,12 +68,17 @@ public class InformationTuilesService {
                 .valeur(siteService.compterSite(LocalDateTime.now()))
                 .build();
     }
+
+    /**
+     * construire Tuile Transporteur
+     * @return HomeCardDTO
+     */
     private HomeCardDTO construireTuileTransporteur() {
+
         // Récupération des compteurs depuis la BDD.
-        final Integer compteurEnCours =transporteurService.compterTransporteur(LocalDateTime.now());
         return HomeCardDTO.builder()
                 .typeTuile(TypeInfoTuileEnum.TRANSPORTEUR.getCode())
-                .valeur(compteurEnCours)
+                .valeur(transporteurService.compterTransporteurs(LocalDateTime.now()))
                 .build();
     }
 }

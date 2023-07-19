@@ -30,6 +30,7 @@ import { UtilisateurActionsComponent } from './utilisateur/utilisateur-actions/u
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {ProduitComponent} from "./produit/produit.component";
 import {SharedModule} from "../shared-Module/shared.module";
+import {ExploitationComponent} from "./exploitation/exploitation.component";
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {SharedModule} from "../shared-Module/shared.module";
     StepperTransporteurComponent,
     StepperComponent,
     AdminComponent,
-    ProduitComponent
+    ProduitComponent,
+    ExploitationComponent
   ],
   imports: [
 

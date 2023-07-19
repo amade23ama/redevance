@@ -4,6 +4,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Site } from 'src/app/core/interfaces/site';
 import { SiteService } from 'src/app/core/services/site.service';
+import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'recherche-site',
@@ -18,18 +20,18 @@ export class RechercheSiteComponent implements OnInit {
    // La pagination
    @ViewChild(MatPaginator) paginator: MatPaginator;
    @ViewChild(MatSort) sort: MatSort;
- 
+
    // nombre de ligne par page
    pageSizeOptions: number[] = [5, 10, 20];
    pageSize = 5; // nb ligne par page par défaut
- 
+
    // les noms des colones
-   displayedColumns: string[] = ['Nom', 'Localite', 'Date Creation', 'Date Modification'];
+   displayedColumns: string[] = ['Nom', 'Localite', 'Date Creation', 'Date Modification','actions'];
 
   /** site Service */
-  constructor(private siteService: SiteService){}
+  constructor(private siteService: SiteService,private router:Router){}
 
-  
+
   ngOnInit(): void {
     this.siteService.getAllSites().subscribe();
     this.siteService.getCompteurSites().subscribe();
@@ -51,22 +53,13 @@ export class RechercheSiteComponent implements OnInit {
       console.log("site by id: ", nb);
     })
 
-    //Suppression site
-    //this.siteService.supprimerSite(2).subscribe();
-
-    // enregistrement
-    /*let site = new Site();
-    site.id = 2;
-    site.dateCreation = new Date();
-    site.dateModification = new Date();
-    site.localite = "Thies3";
-    site.nom = "THIES";
-    this.siteService.enregistrerSite(site).subscribe();*/
 
   }
 
   redirect(site: Site) {
     console.log("ertyhjk", site);
   }
-
+  chargerSite(site:Site){
+    this.router.navigate(['admin/site'], {queryParams: {'contextInfo':site.id }});
+  }
 }

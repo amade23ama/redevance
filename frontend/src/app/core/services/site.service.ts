@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Site } from '../interfaces/site';
+import {NotificationService} from "./notification.service";
+import {Produit} from "../interfaces/produit";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,6 @@ import { Site } from '../interfaces/site';
 /**
  * Service gerant les appels HTTP aux webservices site.
  */
-@Injectable()
 export class SiteService {
 
   /** les sites trouvés */
@@ -27,8 +28,8 @@ export class SiteService {
 
   /** url de base des webservices site */
   private url = environment.apiUrl + '/v1/site';
-
-  constructor(private httpClient: HttpClient) { }
+  siteCourant: Site = new Site();
+  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
 
   /**
    * appel du service rechercherSites pour rechercher la liste des véhicules
@@ -87,12 +88,13 @@ export class SiteService {
    * @returns la liste des Site
    */
   getSiteById(id: number){
-    return this.httpClient.get<Site[]>(this.url + `/rechercherById/${id}`)
+    return this.httpClient.get<Site>(this.url + `/rechercherById/${id}`)
     .pipe(
-      tap((res:Site[])=> {
-        this.setSiteById(res[0]);
+      tap((res)=> {
+        this.setSiteCourant(Site.fromJson(res,Site))
       }),
       catchError((err) => {
+        this.notification.error("erreur de chargement du site")
         return throwError(() => err) // RXJS 7+
       })
     )
@@ -106,7 +108,7 @@ export class SiteService {
   /** setSites */
   setSiteById(site:Site){
     return this._siteById.next(site)
-  } 
+  }
 
   /**
    * appel du service rechercherSites pour rechercher la liste des véhicules
@@ -133,9 +135,11 @@ export class SiteService {
     return this.httpClient.post<Site>(this.url + '/enregistrer', site).pipe(
       tap((res:Site)=> {
         console.log("le site est enregistré ", res);
+        this.notification.success("le site est enregistré  avec succes")
         this.setSiteEnregistrer(res);
       }),
       catchError((err) => {
+        this.notification.error("erreur d'enregistement du site")
         return throwError(() => err) // RXJS 7+
       })
     );
@@ -149,5 +153,11 @@ export class SiteService {
   /** setSiteEnregistrer */
   setSiteEnregistrer(site:Site){
     return this._siteEnregistrer.next(site)
-  } 
+  }
+  setSiteCourant(site: Site) {
+    this.siteCourant = site
+  }
+  getSiteCourant() {
+    return this.siteCourant;
+  }
 }

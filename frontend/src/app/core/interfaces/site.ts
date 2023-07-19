@@ -1,4 +1,4 @@
-import { BuilderDtoJsonAbstract } from "./BuilderDtoJsonAbstract";
+import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
 
 /** Site */
 export class Site extends BuilderDtoJsonAbstract{
@@ -17,4 +17,8 @@ export class Site extends BuilderDtoJsonAbstract{
 
   /** dateModification */
   dateModification: Date;
+  static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
+    const site: any = BuilderDtoJsonAbstract.fromJson(json, Site);
+    return site;
+  }
 }

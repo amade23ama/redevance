@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -42,6 +43,8 @@ class VehiculeControllerTest {
 
             IVoitureService mock = Mockito.mock(IVoitureService.class, Mockito.RETURNS_DEEP_STUBS);
             Mockito.when(mock.rechercherVehicules()).thenReturn(Optional.of(Arrays.asList(VehiculeDTO.builder().immatriculation("AA123BB").build())));
+
+            Mockito.when(mock.enregistrerVehicule(ArgumentMatchers.any())).thenReturn(Optional.of(VehiculeDTO.builder().immatriculation("AA123BB").build()));
             return mock;
         }
 

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.service.interfaces.IVoitureService;
@@ -30,6 +31,7 @@ public class VehiculeController {
      */
     @PostMapping(path = "/enregistrer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT')")
     public ResponseEntity<VehiculeDTO> enregistrerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
         log.info("enregistrer Vehicule");
         return ResponseEntity.ok(this.voitureService.enregistrerVehicule(vehiculeDTO).get());
@@ -42,6 +44,7 @@ public class VehiculeController {
      */
     @PostMapping(path = "/modifier", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT')")
     public ResponseEntity<VehiculeDTO> modifierVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
         log.info("Modification de l'entité voiture d'identifiant: {}", vehiculeDTO.getId());
         return ResponseEntity.ok(this.voitureService.modifierVehicule(vehiculeDTO).get());
@@ -54,6 +57,7 @@ public class VehiculeController {
      */
     @PostMapping(path = "/supprimer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Boolean> supprimerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
 
         // Appel sur service pour supprimer
@@ -68,6 +72,7 @@ public class VehiculeController {
      */
     @GetMapping(path = "/rechercher", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<VehiculeDTO>> rechercherVehicules() {
 
         //Appel du service rechercherVehicules de voitureService

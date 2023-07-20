@@ -1,29 +1,45 @@
 package sn.dscom.backend.common.dto;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
+
 import lombok.*;
-import sn.dscom.backend.database.entite.ChargementEntity;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-@Getter
-@Setter
+/**
+ * DepotDTO
+ */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class DepotDTO {
-    //todo
+public class DepotDTO implements Serializable {
+
+    /** id */
     private Long id;
+
+    /** nom */
     private String nom;
+
+    /** date Heure Depot */
     private Date dateHeureDepot;
+
+    /** date Heure Fin Depot */
     private Date dateHeureFinDepot;
+
+    /** nom Fichier */
     private String nomFichier;
+
+    /** deposeur */
     private UtilisateurEntity deposeur;
+
+    /** nb Chargement Deposes */
     private Integer nbChargementDeposes;
+
+    /** nb Chargement ReDeposes */
     private Integer nbChargementReDeposes;
+
+    /** nb Chargement Erreur */
     private Integer nbChargementErreur;
 
 }

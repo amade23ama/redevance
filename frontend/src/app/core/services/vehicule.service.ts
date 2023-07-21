@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, share } from 'rxjs';
+import {catchError, Observable, share, tap, throwError} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Vehicule } from '../interfaces/vehicule';
+import {Exploitation} from "../interfaces/exploitation";
+import {NotificationService} from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,22 +12,32 @@ import { Vehicule } from '../interfaces/vehicule';
 /**
  * Service gerant les appels HTTP aux webservices vehicule.
  */
-@Injectable()
+
 export class VehiculeService {
 
   /** url de base des webservices vehicule */
   private url = environment.apiUrl + '/v1/vehicule';
 
   /** constructor */
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
 
   /**
    * appel du service enregistrerVehicules pour définir un véhicule
    * @param vehicule à enregistrer
    * @returns vehicule enregistré
    */
-  enregistrerVehicules(vehicule: Vehicule): Observable<Vehicule> {
-    return this.httpClient.post<Vehicule>(this.url + '/enregistrer', vehicule).pipe(share());
+  enregistrerVehicule(vehicule: Vehicule): Observable<Vehicule> {
+    return this.httpClient.post<Vehicule>(this.url + '/enregistrer', vehicule)
+      .pipe(
+        tap((res:Vehicule)=> {
+          console.log("l'exploitation est enregistré ", res);
+          this.notification.success("le site d'exploitation est enregistré avec sucess")
+        }),
+        catchError((err) => {
+          this.notification.error("erreur enregistrement du  site d'exploitation")
+          return throwError(() => err) // RXJS 7+
+        })
+      );
   }
 
   /**
@@ -44,10 +56,10 @@ export class VehiculeService {
   modifierVehicule(vehicule: Vehicule): Observable<Vehicule> {
     return this.httpClient.post<Vehicule>(this.url + '/modifier', vehicule).pipe(share());
   }
-  
+
   /**
    * appel du service supprimerVehicule pour supprimer un véhicule
-   * @param id du véhicule à supprimer 
+   * @param id du véhicule à supprimer
    * @returns true si véhicule supprimer
    */
   supprimerVehicule(vehicule: Vehicule): Observable<boolean> {

@@ -4,6 +4,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {Transporteur} from "../../../core/interfaces/transporteur";
 import {ActionBtn} from "../../../core/interfaces/actionBtn";
 import {Actions} from "../../../core/enum/actions";
+import {VehiculeService} from "../../../core/services/vehicule.service";
 
 @Component({
   selector: 'app-vehicule',
@@ -28,10 +29,12 @@ export class VehiculeComponent implements OnInit {
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
   })
-  constructor(public builder:FormBuilder,public appConfig:AppConfigService) {
+  constructor(public builder:FormBuilder,public appConfig:AppConfigService,
+              public vehiculeService:VehiculeService) {
   }
   ngOnInit(): void {
     this.initListbtns()
+    this.majBtnActive()
   }
   sauvegarder(){
 
@@ -45,6 +48,8 @@ export class VehiculeComponent implements OnInit {
   }
 
   private initListbtns() {
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
+      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
     return this.btns;
@@ -60,8 +65,7 @@ export class VehiculeComponent implements OnInit {
 
   vehiculeAction(event: Actions){
     if (event === Actions.ENREGISTRER) {
-      const b= this.myform.value;
-      //this.siteService.enregistrerSite(this.myform.value).subscribe()
+      this.vehiculeService.enregistrerVehicule(this.myform.value).subscribe()
     }
   }
   majBtnActive(){

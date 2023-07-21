@@ -76,6 +76,8 @@ export class UtilisateurComponent implements OnInit{
     this.myform.controls[formToReset]?.setValue('');
   }
   private initListbtns() {
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
+      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'),

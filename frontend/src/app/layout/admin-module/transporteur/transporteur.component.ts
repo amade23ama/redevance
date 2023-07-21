@@ -38,11 +38,14 @@ constructor(public builder:FormBuilder,public appConfig:AppConfigService) {
 }
   ngOnInit(): void {
     this.initListbtns()
+    this.majBtnActive()
     this.type.valueChanges.subscribe( (code:any)=>{
         if(code=='S'){
           this.prenom.disable();
+          this.majBtnActive()
         }else {
           this.prenom.enable();
+          this.majBtnActive()
         }
     });
   }
@@ -56,6 +59,8 @@ constructor(public builder:FormBuilder,public appConfig:AppConfigService) {
     console.log(" annuller")
   }
   private initListbtns() {
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
+      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
     return this.btns;

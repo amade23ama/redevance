@@ -3,7 +3,8 @@
 .mat-card {
   text-align: center;
   box-shadow: none; // NOSONAR
-  background: white;
+  //background: white;
+  background-color: transparent!important;
 }
 .logo {
   display: flex;
@@ -12,6 +13,7 @@
   color: $red-200;
   color:black;
   font-size: 12px;
+  background-color: transparent!important;
 }
 .devise{
   color:black;

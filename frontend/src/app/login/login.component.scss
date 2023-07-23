@@ -1,26 +1,71 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-.login {
- // background: white;
-  color: $red-200;
-  color:black;
-  display: flex;
+.container {
   align-items: center;
-  margin: 0;
-  padding: 0;
-  /*padding-left:5%;
-  padding-right:5% ;
-  */
-  margin-top: 1%;
+  justify-content: center;
+}
+
+.screen {
+  background: linear-gradient(90deg, #fef4ef, #fdece3);
+  position: relative;
+  box-shadow: 0px 0px 24px #5C5696;
+}
+
+.screen__content {
+  z-index: 1;
+  position: relative;
+}
+
+.screen__background {
+  position: absolute;
+  top: 0;
+  left: 0!important;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  -webkit-clip-path: inset(0 0 0 0);
+  clip-path: inset(0 0 0 0);
+}
+
+.screen__background__shape {
+  transform: rotate(45deg);
+  position: absolute;
+}
+
+.screen__background__shape1 {
+  height:50%!important;
+  width: 40%!important;
+  background: #FFF;
+  top: 6em!important;
+  left: -5em!important;
+  border-radius: 50px 50px 50px 50px;
+}
+
+.screen__background__shape2 {
+  height: 10em;
+  width: 20em!important;
+  top:-5em;
+  right: 10em;
+  border-radius: 32px;
+  background: linear-gradient(90deg, #fff, #fbd5c2);
 
 }
-.test{
 
-  height: 100%;
-  padding-top: 0.5em;   height:42px!important;
-  font-family: Calibri !important;;
-  font-style: normal !important;
-  text-transform: capitalize !important;
-
-
+.screen__background__shape3 {
+  height: 20em!important;
+  width: 50em!important;
+  top: 5em!important;
+  right: 5em!important;
+  border-radius: 32px;
+  background: linear-gradient(90deg,  #fff,#fef4ef);
 }
+
+.screen__background__shape4 {
+  height: 60em!important;
+  width: 20em!important;
+  top: -20em!important;
+  right:30em!important;
+  border-radius: 60px;
+  background: linear-gradient(90deg, #fce5d9, #fff);
+}
+

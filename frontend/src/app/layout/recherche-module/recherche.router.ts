@@ -16,7 +16,7 @@ const routes: Routes = [{
       component: RechercheUtilisateurComponent
     },
     {
-      path: 'depot',
+      path: 'depots',
       component: RechercheDepotComponent
     },
     {

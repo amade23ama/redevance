@@ -10,13 +10,17 @@ const routes: Routes = [{
     { path: '',
     component: HomeComponent
     },
-  {
+    {
     path: 'admin',
     loadChildren: () => import('./admin-module/admin.module').then(m => m.AdminModule)
-  },
+    },
     {
       path: 'recherche',
       loadChildren: () => import('./recherche-module/recherche.module').then(m => m.RechercheModule)
+    },
+    {
+      path: 'depot',
+      loadChildren: () => import('./depot-module/depot.module').then(m => m.DepotModule)
     },
   ]
 }]

@@ -4,6 +4,10 @@ import {environment} from "../../../environments/environment";
 import {Exploitation} from "../interfaces/exploitation";
 import {catchError, tap, throwError} from "rxjs";
 import {NotificationService} from "./notification.service";
+import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import {
+  DepotValidationColumnPopupComponent
+} from "../../layout/depot-module/depot-validation-column-popup/depot-validation-column-popup.component";
 
 @Injectable({
   providedIn:"root"
@@ -11,7 +15,10 @@ import {NotificationService} from "./notification.service";
 export class DepotService{
   /** url de base des webservices produit */
   private url = environment.apiUrl + '/v1/depot';
-  constructor(private http:HttpClient,private notification: NotificationService) {
+  /** Le popup de la validation du contrat selon le context. */
+  confirmDialog: any;
+  constructor(private http:HttpClient,private notification: NotificationService,
+              public dialog: MatDialog,) {
   }
   creerDepot(formData: FormData){
     return this.http.post<any>(this.url + '/creer', formData).pipe(
@@ -24,5 +31,15 @@ export class DepotService{
         return throwError(() => err)
       })
     );
+  }
+  ouvreValidationColumnPopUpDepot(contextValidation: string) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.width = '80%';
+    dialogConfig.data = {
+      contextValidation: contextValidation,
+      //contrat: this.getContratCourant()
+    };
+    this.confirmDialog = this.dialog.open(DepotValidationColumnPopupComponent, dialogConfig);
   }
 }

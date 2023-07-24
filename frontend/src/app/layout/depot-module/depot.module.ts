@@ -19,13 +19,17 @@ import {UserModule} from "../admin-module/utilisateur/utilisateur.module";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {DepotModificationComponent} from "./depot-modification/depot-modification.component";
 import {NgxFileDragDropModule} from "ngx-file-drag-drop";
+import {
+  DepotValidationColumnPopupComponent
+} from "./depot-validation-column-popup/depot-validation-column-popup.component";
 
 
 @NgModule({
   declarations: [
     DepotComponent,
     DepotCreationComponent,
-    DepotModificationComponent
+    DepotModificationComponent,
+    DepotValidationColumnPopupComponent
   ],
   imports: [
     DepotRouter,

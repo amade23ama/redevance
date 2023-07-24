@@ -7,7 +7,6 @@ import {ParamService} from "../../../core/services/param.service";
 import {SiteService} from "../../../core/services/site.service";
 import {ActivatedRoute} from "@angular/router";
 import {FileValidators} from "ngx-file-drag-drop";
-import {DemandeDepot} from "../../../core/interfaces/demande.depot";
 import {DepotService} from "../../../core/services/depot.service";
 
 @Component({
@@ -21,7 +20,7 @@ export class DepotCreationComponent implements  OnInit{
   typeFile=".txt,.csv"
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl()
-  nom: FormControl = new FormControl('',[Validators.required])
+  nom: FormControl = new FormControl('test',[Validators.required])
   file: FormControl = new FormControl('', [FileValidators.required, FileValidators.maxFileCount(3)])
   myform: FormGroup = this.builder.group({
     nom: this.nom,
@@ -96,7 +95,13 @@ export class DepotCreationComponent implements  OnInit{
       const formData: FormData = new FormData();
       formData.append('nom', JSON.stringify(this.myform.value.nom));
       formData.append('file', file, file.name);
-      this.depotService.creerDepot(formData).subscribe()
+      this.depotService.creerDepot(formData).subscribe((res)=>{
+        //this.depotService.ouvreValidationColumnPopUpDepot("popup validation column");
+      })
+      this.depotService.ouvreValidationColumnPopUpDepot("popup validation column");
+    }
+    if(event===Actions.ANNULER){
+      this.depotService.ouvreValidationColumnPopUpDepot("Popup validation column");
     }
   }
 }

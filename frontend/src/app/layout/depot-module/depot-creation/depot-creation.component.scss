@@ -84,6 +84,7 @@ fieldset legend {
   text-align: center;
 }
 ::ng-deep ngx-file-drag-drop:hover {
-  background-color: $orange-5;
-  border: 2px solid $orange-5;
+ // background-color: $orange-5;
+  border: 2px solid $orange-5!important;
+  background: linear-gradient(90deg, #fef4ef, #fdece3)!important;
 }

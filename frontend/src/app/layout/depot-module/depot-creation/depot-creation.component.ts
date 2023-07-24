@@ -8,6 +8,7 @@ import {SiteService} from "../../../core/services/site.service";
 import {ActivatedRoute} from "@angular/router";
 import {FileValidators} from "ngx-file-drag-drop";
 import {DemandeDepot} from "../../../core/interfaces/demande.depot";
+import {DepotService} from "../../../core/services/depot.service";
 
 @Component({
   selector: 'app-depot-creation',
@@ -28,7 +29,8 @@ export class DepotCreationComponent implements  OnInit{
   })
   constructor(private builder: FormBuilder,
               public appConfig:AppConfigService,private paramService: ParamService,
-              public siteService:SiteService, private readonly activatedRoute: ActivatedRoute) {
+              public siteService:SiteService, private readonly activatedRoute: ActivatedRoute,
+              public depotService:DepotService) {
   }
 
   ngOnInit(): void {
@@ -88,12 +90,13 @@ export class DepotCreationComponent implements  OnInit{
     formData.append('file', file, file.name);
     console.log("File changed!");
   }
-  depotAction(event: Actions){
+  depotAction(event: Actions) {
     if (event === Actions.ENREGISTRER) {
-      const demande:DemandeDepot=new DemandeDepot()
-            demande.nom=this.myform.value.nom;
-            demande.file=this.myform.value.file[0];
-            demande.data=null
+      const file: File = this.myform.value.file[0];
+      const formData: FormData = new FormData();
+      formData.append('nom', JSON.stringify(this.myform.value.nom));
+      formData.append('file', file, file.name);
+      this.depotService.creerDepot(formData).subscribe()
     }
   }
 }

@@ -32,29 +32,35 @@ public class UtilisateurController {
             @ApiResponse(code = 404, message = "Ressource non trouvée"),
             @ApiResponse(code = 500, message = "Erreur interne du serveur")})
     */
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public UtilisateurDTO enregistrerUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
         return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
     }
     @GetMapping(value = "/utilisateur/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public UtilisateurDTO chargerUtilisateurParMail(@PathVariable String email) {
         return utilisateurService.chargerUtilisateur(email);
     }
     @GetMapping(value = "/utilisateur/users")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public List<UtilisateurDTO> chargerUtilisateurs() {
         List<UtilisateurDTO>  users= utilisateurService.getAllUtilisateurs();
         return users;
     }
     @GetMapping(value = "/utilisateur/get/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public UtilisateurDTO chargerUtilisateurParId(@PathVariable Long id) {
         UtilisateurDTO user=  utilisateurService.chargerUtilisateurParId(id);
         return user;
     }
     @GetMapping(value = "/utilisateur/exist/{id}/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public boolean checkEmail(@PathVariable Long id,@PathVariable String email) {
         boolean status=  utilisateurService.checkEmail(id,email);
         return status;
     }
     @GetMapping(value = "/utilisateur/exist/{email}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public boolean checkEmail(@PathVariable String email) {
         boolean status=  utilisateurService.checkEmail(email);
         return status;
@@ -67,6 +73,7 @@ public class UtilisateurController {
             @ApiResponse(code = 404, message = "Ressource non trouvée"),
             @ApiResponse(code = 500, message = "Erreur interne du serveur")})
     */
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public UtilisateurDTO sauvegarderUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
         return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
     }

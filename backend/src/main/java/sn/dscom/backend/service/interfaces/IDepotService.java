@@ -52,5 +52,5 @@ public interface IDepotService {
      * @param id du depot
      * @return le DepotDTO
      */
-    DepotDTO rechercherDepotById(long id);
+    Optional<DepotDTO> rechercherDepotById(long id);
 }

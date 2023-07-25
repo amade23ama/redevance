@@ -1,26 +1,65 @@
 package sn.dscom.backend.service.converter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import sn.dscom.backend.common.dto.ChargementDTO;
+
 import sn.dscom.backend.common.dto.DepotDTO;
-import sn.dscom.backend.database.entite.ChargementEntity;
+import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.DepotEntity;
 
-import javax.validation.Valid;
+import java.util.Date;
 
-@Component
-public class DepotConverter {
-    @Autowired
-    DepotConverter(){super();}
-    public static DepotDTO toDepotDTO(@Valid DepotEntity depotEntity) {
-        //todo
-        return null;
+/**
+ * Exploitation Converter
+ */
+public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
+
+
+    /**
+     * transformation de {@link DepotEntity} en {@link DepotDTO}
+     *
+     * @param depotEntity l'objet à transformer en {@link DepotDTO}
+     * @return l'objet {@link DepotDTO}
+     */
+    @Override
+    public DepotDTO reverse(DepotEntity depotEntity) {
+
+        //on retourne null si l'objet d'entré est null
+        if (depotEntity == null) {
+            return null;
+        }
+        return DepotDTO.builder()
+                .id(depotEntity.getId())
+                .nom(depotEntity.getNom())
+                .dateHeureDepot(depotEntity.getDateHeureDepot())
+                .dateHeureFinDepot(depotEntity.getDateHeureFinDepot())
+               // .deposeur(depotEntity.getDeposeur())
+                .nbChargementDeposes(depotEntity.getNbChargementDeposes())
+                .nbChargementErreur(depotEntity.getNbChargementErreur())
+                .nomFichier(depotEntity.getNomFichier())
+                .nbChargementReDeposes(depotEntity.getNbChargementReDeposes())
+                .build();
     }
-    public static DepotEntity toDepotEntity(DepotDTO depotDTO) {
-        // todo
-        final DepotEntity depotEntity = new DepotEntity();
-        // depotEntityEntity.setId(depotEntityDTO.getId());
 
-        return depotEntity;
+    /**
+     * transformation de {@link DepotDTO} en {@link DepotEntity}
+     *
+     * @param depotDTO l'objet à transformer en {@link DepotEntity}
+     * @return l'objet {@link DepotEntity}
+     */
+    @Override
+    public DepotEntity transform(DepotDTO depotDTO) {
+        //on retourne null si l'objet d'entré est null
+        if (depotDTO == null) {
+            return null;
+        }
+        return DepotEntity.builder()
+                .id(depotDTO.getId())
+                .nom(depotDTO.getNom())
+                .dateHeureDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
+                .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot()) //TODO
+                // .deposeur(depotEntity.getDeposeur())
+                .nbChargementDeposes(depotDTO.getNbChargementDeposes())
+                .nbChargementErreur(depotDTO.getNbChargementErreur())
+                .nomFichier(depotDTO.getNomFichier())
+                .nbChargementReDeposes(depotDTO.getNbChargementReDeposes())
+                .build();
     }
 }

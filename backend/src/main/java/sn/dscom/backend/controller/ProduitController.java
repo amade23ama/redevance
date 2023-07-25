@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.service.interfaces.IProduitService;
@@ -32,6 +33,7 @@ public class ProduitController {
      */
     @GetMapping(path = "/rechercher", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ProduitDTO>> rechercherProduits() {
         log.info("Rechercher Produits");
         return  ResponseEntity.ok(produitService.rechercherProduits().get());
@@ -45,6 +47,7 @@ public class ProduitController {
      */
     @PostMapping(path = "/enregistrer", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<ProduitDTO> enregistrerProduit(@RequestBody ProduitDTO produitDTO) {
         log.info("Enregistrer Produits");
         return  ResponseEntity.ok(produitService.enregistrerProduit(produitDTO).get());
@@ -57,6 +60,7 @@ public class ProduitController {
      */
     @GetMapping(path = "/compter", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<Integer> getCompteurProduits() {
         log.info("compter Produits");
         return  ResponseEntity.ok(produitService.compterProduit());

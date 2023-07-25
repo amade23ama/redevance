@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.TypeInfoTuileEnum;
 import sn.dscom.backend.common.dto.HomeCardDTO;
+import sn.dscom.backend.service.interfaces.IDepotService;
 import sn.dscom.backend.service.interfaces.ISiteService;
 import sn.dscom.backend.service.interfaces.ITransporteurService;
 
@@ -13,11 +14,18 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Service de recherche des infos tuils
+ */
 @Service
 @Transactional
 @AllArgsConstructor
 public class InformationTuilesService {
-    private DepotService depotService;
+
+    /** depot Service */
+    @Autowired
+    private IDepotService depotService;
+
     private  ChargementService chargementService;
 
     /** site Service */
@@ -40,12 +48,12 @@ public class InformationTuilesService {
      * Méthode pour construire la tuile en cours opérateur.
      */
     private HomeCardDTO construireTuileDepot() {
+
         // Récupération des compteurs depuis la BDD.
-        final Integer compteurEnCours =depotService.compterDepot(LocalDateTime.now());
 
         return HomeCardDTO.builder()
                 .typeTuile(TypeInfoTuileEnum.DEPOT.getCode())
-                .valeur(compteurEnCours)
+                .valeur(depotService.compterDepot(LocalDateTime.now()))
                 .build();
     }
     private HomeCardDTO construireTuileChargement() {

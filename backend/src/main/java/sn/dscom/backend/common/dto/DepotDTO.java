@@ -3,6 +3,7 @@ package sn.dscom.backend.common.dto;
 import lombok.*;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -41,5 +42,8 @@ public class DepotDTO implements Serializable {
 
     /** nb Chargement Erreur */
     private Integer nbChargementErreur;
+
+    /** le fichier à charger */
+    private File file;
 
 }

@@ -3,17 +3,28 @@
   <div>
     {{data.contextValidation}}
   </div>
-
-  <div>
-    <mat-icon class="close" color="warn" [mat-dialog-close]="null">close</mat-icon>
-  </div>
-
-  <!--
-  <button mat-mini-fab class="new--contract--button">
-
-    <mat-icon>add</mat-icon>
+  <button mat-mini-fab mat-dialog-close class="close new--contract--button" color="warn">
+    <mat-icon>close</mat-icon>
   </button>
-  -->
 </div>
-  <div> le contentu des column </div>
+  <div class="container-form">
+    <form [formGroup]="mappingForm" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="5px">
+      <div fxLayout fxLayoutGap="10px"  *ngFor="let colonne of fichierColonnes" >
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" fxFlex.lt-md="90" floatLabel="always">
+          <mat-label>{{colonne}}</mat-label>
+          <mat-select formControlName="{{colonne}}">
+            <mat-option *ngFor="let dbColonne of dbColonnes" [value]="dbColonne">
+              {{ dbColonne }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="mappingForm.get(colonne)?.invalid && mappingForm.get(colonne)?.touched">
+            Choisissez une colonne dans la liste.
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <div class="mat-elevation-z0 mt-1">
+    <app-action-btns [btns]="btns"  (btnClick)="utilisateurAction($event)"></app-action-btns>
+  </div>
 </div>

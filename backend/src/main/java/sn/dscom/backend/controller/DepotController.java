@@ -9,9 +9,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.dscom.backend.common.dto.DepotDTO;
+import sn.dscom.backend.common.dto.ExploitationDTO;
 import sn.dscom.backend.common.dto.FileInfoDTO;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.service.interfaces.IDepotService;
+import sn.dscom.backend.service.interfaces.IExploitationService;
 import sn.dscom.backend.service.interfaces.ISiteService;
 
 import java.io.*;
@@ -37,6 +39,12 @@ public class DepotController {
      */
     @Autowired
     ISiteService siteService;
+
+    /**
+     * exploitation Service
+     */
+    @Autowired
+    IExploitationService exploitationService;
 
     /**
      * get header
@@ -79,12 +87,18 @@ public class DepotController {
                         .nbChargementErreur(0)
                         .dateHeureDepot(new Date())
                         .deposeur(UtilisateurDTO.builder().id(1L).build())
-                        .build());*/
+                        .build());
 
-        /*this.enregistrerSite(SiteDTO.builder()
+        this.enregistrerSite(SiteDTO.builder()
                 .nom("diofior".toUpperCase())
                 .localite("diofior".toUpperCase())
                 .dateCreation(new Date())
+                .build());
+
+        this.enregistrerExploitation(ExploitationDTO.builder()
+                        .nom("fimela".toUpperCase())
+                        .region("Fatick".toUpperCase())
+                        .dateCreation(new Date())
                 .build());*/
 
         //TODO: Juste pour les tests
@@ -214,6 +228,18 @@ public class DepotController {
      * @return l'objet enregisté
      */
     private SiteDTO enregistrerSite(SiteDTO siteDTO){
+        //site: nom et localite
         return this.siteService.enregistrerSite(siteDTO).get();
+    }
+
+    /**
+     * save en base
+     *
+     * @param exploitationDTO ExploitationDTO
+     * @return l'objet enregisté
+     */
+    private ExploitationDTO enregistrerExploitation(ExploitationDTO exploitationDTO){
+        //site: site_origine et region
+        return this.exploitationService.enregistrerSiteExploitation(exploitationDTO).get();
     }
 }

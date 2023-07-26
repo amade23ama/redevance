@@ -44,8 +44,8 @@ public class SiteService implements ISiteService {
         SiteEntity siteEntity = this.siteRepository.isSiteExist(siteDTO.getNom().toUpperCase(), siteDTO.getLocalite().toUpperCase());
 
         // s'il existe on renvoit le site existant
-        if(siteEntity != null){
-            siteDTO.setDateModification(new Date());
+        if(siteEntity != null && siteDTO.getId() == null ){
+            return Optional.of(this.siteConverteur.reverse(siteEntity));
         }
         //C'est la séquence qui génère l'id en cas de création
         return Optional.of(this.siteConverteur.reverse(this.siteRepository.save(this.siteConverteur.transform(siteDTO))));

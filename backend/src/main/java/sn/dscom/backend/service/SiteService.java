@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -31,25 +32,6 @@ public class SiteService implements ISiteService {
     /** Site Converteur */
     private Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
 
-   /* @Transactional
-    public SiteDTO enregistrerSite(SiteDTO siteDTO) {
-        //todo
-        return miseAjourSite(siteDTO);
-    }
-
-    private SiteDTO miseAjourSite(SiteDTO siteDTO) {
-        //todo
-        SiteEntity siteEntity =SiteConverter.toSiteEntity(siteDTO);
-        final Optional<SiteEntity> entitySite = siteRepository.findById(siteDTO.getId());
-        if(entitySite.isPresent()){
-            siteEntity.setDateModification(new Date());
-        }else {
-            siteEntity.setDateCreation(new Date());
-        }
-        SiteEntity site =siteRepository.save(siteEntity);
-        return  SiteConverter.toSiteDTO(site);
-    }*/
-
     /**
      * Permet de modifier ou de creer un site
      *
@@ -58,6 +40,13 @@ public class SiteService implements ISiteService {
      */
     @Override
     public Optional<SiteDTO> enregistrerSite(SiteDTO siteDTO) {
+        // Vérifiacation
+        SiteEntity siteEntity = this.siteRepository.isSiteExist(siteDTO.getNom().toUpperCase(), siteDTO.getLocalite().toUpperCase());
+
+        // s'il existe on renvoit le site existant
+        if(siteEntity != null){
+            siteDTO.setDateModification(new Date());
+        }
         //C'est la séquence qui génère l'id en cas de création
         return Optional.of(this.siteConverteur.reverse(this.siteRepository.save(this.siteConverteur.transform(siteDTO))));
     }

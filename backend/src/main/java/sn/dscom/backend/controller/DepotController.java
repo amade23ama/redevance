@@ -7,17 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.ContextLoader;
 import org.springframework.web.multipart.MultipartFile;
 import sn.dscom.backend.common.dto.DepotDTO;
-import sn.dscom.backend.common.dto.ExploitationDTO;
 import sn.dscom.backend.common.dto.FileInfoDTO;
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.service.interfaces.IDepotService;
+import sn.dscom.backend.service.interfaces.ISiteService;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.util.*;
-import java.util.stream.Stream;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de depot
@@ -28,8 +26,17 @@ import java.util.stream.Stream;
 @RequestMapping("/api/v1/depot")
 public class DepotController {
 
+    /**
+     * depot Service
+     */
     @Autowired
     private IDepotService depotService;
+
+    /**
+     * site Service
+     */
+    @Autowired
+    ISiteService siteService;
 
     /**
      * get header
@@ -62,8 +69,23 @@ public class DepotController {
      * @return l'entete
      */
     @PostMapping(path = "/upload")
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+   // @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<FileInfoDTO> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+        // Test Enregistrement
+        /*this.depotService.enregistrerDepot(DepotDTO.builder()
+                        .nom("depot1")
+                        .nbChargementReDeposes(1)
+                        .nomFichier(file.getName())
+                        .nbChargementErreur(0)
+                        .dateHeureDepot(new Date())
+                        .deposeur(UtilisateurDTO.builder().id(1L).build())
+                        .build());*/
+
+        /*this.enregistrerSite(SiteDTO.builder()
+                .nom("diofior".toUpperCase())
+                .localite("diofior".toUpperCase())
+                .dateCreation(new Date())
+                .build());*/
 
         //TODO: Juste pour les tests
         String ApplicationPath =  "C:\\Users\\Public\\test"+".csv";
@@ -183,5 +205,15 @@ public class DepotController {
      */
     private DepotDTO enregistrerDepot(DepotDTO depotDTO){
         return depotService.enregistrerDepot(depotDTO).get();
+    }
+
+    /**
+     * save en base
+     *
+     * @param siteDTO siteDTO
+     * @return l'objet enregisté
+     */
+    private SiteDTO enregistrerSite(SiteDTO siteDTO){
+        return this.siteService.enregistrerSite(siteDTO).get();
     }
 }

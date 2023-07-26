@@ -47,8 +47,8 @@ public class SiteConverter implements Transformer<SiteDTO, SiteEntity> {
 
         final SiteEntity siteEntity = SiteEntity.builder()
                 .id(siteDTO.getId())
-                .nom(siteDTO.getNom())
-                .localite(siteDTO.getLocalite())
+                .nom(siteDTO.getNom().toUpperCase())
+                .localite(siteDTO.getLocalite().toUpperCase())
                 .dateCreation(siteDTO.getDateCreation())
                 .dateModification(siteDTO.getDateModification())
                 .build();

@@ -32,7 +32,7 @@ public class DepotDTO implements Serializable {
     private String nomFichier;
 
     /** deposeur */
-    private UtilisateurEntity deposeur;
+    private UtilisateurDTO deposeur;
 
     /** nb Chargement Deposes */
     private Integer nbChargementDeposes;

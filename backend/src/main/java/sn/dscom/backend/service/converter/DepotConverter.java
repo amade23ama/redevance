@@ -1,8 +1,10 @@
 package sn.dscom.backend.service.converter;
 
 import sn.dscom.backend.common.dto.DepotDTO;
+import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.DepotEntity;
+import sn.dscom.backend.database.entite.UtilisateurEntity;
 
 import java.util.Date;
 
@@ -10,6 +12,9 @@ import java.util.Date;
  * Exploitation Converter
  */
 public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
+
+    /** utilisateur Transformer */
+    Transformer<UtilisateurDTO, UtilisateurEntity> utilisateurTransformer = new UtilisateurConverter();
 
 
     /**
@@ -30,7 +35,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nom(depotEntity.getNom())
                 .dateHeureDepot(depotEntity.getDateHeureDepot())
                 .dateHeureFinDepot(depotEntity.getDateHeureFinDepot())
-               // .deposeur(depotEntity.getDeposeur())
+                .deposeur(this.utilisateurTransformer.reverse(depotEntity.getDeposeur()))
                 .nbChargementDeposes(depotEntity.getNbChargementDeposes())
                 .nbChargementErreur(depotEntity.getNbChargementErreur())
                 .nomFichier(depotEntity.getNomFichier())
@@ -54,8 +59,8 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .id(depotDTO.getId())
                 .nom(depotDTO.getNom())
                 .dateHeureDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
-                .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot()) //TODO
-                // .deposeur(depotEntity.getDeposeur())
+                .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
+                .deposeur(this.utilisateurTransformer.transform(depotDTO.getDeposeur()))
                 .nbChargementDeposes(depotDTO.getNbChargementDeposes())
                 .nbChargementErreur(depotDTO.getNbChargementErreur())
                 .nomFichier(depotDTO.getNomFichier())

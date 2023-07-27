@@ -21,4 +21,13 @@ public interface CategorieRepository extends JpaRepository<CategorieEntity,Long>
      */
     @Query(value = "select count(c) from CategorieEntity c")
     Integer compterSitePardate(@Param("dateMiseEnService") LocalDateTime dateMiseEnService);
+
+    /**
+     * is Site Exist
+     * @param type type
+     * @param volume volume
+     * @return TransporteurEntity
+     */
+    @Query(value = "select categorie from CategorieEntity categorie where categorie.type = :type and  categorie.volume=:volume")
+    CategorieEntity isCategorieExist(@Param("type") String type, @Param("volume") double volume);
 }

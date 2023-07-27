@@ -43,7 +43,7 @@ public class VehiculeService implements IVoitureService{
     public Optional<VehiculeDTO> enregistrerVehicule(VehiculeDTO vehiculeDTO) {
 
         // en cas de création id est null ou vide
-        if (null == vehiculeDTO.getId()){
+        /*if (null == vehiculeDTO.getId()){
             //on ajout la date de création et on enregistre
             vehiculeDTO.setDateCreation(new Date());
             return Optional.of(this.vehiculeConverter.reverse(vehiculeRepository.save(this.vehiculeConverter.transform(vehiculeDTO))));
@@ -54,7 +54,16 @@ public class VehiculeService implements IVoitureService{
         if(!entityVehicule.isPresent()){
             throw new RuntimeException("L'entité à modifier n'existe pas en base");
         }
-        vehiculeDTO.setDateModification(new Date());
+        vehiculeDTO.setDateModification(new Date());*/
+
+        // Vérifiacation
+        VehiculeEntity vehiculeEntity = this.vehiculeRepository.isVehiculeExist(vehiculeDTO.getImmatriculation().toUpperCase());
+
+        // s'il existe on renvoit le site existant
+        if(vehiculeEntity != null && vehiculeDTO.getId() == null ){
+            return Optional.of(this.vehiculeConverter.reverse(vehiculeEntity));
+        }
+
         return Optional.of(this.vehiculeConverter.reverse(vehiculeRepository.save(this.vehiculeConverter.transform(vehiculeDTO))));
     }
 

@@ -33,7 +33,7 @@ public class TransporteurService implements ITransporteurService {
     private TransporteurRepository transporteurRepository;
 
     /** transporteur Converter */
-    private Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
+    private final Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
 
     /**
      * Permet de modifier ou de creer un Transporteur
@@ -43,6 +43,14 @@ public class TransporteurService implements ITransporteurService {
      */
     @Override
     public Optional<TransporteurDTO> enregistrerTransporteur(TransporteurDTO transporteurDTO) {
+
+        // Vérifiacation
+        TransporteurEntity transporteurEntity = this.transporteurRepository.isTransporteurExist(transporteurDTO.getNom().toUpperCase(), transporteurDTO.getTelephone().toUpperCase());
+
+        // s'il existe on renvoit le site existant
+        if(transporteurEntity != null && transporteurDTO.getId() == null ){
+            return Optional.of(this.transporteurConverter.reverse(transporteurEntity));
+        }
 
         //C'est la séquence qui génère l'id en cas de création
         return Optional.of(

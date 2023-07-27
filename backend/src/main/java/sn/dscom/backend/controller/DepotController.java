@@ -8,13 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import sn.dscom.backend.common.dto.DepotDTO;
-import sn.dscom.backend.common.dto.ExploitationDTO;
-import sn.dscom.backend.common.dto.FileInfoDTO;
-import sn.dscom.backend.common.dto.SiteDTO;
-import sn.dscom.backend.service.interfaces.IDepotService;
-import sn.dscom.backend.service.interfaces.IExploitationService;
-import sn.dscom.backend.service.interfaces.ISiteService;
+import sn.dscom.backend.common.dto.*;
+import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
 import java.util.*;
@@ -38,13 +33,33 @@ public class DepotController {
      * site Service
      */
     @Autowired
-    ISiteService siteService;
+    private ISiteService siteService;
 
     /**
      * exploitation Service
      */
     @Autowired
     IExploitationService exploitationService;
+
+    /**
+     * transporteur Service
+     */
+    @Autowired
+    private ITransporteurService transporteurService;
+
+    /**
+     * voiture Service
+     */
+    @Autowired
+    private IVoitureService voitureService;
+
+    /**
+     * categorie Service
+     */
+    @Autowired
+    private ICategorieService categorieService;
+
+
 
     /**
      * get header
@@ -99,6 +114,28 @@ public class DepotController {
                         .nom("fimela".toUpperCase())
                         .region("Fatick".toUpperCase())
                         .dateCreation(new Date())
+                .build());
+
+        CategorieDTO cat = this.enregistrerCategorie(CategorieDTO.builder()
+                        .type("TM2")
+                        .volume(12.3)
+                        .dateCreation(new Date())
+                        .build());
+        TransporteurDTO transp = this.enregistrerTransporteur(TransporteurDTO.builder()
+                        .type("PP")
+                        .nom("diop".toUpperCase())
+                        .prenom("ibou".toUpperCase())
+                        .adresse("dakar 12")
+                        .email("test@test.fr")
+                        .telephone("772345625")
+                        .dateCreation(new Date())
+                        .build());
+
+        this.voitureService.enregistrerVehicule(VehiculeDTO.builder()
+                        .immatriculation("aa224bb".toUpperCase())
+                        .dateCreation(new Date())
+                        .categorie(cat)
+                        .transporteur(transp)
                 .build());*/
 
         //TODO: Juste pour les tests
@@ -241,5 +278,38 @@ public class DepotController {
     private ExploitationDTO enregistrerExploitation(ExploitationDTO exploitationDTO){
         //site: site_origine et region
         return this.exploitationService.enregistrerSiteExploitation(exploitationDTO).get();
+    }
+
+    /**
+     * save en base
+     *
+     * @param categorieDTO categorieDTO
+     * @return l'objet enregisté
+     */
+    private CategorieDTO enregistrerCategorie(CategorieDTO categorieDTO){
+        //CATEGORIE:
+        return this.categorieService.enregistrerCategorie(categorieDTO).get();
+    }
+
+    /**
+     * save en base
+     *
+     * @param transporteurDTO transporteurDTO
+     * @return l'objet enregisté
+     */
+    private TransporteurDTO enregistrerTransporteur(TransporteurDTO transporteurDTO){
+        //TRANSPORTEUR: NOM_RAISON_SOCIALE,TELEPHONE
+        return this.transporteurService.enregistrerTransporteur(transporteurDTO).get();
+    }
+
+    /**
+     * save en base
+     *
+     * @param vehiculeDTO transporteurDTO
+     * @return l'objet enregisté
+     */
+    private VehiculeDTO enregistrerVehicule(VehiculeDTO vehiculeDTO){
+        //VEHICULE: transpoteur et categorie
+        return this.voitureService.enregistrerVehicule(vehiculeDTO).get();
     }
 }

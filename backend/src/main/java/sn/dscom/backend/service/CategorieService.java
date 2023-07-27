@@ -9,6 +9,7 @@ import sn.dscom.backend.common.dto.CategorieDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
+import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.CategorieRepository;
 import sn.dscom.backend.service.converter.CategorieConverter;
 import sn.dscom.backend.service.interfaces.ICategorieService;
@@ -29,11 +30,12 @@ import java.util.stream.Collectors;
 @Transactional
 public class CategorieService implements ICategorieService {
 
+    /** categorie Repository */
     @Autowired
     private CategorieRepository categorieRepository;
 
     /** categorie Converter */
-    Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
+    private final Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
 
     /**
      * Permet de modifier ou de creer une categorie
@@ -43,6 +45,14 @@ public class CategorieService implements ICategorieService {
      */
     @Override
     public Optional<CategorieDTO> enregistrerCategorie(CategorieDTO categorieDTO) {
+
+        // Vérifiacation
+        CategorieEntity categorieEntity = this.categorieRepository.isCategorieExist(categorieDTO.getType().toUpperCase(), categorieDTO.getVolume());
+
+        // s'il existe on renvoit le site existant
+        if(categorieEntity != null && categorieDTO.getId() == null ){
+            return Optional.of(this.categorieConverter.reverse(categorieEntity));
+        }
         //C'est la séquence qui génère l'id en cas de création
         return Optional.of(
                 this.categorieConverter.reverse(this.categorieRepository.save(this.categorieConverter.transform(categorieDTO)))

@@ -25,6 +25,6 @@ public interface SiteRepository extends JpaRepository<SiteEntity,Long>{
      * @param localite localite
      * @return SiteEntity
      */
-    @Query(value = "select site from SiteEntity site where site.nom = :nom or  site.localite=:localite")
+    @Query(value = "select site from SiteEntity site where site.nom = :nom and  site.localite=:localite")
     SiteEntity isSiteExist(@Param("nom") String nom, @Param("localite") String localite);
 }

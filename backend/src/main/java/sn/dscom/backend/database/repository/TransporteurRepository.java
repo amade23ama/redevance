@@ -22,4 +22,13 @@ public interface TransporteurRepository extends JpaRepository<TransporteurEntity
      */
     @Query(value = "select count(c) from TransporteurEntity c")
     Integer compterTransporteurPardate(@Param("dateMiseEnService") LocalDateTime dateMiseEnService);
+
+    /**
+     * is Site Exist
+     * @param nom nom
+     * @param telephone telephone
+     * @return TransporteurEntity
+     */
+    @Query(value = "select transpoteur from TransporteurEntity transpoteur where transpoteur.nom = :nom and  transpoteur.telephone=:telephone")
+    TransporteurEntity isTransporteurExist(@Param("nom") String nom, @Param("telephone") String telephone);
 }

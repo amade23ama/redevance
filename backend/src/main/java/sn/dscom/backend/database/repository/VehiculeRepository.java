@@ -1,6 +1,5 @@
 package sn.dscom.backend.database.repository;
 
-import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -35,4 +34,12 @@ public interface VehiculeRepository extends JpaRepository<VehiculeEntity,Long> {
     @Modifying
     @Query("UPDATE VehiculeEntity v SET v.immatriculation=:immat, v.dateModification=:dtMaj WHERE v.id =:id")
     void miseAjourImmatParId(@Param("immat") String immat, @Param("id") Long id, @Param("dtMaj") Date dtMaj);
+
+    /**
+     * is Site Exist
+     * @param immatriculation immatriculation
+     * @return VehiculeEntity
+     */
+    @Query(value = "select vehicule from VehiculeEntity vehicule where vehicule.immatriculation = :immatriculation")
+    VehiculeEntity isVehiculeExist(@Param("immatriculation") String immatriculation);
 }

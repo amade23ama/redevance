@@ -12,6 +12,9 @@ import java.util.List;
 @Builder
 public class ChargementDTO {
 
+    /** l'id */
+    private Long id;
+
     /** la destination du chargement*/
     private String destination;
 
@@ -19,22 +22,22 @@ public class ChargementDTO {
     private Date datePesage;
 
     /** le poid du chargement*/
-    private String poids;
+    private Double poids;
 
     /** le poid max du chargement*/
-    private String poidsMax;
+    private Double poidsMax;
 
     /** le poid Subst du chargement*/
-    private String poidsSubst;
+    private Double poidsSubst;
 
     /** le volume du chargement*/
-    private String volumeSubst;
+    private Double volumeSubst;
 
     /** le volume moyeb du chargement*/
-    private String volumeMoyen;
+    private Double volumeMoyen;
 
     /** ecart */
-    private String ecart;
+    private Double ecart;
 
     /** la date Creation*/
     private Date dateCreation;
@@ -55,5 +58,5 @@ public class ChargementDTO {
     private SiteDTO site;
 
     /** le site*/
-    private List<VehiculeDTO> vehicules;
+    private VehiculeDTO vehicule;
 }

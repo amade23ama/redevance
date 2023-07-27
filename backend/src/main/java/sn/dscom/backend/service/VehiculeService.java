@@ -31,7 +31,7 @@ public class VehiculeService implements IVoitureService{
     /**
      * vehicule Converter
      */
-    Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+    private Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
 
     /**
      * Fournit l'operation d'enregistrement d'un véhicule

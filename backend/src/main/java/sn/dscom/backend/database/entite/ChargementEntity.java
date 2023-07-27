@@ -22,9 +22,15 @@ public class ChargementEntity {
     private Date datePassage;
     @Column(name = "HEUREPASSAGE")
     private Date  heurePassage;
+
     @ManyToOne
     @JoinColumn(name = "ID_SITE", nullable = false)
     private SiteEntity siteEntity ;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_DEPOT", nullable = false)
+    private DepotEntity depotEntity ;
+
     @ManyToOne
     @JoinColumn(name = "ID_SITE_EXPLOITATION", nullable = false)
     private ExploitationEntity exploitationEntity;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.TypeInfoTuileEnum;
 import sn.dscom.backend.common.dto.HomeCardDTO;
+import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IDepotService;
 import sn.dscom.backend.service.interfaces.ISiteService;
 import sn.dscom.backend.service.interfaces.ITransporteurService;
@@ -26,7 +27,9 @@ public class InformationTuilesService {
     @Autowired
     private IDepotService depotService;
 
-    private  ChargementService chargementService;
+    /** chargement Service */
+    @Autowired
+    private IChargementService chargementService;
 
     /** site Service */
     @Autowired
@@ -36,6 +39,10 @@ public class InformationTuilesService {
     @Autowired
     private ITransporteurService transporteurService;
 
+    /**
+     * get Info Tuiles
+     * @return la liste
+     */
     public List<HomeCardDTO> getInfoTuiles() {
         return Arrays.asList(construireTuileDepot(),
                 construireTuileChargement(),
@@ -56,12 +63,18 @@ public class InformationTuilesService {
                 .valeur(depotService.compterDepot(LocalDateTime.now()))
                 .build();
     }
+
+    /**
+     * construire Tuile Chargement
+     *
+     * @return HomeCardDTO
+     */
     private HomeCardDTO construireTuileChargement() {
+
         // Récupération des compteurs depuis la BDD.
-        final Integer compteurEnCours =chargementService.compterChargement(LocalDateTime.now());
         return HomeCardDTO.builder()
                 .typeTuile(TypeInfoTuileEnum.CHARGEMENT.getCode())
-                .valeur(compteurEnCours)
+                .valeur(chargementService.compterChargement(LocalDateTime.now()))
                 .build();
     }
 

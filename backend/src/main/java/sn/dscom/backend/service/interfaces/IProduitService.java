@@ -1,7 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 import sn.dscom.backend.common.dto.ProduitDTO;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 

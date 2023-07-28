@@ -59,4 +59,10 @@ public class ChargementDTO {
 
     /** le site*/
     private VehiculeDTO vehicule;
+
+    /** le site d'exploitation */
+    private ExploitationDTO exploitation;
+
+    /**  d'produit */
+    private ProduitDTO produit;
 }

@@ -59,6 +59,18 @@ public class DepotController {
     @Autowired
     private ICategorieService categorieService;
 
+    /**
+     * chargement Service
+     */
+    @Autowired
+    private IChargementService chargementService;
+
+    /**
+     * produit Service
+     */
+    @Autowired
+    private IProduitService produitService;
+
 
 
     /**
@@ -95,7 +107,7 @@ public class DepotController {
    // @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<FileInfoDTO> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
         // Test Enregistrement
-        /*this.depotService.enregistrerDepot(DepotDTO.builder()
+       /* DepotDTO depot = this.enregistrerDepot(DepotDTO.builder()
                         .nom("depot1")
                         .nbChargementReDeposes(1)
                         .nomFichier(file.getName())
@@ -104,13 +116,14 @@ public class DepotController {
                         .deposeur(UtilisateurDTO.builder().id(1L).build())
                         .build());
 
-        this.enregistrerSite(SiteDTO.builder()
+        // Table SITE: nom et localité db_site_nom et db_site_localite
+        SiteDTO site = this.enregistrerSite(SiteDTO.builder()
                 .nom("diofior".toUpperCase())
                 .localite("diofior".toUpperCase())
                 .dateCreation(new Date())
                 .build());
 
-        this.enregistrerExploitation(ExploitationDTO.builder()
+        ExploitationDTO exploitationDTO = this.enregistrerExploitation(ExploitationDTO.builder()
                         .nom("fimela".toUpperCase())
                         .region("Fatick".toUpperCase())
                         .dateCreation(new Date())
@@ -131,11 +144,28 @@ public class DepotController {
                         .dateCreation(new Date())
                         .build());
 
-        this.voitureService.enregistrerVehicule(VehiculeDTO.builder()
+        VehiculeDTO voiture = enregistrerVehicule(VehiculeDTO.builder()
                         .immatriculation("aa224bb".toUpperCase())
                         .dateCreation(new Date())
                         .categorie(cat)
                         .transporteur(transp)
+                .build());
+
+        this.enregistrerChargement(ChargementDTO.builder()
+                .dateCreation(new Date())
+                .datePesage(new Date())
+                .poids(20.3)
+                .ecart(21.03)
+                .poidsMax(40.00)
+                .poidsSubst(30.0)
+                .destination("THIES")
+                .volumeMoyen(60.3)
+                .volumeSubst(50.2)
+                .vehicule(voiture)
+                .site(site)
+                .depot(depot)
+                .exploitation(exploitationDTO)
+                .produit(this.produitService.rechercherProduits().get().stream().findFirst().get())
                 .build());*/
 
         //TODO: Juste pour les tests
@@ -153,6 +183,16 @@ public class DepotController {
             //Read one line at a time
             while ((nextLine = reader.readNext()) != null)
             {
+                Map<String, Map<String, Integer>> maps = new HashMap<>();
+                Map<String, Integer> map = new HashMap<>();
+
+                map.put("db_site_nom", 0);
+                map.put("db_site_localite", 5);
+                maps.put("site",map);
+
+                // Table SITE: nom et localité db_site_nom et db_site_localite
+                //SiteDTO site = this.enregistrerSite(nextLine, maps);
+
                donneesFichier.add(nextLine);
             }
         }catch (IOException | CsvValidationException e) {
@@ -261,12 +301,20 @@ public class DepotController {
     /**
      * save en base
      *
-     * @param siteDTO siteDTO
+     * @param data siteDTO
      * @return l'objet enregisté
      */
-    private SiteDTO enregistrerSite(SiteDTO siteDTO){
+    private SiteDTO enregistrerSite(String[] data, Map<String, Map<String, Integer>> maps){
+
+        // Table SITE: nom et localité db_site_nom et db_site_localite
+
         //site: nom et localite
-        return this.siteService.enregistrerSite(siteDTO).get();
+        return this.siteService.enregistrerSite(SiteDTO.builder()
+                                                        .nom(data[maps.get("site").get("db_site_nom")].toUpperCase())
+                                                        .localite(data[maps.get("site").get("db_site_localite")].toUpperCase())
+                                                        .dateCreation(new Date())
+                                                        .build()
+                                                ).get();
     }
 
     /**
@@ -311,5 +359,16 @@ public class DepotController {
     private VehiculeDTO enregistrerVehicule(VehiculeDTO vehiculeDTO){
         //VEHICULE: transpoteur et categorie
         return this.voitureService.enregistrerVehicule(vehiculeDTO).get();
+    }
+
+    /**
+     * save en base
+     *
+     * @param chargementDTO chargementDTO
+     * @return l'objet enregisté
+     */
+    private ChargementDTO enregistrerChargement(ChargementDTO chargementDTO){
+        //CHARGEMENT
+        return this.chargementService.enregistrerChargement(chargementDTO).get();
     }
 }

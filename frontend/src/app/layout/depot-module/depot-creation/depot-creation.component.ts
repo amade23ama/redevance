@@ -86,7 +86,7 @@ export class DepotCreationComponent implements  OnInit{
   onValueChange(files: File[]) {
     const file=files[0]
     const formData = new FormData();
-    formData.append('file', file, file.name);
+    formData.append('file', file);
     console.log("File changed!");
   }
   depotAction(event: Actions) {
@@ -94,14 +94,13 @@ export class DepotCreationComponent implements  OnInit{
       const file: File = this.myform.value.file[0];
       const formData: FormData = new FormData();
       formData.append('nom', JSON.stringify(this.myform.value.nom));
-      formData.append('file', file, file.name);
+      formData.append('file', file);
       this.depotService.creerDepot(formData).subscribe((res)=>{
-        //this.depotService.ouvreValidationColumnPopUpDepot("popup validation column");
+        this.depotService.ouvreValidationColumnPopUpDepot("valider la correspondant");
       })
-      this.depotService.ouvreValidationColumnPopUpDepot("popup validation column");
     }
     if(event===Actions.ANNULER){
-      this.depotService.ouvreValidationColumnPopUpDepot("Popup validation column");
+
     }
   }
 }

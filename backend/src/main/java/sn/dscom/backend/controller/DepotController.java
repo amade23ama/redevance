@@ -1,18 +1,24 @@
 package sn.dscom.backend.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
+import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de depot
@@ -22,7 +28,7 @@ import java.util.*;
 @RestController
 @RequestMapping("/api/v1/depot")
 public class DepotController {
-
+   // static Logger log= LogManager.getLogger(DepotController.class);
     /**
      * depot Service
      */
@@ -76,25 +82,29 @@ public class DepotController {
     /**
      * get header
      *
-     * @param depotDTO transporteurDTO
      * @return l'entete
      */
     @PostMapping(path = "/fileHeader")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<String[]> getFileHeader(@RequestBody DepotDTO depotDTO){
-        // l'entete du fichier
-        String[] header = null;
-        File file = depotDTO.getFile();
-
-        try(CSVReader reader = new CSVReader(new FileReader(file))) {
-            header = reader.readNext();
-            System.out.println(Arrays.toString(header));
+    public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
+        List<String> header = null;
+        log.info(" entete du fichier ");
+        if (file.isEmpty()) {
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
+        }
+        try{
+            Reader reader = new InputStreamReader(file.getInputStream());
+            CSVReader csvReader = new CSVReader(reader) ;
+            header = Arrays.stream((csvReader.readNext()))
+                               .flatMap(line -> Arrays.stream(line.split(";")))
+                                .collect(Collectors.toList());
+            log.info(" entete du fichier "+header);
         }catch (IOException | CsvValidationException e) {
             e.printStackTrace();
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
         }
-
-        //enregistrer ou modifier Depot
-        return  ResponseEntity.ok(header);
+        FileInfoDTO fileInfoDTO=FileInfoDTO.builder().enteteFile(header).build();
+        return  ResponseEntity.ok(fileInfoDTO);
     }
 
     /**
@@ -105,7 +115,23 @@ public class DepotController {
      */
     @PostMapping(path = "/upload")
    // @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<FileInfoDTO> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<Long> uploadFile(@RequestParam("file") MultipartFile file,
+                                                  @RequestParam("mapEntete") String mapEnteteJson,
+                                                  @RequestParam("nom") String nomDepot)
+                                                  throws IOException {
+        log.info(" entete du fichier ");
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            Map<String, Object> mapDatabaseEnteteFile = objectMapper.readValue(mapEnteteJson,new TypeReference<Map<String, Object>>() {});
+            // todo
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
+        }
+        if (file.isEmpty()) {
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
+        }
+
         // Test Enregistrement
        /* DepotDTO depot = this.enregistrerDepot(DepotDTO.builder()
                         .nom("depot1")
@@ -199,12 +225,14 @@ public class DepotController {
             e.printStackTrace();
         }
 
-        return  ResponseEntity.ok(FileInfoDTO.builder()
-                .colonnesFile(header)
-                .taille(file.getSize())
-                .donneesFichier(donneesFichier)
-                .colonneTable(new String[]{"nom", "date","provenance"})
-                .build());
+        //return  ResponseEntity.ok(FileInfoDTO.builder()
+               // .colonnesFile(header)
+                //.taille(file.getSize())
+                //.donneesFichier(donneesFichier)
+                //.colonneTable(new String[]{"nom", "date","provenance"})
+                //.build());
+        // todo return numero de depot
+        return   ResponseEntity.ok(2L);
     }
 
     /**

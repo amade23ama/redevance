@@ -1,7 +1,7 @@
 package sn.dscom.backend.common.constants.Enum;
 
 public enum ErreurEnum {
-    /** Erreur : le contrat à supprimer n'existe pas */
+    ERR_FiLE_NOT_FOUND("aucun fichier"),
     ERR_CONTRAT_NOT_FOUND("error.contratNotFound"),
     ERR_INATTENDUE("error.inattendue"),
     ERR_CONTRAT_DROIT_INSUFFISANT("erreur.contrat.droit.insuffisant");

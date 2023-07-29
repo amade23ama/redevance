@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * FileInfoDTO
@@ -31,4 +32,7 @@ public class FileInfoDTO implements Serializable {
 
     /** colonnes des tables */
     private String[] colonneTable;
+
+    private List<String> enteteFile;
+    private Map<String,String> headerFileToDatabase ;
 }

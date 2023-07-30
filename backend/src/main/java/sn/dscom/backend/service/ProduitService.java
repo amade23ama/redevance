@@ -57,6 +57,19 @@ public class ProduitService implements IProduitService {
         //C'est la séquence qui génère l'id en cas de création
         return Optional.of(this.produitConverteur.reverse(this.produitRepository.save(this.produitConverteur.transform(produitDTO))));
     }
+
+    /**
+     * rechercher Produits
+     * * @param produitDTO le produit à rechercher
+     *
+     * @return le produit
+     */
+    @Override
+    public Optional<ProduitDTO> rechercherProduit(ProduitDTO produitDTO) {
+
+        return Optional.of(this.produitConverteur.reverse(this.produitRepository.rechercherProduitByCriteres(produitDTO.getNomSRC(), produitDTO.getNomNORM())));
+    }
+
     /**
      * compteur de Produits
      * @return le nombre

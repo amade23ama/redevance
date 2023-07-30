@@ -1,5 +1,5 @@
 <div fxLayout fxLayout="row" fxLayoutAlign="space-around center" *ngIf="numero$ |async as num ">
-   le depot a ete cree avec ce numero: {{num}}
+  <span class="numero-depot mt-02">{{appConfig.getLabel('depot.creer.numero')}}{{num}}</span>
 </div>
 <fieldset class="mt-1">
   <legend>{{titre}}</legend>

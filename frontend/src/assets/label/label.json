@@ -66,6 +66,7 @@
     "depot.actions.supprimer": "SUPPRIMER",
     "depot.message.supprimer": "succes=Suppression du depot réalisé avec succès.",
     "depot.label.placerholder": "Déposez votre fichier ici ou cliquez pour sélectionner",
+    "depot.creer.numero": "Le depot a été creé avec le numero :",
 
     "depot.bloc.donneecharge.label": "Données produits",
     "depot.bloc.donneecharge.produit.enregistrer.succes": "Validation effectu\u00e9e avec succ\u00e8s",

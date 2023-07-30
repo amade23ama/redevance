@@ -102,5 +102,6 @@ export class DepotCreationComponent implements  OnInit{
     if(event===Actions.ANNULER){
 
     }
+    this.file.setValue('');
   }
 }

@@ -18,12 +18,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class FileInfoDTO implements Serializable {
 
-    /** data */
-    private  byte[] data;
-
-    /** nomsColonnesFile */
-    private String[] colonnesFile;
-
     /** taille */
     private  Long taille;
 
@@ -31,8 +25,8 @@ public class FileInfoDTO implements Serializable {
     private List<String[]> donneesFichier;
 
     /** colonnes des tables */
-    private String[] colonneTable;
+    private List<String> colonneTable;
 
+    /** entete File */
     private List<String> enteteFile;
-    private Map<String,String> headerFileToDatabase ;
 }

@@ -5,8 +5,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
+@EnableAsync
 public class BackendApplication implements CommandLineRunner {
     static Logger log= LogManager.getLogger(BackendApplication.class);
     public static void main(String[] args) {

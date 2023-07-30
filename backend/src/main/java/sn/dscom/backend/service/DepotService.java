@@ -53,13 +53,6 @@ public class DepotService implements IDepotService {
      */
     @Override
     public Optional<DepotDTO> enregistrerDepot(DepotDTO depotDTO) {
-        // TODO: à revoir
-        UtilisateurDTO utilisateurDTO = this.utilisateurService.chargerUtilisateurParId(depotDTO.getDeposeur().getId());
-
-        if(null != utilisateurDTO) {
-            depotDTO.setDeposeur(utilisateurDTO);
-        }
-
 
         //C'est la séquence qui génère l'id en cas de création
         return Optional.of(this.depotConverteur.reverse(this.depotRepository.save(this.depotConverteur.transform(depotDTO))));

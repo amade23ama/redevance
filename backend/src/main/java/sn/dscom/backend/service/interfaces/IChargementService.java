@@ -1,9 +1,11 @@
 package sn.dscom.backend.service.interfaces;
 
 import sn.dscom.backend.common.dto.ChargementDTO;
+import sn.dscom.backend.common.dto.DepotDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -32,4 +34,14 @@ public interface IChargementService {
      * @return le nombre
      */
     Integer compterChargement(LocalDateTime dateMiseEnService);
+
+    /**
+     * effectuer Chargement
+     * @param ligneChargement ligneChargement
+     * @param mapCorrespondance mapCorrespondance
+     * @param header header
+     * @param depotDTO depotDTO
+     * @return ChargementDTO
+     */
+    ChargementDTO effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depotDTO);
 }

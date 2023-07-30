@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
+import sn.dscom.backend.service.ConnectedUtilisateurService;
+import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
@@ -37,49 +39,22 @@ public class DepotController {
     private IDepotService depotService;
 
     /**
-     * site Service
-     */
-    @Autowired
-    private ISiteService siteService;
-
-    /**
-     * exploitation Service
-     */
-    @Autowired
-    IExploitationService exploitationService;
-
-    /**
-     * transporteur Service
-     */
-    @Autowired
-    private ITransporteurService transporteurService;
-
-    /**
-     * voiture Service
-     */
-    @Autowired
-    private IVoitureService voitureService;
-
-    /**
-     * categorie Service
-     */
-    @Autowired
-    private ICategorieService categorieService;
-
-    /**
      * chargement Service
      */
     @Autowired
     private IChargementService chargementService;
 
+    /**
+     * environment
+     */
     @Autowired
     private Environment environment;
 
     /**
-     * produit Service
+     * connected Utilisateur Service
      */
     @Autowired
-    private IProduitService produitService;
+    private ConnectedUtilisateurService connectedUtilisateurService;
 
 
 
@@ -89,7 +64,7 @@ public class DepotController {
      * @return l'entete
      */
     @PostMapping(path = "/fileHeader")
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    //@PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
         List<String> header = null;
         log.info(" entete du fichier ");
@@ -99,9 +74,7 @@ public class DepotController {
         try{
             Reader reader = new InputStreamReader(file.getInputStream());
             CSVReader csvReader = new CSVReader(reader) ;
-            header = Arrays.stream((csvReader.readNext()))
-                               .flatMap(line -> Arrays.stream(line.split(";")))
-                                .collect(Collectors.toList());
+            header = tabToList(csvReader.readNext());
             log.info(" entete du fichier "+header);
         }catch (IOException | CsvValidationException e) {
             e.printStackTrace();
@@ -121,125 +94,93 @@ public class DepotController {
      * @return l'entete
      */
     @PostMapping(path = "/upload")
-   // @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<Long> uploadFile(@RequestParam("file") MultipartFile file,
-                                                  @RequestParam("mapEntete") String mapEnteteJson,
-                                                  @RequestParam("nom") String nomDepot)
-                                                  throws IOException {
-        log.info(" entete du fichier ");
+                                                   @RequestParam("mapEntete") String mapEnteteJson,
+                                                   @RequestParam("nom") String nomDepot)
+            throws IOException {
+
+        // Utilisateur
+        UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
+        // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
+        // Le Depot
+        DepotDTO depot = new DepotDTO();
+        String nom;
+
+        // Controle sur le fichier
+        if (file.isEmpty()) {
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
+        }
+
         try {
-            Map<String, Object> mapDatabaseEnteteFile = objectMapper.readValue(mapEnteteJson,new TypeReference<Map<String, Object>>() {});
+            Map<String, String> mapDatabaseEnteteFile = objectMapper.readValue(mapEnteteJson,new TypeReference<Map<String, String>>() {});
+            nom = objectMapper.readValue(nomDepot, new TypeReference<String>() {});
+            Map<String, String> mapInverse = new HashMap<>();
+            //TODO: à enlever
+            mapDatabaseEnteteFile.forEach((k, v) -> {
+                mapInverse.put(v,k);
+            });
+            // enregister le depot
+            depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom)).get();
+            List<String> header = null;
+            try{
+                Reader reader = new InputStreamReader(file.getInputStream());
+                CSVReader csvReader = new CSVReader(reader) ;
+                header = tabToList(csvReader.readNext());
+
+                // next Line
+                String [] nextLine;
+
+                while ((nextLine = csvReader.readNext()) != null)
+                {
+                    List<String> chargement = tabToList(nextLine);
+                    ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
+                }
+                log.info(" entete du fichier "+header);
+            }catch (IOException | CsvValidationException e) {
+                e.printStackTrace();
+                throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
+            }
+
             // todo
         } catch (Exception e) {
             e.printStackTrace();
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
-        if (file.isEmpty()) {
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
-        }
 
-        // Test Enregistrement
-       /* DepotDTO depot = this.enregistrerDepot(DepotDTO.builder()
-                        .nom("depot1")
-                        .nbChargementReDeposes(1)
-                        .nomFichier(file.getName())
-                        .nbChargementErreur(0)
-                        .dateHeureDepot(new Date())
-                        .deposeur(UtilisateurDTO.builder().id(1L).build())
-                        .build());
+        // return id du depot
+        return   ResponseEntity.ok(depot.getId());
+    }
 
-        // Table SITE: nom et localité db_site_nom et db_site_localite
-        SiteDTO site = this.enregistrerSite(SiteDTO.builder()
-                .nom("diofior".toUpperCase())
-                .localite("diofior".toUpperCase())
-                .dateCreation(new Date())
-                .build());
+    /**
+     * tabToList
+     * @param nextLine nextLine
+     * @return List
+     */
+    private static List<String> tabToList(String[] nextLine) {
+        return Arrays.stream(nextLine)
+                .flatMap(line -> Arrays.stream(line.split(";")))
+                .collect(Collectors.toList());
+    }
 
-        ExploitationDTO exploitationDTO = this.enregistrerExploitation(ExploitationDTO.builder()
-                        .nom("fimela".toUpperCase())
-                        .region("Fatick".toUpperCase())
-                        .dateCreation(new Date())
-                .build());
-
-        CategorieDTO cat = this.enregistrerCategorie(CategorieDTO.builder()
-                        .type("TM2")
-                        .volume(12.3)
-                        .dateCreation(new Date())
-                        .build());
-        TransporteurDTO transp = this.enregistrerTransporteur(TransporteurDTO.builder()
-                        .type("PP")
-                        .nom("diop".toUpperCase())
-                        .prenom("ibou".toUpperCase())
-                        .adresse("dakar 12")
-                        .email("test@test.fr")
-                        .telephone("772345625")
-                        .dateCreation(new Date())
-                        .build());
-
-        VehiculeDTO voiture = enregistrerVehicule(VehiculeDTO.builder()
-                        .immatriculation("aa224bb".toUpperCase())
-                        .dateCreation(new Date())
-                        .categorie(cat)
-                        .transporteur(transp)
-                .build());
-
-        this.enregistrerChargement(ChargementDTO.builder()
-                .dateCreation(new Date())
-                .datePesage(new Date())
-                .poids(20.3)
-                .ecart(21.03)
-                .poidsMax(40.00)
-                .poidsSubst(30.0)
-                .destination("THIES")
-                .volumeMoyen(60.3)
-                .volumeSubst(50.2)
-                .vehicule(voiture)
-                .site(site)
-                .depot(depot)
-                .exploitation(exploitationDTO)
-                .produit(this.produitService.rechercherProduits().get().stream().findFirst().get())
-                .build());*/
-
-        //TODO: Juste pour les tests
-        String ApplicationPath =  "C:\\Users\\Public\\test"+".csv";
-
-        // l'entete du fichier
-        String[] header = null;
-        List<String[]> donneesFichier = new ArrayList<>();
-        File fileUploaded = new File(ApplicationPath);
-        file.transferTo(fileUploaded);
-
-        try(CSVReader reader = new CSVReader(new FileReader(ApplicationPath))) {
-            header = reader.readNext();
-            String [] nextLine;
-            //Read one line at a time
-            while ((nextLine = reader.readNext()) != null)
-            {
-                Map<String, Map<String, Integer>> maps = new HashMap<>();
-                Map<String, Integer> map = new HashMap<>();
-
-                map.put("db_site_nom", 0);
-                map.put("db_site_localite", 5);
-                maps.put("site",map);
-
-                // Table SITE: nom et localité db_site_nom et db_site_localite
-                //SiteDTO site = this.enregistrerSite(nextLine, maps);
-
-               donneesFichier.add(nextLine);
-            }
-        }catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-        }
-
-        //return  ResponseEntity.ok(FileInfoDTO.builder()
-               // .colonnesFile(header)
-                //.taille(file.getSize())
-                //.donneesFichier(donneesFichier)
-                //.colonneTable(new String[]{"nom", "date","provenance"})
-                //.build());
-        // todo return numero de depot
-        return   ResponseEntity.ok(2L);
+    /**
+     * buildDepot
+     *
+     * @param file file
+     * @param utilisateurDTO utilisateurDTO
+     * @param nom nom
+     * @return DepotDTO
+     */
+    private static DepotDTO buildDepot(MultipartFile file, UtilisateurDTO utilisateurDTO, String nom) {
+        return DepotDTO.builder()
+                .nom(nom)
+                .nbChargementReDeposes(1)
+                .nomFichier(file.getName())
+                .nbChargementErreur(0)
+                .dateHeureDepot(new Date())
+                .deposeur(utilisateurDTO)
+                .build();
     }
 
     /**
@@ -252,7 +193,7 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<DepotDTO> deposer(@RequestBody DepotDTO depotDTO) {
         // Controle du fichier
-
+        DepotDTO depot = new DepotDTO();
         File file = depotDTO.getFile();
        // File file = new File("C:\\Users\\diome\\Downloads\\BDD SEPTEMBRE 2021 OUROSSOGUI.csv");
         try(CSVReader reader
@@ -278,7 +219,7 @@ public class DepotController {
 
 
         //enregistrer ou modifier Depot
-        return  ResponseEntity.ok(this.enregistrerDepot(depotDTO));
+        return  ResponseEntity.ok(depot);
     }
 
     /**
@@ -323,87 +264,4 @@ public class DepotController {
         return  ResponseEntity.ok(depotService.supprimerDepot(depotDTO).booleanValue());
     }
 
-    /**
-     * save en base
-     *
-     * @param depotDTO depotDTO
-     * @return l'objet enregisté
-     */
-    private DepotDTO enregistrerDepot(DepotDTO depotDTO){
-        return depotService.enregistrerDepot(depotDTO).get();
-    }
-
-    /**
-     * save en base
-     *
-     * @param data siteDTO
-     * @return l'objet enregisté
-     */
-    private SiteDTO enregistrerSite(String[] data, Map<String, Map<String, Integer>> maps){
-
-        // Table SITE: nom et localité db_site_nom et db_site_localite
-
-        //site: nom et localite
-        return this.siteService.enregistrerSite(SiteDTO.builder()
-                                                        .nom(data[maps.get("site").get("db_site_nom")].toUpperCase())
-                                                        .localite(data[maps.get("site").get("db_site_localite")].toUpperCase())
-                                                        .dateCreation(new Date())
-                                                        .build()
-                                                ).get();
-    }
-
-    /**
-     * save en base
-     *
-     * @param exploitationDTO ExploitationDTO
-     * @return l'objet enregisté
-     */
-    private ExploitationDTO enregistrerExploitation(ExploitationDTO exploitationDTO){
-        //site: site_origine et region
-        return this.exploitationService.enregistrerSiteExploitation(exploitationDTO).get();
-    }
-
-    /**
-     * save en base
-     *
-     * @param categorieDTO categorieDTO
-     * @return l'objet enregisté
-     */
-    private CategorieDTO enregistrerCategorie(CategorieDTO categorieDTO){
-        //CATEGORIE:
-        return this.categorieService.enregistrerCategorie(categorieDTO).get();
-    }
-
-    /**
-     * save en base
-     *
-     * @param transporteurDTO transporteurDTO
-     * @return l'objet enregisté
-     */
-    private TransporteurDTO enregistrerTransporteur(TransporteurDTO transporteurDTO){
-        //TRANSPORTEUR: NOM_RAISON_SOCIALE,TELEPHONE
-        return this.transporteurService.enregistrerTransporteur(transporteurDTO).get();
-    }
-
-    /**
-     * save en base
-     *
-     * @param vehiculeDTO transporteurDTO
-     * @return l'objet enregisté
-     */
-    private VehiculeDTO enregistrerVehicule(VehiculeDTO vehiculeDTO){
-        //VEHICULE: transpoteur et categorie
-        return this.voitureService.enregistrerVehicule(vehiculeDTO).get();
-    }
-
-    /**
-     * save en base
-     *
-     * @param chargementDTO chargementDTO
-     * @return l'objet enregisté
-     */
-    private ChargementDTO enregistrerChargement(ChargementDTO chargementDTO){
-        //CHARGEMENT
-        return this.chargementService.enregistrerChargement(chargementDTO).get();
-    }
 }

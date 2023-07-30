@@ -217,21 +217,32 @@ public class UtilisateurConverter implements Transformer<UtilisateurDTO, Utilisa
         return utilisateurEntity;
     }
 
+    /**
+     *  convert UtilisateurConnectedDTO en UtilisateurDTO
+     *
+     * @param utilisateurConnectedDTO utilisateurConnectedDTO
+     * @return UtilisateurDTO
+     */
+    public static UtilisateurDTO toUtilisateurDTO(@Valid UtilisateurConnectedDTO utilisateurConnectedDTO){
 
-/*
-        List<ProfilDTO> listeProfils = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(utilisateurEntity.getProfils())) {
-            utilisateurEntity.getProfils()
-                    .forEach((ProfilEntity profilEntity) ->
-                            listeProfils.add(ProfilConverter.toProfilDTO(profilEntity)));
+        // si l'objet est null
+        if (utilisateurConnectedDTO == null) {
+            return null;
         }
-        utilisateurDTO.setProfils(listeProfils);
- */
-/*
-     if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {
-            utilisateurDTO.getProfils()
-                    .forEach((ProfilDTO profilDTO) ->
-                            listeProfils.add(ProfilConverter.toProfilEntity(ProfilEntity.profilDTO)));
-        }
- */
+
+        UtilisateurDTO utilisateurDTO = UtilisateurDTO.builder()
+                .email(utilisateurConnectedDTO.getEmail())
+                .id(utilisateurConnectedDTO.getId())
+                .prenom(utilisateurConnectedDTO.getPrenom())
+                .nom(utilisateurConnectedDTO.getNom())
+                .login(utilisateurConnectedDTO.getLogin())
+                .build();
+
+        Collection<? extends GrantedAuthority> authorities = utilisateurConnectedDTO.getAuthorities().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                .collect(Collectors.toList());
+        utilisateurConnectedDTO.setAuthorities(authorities);
+
+        return utilisateurDTO;
+    }
 }

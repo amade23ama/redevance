@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Exploitation} from "../interfaces/exploitation";
-import {catchError, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
 import {NotificationService} from "./notification.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {
@@ -20,6 +20,7 @@ export class DepotService{
   confirmDialog: any;
   fileInfoCourant: FileInfo = new FileInfo();
   fichierCourant: FormData =new FormData();
+  private _numeroDepot$: BehaviorSubject<number> = new BehaviorSubject(<number>(null));
   constructor(private http:HttpClient,private notification: NotificationService,
               public dialog: MatDialog,) {
   }
@@ -42,6 +43,7 @@ export class DepotService{
         tap((res)=> {
           console.log("confirmation depot ",res);
           this.notification.success("confirmation depot")
+          this.setNumeroDepot(res as number)
         }),
         catchError((err) => {
           this.notification.error("erreur de confirmation depot")
@@ -77,5 +79,10 @@ export class DepotService{
   setFichierCourant(fichierCourant: FormData) {
     this.fichierCourant = fichierCourant;
   }
-
+ setNumeroDepot(num:number){
+    this._numeroDepot$.next(num);
+ }
+ get numeroDepot$(){
+    return this._numeroDepot$.asObservable()
+ }
 }

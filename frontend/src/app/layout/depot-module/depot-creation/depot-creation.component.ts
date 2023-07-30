@@ -15,7 +15,7 @@ import {DepotService} from "../../../core/services/depot.service";
   styleUrls: ['./depot-creation.component.scss']
 })
 export class DepotCreationComponent implements  OnInit{
-
+  numero$=this.depotService.numeroDepot$
   titre="créaction d'un dépot";
   typeFile=".txt,.csv"
   btns: ActionBtn[] = [];

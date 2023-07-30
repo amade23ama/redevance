@@ -34,8 +34,8 @@ export class DepotValidationColumnPopupComponent implements OnInit{
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
       Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
-      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('depot.actions.valider'),
+      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'done_outline'));
     return this.btns;
   }
   isEnrgBtnDisplayed(){
@@ -50,9 +50,9 @@ export class DepotValidationColumnPopupComponent implements OnInit{
     }
   }
   initierdbColonnes(){
-    this.dbColonnes=  ['dbPrenom','dbnom','dbchauffeur'];
+    //this.dbColonnes=  ['dbPrenom','dbnom','dbchauffeur'];
     //todo a remplacer avec les colonnes en base
-   // this.dbColonnes=this.data.fileInfo.colonnedb;
+    this.dbColonnes=this.data.fileInfo.colonneTable;
   }
   initierfichierColonnes(){
    this.fichierColonnes=this.data.fileInfo.enteteFile

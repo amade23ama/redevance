@@ -1,3 +1,6 @@
+<div fxLayout fxLayout="row" fxLayoutAlign="space-around center" *ngIf="numero$ |async as num ">
+   le depot a ete cree avec ce numero: {{num}}
+</div>
 <fieldset class="mt-1">
   <legend>{{titre}}</legend>
   <mat-card class="mt-1 mat-card">

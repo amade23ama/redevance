@@ -89,10 +89,9 @@ public class DepotController {
      * @return l'entete
      */
     @PostMapping(path = "/fileHeader")
-    //@PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
         List<String> header = null;
-        Arrays.asList(environment.getProperty("list.table.colonne").split(","));
         log.info(" entete du fichier ");
         if (file.isEmpty()) {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);

@@ -5,11 +5,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sn.dscom.backend.database.entite.ProduitEntity;
+
+/**
+ * Produit Repository
+ */
 @Repository
 public interface ProduitRepository extends JpaRepository<ProduitEntity,Long>{
+    /**
+     *
+     * @return
+     */
     @Query("SELECT max(id) FROM ProduitEntity")
     Long getMaxId();
 
-   //@Query("ALTER SEQ_PRODUIT serial RESTART :val")
-    //Long nexvalu();
+    /**
+     * recherche produit
+     * @param nomSRC nomSRC
+     * @param nomNORM nomSRC
+     * @return le ou les produits trouves
+     */
+    @Query("SELECT produit FROM ProduitEntity produit where produit.nomSRC =:nomSRC or produit.nomNORM =:nomNORM")
+    ProduitEntity rechercherProduitByCriteres(@Param("nomSRC") String nomSRC, @Param("nomNORM") String nomNORM);
 }

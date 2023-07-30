@@ -25,6 +25,13 @@ public interface IProduitService {
      Optional<ProduitDTO> enregistrerProduit(ProduitDTO produitDTO);
 
     /**
+     * rechercher Produits
+     ** @param produitDTO le produit à rechercher
+     * @return le produit
+     */
+    Optional<ProduitDTO> rechercherProduit(ProduitDTO produitDTO);
+
+    /**
      * compteur de Produits
      * @return le nombre
      */

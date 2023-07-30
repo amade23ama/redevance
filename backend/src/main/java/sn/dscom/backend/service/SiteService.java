@@ -77,7 +77,9 @@ public class SiteService implements ISiteService {
     @Override
     public Optional<List<SiteDTO>> rechercherSite(SiteDTO siteDTO) {
         if (siteDTO.getId() != null) {
-         return Optional.of(Arrays.asList(this.siteConverteur.reverse(this.siteRepository.findById(siteDTO.getId()).get())));
+            return Optional.of(Arrays.asList(this.siteConverteur.reverse(this.siteRepository.findById(siteDTO.getId()).get())));
+        } else if (siteDTO.getNom() != null) {
+            return Optional.of(Arrays.asList(this.siteConverteur.reverse(this.siteRepository.rechercherSiteByCriteres(siteDTO.getNom()))));
         }
         //TODO: a implementer pour d'autre recherche
         return Optional.empty();

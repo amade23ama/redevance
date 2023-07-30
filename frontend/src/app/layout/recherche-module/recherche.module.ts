@@ -11,9 +11,12 @@ import {MaterialModule} from "../../material.module";
 import {LayoutModule} from "../layout.module";
 import { RechercheVehiculeComponent } from './recherche-vehicule/recherche-vehicule.component';
 import { RechercheExploitationComponent } from './recherche-exploitation/recherche-exploitation.component';
+import {RechercheChargementComponent} from "./recherche-chargement/recherche-chargement.component";
 
 @NgModule({
-  declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent, RechercheProduitComponent, RechercheVehiculeComponent, RechercheExploitationComponent],
+  declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent,
+    RechercheProduitComponent, RechercheVehiculeComponent, RechercheExploitationComponent,
+    RechercheChargementComponent],
   imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule],
   exports:[]
 })

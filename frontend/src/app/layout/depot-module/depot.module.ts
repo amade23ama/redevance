@@ -22,6 +22,7 @@ import {NgxFileDragDropModule} from "ngx-file-drag-drop";
 import {
   DepotValidationColumnPopupComponent
 } from "./depot-validation-column-popup/depot-validation-column-popup.component";
+import {DepotChargementComponent} from "./depot-chargement/depot-chargement.component";
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import {
     DepotComponent,
     DepotCreationComponent,
     DepotModificationComponent,
-    DepotValidationColumnPopupComponent
+    DepotValidationColumnPopupComponent,
+    DepotChargementComponent
   ],
   imports: [
     DepotRouter,

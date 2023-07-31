@@ -130,21 +130,38 @@ public class ChargementService implements IChargementService {
     @Override
     public ChargementDTO effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depot){
 
-        return ChargementDTO.builder()
-                .dateCreation(new Date())
-                .datePesage(new Date())
-                .poids(20.3)
-                .ecart(21.03)
-                .poidsMax(40.00)
-                .poidsSubst(30.0)
-                .destination(ligneChargement.get(header.indexOf(mapCorrespondance.get("db_chargement_destination"))).toUpperCase())
-                .volumeMoyen(60.3)
-                .volumeSubst(50.2)
-                .vehicule(this.enregistrerVehicule(ligneChargement, mapCorrespondance, header))
-                .site(this.rechercherSite(ligneChargement, mapCorrespondance, header))
-                .exploitation(this.rechercherExploitation(ligneChargement, mapCorrespondance, header))
-                .produit(this.rechercherProduit(ligneChargement, mapCorrespondance, header))
-                .build();
+        // Enregistrement du véhicule
+        VehiculeDTO vehiculeDTO = this.enregistrerVehicule(ligneChargement, mapCorrespondance, header);
+
+        // rechercher Site
+        SiteDTO siteDTO = this.rechercherSite(ligneChargement, mapCorrespondance, header);
+
+        // rechercher du site d'Exploitation
+        ExploitationDTO exploitationDTO = this.rechercherExploitation(ligneChargement, mapCorrespondance, header);
+
+        // rechercher Produit
+        ProduitDTO produitDTO = this.rechercherProduit(ligneChargement, mapCorrespondance, header);
+
+        // Enregistrement du véhicule
+        String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get("db_chargement_destination"))).toUpperCase();
+
+        // enregistrer Chargement
+        ChargementDTO chargementDTO = this.enregistrerChargement(ChargementDTO.builder()
+                                                    .dateCreation(new Date())
+                                                    .datePesage(new Date())
+                                                    .poids(20.3)
+                                                    .ecart(21.03)
+                                                    .poidsMax(40.00)
+                                                    .poidsSubst(30.0)
+                                                    .destination(destination)
+                                                    .volumeMoyen(60.3)
+                                                    .volumeSubst(50.2)
+                                                    .vehicule(vehiculeDTO)
+                                                    .site(siteDTO)
+                                                    .exploitation(exploitationDTO)
+                                                    .produit(produitDTO)
+                                                    .build()).get();
+        return chargementDTO;
     }
 
     /**

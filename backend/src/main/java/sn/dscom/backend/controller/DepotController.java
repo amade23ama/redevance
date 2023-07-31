@@ -132,9 +132,11 @@ public class DepotController {
                 // next Line
                 String [] nextLine;
 
+                // Chaque ligne du fichier est un chargement
                 while ((nextLine = csvReader.readNext()) != null)
                 {
                     List<String> chargement = tabToList(nextLine);
+                    //Chargement d'une ligne du fichier
                     ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
                 }
                 log.info(" entete du fichier "+header);

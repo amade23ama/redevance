@@ -22,4 +22,7 @@
 .container-form{
   //padding :0.4em 0.5em 0em 1em !important;
   padding: 2em!important;
+  min-height: 50vh!important;
+  max-height: 60vh!important;
+  overflow: auto;
 }

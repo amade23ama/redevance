@@ -1,5 +1,18 @@
-<div class="mt-1" style="padding: 2%;">
-    <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+<mat-card class="mt-2">
+  <div class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
+    <label class="nb-label blue-label"> 3 nombre
+    </label>
+    <button mat-mini-fab
+            matTooltipPosition="left"
+            matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
+            matTooltipClass="custom-tooltip"
+            (keydown)="creeNouveauProduit()" (click)="creeNouveauProduit()"
+            class="new--contract--button">
+
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
         <table mat-table matSort  [dataSource]="listProduit"  class="mat-elevation-z2 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
             <ng-container matColumnDef="Nom SRC">
@@ -50,7 +63,7 @@
               </div>
             </td>
           </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
         </table>
@@ -59,7 +72,6 @@
                  [pageSizeOptions]="pageSizeOptions"
                  showFirstLastButtons>
         </mat-paginator>
-
     </div>
-</div>
+</mat-card>
 

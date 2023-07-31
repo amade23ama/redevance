@@ -6,11 +6,12 @@ import { Produit } from 'src/app/core/interfaces/produit';
 import { ProduitService } from 'src/app/core/services/produit.service';
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {Router} from "@angular/router";
+import {AppConfigService} from "../../../core/services/app-config.service";
 
 @Component({
   selector: 'app-recherche-produit',
   templateUrl: './recherche-produit.component.html',
-  styleUrls: ['./recherche-produit.component.css']
+  styleUrls: ['./recherche-produit.component.scss']
 })
 export class RechercheProduitComponent implements OnInit {
 
@@ -29,7 +30,7 @@ export class RechercheProduitComponent implements OnInit {
   displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','actions'];
 
   /** constructor */
-  constructor(private produitService: ProduitService,private router:Router){
+  constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router){
   }
 
   ngOnInit(): void {
@@ -48,5 +49,8 @@ export class RechercheProduitComponent implements OnInit {
   }
   chargerProduit(produit: Produit){
     this.router.navigate(['admin/produit'], {queryParams: {'contextInfo':produit.id }});
+  }
+  creeNouveauProduit(){
+    this.router.navigate(['admin/produit']);
   }
 }

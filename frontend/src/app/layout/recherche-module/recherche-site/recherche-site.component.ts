@@ -6,11 +6,12 @@ import { Site } from 'src/app/core/interfaces/site';
 import { SiteService } from 'src/app/core/services/site.service';
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {Router} from "@angular/router";
+import {AppConfigService} from "../../../core/services/app-config.service";
 
 @Component({
   selector: 'recherche-site',
   templateUrl: './recherche-site.component.html',
-  styleUrls: ['./recherche-site.component.css']
+  styleUrls: ['./recherche-site.component.scss']
 })
 export class RechercheSiteComponent implements OnInit {
 
@@ -29,14 +30,12 @@ export class RechercheSiteComponent implements OnInit {
    displayedColumns: string[] = ['Nom', 'Localite', 'Date Creation', 'Date Modification','actions'];
 
   /** site Service */
-  constructor(private siteService: SiteService,private router:Router){}
+  constructor(public appConfig: AppConfigService, private siteService: SiteService,private router:Router){}
 
 
   ngOnInit(): void {
     this.siteService.getAllSites().subscribe();
     this.siteService.getCompteurSites().subscribe();
-    this.siteService.getSiteById(1).subscribe();
-
     this.siteService.sites$.subscribe((sites) => {
       console.log("les sites: ", sites);
       //alimentation du tableau
@@ -49,17 +48,14 @@ export class RechercheSiteComponent implements OnInit {
       console.log("le nombre de site: ", nb);
     })
 
-    this.siteService.siteById$.subscribe((nb) => {
-      console.log("site by id: ", nb);
-    })
-
 
   }
 
-  redirect(site: Site) {
-    console.log("ertyhjk", site);
-  }
+
   chargerSite(site:Site){
     this.router.navigate(['admin/site'], {queryParams: {'contextInfo':site.id }});
+  }
+  ouvreNouveauSite(){
+    this.router.navigate(['admin/site'])
   }
 }

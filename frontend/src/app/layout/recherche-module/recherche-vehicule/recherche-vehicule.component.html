@@ -1,4 +1,18 @@
-<div class="mt-1" style="padding: 2%;">
+<mat-card class="mt-2">
+  <div class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
+    <label class="nb-label blue-label">
+      nombre de result
+    </label>
+    <button mat-mini-fab
+            matTooltipPosition="left"
+            matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
+            matTooltipClass="custom-tooltip"
+            (keydown)="ouvreNouveauVehicule()" (click)="ouvreNouveauVehicule()"
+            class="new--contract--button">
+
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
     <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
         <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z1 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
@@ -71,8 +85,8 @@
                 </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="redirect(row)" routerLink="/admin/vehiculeNouveau"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
         <!-- container de pagination -->
@@ -82,5 +96,5 @@
         </mat-paginator>
 
     </div>
-</div>
+</mat-card >
 

@@ -25,6 +25,7 @@ export class RechercheUtilisateurComponent implements OnInit,AfterViewInit{
   pageSize = 5;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  users$=this.utilisateurService.utilisateurs$
 constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
             private router:Router) {
 }
@@ -61,4 +62,8 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
     this.utilisateurService.purgerUtilisateur()
     this.router.navigate(['admin/utilisateur']);
   }
+  initial(utilisteur:Utilisateur){
+    return utilisteur.prenom.charAt(0).concat(utilisteur.nom.charAt(0)).toUpperCase()
+  }
+
 }

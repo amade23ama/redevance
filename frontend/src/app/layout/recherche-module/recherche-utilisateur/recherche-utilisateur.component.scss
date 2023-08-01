@@ -9,15 +9,16 @@
 
 .nb-pastille {
   width: fit-content;
-  border-radius: 2em;
-  border-color: $orange-500!important;
-  border-width: 1px;
-  border-style: solid;
-  color: $orange-500!important;
+  //border-radius: 2em;
+ // border-color: $orange-500!important;
+ // border-width: 1px;
+ // border-style: solid;
+ // color: $orange-500!important;
+  margin-bottom: 0.25em!important;
 }
 
 .nb-label {
-  margin: 12px;
+ // margin: 12px;
   font-size: 13px;
 }
 .mat-header-utilisateur{
@@ -37,8 +38,8 @@ mat-card{
 }
 
 .blue-label {
-  color: $orange-500!important;
-  font-size: 13px !important;
+  //color: $orange-500!important;
+  //font-size: 13px !important;
   font-family: Calibri !important;
   font-style: normal !important;
 }
@@ -77,4 +78,39 @@ mat-card{
    border: 1px solid #f1eeee;
    height: 44px!important;
  }
-
+.circular-button{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: $orange-500!important;
+  color: #ffffff; /* Set your desired text color */
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-left: 0.5em;
+  font-size: 16px; /* Set your desired font size */
+  /* Add any additional styling you want */
+}
+.titre-prenom{
+  font-size: 14px;
+  font-family: "Arial Black";
+  text-transform: capitalize;
+}
+.user-mobile{
+  min-height: 80vh!important;
+  max-height: 80vh!important;
+  overflow: auto;
+}
+.contenaire-info{
+  margin-left: 0.5em!important;
+}
+.new--contract--button-mobil{
+  position: absolute;
+  left: 82%;
+  top: 73vh;
+  transform: translate(50%, -42%);
+  &.mat-button-disabled {
+    background-color: gray;
+  }
+  background-color: $orange-500!important;
+}

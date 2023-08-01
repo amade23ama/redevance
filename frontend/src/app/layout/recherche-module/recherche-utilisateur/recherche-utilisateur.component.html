@@ -1,10 +1,10 @@
 <mat-card class="mt-2">
-  <div class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
-    <label class="nb-label blue-label">
+  <div fxShow="false" fxHide.gt-xs="false" class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
+    <mat-chip class="nb-label blue-label">
       {{rechercheUtilisateurListe?.length}}
       {{rechercheUtilisateurListe?.length === 1 ? appConfig.getLabel('recherche.utilisateur.singulier.label') :
       appConfig.getLabel('recherche.utilisateur.pluriel.label')}}
-    </label>
+    </mat-chip>
     <button mat-mini-fab
             matTooltipPosition="left"
             matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
@@ -15,7 +15,7 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
-<div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
+<div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
 <table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent" matSort>
   <ng-container matColumnDef="id">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -79,12 +79,6 @@
                     matTooltip="{{appConfig.getLabel('btn.utilisateur.debloquer.tooltip')}}"
                     >lock</mat-icon>
         </div>
-        <!--
-        <div >
-          <mat-icon class="blue-label-icon"(click)="chargerUtilisateur(element)">visibility</mat-icon>
-        </div>
-        -->
-
       </div>
     </td>
   </ng-container>
@@ -96,5 +90,31 @@
                  showFirstLastButtons>
   </mat-paginator>
 </div>
-<!--class="detail-chip-lien"-->
+  <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="users$|async as users">
+    <div>
+      <button mat-mini-fab
+              matTooltipPosition="left"
+              matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
+              matTooltipClass="custom-tooltip"
+              (keydown)="ouvreNouveauUtilisateur()" (click)="ouvreNouveauUtilisateur()"
+              class="new--contract--button-mobil">
+
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+   <div *ngFor="let user of users" fxLayout="column" fxLayoutAlign="space-between stretch" >
+     <div fxLayout="row" fxLayoutAlign="start none">
+      <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
+        <button class="circular-button"  (click)="chargerUtilisateur(user)">{{initial(user)}}</button>
+      </div>
+       <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
+         <div class="titre-prenom">{{user.prenom}} {{user.nom}}</div>
+         <div class="">{{user.email}}</div>
+         <div><div *ngFor="let profil of user.profils">{{convertToLowercase(profil)}}</div></div>
+       </div>
+     </div>
+     <hr>
+   </div>
+  </div>
 </mat-card>
+

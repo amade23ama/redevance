@@ -92,7 +92,7 @@
 </div>
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="users$|async as users">
     <div>
-      <button mat-mini-fab
+      <button mat-fab
               matTooltipPosition="left"
               matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
               matTooltipClass="custom-tooltip"
@@ -102,15 +102,19 @@
         <mat-icon>add</mat-icon>
       </button>
     </div>
-   <div *ngFor="let user of users" fxLayout="column" fxLayoutAlign="space-between stretch" >
-     <div fxLayout="row" fxLayoutAlign="start none">
+   <div *ngFor="let user of users" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
+     <div fxLayout="row" fxLayoutAlign="start none"  >
       <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
         <button class="circular-button"  (click)="chargerUtilisateur(user)">{{initial(user)}}</button>
       </div>
        <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
          <div class="titre-prenom">{{user.prenom}} {{user.nom}}</div>
-         <div class="">{{user.email}}</div>
-         <div><div *ngFor="let profil of user.profils">{{convertToLowercase(profil)}}</div></div>
+         <div class="titre-second">{{user.email}}</div>
+         <div>
+           <div class="titre-profil titre-second" *ngFor="let profil of user.profils">
+           {{convertToLowercase(profil)}}
+           </div>
+         </div>
        </div>
      </div>
      <hr>

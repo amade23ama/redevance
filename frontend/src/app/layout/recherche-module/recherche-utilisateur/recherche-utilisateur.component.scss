@@ -95,6 +95,7 @@ mat-card{
   font-size: 14px;
   font-family: "Arial Black";
   text-transform: capitalize;
+  color: $orange-500!important;
 }
 .user-mobile{
   min-height: 80vh!important;
@@ -106,11 +107,24 @@ mat-card{
 }
 .new--contract--button-mobil{
   position: absolute;
-  left: 82%;
-  top: 73vh;
+  left: 76%;
+  top: 74vh;
   transform: translate(50%, -42%);
   &.mat-button-disabled {
     background-color: gray;
   }
   background-color: $orange-500!important;
+  width: 50px!important;
+  height: 50px!important;
+}
+.titre-profil{
+  text-transform: capitalize;
+  color: #5d5a5a;
+}
+.row-user-mobile{
+  border-bottom: solid 0.01em $orange-4!important;
+  padding-top: 0.2em!important;
+}
+.titre-second{
+  padding-left: 0.6em!important;
 }

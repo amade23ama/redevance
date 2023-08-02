@@ -10,13 +10,15 @@ import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {Router} from "@angular/router";
+import {ParamService} from "../../../core/services/param.service";
+import {Profil} from "../../../core/interfaces/profil";
 
 @Component({
   selector: 'app-recherche-utilisateur',
   templateUrl: './recherche-utilisateur.component.html',
   styleUrls: ['./recherche-utilisateur.component.scss']
 })
-export class RechercheUtilisateurComponent implements OnInit,AfterViewInit{
+export class RechercheUtilisateurComponent implements OnInit{
   dataSource: MatTableDataSource<Utilisateur>;
   prenom="prenom"
   pageSizeOptions: number[] = [5, 10, 20];
@@ -26,11 +28,14 @@ export class RechercheUtilisateurComponent implements OnInit,AfterViewInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   users$=this.utilisateurService.utilisateurs$
+  profils$ = this.paramService.profils$;
+  profil:Profil[]=[];
 constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
-            private router:Router) {
+            private router:Router,private paramService: ParamService) {
 }
   ngOnInit(): void {
     this.utilisateurService.getAllUtilisateur().subscribe()
+    this.paramService.chargementProfils().subscribe()
     this.utilisateurService.utilisateurs$.subscribe((res)=>{
       if (res !== null) {
         this.rechercheUtilisateurListe = res;
@@ -49,11 +54,14 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
   }
 
   convertToLowercase(text:string){
-    return text.toLowerCase();
+     this.profils$.subscribe((res)=>{
+       this.profil=res;
+     })
+    const b=this.profil.filter((res)=>res.code==text)[0].libelle
+    return b.toLowerCase();
   }
 
-  ngAfterViewInit(): void {
-  }
+
 
   chargerUtilisateur(utilisteur:Utilisateur){
     this.router.navigate(['admin/utilisateur'], {queryParams: {'contextInfo':utilisteur.id }});

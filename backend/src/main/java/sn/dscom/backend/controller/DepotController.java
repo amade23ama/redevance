@@ -2,9 +2,13 @@ package sn.dscom.backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.extern.log4j.Log4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -21,17 +25,19 @@ import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de depot
  * @version 1
  */
-@Log4j
 @RestController
 @RequestMapping("/api/v1/depot")
 public class DepotController {
-   // static Logger log= LogManager.getLogger(DepotController.class);
+
+    /** Logger Factory */
+   static Logger log= LoggerFactory.getLogger(DepotController.class);
     /**
      * depot Service
      */
@@ -43,6 +49,12 @@ public class DepotController {
      */
     @Autowired
     private IChargementService chargementService;
+
+    /**
+     * exploitation Service
+     */
+    @Autowired
+    private IProduitService produitService;
 
     /**
      * environment
@@ -64,7 +76,7 @@ public class DepotController {
      * @return l'entete
      */
     @PostMapping(path = "/fileHeader")
-    //@PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
         List<String> header = null;
         log.info(" entete du fichier ");
@@ -102,8 +114,16 @@ public class DepotController {
 
         // Utilisateur
         UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
+
+        // La liste des produits en base
+        List<ProduitDTO> produitDTOS = this.produitService.rechercherProduits().get();
+
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
+
+        // la liste des chargements à effectuer
+        List<ChargementDTO> listChargementAEffectuer = new ArrayList<>();
+
         // Le Depot
         DepotDTO depot = new DepotDTO();
         String nom;
@@ -135,10 +155,25 @@ public class DepotController {
                 // Chaque ligne du fichier est un chargement
                 while ((nextLine = csvReader.readNext()) != null)
                 {
+                    // Ligne de chargement
                     List<String> chargement = tabToList(nextLine);
-                    //Chargement d'une ligne du fichier
-                    ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
+
+                    // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
+                    String nomProduit = chargement.get(header.indexOf(mapInverse.get("db_produit_nom"))).toUpperCase();
+                    Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
+
+                    if(produitDTO.isPresent()){
+                        //Chargement d'une ligne du fichier
+                        ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
+                        listChargementAEffectuer.add(chargementDTO);
+                    }
+
                 }
+
+                // On modifie le depot avec la liste des chargements et l'heure de fin
+                depot.setChargementDTOList(listChargementAEffectuer);
+                depot.setDateHeureFinDepot( new Date());
+                this.depotService.enregistrerDepot(depot);
                 log.info(" entete du fichier "+header);
             }catch (IOException | CsvValidationException e) {
                 e.printStackTrace();

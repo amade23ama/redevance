@@ -44,7 +44,7 @@ public class DepotEntity {
     private Integer nbChargementErreur;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "DEPOT_CHARGEMENT",
             joinColumns = @JoinColumn(name = "ID_DEPOT"),
             inverseJoinColumns = @JoinColumn(name = "ID_CHARGEMENT"))

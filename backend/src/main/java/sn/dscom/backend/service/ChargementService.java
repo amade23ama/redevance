@@ -146,12 +146,12 @@ public class ChargementService implements IChargementService {
         String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get("db_chargement_destination"))).toUpperCase();
 
         // enregistrer Chargement
-        ChargementDTO chargementDTO = this.enregistrerChargement(ChargementDTO.builder()
+        ChargementDTO chargementDTO = ChargementDTO.builder()
                                                     .dateCreation(new Date())
                                                     .datePesage(new Date())
-                                                    .poids(20.3)
+                                                    .poids(22.3)
                                                     .ecart(21.03)
-                                                    .poidsMax(40.00)
+                                                    .poidsMax(42.00)
                                                     .poidsSubst(30.0)
                                                     .destination(destination)
                                                     .volumeMoyen(60.3)
@@ -160,7 +160,7 @@ public class ChargementService implements IChargementService {
                                                     .site(siteDTO)
                                                     .exploitation(exploitationDTO)
                                                     .produit(produitDTO)
-                                                    .build()).get();
+                                                    .build();
         return chargementDTO;
     }
 

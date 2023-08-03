@@ -24,11 +24,6 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
     /**
      * explitation Converteur
      */
-    private final Transformer<DepotDTO, DepotEntity> depotConverteur = new DepotConverter();
-
-    /**
-     * explitation Converteur
-     */
     private final Transformer<ExploitationDTO, ExploitationEntity> exploitationConverteur = new ExploitationConverter();
 
     /**

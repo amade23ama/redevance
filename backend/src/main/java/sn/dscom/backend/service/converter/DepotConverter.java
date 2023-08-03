@@ -1,12 +1,18 @@
 package sn.dscom.backend.service.converter;
 
+import com.google.common.base.MoreObjects;
+import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.DepotDTO;
 import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
+import sn.dscom.backend.database.entite.ChargementEntity;
 import sn.dscom.backend.database.entite.DepotEntity;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Exploitation Converter
@@ -15,6 +21,11 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
 
     /** utilisateur Transformer */
     Transformer<UtilisateurDTO, UtilisateurEntity> utilisateurTransformer = new UtilisateurConverter();
+
+    /**
+     * chargement Transformer
+     */
+    private final Transformer<ChargementDTO, ChargementEntity> chargementConverter = new ChargementConverter();
 
 
     /**
@@ -30,6 +41,10 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
         if (depotEntity == null) {
             return null;
         }
+
+        // On recupère la liste des Chargements
+        List<ChargementEntity> listChargement = MoreObjects.firstNonNull(depotEntity.getChargementEntityList(), Collections.emptyList());
+
         return DepotDTO.builder()
                 .id(depotEntity.getId())
                 .nom(depotEntity.getNom())
@@ -40,6 +55,9 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nbChargementErreur(depotEntity.getNbChargementErreur())
                 .nomFichier(depotEntity.getNomFichier())
                 .nbChargementReDeposes(depotEntity.getNbChargementReDeposes())
+                .chargementDTOList(listChargement.stream()
+                        .map(this.chargementConverter::reverse)
+                        .collect(Collectors.toList()))
                 .build();
     }
 
@@ -55,6 +73,10 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
         if (depotDTO == null) {
             return null;
         }
+
+        // On recupère la liste des Chargements
+        List<ChargementDTO> listChargement = MoreObjects.firstNonNull(depotDTO.getChargementDTOList(), Collections.emptyList());
+
         return DepotEntity.builder()
                 .id(depotDTO.getId())
                 .nom(depotDTO.getNom())
@@ -65,6 +87,9 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nbChargementErreur(depotDTO.getNbChargementErreur())
                 .nomFichier(depotDTO.getNomFichier())
                 .nbChargementReDeposes(depotDTO.getNbChargementReDeposes())
+                .chargementEntityList(listChargement.stream()
+                        .map(this.chargementConverter::transform)
+                        .collect(Collectors.toList()))
                 .build();
     }
 }

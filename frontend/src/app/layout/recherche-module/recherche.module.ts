@@ -5,7 +5,7 @@ import {RechercheUtilisateurComponent} from "./recherche-utilisateur/recherche-u
 import { RechercheSiteComponent } from './recherche-site/recherche-site.component';
 import { RechercheProduitComponent } from './recherche-produit/recherche-produit.component';
 import {MatTableModule} from "@angular/material/table";
-import {NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {MaterialModule} from "../../material.module";
 import {LayoutModule} from "../layout.module";
@@ -17,7 +17,7 @@ import {RechercheChargementComponent} from "./recherche-chargement/recherche-cha
   declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent,
     RechercheProduitComponent, RechercheVehiculeComponent, RechercheExploitationComponent,
     RechercheChargementComponent],
-  imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule],
+    imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule, AsyncPipe],
   exports:[]
 })
 export class  RechercheModule{}

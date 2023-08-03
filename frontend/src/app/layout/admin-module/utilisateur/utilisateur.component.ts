@@ -7,6 +7,8 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {Profil} from "../../../core/interfaces/profil";
 import {ActionBtn} from "../../../core/interfaces/actionBtn";
 import {Actions} from "../../../core/enum/actions";
+import {AuthService} from "../../../core/services/auth.service";
+import {DroitEnum} from "../../../core/enum/droit-enum";
 
 @Component({
   selector: 'app-utilisateur',
@@ -31,7 +33,8 @@ export class UtilisateurComponent implements OnInit{
   myform :FormGroup
   isUpdate:boolean
   constructor(public utilisateurService:UtilisateurService,private readonly activatedRoute: ActivatedRoute,
-              public builder:FormBuilder,public appConfig: AppConfigService,) {
+              public builder:FormBuilder,public appConfig: AppConfigService,
+              private readonly authService: AuthService) {
     this.myform= this.builder.group({
       id:this.id,
       prenom:this.prenom,
@@ -54,12 +57,14 @@ export class UtilisateurComponent implements OnInit{
           this.initListbtns();
           this.isUpdate=true
           this.majBtnActive()
+          this.droit()
         })
       } else {
         this.titre="Creation utilisateur"
         this.initListbtns();
         this.isUpdate=false
         this.majBtnActive()
+        this.droit()
       }
     });
 
@@ -130,6 +135,7 @@ export class UtilisateurComponent implements OnInit{
        this.btns.forEach(b=>{
          b.disabled=false
        });
+       this.droit()
      }
    })
    if(!this.myform.invalid){
@@ -137,5 +143,11 @@ export class UtilisateurComponent implements OnInit{
        b.disabled=false
      });
    }
+    }
+    droit(){
+      if(this.authService.hasDroits(DroitEnum.CONSULT)){
+        this.myform.disable()
+        this.btns.forEach(b=>{b.disabled=true});
+      }
     }
   }

@@ -128,3 +128,6 @@ mat-card{
 .titre-second{
   padding-left: 0.6em!important;
 }
+::ng-deep mat-chip{
+  background: $orange-500!important;
+}

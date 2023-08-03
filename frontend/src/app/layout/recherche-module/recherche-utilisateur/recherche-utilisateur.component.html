@@ -66,10 +66,10 @@
     </th>
     <td mat-cell *matCellDef="let element">
       <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-        <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon" (click)="chargerUtilisateur(element)"
+        <mat-icon  class="blue-label-icon" (click)="chargerUtilisateur(element)"
         matTooltip="{{appConfig.getLabel('btn.utilisateur.modif.tooltip')}}">create</mat-icon>
         <div  *ngIf="element.active" fxHide.xs>
-          <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon"
+          <mat-icon  class="blue-label-icon"
                     matTooltipClass="custom-tooltip"
                     matTooltip="{{appConfig.getLabel('btn.utilisateur.bloquer.tooltip')}}"
                     >lock_open </mat-icon>
@@ -122,3 +122,4 @@
   </div>
 </mat-card>
 
+<!--*appAutorisation="['ADMIN']" -->

@@ -148,6 +148,12 @@
             <version>2.12.5</version> <!-- Replace with the latest version -->
         </dependency>
 
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>32.1.1-jre</version>
+        </dependency>
+
 
     </dependencies>
 

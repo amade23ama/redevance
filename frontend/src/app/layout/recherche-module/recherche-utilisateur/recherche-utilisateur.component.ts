@@ -57,8 +57,11 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
      this.profils$.subscribe((res)=>{
        this.profil=res;
      })
-    const b=this.profil.filter((res)=>res.code==text)[0].libelle
-    return b.toLowerCase();
+
+    if(this.profil){
+      return this.profil.filter((res)=>res?.code==text)[0]?.libelle.toLowerCase();
+    }
+    return text.toLowerCase();
   }
 
 

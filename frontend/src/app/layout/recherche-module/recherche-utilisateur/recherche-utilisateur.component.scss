@@ -99,7 +99,7 @@ mat-card{
 }
 .user-mobile{
   min-height: 80vh!important;
-  max-height: 80vh!important;
+  max-height: 82vh!important;
   overflow: auto;
 }
 .contenaire-info{
@@ -108,7 +108,7 @@ mat-card{
 .new--contract--button-mobil{
   position: absolute;
   left: 76%;
-  top: 74vh;
+  top: 78vh;
   transform: translate(50%, -42%);
   &.mat-button-disabled {
     background-color: gray;

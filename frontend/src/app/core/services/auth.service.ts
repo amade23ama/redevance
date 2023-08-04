@@ -6,6 +6,7 @@ import {environment} from "../../../environments/environment";
 import {UtilisateurService} from "./utilisateur.service";
 import {Globals} from "../../app.constants";
 import {JwtHelperService} from "@auth0/angular-jwt";
+import {NotificationService} from "./notification.service";
 
 export interface TokenObject{
   token:string;
@@ -41,7 +42,7 @@ export  class AuthService {
   jwtHelper = new JwtHelperService();
   constructor(private http:HttpClient,private router:Router,
               private utilisateurService: UtilisateurService,
-              public globals: Globals) {
+              public globals: Globals,private notification: NotificationService) {
   }
   login(payload: { login: string, password: string }): Observable<TokenObject> {
     return this.http.post<TokenObject>(this.url+"/login", payload)
@@ -99,11 +100,12 @@ export  class AuthService {
         tap((res: TokenObject) => {
           //const bearerToken = resp.headers.get(AuthenticationService.JWT_HEADER);
           // Recuperation du token JWT depuis l'header
+          this.notification.success("connection succes")
           const token = this.authenticateSuccess(res);
         }),
         catchError((err) => {
-          // return throwError(err) // RXJS <= 6
-          return throwError(() => err) // RXJS 7+
+          this.notification.error("erreur de connection")
+          return throwError(() => err)
         })
       )
   }

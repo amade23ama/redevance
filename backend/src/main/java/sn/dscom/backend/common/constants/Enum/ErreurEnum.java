@@ -4,7 +4,8 @@ public enum ErreurEnum {
     ERR_FiLE_NOT_FOUND("aucun fichier"),
     ERR_CONTRAT_NOT_FOUND("error.contratNotFound"),
     ERR_INATTENDUE("error.inattendue"),
-    ERR_CONTRAT_DROIT_INSUFFISANT("erreur.contrat.droit.insuffisant");
+    ERR_CONTRAT_DROIT_INSUFFISANT("erreur.contrat.droit.insuffisant"),
+    ERR_DROIT_INSUFFISANT("erreur.droit.insuffisant");
     /**
      * Code de l'erreur
      */

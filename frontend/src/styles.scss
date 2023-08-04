@@ -310,6 +310,8 @@ mat-form-field mat-label {
 }
 .header{
   background-color:$orange-300!important;
+  z-index: 1000;
+  position: sticky;
 }
 .btn-global-white {
   margin: 6px !important;
@@ -367,3 +369,4 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mdc-text-field--outlined.mdc-text-field--invalid .mdc-notched-outline__trailing {
   border-color: red;
 }
+

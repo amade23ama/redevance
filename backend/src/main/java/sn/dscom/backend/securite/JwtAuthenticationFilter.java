@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.service.util.TokenUtils;
 
 import java.io.IOException;
@@ -20,24 +21,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public static final String CSRF_COOKIE_NAME = "XSRF-TOKEN";
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
-        String token = TokenUtils.extractTokenRequest(request);
-        //extractTokenRequest(request);
-        HttpSession session =request.getSession();
-        if (token != null ){
-            try {
-                TokenUtils.isvalidToken(token);
-                Authentication auth = new JwtAuthentication(token);
-                auth.setAuthenticated(true);
-                SecurityContextHolder.getContext().setAuthentication(auth);
-
-            }catch (Exception e){
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                //PrintWriter writer = response.getWriter();
-                //  writer.write("{\"error\":\"Unauthorized\", \"message\":\"Invalid username or password\"}");
+            String token = TokenUtils.extractTokenRequest(request);
+            if(token!=null) {
+                try {
+                    HttpSession session = request.getSession();
+                    TokenUtils.isvalidToken(token);
+                    Authentication auth = new JwtAuthentication(token);
+                    auth.setAuthenticated(true);
+                    SecurityContextHolder.getContext().setAuthentication(auth);
+                    filterChain.doFilter(request, response);
+                } catch (CommonMetierException e) {
+                    response.setStatus(e.getHttpStatus());
+                }
+            }else{
+                filterChain.doFilter(request, response);
             }
-        }
-        filterChain.doFilter(request, response);
+
     }
     private String extractTokenRequest(HttpServletRequest request){
         //todo

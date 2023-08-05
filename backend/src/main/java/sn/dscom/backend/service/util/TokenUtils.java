@@ -68,24 +68,19 @@ public class TokenUtils {
             Jws test =Jwts.parser().setSigningKey(SECRET).parseClaimsJws(authToken);
         } catch (SignatureException e) {
             log.error("Invalid JWT signature: {}", e.getMessage());
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+            throw new CommonMetierException(HttpStatus.UNAUTHORIZED.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         } catch (MalformedJwtException e) {
              log.error("Invalid JWT token: {}", e.getMessage());
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+            throw new CommonMetierException(HttpStatus.UNAUTHORIZED.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         } catch (ExpiredJwtException e) {
             log.error("JWT token is expired: {}", e.getMessage());
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+            throw new CommonMetierException(HttpStatus.UNAUTHORIZED.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         } catch (UnsupportedJwtException e) {
             log.error("JWT token is unsupported: {}", e.getMessage());
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+            throw new CommonMetierException(HttpStatus.UNAUTHORIZED.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         } catch (IllegalArgumentException e) {
             log.error("JWT claims string is empty: {}", e.getMessage());
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
-        }
-        catch (Exception e) {
-            // Return a 401 error if there is an issue with the token
-            log.error("JWT token is unsupported: {}", e.getMessage());
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+            throw new CommonMetierException(HttpStatus.UNAUTHORIZED.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         }
     }
 

@@ -3,6 +3,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {AuthService} from "../../../core/services/auth.service";
 import {Router} from "@angular/router";
 import {UtilisateurService} from "../../../core/services/utilisateur.service";
+import {ParamService} from "../../../core/services/param.service";
 
 @Component({
   selector: 'app-dscom-header',

@@ -17,8 +17,8 @@
   cursor: pointer;
   background-color: $light-green;
 }
-
-/*h1, h2, h3, h4, h5, h6 {
+/*
+h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 */
@@ -41,9 +41,6 @@
   transition: transform 250ms ease-in;
 }
 
-
-//// TUILE EN ATTENTE
-
 .site--tile {
   color: $red-A200;
 }
@@ -53,8 +50,6 @@
   color: $red-A200;
 }
 
-
-// TUILE A TRAITER
 .todo--tile {
   color: $red-900;
 }
@@ -83,7 +78,7 @@
   color: $purple-300;
   border: 1px solid $purple-300;
 }
-// ROUND BUTTON
+
 .fab--button {
   display: block;
   text-align: center;
@@ -96,11 +91,14 @@
 }
 .card-description{
   font-size: 13px;
+  font-style: normal;
 }
 .menu-card{
   border-bottom: solid $orange-600 !important;
 }
-
+mat-card-content{
+  padding-top: 0px!important;
+}
 
 
 

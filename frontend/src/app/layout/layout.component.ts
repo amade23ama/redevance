@@ -3,6 +3,7 @@ import {AuthService} from "../core/services/auth.service";
 import {Globals} from "../app.constants";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SessionTimerService} from "../core/services/Session.timer.service";
+import {ParamService} from "../core/services/param.service";
 
 @Component({
   selector: 'app-layout',
@@ -23,7 +24,6 @@ export class LayoutComponent implements OnInit {
     // Affichage d`un spinner lors du chargement
     globals.loading = false;
     this.isLoggedIn = this.authService.isLoggedIn()
-
   }
 
   ngOnInit(): void {

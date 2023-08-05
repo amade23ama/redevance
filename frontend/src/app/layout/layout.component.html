@@ -1,7 +1,7 @@
 
 <div *ngIf="isLoggedIn" class="flex-container page " fxLayout="column" >
-      <app-dscom-header class="header "></app-dscom-header>
-    <mat-toolbar color="">
+    <app-dscom-header></app-dscom-header>
+    <mat-toolbar color="" class="menu-toolbar">
       <div fxShow="true" fxHide.gt-sm="true">
         <button mat-icon-button (click)="sidenav.toggle()">
           <mat-icon>menu</mat-icon>
@@ -24,26 +24,27 @@
         <mat-icon class="deconnexion-action">power_settings_new</mat-icon>
       </button>
     </mat-toolbar>
+
   <div class="bandeau--small"></div>
+
     <mat-sidenav-container  class="example-container">
-      <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
-        <div fxLayout="column">
-          <a mat-button routerLink="" (click)="sidenav.toggle()">home</a>
-          <a mat-button routerLink="/admin" (click)="sidenav.toggle()">creer utilisateur</a>
-          <a mat-button routerLink="/admin/site" (click)="sidenav.toggle()">creer site</a>
-          <a mat-button routerLink="/admin/vehicule" (click)="sidenav.toggle()">creer vehicule</a>
-          <a mat-button routerLink="/admin/transpoteur" (click)="sidenav.toggle()">creer transpoteur</a>
-          <a  mat-button routerLink="/recherche/user"  (click)="sidenav.toggle()"
-              >liste utilisateur</a>
-        </div>
-      </mat-sidenav>
+    <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
+      <div fxLayout="column" class="mat-sidenav-menu">
+        <a mat-button routerLink="" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">home</a>
+        <a mat-button routerLink="/admin" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer utilisateur</a>
+        <a mat-button routerLink="/admin/site" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer site</a>
+        <a mat-button routerLink="/admin/vehicule" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer vehicule</a>
+        <a mat-button routerLink="/admin/transpoteur" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer transpoteur</a>
+        <a  mat-button routerLink="/recherche/user"  class="mat-sidenav-menu-but" (click)="sidenav.toggle()">liste utilisateur</a>
+      </div>
+    </mat-sidenav>
       <mat-sidenav-content >
         <router-outlet></router-outlet>
       </mat-sidenav-content>
     </mat-sidenav-container>
+
   <div class="clear"></div>
-  <!--<div>Temps restant : {{ tempsRestant }}</div> -->
-  <app-dscom-footer fxShow="false" fxHide.gt-xs="false"></app-dscom-footer>
+  <!--<app-dscom-footer fxShow="false" fxHide.gt-xs="false"></app-dscom-footer>-->
 </div>
 <mat-menu #menuSite="matMenu">
   <a mat-menu-item routerLink="/admin/site">creer site</a>
@@ -75,4 +76,3 @@
   <a mat-menu-item  routerLink="/recherche/depots">liste depots</a>
   <a mat-menu-item  routerLink="/recherche/chargement">chargements depot</a>
 </mat-menu>
-

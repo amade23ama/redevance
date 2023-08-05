@@ -1,11 +1,16 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-
+.ministere{
+  color: $white;
+  font-size: 12px;
+  font-family:normal;
+  font-weight: 700;
+}
 .devise{
-  color:black;
+  color: $white;
   font-size: 10px;
-  font-family:Impact;
   font-family:"Brush Script MT";
+  font-style: italic;
 }
 .flex-container{
   font-size: 12px;
@@ -13,14 +18,26 @@
   padding-right:5em;
 }
 .titre{
-  color: #d60a7f !important;
-  color: #243262 !important;
+  color: $white;
+  font-family: "Arial Black";
+  font-size: 16px;
+  font-style: italic;
 
 }
 
 .deconnexion-action {
-  color: #d60a7f !important;
   color: $orange-400!important;
 }
-
+.login-name{
+  color: $white;
+  font-size: 14px;
+  font-family:normal;
+  text-transform: capitalize;
+}
+.disabled--icon{
+  color: $white;
+}
+.mat-menu-icon{
+  color: $orange-400!important;
+}
 

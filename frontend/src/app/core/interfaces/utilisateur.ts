@@ -1,5 +1,6 @@
 import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
 import {Profil} from "./profil";
+import {DroitEnum} from "../enum/droit-enum";
 
 export class Utilisateur extends BuilderDtoJsonAbstract{
 
@@ -37,5 +38,8 @@ export class Utilisateur extends BuilderDtoJsonAbstract{
       user.profils = Profil.fromJson(json.profils, Profil);
     }
     return user;
+  }
+  get roles(){
+    return
   }
 }

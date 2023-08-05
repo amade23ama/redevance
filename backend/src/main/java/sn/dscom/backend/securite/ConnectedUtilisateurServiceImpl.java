@@ -86,7 +86,7 @@ public class ConnectedUtilisateurServiceImpl implements ConnectedUtilisateurServ
     private UtilisateurConnectedDTO getUtilisateurByLogin(Credentials credentials){
         UtilisateurEntity  user=  utilisateurRepository.findUtilisateurEntitiesByLoginExists(credentials.getLogin());
         if(!user.getPassword().equals(credentials.getPassword())){
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_DROIT_INSUFFISANT);
+            throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_DROIT_INSUFFISANT);
         }
         if(!user.isActive()){
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_DROIT_INSUFFISANT);

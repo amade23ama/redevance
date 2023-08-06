@@ -143,17 +143,19 @@ mat-toolbar a{
   background:#df9257!important;
 
 }
+ --mdc-chip-elevated-container-color: #e3844d;
+  --mdc-chip-elevated-disabled-container-color: #e3844d;
 */
 ::ng-deep.mat-chip.mat-mdc-standard-chip {
-  --mdc-chip-elevated-container-color: #e3844d;
-  --mdc-chip-elevated-disabled-container-color: #e3844d;;
-  --mdc-chip-label-text-color: #fff;
+  --mdc-chip-elevated-container-color: #fbf0e9;
+ // --mdc-chip-elevated-disabled-container-color: #f6e5da;
+  --mdc-chip-label-text-color: #f36704;
   --mdc-chip-disabled-label-text-color: #fff;
-  --mdc-chip-with-icon-icon-color: #fff;;
-  --mdc-chip-with-icon-disabled-icon-color: #fff;
-  --mdc-chip-with-trailing-icon-disabled-trailing-icon-color: #fff;
-  --mdc-chip-with-trailing-icon-trailing-icon-color: #fff;
-  --mdc-chip-with-icon-selected-icon-color: #fff;
+  --mdc-chip-with-icon-icon-color: #e3844d;
+  --mdc-chip-with-icon-disabled-icon-color: #e3844d;;
+  --mdc-chip-with-trailing-icon-disabled-trailing-icon-color: #e3844d;
+  --mdc-chip-with-trailing-icon-trailing-icon-color: #e15005;
+  --mdc-chip-with-icon-selected-icon-color: #e3844d;;
   font-size: 11px!important;
   padding: 0px!important;
 }

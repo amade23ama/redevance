@@ -18,16 +18,19 @@ import {DroitEnum} from "../../../core/enum/droit-enum";
 export class UtilisateurComponent implements OnInit{
   utilisateurCourant:Utilisateur
   id: FormControl = new FormControl();
-  prenom: FormControl=new FormControl('',[Validators.required, Validators.minLength(3)]);
-  nom: FormControl=new FormControl('',[Validators.required, Validators.minLength(2)]);
-  email : FormControl=new FormControl('', {
+  prenom: FormControl=new FormControl('',
+    {validators:[Validators.required, Validators.minLength(3),
+      this.chiffreCaractValidator.bind(this)]});
+  nom: FormControl=new FormControl('',
+    {validators:[Validators.required, Validators.minLength(2),this.chiffreCaractValidator.bind(this)]});
+  email : FormControl=new FormControl('rrama@ayoo.fr', {
     validators: [Validators.required, Validators.email],
     asyncValidators: [this.checkEmail.bind(this)],
     updateOn: 'blur'
   });
-  telephone: FormControl = new FormControl( );
+  telephone: FormControl = new FormControl( '',{validators:[this.phoneNumberValidator.bind(this)]});
   active: FormControl = new FormControl();
-  profils: FormControl = new FormControl('',[Validators.required])
+  profils: FormControl = new FormControl('',{validators:[Validators.required]})
   titre:string
   btns: ActionBtn[] = [];
   myform :FormGroup
@@ -50,7 +53,7 @@ export class UtilisateurComponent implements OnInit{
 
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
-        this.titre="Modification utilisateur"
+        this.titre="Modification d'utilisateur"
         this.utilisateurService.getUtilisateurParId(params['contextInfo']).subscribe(()=>{
           this.utilisateurCourant=this.utilisateurService.getUtilisateurCourant();
           this.myform.patchValue(this.utilisateurCourant)
@@ -60,7 +63,7 @@ export class UtilisateurComponent implements OnInit{
           this.droit()
         })
       } else {
-        this.titre="Creation utilisateur"
+        this.titre="Création d'un utilisateur."
         this.initListbtns();
         this.isUpdate=false
         this.majBtnActive()
@@ -115,39 +118,42 @@ export class UtilisateurComponent implements OnInit{
     }
   }
   checkEmail(control:AbstractControl){
-    return this.utilisateurService.emailCheck(control,this.utilisateurCourant.id)
+    return this.utilisateurService.emailCheck(control,this.utilisateurCourant?.id)
   }
 
-  /*majBtnState(a: Actions, displayed: boolean) {
-    this.btns.forEach(b => {
-      if (b.id === a) {
-        b.display = displayed;
-      }
-    });
-    */
- majBtnActive(){
-   this.myform?.valueChanges.subscribe((res)=>{
-     if(this.myform.invalid){
-       this.btns.forEach(b=>{
-         b.disabled=true
-       });
-     }else{
-       this.btns.forEach(b=>{
-         b.disabled=false
-       });
-       this.droit()
+ majBtnActive() {
+   this.myform?.valueChanges.subscribe((res) => {
+     if (this.myform.valid) {
+       this.majBtnState(Actions.ENREGISTRER, false)
      }
    })
-   if(!this.myform.invalid){
-     this.btns.forEach(b=>{
-       b.disabled=false
-     });
-   }
-    }
+ }
+
     droit(){
       if(this.authService.hasDroits(DroitEnum.CONSULT)){
         this.myform.disable()
         this.btns.forEach(b=>{b.disabled=true});
       }
     }
+
+chiffreCaractValidator(control: AbstractControl) {
+    const status = /[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(control.value);
+    return status ? { exclus: true } : null
   }
+  chiffreValidator(control: AbstractControl) {
+    const status = /[0-9!@#$%^&*()_+{}\[\]:;<>,.?~\\/-]/.test(control.value);
+    return status ? { exclus: true } : null
+  }
+  phoneNumberValidator(control: AbstractControl){
+    const phoneNumberPattern = /^[0-9]{10}$/; // Exemple : Format de numéro de téléphone à 10 chiffres
+    const status  = phoneNumberPattern.test(control.value);
+    return status ? null: { exclus: true }
+  }
+  majBtnState(a: Actions, disabled: boolean) {
+    this.btns.forEach(b => {
+      if (b.id === a) {
+        b.disabled = disabled;
+      }
+    });
+  }
+}

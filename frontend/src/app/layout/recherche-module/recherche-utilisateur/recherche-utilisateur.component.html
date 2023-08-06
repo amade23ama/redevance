@@ -1,4 +1,13 @@
-<mat-card class="mt-2">
+<div class="mt-05">
+<app-actions-critere-btns  [reach]="reach"
+[label]="label"
+[filtres]="filtres"
+  (btnAjouter)="ouvreNouveauUtilisateur()"
+(supprimer)="supprimer($event)">
+</app-actions-critere-btns>
+
+
+  <!--
   <div fxShow="false" fxHide.gt-xs="false" class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
     <mat-chip class="nb-label blue-label">
       {{rechercheUtilisateurListe?.length}}
@@ -15,7 +24,8 @@
       <mat-icon>add</mat-icon>
     </button>
   </div>
-<div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
+  -->
+<div fxShow="false" fxHide.gt-xs="false" class="table-container mt-05" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
 <table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent" matSort>
   <ng-container matColumnDef="id">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -120,6 +130,6 @@
      <hr>
    </div>
   </div>
-</mat-card>
+</div>
 
 <!--*appAutorisation="['ADMIN']" -->

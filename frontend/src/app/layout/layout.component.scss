@@ -138,3 +138,22 @@ mat-toolbar a{
   color: black!important;;
   border-radius: 0px!important;
 }
+
+/*::ng-deep .mat-chip.mat-standard-chip{
+  background:#df9257!important;
+
+}
+*/
+::ng-deep.mat-chip.mat-mdc-standard-chip {
+  --mdc-chip-elevated-container-color: #e3844d;
+  --mdc-chip-elevated-disabled-container-color: #e3844d;;
+  --mdc-chip-label-text-color: #fff;
+  --mdc-chip-disabled-label-text-color: #fff;
+  --mdc-chip-with-icon-icon-color: #fff;;
+  --mdc-chip-with-icon-disabled-icon-color: #fff;
+  --mdc-chip-with-trailing-icon-disabled-trailing-icon-color: #fff;
+  --mdc-chip-with-trailing-icon-trailing-icon-color: #fff;
+  --mdc-chip-with-icon-selected-icon-color: #fff;
+  font-size: 11px!important;
+  padding: 0px!important;
+}

@@ -12,12 +12,14 @@ import {LayoutModule} from "../layout.module";
 import { RechercheVehiculeComponent } from './recherche-vehicule/recherche-vehicule.component';
 import { RechercheExploitationComponent } from './recherche-exploitation/recherche-exploitation.component';
 import {RechercheChargementComponent} from "./recherche-chargement/recherche-chargement.component";
+import {SharedModule} from "../shared-Module/shared.module";
 
 @NgModule({
   declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent,
     RechercheProduitComponent, RechercheVehiculeComponent, RechercheExploitationComponent,
     RechercheChargementComponent],
-    imports: [RechercheRouter, MatTableModule, NgForOf, MatIconModule, MaterialModule, NgIf, LayoutModule, AsyncPipe],
+  imports: [RechercheRouter, MatTableModule, NgForOf,
+    MatIconModule, MaterialModule, NgIf, LayoutModule, AsyncPipe, SharedModule],
   exports:[]
 })
 export class  RechercheModule{}

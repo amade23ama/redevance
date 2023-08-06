@@ -41,9 +41,7 @@ fieldset legend {
   height: 32px!important;
 }
 
-::ng-deep mat-chip{
-  background: $orange-500!important;
-}
+
 
 ::ng-deep ngx-file-drag-drop .placeholder{
   color: black!important;

@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {MatTable, MatTableDataSource} from "@angular/material/table";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {UtilisateurService} from "../../../core/services/utilisateur.service";
@@ -12,6 +12,8 @@ import {BreakpointObserver} from "@angular/cdk/layout";
 import {Router} from "@angular/router";
 import {ParamService} from "../../../core/services/param.service";
 import {Profil} from "../../../core/interfaces/profil";
+import {FormControl} from "@angular/forms";
+import {Filtre} from "../../../core/interfaces/filtre";
 
 @Component({
   selector: 'app-recherche-utilisateur',
@@ -19,6 +21,8 @@ import {Profil} from "../../../core/interfaces/profil";
   styleUrls: ['./recherche-utilisateur.component.scss']
 })
 export class RechercheUtilisateurComponent implements OnInit{
+  reach:FormControl =new FormControl('');
+  label="Ajouter un Utilisateur";
   dataSource: MatTableDataSource<Utilisateur>;
   prenom="prenom"
   pageSizeOptions: number[] = [5, 10, 20];
@@ -30,6 +34,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   users$=this.utilisateurService.utilisateurs$
   profils$ = this.paramService.profils$;
   profil:Profil[]=[];
+  filtres:Filtre[]=[]
 constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
             private router:Router,private paramService: ParamService) {
 }
@@ -44,6 +49,7 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
         this.dataSource.sort=this.sort
       }
     })
+    this.initfiltre()
   }
   /**
    * Méthode de formatage de la date
@@ -76,5 +82,14 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
   initial(utilisteur:Utilisateur){
     return utilisteur.prenom.charAt(0).concat(utilisteur.nom.charAt(0)).toUpperCase()
   }
-
+  supprimer(filtre:Filtre){
+    const index = this.filtres.indexOf(filtre);
+    if (index >= 0) {
+      this.filtres.splice(index, 1);
+    }
+  }
+  initfiltre(){
+    this.filtres.push({"id":1,libelle:"mamadou"})
+    this.filtres.push({"id":2,libelle:"moussa"})
+  }
 }

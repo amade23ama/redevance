@@ -307,9 +307,10 @@ mat-form-field mat-label {
   background-color:$orange-500!important;
 }
 .header{
+  top:0px;
+  position: sticky;
   background-color:$orange-300!important;
   z-index: 1000;
-  position: sticky;
   padding-bottom: 0.25em;
 }
 .btn-global-white {
@@ -390,4 +391,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
   color: $orange-600!important;
+}
+::ng-deep mat-chip{
+  background: $orange-20!important;
+}
+::ng-deep.mat-form-field.recherche.mat-form-field-appearance-outline .mat-form-field-wrapper{
+  height: 24px!important; /* Change to your desired height */
+  border:solid 1px red!important;
+  background-color: red!important;
+  color: red!important;
+}
+.recherche.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix{
+  min-height: 24px!important;
 }

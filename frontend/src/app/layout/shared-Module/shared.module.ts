@@ -11,14 +11,12 @@ import { ConfirmationDialogComponent } from './dialog/confirmation-dialog/confir
 import { ActionBtnsComponent } from './action-btns/action-btns.component';
 import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {MaterialModule} from "../../material.module";
-import {FlexLayoutModule} from "@angular/flex-layout";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {BrowserModule} from "@angular/platform-browser";
-import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import {MatIconModule} from "@angular/material/icon";
 import {RouterOutlet} from "@angular/router";
 import {RedevanceModule} from "../redevanceModule/redevance.module";
 import { FormulaireUtilisateurComponent } from './formulaire-utilisateur/formulaire-utilisateur.component';
+import {ActionsCritereBtnsComponent} from "./actions-critere-btns/actions-critere-btns.component";
+import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
 
 @NgModule({
   declarations: [
@@ -33,6 +31,7 @@ import { FormulaireUtilisateurComponent } from './formulaire-utilisateur/formula
     ConfirmationDialogComponent,
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
+    ActionsCritereBtnsComponent
   ],
   imports: [
     CommonModule,
@@ -42,13 +41,15 @@ import { FormulaireUtilisateurComponent } from './formulaire-utilisateur/formula
     RouterOutlet,
     RedevanceModule,
     FormsModule,
+    MatLegacyChipsModule,
   ],
   exports: [
     DscomFooterComponent,
     SpinnerComponent,
     DscomHeaderComponent,
     ActionBtnsComponent,
-    FormulaireUtilisateurComponent
+    FormulaireUtilisateurComponent,
+    ActionsCritereBtnsComponent
   ],
   providers: [],
 })

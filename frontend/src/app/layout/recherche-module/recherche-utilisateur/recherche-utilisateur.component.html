@@ -26,7 +26,7 @@
   </div>
   -->
 <div fxShow="false" fxHide.gt-xs="false" class="table-container mt-05" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent" matSort>
+<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z1 table-parent " matSort>
   <ng-container matColumnDef="id">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
       <div class="d-flex">N°</div>
@@ -40,7 +40,7 @@
       <div class="d-flex">Prenom</div>
     </th>
     <td mat-cell *matCellDef="let element" fxHide.xs >
-      <div class="d-flex">{{element.prenom}}</div>
+      <div class="d-flex up-case">{{element.prenom}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="nom">
@@ -48,7 +48,7 @@
       <div class="d-flex">Nom</div>
     </th>
     <td mat-cell *matCellDef="let element" fxHide.xs>
-      <div class=" d-flex">{{element.nom}}</div>
+      <div class=" d-flex up-case">{{element.nom}}</div>
     </td>
   </ng-container>
   <ng-container matColumnDef="email" >
@@ -64,7 +64,7 @@
       <div class="d-flex">Profil</div>
     </th>
     <td mat-cell *matCellDef="let element">
-      <div class=" d-flex" >
+      <div class=" d-flex up-case" >
         <div *ngFor="let profil of element.profils">
         {{ convertToLowercase(profil) }} </div>
       </div>

@@ -1,8 +1,10 @@
-.container{
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+.container-footer{
   font-size: 12px;
   padding-left:5em;
   padding-right:5em;
-  //background-color: #243262;
-  color: white;
+  color: black;
   text-align: center;
+  background-color:  #fbf0e9;
 }

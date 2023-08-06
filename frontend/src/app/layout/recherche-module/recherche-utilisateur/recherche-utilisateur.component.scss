@@ -1,10 +1,15 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 .table-container {
-  overflow: auto;
-  overflow-y: auto;
+
 }
 
+.table-content-wrapper{
+  background-color: red!important;
+  min-height: 10vh!important;
+  max-height: 20vh!important;
+  overflow: auto;
+}
 
 
 .nb-pastille {
@@ -22,9 +27,14 @@
   font-size: 13px;
 }
 .mat-header-utilisateur{
-  background: #f1eeee;
+  background-color: #fcf5f3;
 }
-
+.table-header{
+  color: $orange-700!important;
+  text-transform: uppercase;
+  font-family: normal;
+  font-weight: 900;
+}
 .pagination-btn-nb-label {
   transform: translateY(5%);
 }
@@ -71,7 +81,6 @@ mat-card{
    font-family: Calibri !important;
    font-style: normal !important;
    line-height: 20px !important;
-   text-transform: capitalize !important;
 
 }
  tr{

@@ -14,11 +14,6 @@
 
 .nb-pastille {
   width: fit-content;
-  //border-radius: 2em;
- // border-color: $orange-500!important;
- // border-width: 1px;
- // border-style: solid;
- // color: $orange-500!important;
   margin-bottom: 0.25em!important;
 }
 
@@ -49,9 +44,8 @@ mat-card{
 
 .blue-label {
   //color: $orange-500!important;
-  //font-size: 13px !important;
+  font-size: 13px !important;
   font-family: Calibri !important;
-  font-style: normal !important;
 }
 .blue-label-icon {
   color: $orange-500!important;
@@ -137,8 +131,12 @@ mat-card{
 .titre-second{
   padding-left: 0.6em!important;
 }
-/*
-::ng-deep mat-chip{
-  background: $orange-500!important;
+
+.header-recherche{
+  background: linear-gradient(30deg, #ffffff,#fefaf8);
+  padding: 0.2em!important;
+  padding-top: 0.4em!important;
+  border-radius: 5px;
+  border: 1px solid $orange-600!important;
+  border-radius: 0.25em!important;
 }
-*/

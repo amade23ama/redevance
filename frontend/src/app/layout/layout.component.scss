@@ -138,15 +138,19 @@ mat-toolbar a{
   color: black!important;;
   border-radius: 0px!important;
 }
-
-/*::ng-deep .mat-chip.mat-standard-chip{
-  background:#df9257!important;
+::ng-deep.mat-mdc-standard-chip{
+  background:#fbf0e9!important;
+  min-height: 22px!important;
+  height: 26px!important;
+  padding-top: 0px!important;
+}
+::ng-deep .mat-chip.mat-standard-chip{
+  background:#fbf0e9!important;
+  min-height: 26px!important;
 
 }
-*/
 ::ng-deep.mat-chip.mat-mdc-standard-chip {
   --mdc-chip-elevated-container-color: #fbf0e9;
- // --mdc-chip-elevated-disabled-container-color: #f6e5da;
   --mdc-chip-label-text-color: #f36704;
   --mdc-chip-disabled-label-text-color: #fff;
   --mdc-chip-with-icon-icon-color: #e3844d;

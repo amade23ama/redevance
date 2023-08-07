@@ -1,0 +1,14 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+::ng-deep .mat-mdc-paginator-container {
+  background-color: #fdfaf6 !important;
+  justify-content: center!important;
+  min-height:48px!important;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+  margin: 0 32px 0 24px;
+  font-size: 14px;
+  font-family: "Arial";
+}
+

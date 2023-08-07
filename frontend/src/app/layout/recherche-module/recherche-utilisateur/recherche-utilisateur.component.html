@@ -1,12 +1,18 @@
-<div class="mt-05">
+<div class="mt-02 header-recherche">
 <app-actions-critere-btns  [reach]="reach"
 [label]="label"
 [filtres]="filtres"
   (btnAjouter)="ouvreNouveauUtilisateur()"
 (supprimer)="supprimer($event)">
 </app-actions-critere-btns>
-
-
+  <div  fxShow="false" fxHide.gt-xs="false" class="mt-02"fxLayout fxLayoutAlign="space-between center">
+    <mat-chip class="nb-label blue-label">
+      {{rechercheUtilisateurListe?.length}}
+      {{rechercheUtilisateurListe?.length === 1 ? appConfig.getLabel('recherche.utilisateur.singulier.label') :
+      appConfig.getLabel('recherche.utilisateur.pluriel.label')}}
+    </mat-chip>
+  </div>
+</div>
   <!--
   <div fxShow="false" fxHide.gt-xs="false" class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
     <mat-chip class="nb-label blue-label">
@@ -25,8 +31,8 @@
     </button>
   </div>
   -->
-<div fxShow="false" fxHide.gt-xs="false" class="table-container mt-05" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z1 table-parent " matSort>
+<div fxShow="false" fxHide.gt-xs="false" class="table-container mt-02" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
+<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent " matSort>
   <ng-container matColumnDef="id">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
       <div class="d-flex">N°</div>
@@ -95,10 +101,12 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
+  <div class="parging">
   <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"
                  showFirstLastButtons>
   </mat-paginator>
+  </div>
 </div>
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="users$|async as users">
     <div>
@@ -130,6 +138,6 @@
      <hr>
    </div>
   </div>
-</div>
+
 
 <!--*appAutorisation="['ADMIN']" -->

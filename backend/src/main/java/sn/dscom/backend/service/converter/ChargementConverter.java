@@ -59,7 +59,6 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .volumeSubst(chargementEntity.getVolumeSubsitance())
                 .vehicule(this.vehiculeConverter.reverse(chargementEntity.getVehiculeEntity()))
                 .site(this.siteConverteur.reverse(chargementEntity.getSiteEntity()))
-               // .depot(this.depotConverteur.reverse(chargementEntity.getDepotEntity()))
                 .exploitation(exploitationConverteur.reverse(chargementEntity.getExploitationEntity()))
                 .produit(this.produitConverter.reverse(chargementEntity.getProduitEntity()))
                 .build();
@@ -104,7 +103,6 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .volumeSubsitance(chargementDTO.getVolumeSubst())
                 .vehiculeEntity(this.vehiculeConverter.transform(chargementDTO.getVehicule()))
                 .siteEntity(this.siteConverteur.transform(chargementDTO.getSite()))
-               // .depotEntity(this.depotConverteur.transform(chargementDTO.getDepot()))
                 .exploitationEntity(this.exploitationConverteur.transform(chargementDTO.getExploitation()))
                 .produitEntity(this.produitConverter.transform(chargementDTO.getProduit()))
                 .build();

@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,16 +21,23 @@ import java.util.stream.Collectors;
 /**
  * Site Service
  */
-@Service
 @Transactional
 public class SiteService implements ISiteService {
 
     /** site Repository */
-    @Autowired
     private SiteRepository siteRepository;
 
     /** Site Converteur */
-    private Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
+    private final Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
+
+    /**
+     * SiteService
+     * @param siteRepository
+     */
+    @Builder
+    public SiteService(SiteRepository siteRepository) {
+        this.siteRepository = siteRepository;
+    }
 
     /**
      * Permet de modifier ou de creer un site

@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,16 +25,23 @@ import java.util.stream.Collectors;
  * @apiNote implémentation des operations sur les sites d'exploitation
  * @version 1
  */
-@Service
 @Transactional
 public class TransporteurService implements ITransporteurService {
 
     /** transporteur Repository */
-    @Autowired
     private TransporteurRepository transporteurRepository;
 
     /** transporteur Converter */
     private final Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
+
+    /**
+     * TransporteurService
+     * @param transporteurRepository
+     */
+    @Builder
+    public TransporteurService(TransporteurRepository transporteurRepository) {
+        this.transporteurRepository = transporteurRepository;
+    }
 
     /**
      * Permet de modifier ou de creer un Transporteur

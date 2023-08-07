@@ -1,8 +1,7 @@
 package sn.dscom.backend.service;
 
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
@@ -20,18 +19,25 @@ import java.util.stream.Collectors;
  * Service VehiculeService
  */
 @Slf4j
-@Service
 @Transactional
 public class VehiculeService implements IVoitureService{
 
     /** Repo vehiculeRepository */
-    @Autowired
     private VehiculeRepository vehiculeRepository;
 
     /**
      * vehicule Converter
      */
     private Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+
+    /**
+     * VehiculeService
+     * @param vehiculeRepository vehiculeRepository
+     */
+    @Builder
+    public VehiculeService(VehiculeRepository vehiculeRepository) {
+        this.vehiculeRepository = vehiculeRepository;
+    }
 
     /**
      * Fournit l'operation d'enregistrement d'un véhicule
@@ -41,20 +47,6 @@ public class VehiculeService implements IVoitureService{
      */
     @Override
     public Optional<VehiculeDTO> enregistrerVehicule(VehiculeDTO vehiculeDTO) {
-
-        // en cas de création id est null ou vide
-        /*if (null == vehiculeDTO.getId()){
-            //on ajout la date de création et on enregistre
-            vehiculeDTO.setDateCreation(new Date());
-            return Optional.of(this.vehiculeConverter.reverse(vehiculeRepository.save(this.vehiculeConverter.transform(vehiculeDTO))));
-        }
-
-        // Cas de modification
-        final Optional<VehiculeEntity> entityVehicule = vehiculeRepository.findById(vehiculeDTO.getId());
-        if(!entityVehicule.isPresent()){
-            throw new RuntimeException("L'entité à modifier n'existe pas en base");
-        }
-        vehiculeDTO.setDateModification(new Date());*/
 
         // Vérifiacation
         VehiculeEntity vehiculeEntity = this.vehiculeRepository.isVehiculeExist(vehiculeDTO.getImmatriculation().toUpperCase());

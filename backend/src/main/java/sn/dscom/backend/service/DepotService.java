@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,26 +25,27 @@ import java.util.stream.Collectors;
 /**
  * interface du service Depot
  */
-@Service
 @Transactional
 public class DepotService implements IDepotService {
 
     /**
      * depot Repository
      */
-    @Autowired
     private DepotRepository depotRepository;
 
     /**
      * explitation Converteur
      */
-    Transformer<DepotDTO, DepotEntity> depotConverteur = new DepotConverter();
+    private final Transformer<DepotDTO, DepotEntity> depotConverteur = new DepotConverter();
 
     /**
-     * utilisateur Service
+     * DepotService
+     * @param depotRepository
      */
-    @Autowired
-    IUtilisateurService utilisateurService;
+    @Builder
+    public DepotService(DepotRepository depotRepository) {
+        this.depotRepository = depotRepository;
+    }
 
     /**
      * Permet de modifier ou de creer un depot

@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,16 +27,24 @@ import java.util.stream.Collectors;
  *
  * @version 1
  */
-@Service
 @Transactional
 public class CategorieService implements ICategorieService {
 
     /** categorie Repository */
-    @Autowired
     private CategorieRepository categorieRepository;
 
     /** categorie Converter */
     private final Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
+
+    /**
+     * CategorieService
+     *
+     * @param categorieRepository categorieRepository
+     */
+    @Builder
+    public CategorieService(CategorieRepository categorieRepository) {
+        this.categorieRepository = categorieRepository;
+    }
 
     /**
      * Permet de modifier ou de creer une categorie

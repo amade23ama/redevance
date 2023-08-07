@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,16 +22,24 @@ import java.util.stream.Collectors;
  * @apiNote Service fournissant les opérateur sur les produits
  */
 @Slf4j
-@Service
 @Transactional
 public class ProduitService implements IProduitService {
 
     /** produit Converteur */
-    private Transformer<ProduitDTO, ProduitEntity> produitConverteur = new ProduitConverter();
+    private final Transformer<ProduitDTO, ProduitEntity> produitConverteur = new ProduitConverter();
 
     /** produit Repository */
-    @Autowired
     ProduitRepository produitRepository;
+
+    /**
+     * Produit Service
+     * @param produitRepository
+     */
+    @Builder
+    public ProduitService(ProduitRepository produitRepository) {
+        this.produitRepository = produitRepository;
+    }
+
     /**
      * rechercher Produits
      *

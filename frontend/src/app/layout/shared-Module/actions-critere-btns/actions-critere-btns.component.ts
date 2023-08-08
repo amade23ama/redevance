@@ -8,25 +8,20 @@ import {Filtre} from "../../../core/interfaces/filtre";
   styleUrls: ['./actions-critere-btns.component.scss']
 })
 export class ActionsCritereBtnsComponent implements OnInit{
-  @Input() reach:FormControl;
+  @Input() search:FormControl;
   @Output() btnAjouter = new EventEmitter();
   @Input() label:string;
-  @Input() filtres:Filtre[]
-  @Output() supprimer = new EventEmitter();
-  visible = true;
-  selectable = true;
-  removable = true;
-  addOnBlur = true;
+  @Input() tooltip:string;
+  @Input() numberResult:number
+  @Input()singulier:string
+  @Input()plurier:string
 
   constructor() {
   }
   ngOnInit() {
   }
-  onClick(){
+  ajouter(){
     this.btnAjouter.emit(true)
   }
 
-  remove(filtre:Filtre): void {
-    this.supprimer.emit(filtre)
-  }
 }

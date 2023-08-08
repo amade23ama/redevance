@@ -1,37 +1,15 @@
-<div class="mt-02 header-recherche">
-<app-actions-critere-btns  [reach]="reach"
-[label]="label"
-[filtres]="filtres"
-  (btnAjouter)="ouvreNouveauUtilisateur()"
-(supprimer)="supprimer($event)">
-</app-actions-critere-btns>
-  <div  fxShow="false" fxHide.gt-xs="false" class="mt-02"fxLayout fxLayoutAlign="space-between center">
-    <mat-chip class="nb-label blue-label">
-      {{rechercheUtilisateurListe?.length}}
-      {{rechercheUtilisateurListe?.length === 1 ? appConfig.getLabel('recherche.utilisateur.singulier.label') :
-      appConfig.getLabel('recherche.utilisateur.pluriel.label')}}
-    </mat-chip>
-  </div>
-</div>
-  <!--
-  <div fxShow="false" fxHide.gt-xs="false" class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
-    <mat-chip class="nb-label blue-label">
-      {{rechercheUtilisateurListe?.length}}
-      {{rechercheUtilisateurListe?.length === 1 ? appConfig.getLabel('recherche.utilisateur.singulier.label') :
-      appConfig.getLabel('recherche.utilisateur.pluriel.label')}}
-    </mat-chip>
-    <button mat-mini-fab
-            matTooltipPosition="left"
-            matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
-            matTooltipClass="custom-tooltip"
-            (keydown)="ouvreNouveauUtilisateur()" (click)="ouvreNouveauUtilisateur()"
-            class="new--contract--button">
 
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
-  -->
-<div fxShow="false" fxHide.gt-xs="false" class="table-container mt-02" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
+<div class="mt-05">
+<app-actions-critere-btns
+  [numberResult]="rechercheUtilisateurListe?.length"
+  [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
+  [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
+                      [tooltip]="appConfig.getLabel('header.btn.utilisateur.creer.tooltip')"
+                      [search]="search"
+                      (btnAjouter)="ouvreNouveauUtilisateur()"
+                      >
+</app-actions-critere-btns>
+<div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
 <table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent " matSort>
   <ng-container matColumnDef="id">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -139,5 +117,5 @@
    </div>
   </div>
 
-
+</div>
 <!--*appAutorisation="['ADMIN']" -->

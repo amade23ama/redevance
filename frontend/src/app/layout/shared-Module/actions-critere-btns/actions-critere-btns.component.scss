@@ -1,29 +1,36 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 .recherche{
-  text-align: justify;
+  padding-right: 2em;
+  padding-left: 2em;
 }
-.btn-ajouter{
-  margin-top: -0.02em!important;
-  font-size: 13px!important;
-  font-family: normal;
-}
-.result-filtre{
-  margin-top:-1em!important;
 
+.recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  min-height: 36px;
 }
 .recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
   padding-top: 4px;
   padding-bottom: 4px;
   min-height: 36px;
 }
-
 .recherche-mat-form-field::ng-deep.mat-mdc-icon-button {
   position: absolute;
   top: 50%;
   height: 48px;
-  left: 97%;
+  left: 90%;
   width: 50px;
   transform: translate(-50%, -50%);
   color: $orange-600!important;
+}
+.new--depot--button {
+  position: absolute;
+
+  left: 40%;
+  transform: translate(50%, -25%);
+  &.mat-button-disabled {
+    background-color: gray;
+  }
+  background-color: $orange-500!important;
 }

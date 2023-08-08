@@ -21,7 +21,7 @@ import {Filtre} from "../../../core/interfaces/filtre";
   styleUrls: ['./recherche-utilisateur.component.scss']
 })
 export class RechercheUtilisateurComponent implements OnInit{
-  reach:FormControl =new FormControl('');
+  search:FormControl =new FormControl('');
   label="Ajouter un Utilisateur";
   dataSource: MatTableDataSource<Utilisateur>;
   prenom="prenom"

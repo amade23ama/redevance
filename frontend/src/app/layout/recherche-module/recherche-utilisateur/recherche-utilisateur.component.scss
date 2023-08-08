@@ -54,16 +54,7 @@ mat-card{
     color: $orange-500!important;
   }
 }
-.new--contract--button {
-  position: absolute;
 
-  left: 45%;
-  transform: translate(50%, -42%);
-  &.mat-button-disabled {
-    background-color: gray;
-  }
-  background-color: $orange-500!important;
-}
 
 .mat-table {
   border-collapse: collapse;
@@ -86,13 +77,12 @@ mat-card{
   height: 50px;
   border-radius: 50%;
   background-color: $orange-500!important;
-  color: #ffffff; /* Set your desired text color */
+  color: #ffffff;
   border: none;
   outline: none;
   cursor: pointer;
   margin-left: 0.5em;
-  font-size: 16px; /* Set your desired font size */
-  /* Add any additional styling you want */
+  font-size: 16px;
 }
 .titre-prenom{
   font-size: 14px;
@@ -132,11 +122,5 @@ mat-card{
   padding-left: 0.6em!important;
 }
 
-.header-recherche{
-  background: linear-gradient(30deg, #ffffff,#fefaf8);
-  padding: 0.2em!important;
-  padding-top: 0.4em!important;
-  border-radius: 5px;
-  border: 1px solid $orange-600!important;
-  border-radius: 0.25em!important;
-}
+
+

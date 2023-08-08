@@ -1,29 +1,30 @@
 <div class="recherche">
-  <div fxLayout="row" fxLayoutAlign="space-between none" >
-    <div class="recherche-btn" fxFlex.lt-sm="100" fxFlex="35">
+  <div fxLayout="row" fxLayoutAlign="space-between stretch" >
+    <div fxShow="false" fxHide.gt-xs="false" >
+      <button mat-mini-fab
+              matTooltipPosition="left"
+              matTooltip="{{tooltip}}"
+              matTooltipClass="custom-tooltip"
+               (click)="ajouter()"
+              class="new--depot--button">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div [fxFlex.lt-sm]="100" fxLayoutGap="10px">
+      <div fxShow="false" fxHide.gt-xs="false" >
+        <mat-chip class="nb-label blue-label">
+          {{numberResult}} {{numberResult===1?singulier:plurier}}
+        </mat-chip>
+      </div>
       <mat-form-field class="recherche-mat-form-field" appearance="outline" fxFlex="100" floatLabel="always">
         <mat-label>Recherche</mat-label>
         <input matInput  type="text"
-               [formControl]="reach"/>
+               placeholder="xxxxxxxx"
+               [formControl]="search"/>
         <button  matSuffix mat-icon-button aria-label="Clear" disabled="true">
-        <mat-icon>search</mat-icon>
-      </button>
+          <mat-icon>search</mat-icon>
+        </button>
       </mat-form-field>
     </div>
-    <div fxShow="false" fxHide.gt-xs="false" class="btn">
-      <button  mat-raised-button class="btn-global-pink btn-ajouter"
-        (click)="onClick()" type="button">
-        {{label}}
-      </button>
-    </div>
-  </div>
-  <div class="result-filtre" fxLayout="row" fxLayoutAlign="space-between center" >
-    <mat-chip-list #chipList>
-      <mat-chip *ngFor="let filtre of filtres" [selectable]="selectable"
-                [removable]="removable" (removed)="remove(filtre)">
-        {{filtre.libelle}}
-        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-      </mat-chip>
-    </mat-chip-list>
-  </div>
+</div>
 </div>

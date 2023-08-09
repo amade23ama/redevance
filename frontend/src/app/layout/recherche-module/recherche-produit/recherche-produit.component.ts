@@ -4,9 +4,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Produit } from 'src/app/core/interfaces/produit';
 import { ProduitService } from 'src/app/core/services/produit.service';
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {Router} from "@angular/router";
 import {AppConfigService} from "../../../core/services/app-config.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -14,7 +14,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
   styleUrls: ['./recherche-produit.component.scss']
 })
 export class RechercheProduitComponent implements OnInit {
-
+  search:FormControl =new FormControl('');
   /** la liste des Produits */
   listProduit: MatTableDataSource<Produit>;
 

@@ -10,9 +10,7 @@ fieldset {
 
 fieldset legend {
   background: $orange-500!important;
-  color: #ffffff;
   padding: 5px 10px ;
-  font-size: 16px;
   border-radius: 5px;
   border: 1px solid $orange-500!important;
   border-radius: 0.25em!important;
@@ -21,7 +19,4 @@ fieldset legend {
   padding-left: 1em;
   padding-right: 1em;
   padding-top: 1em;
-}
-.mat-card{
-  border-bottom: solid $orange-600 !important;
 }

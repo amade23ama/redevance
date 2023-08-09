@@ -14,7 +14,8 @@
       <div fxShow="true" fxHide.lt-md="true">
         <a mat-button  routerLink="/recherche/user">Utilisateur</a>
         <a mat-button [matMenuTriggerFor]="menuVehicule">Vehicule</a>
-        <a mat-button [matMenuTriggerFor]="menuProduit">Produit</a>
+        <a mat-button routerLink="/recherche/produit">Produit</a>
+        <!-- <a mat-button [matMenuTriggerFor]="menuProduit">Produit</a> -->
         <a mat-button [matMenuTriggerFor]="menuSite">Site de pesage</a>
         <a mat-button [matMenuTriggerFor]="menuExploiation">Site d'exploitation</a>
         <a mat-button [matMenuTriggerFor]="menuDepot">Depot</a>
@@ -61,7 +62,7 @@
 </mat-menu>
 
 <mat-menu #menuProduit="matMenu">
-  <a mat-menu-item routerLink="/admin/produit">creer produit</a>
+  <a mat-menu-item routerLink="/admin/produit">creer produit</a>-->
   <a mat-menu-item  routerLink="/recherche/produit">liste de produit</a>
 </mat-menu>
 <mat-menu #menuExploiation="matMenu">

@@ -2,6 +2,7 @@ package sn.dscom.backend.service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import sn.dscom.backend.database.repository.ChargementRepository;
 import sn.dscom.backend.service.ChargementService;
 import sn.dscom.backend.service.interfaces.*;
@@ -21,7 +22,7 @@ public class ChargementServiceConfig {
     @Bean
     public ChargementService chargementService(ChargementRepository chargementRepository, ISiteService siteService, IExploitationService exploitationService,
                                                IProduitService produitService, IVoitureService voitureService, ITransporteurService transporteurService,
-                                               ICategorieService categorieService) {
+                                               ICategorieService categorieService, Environment environment) {
         return ChargementService.builder()
                 .chargementRepository(chargementRepository)
                 .siteService(siteService)
@@ -30,6 +31,7 @@ public class ChargementServiceConfig {
                 .voitureService(voitureService)
                 .transporteurService(transporteurService)
                 .categorieService(categorieService)
+                .environment(environment)
                 .build();
     }
 }

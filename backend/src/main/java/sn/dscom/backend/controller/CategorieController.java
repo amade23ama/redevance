@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.CategorieDTO;
+import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.ICategorieService;
 
 import java.time.LocalDateTime;
@@ -34,8 +35,7 @@ public class CategorieController {
      */
     @PostMapping(path = "/enregistrer")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<CategorieDTO> enregistrerCategorie(@RequestBody CategorieDTO categorieDTO) {
-
+    public ResponseEntity<CategorieDTO> enregistrerCategorie(@RequestBody CategorieDTO categorieDTO) throws DscomTechnicalException {
         return ResponseEntity.ok(this.categorieService.enregistrerCategorie(categorieDTO).get());
     }
 

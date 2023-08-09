@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import sn.dscom.backend.common.dto.CategorieDTO;
+import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.ICategorieService;
 
 import java.util.Arrays;
@@ -41,7 +42,7 @@ class CategorieControllerTest {
          * @return le bean
          */
         @Bean
-        public ICategorieService createCategorieService(){
+        public ICategorieService createCategorieService() throws DscomTechnicalException {
 
             ICategorieService mock = Mockito.mock(ICategorieService.class, Mockito.RETURNS_DEEP_STUBS);
             // mock rechercherCategories

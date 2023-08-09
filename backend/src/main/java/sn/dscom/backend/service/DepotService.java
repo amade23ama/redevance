@@ -1,20 +1,16 @@
 package sn.dscom.backend.service;
 
 import lombok.Builder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.DepotDTO;
-import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.DepotEntity;
 import sn.dscom.backend.database.repository.DepotRepository;
 import sn.dscom.backend.service.converter.DepotConverter;
 import sn.dscom.backend.service.interfaces.IDepotService;
-import sn.dscom.backend.service.interfaces.IUtilisateurService;
 
 import java.time.LocalDateTime;
 import java.util.List;

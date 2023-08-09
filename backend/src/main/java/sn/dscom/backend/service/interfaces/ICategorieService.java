@@ -1,6 +1,7 @@
 package sn.dscom.backend.service.interfaces;
 
 import sn.dscom.backend.common.dto.CategorieDTO;
+import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,7 +20,7 @@ public interface ICategorieService {
      * @param categorieDTO le site à enregistrer ou à modifier
      * @return le site enregistrer
      */
-    Optional<CategorieDTO> enregistrerCategorie(CategorieDTO categorieDTO);
+    Optional<CategorieDTO> enregistrerCategorie(CategorieDTO categorieDTO) throws DscomTechnicalException;
 
     /**
      * Retourne l'ensemble des sites d'Exploitation

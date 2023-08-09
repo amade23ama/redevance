@@ -2,6 +2,9 @@ package sn.dscom.backend.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Functions;
+import com.google.common.base.Predicates;
+import com.google.common.base.Splitter;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.slf4j.Logger;
@@ -75,7 +78,12 @@ public class DepotController {
     @PostMapping(path = "/fileHeader")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
+        // la liste des colonnes du fichier
         List<String> header = null;
+
+        // Le fichier contient des colonnes à ne pas mapper
+        List<String> colonnesToIgnore = Splitter.on(",").splitToList(environment.getProperty("list.file.colonne.to.ignore"));
+
         log.info(" entete du fichier ");
         if (file.isEmpty()) {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
@@ -84,13 +92,21 @@ public class DepotController {
             Reader reader = new InputStreamReader(file.getInputStream());
             CSVReader csvReader = new CSVReader(reader) ;
             header = tabToList(csvReader.readNext());
+
             log.info(" entete du fichier "+header);
         }catch (IOException | CsvValidationException e) {
             e.printStackTrace();
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
         }
+
+        // la liste épurée des colonnes à mapper
+       List<String> colonnesToMap = header.stream()
+                .filter(Predicates.compose(colonnesToIgnore::contains, Functions.identity()).negate())
+                .toList();
+
+
         FileInfoDTO fileInfoDTO = FileInfoDTO.builder()
-                .enteteFile(header)
+                .enteteFile(colonnesToMap)
                 .colonneTable(Arrays.asList(environment.getProperty("list.table.colonne").split(",")))
                 .build();
         return  ResponseEntity.ok(fileInfoDTO);

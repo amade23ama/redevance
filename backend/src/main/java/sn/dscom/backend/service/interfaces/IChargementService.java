@@ -2,6 +2,7 @@ package sn.dscom.backend.service.interfaces;
 
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.DepotDTO;
+import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,5 +44,5 @@ public interface IChargementService {
      * @param depotDTO depotDTO
      * @return ChargementDTO
      */
-    ChargementDTO effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depotDTO);
+    ChargementDTO effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depotDTO) throws DscomTechnicalException;
 }

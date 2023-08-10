@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import com.google.common.base.Strings;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,7 @@ import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.ICategorieService;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -113,10 +111,12 @@ public class CategorieService implements ICategorieService {
      */
     @Override
     public Optional<List<CategorieDTO>> rechercherCategorie(CategorieDTO categorieDTO) {
-        CategorieService.log.error("Recherche de catégories par crirère");
+        CategorieService.log.info("Recherche de catégories par crirère");
         //recherche par id
         if (categorieDTO.getId() != null) {
-            return Optional.of(Arrays.asList(this.categorieConverter.reverse(this.categorieRepository.findById(categorieDTO.getId()).get())));
+            return Optional.of(Collections.singletonList(this.categorieConverter.reverse(this.categorieRepository.findById(categorieDTO.getId()).get())));
+        } else if (!Strings.isNullOrEmpty(categorieDTO.getType())) {
+            return Optional.of(Collections.singletonList(this.categorieConverter.reverse(this.categorieRepository.rechercherCategorieByType(categorieDTO.getType()))));
         }
         //TODO: a implementer pour d'autre recherche
         return Optional.empty();

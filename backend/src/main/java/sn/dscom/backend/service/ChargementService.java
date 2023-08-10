@@ -1,11 +1,10 @@
 package sn.dscom.backend.service;
 
+import com.google.common.collect.Iterables;
 import io.vavr.control.Try;
 import lombok.Builder;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.dto.*;
@@ -159,18 +158,24 @@ public class ChargementService implements IChargementService {
         ProduitDTO produitDTO = this.rechercherProduit(ligneChargement, mapCorrespondance, header);
 
         // Enregistrement du véhicule
-        String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get("db_chargement_destination"))).toUpperCase();
+        String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.destination"))));
+        String poidsMesure = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poids"))));
+        String poidsMax = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poidsMax"))));
 
         // enregistrer Chargement
         ChargementDTO chargementDTO = ChargementDTO.builder()
                                                     .dateCreation(new Date())
                                                     .datePesage(new Date())
-                                                    .poids(25.3)
+                                                    .poids(Double.valueOf(poidsMesure))
+                                                    //la diference entre le volume estimé et le volume du véhicule
                                                     .ecart(23.03)
-                                                    .poidsMax(42.00)
+                                                    .poidsMax(Double.valueOf(poidsMax))
+                                                    // la difference entre le poids moyen et le poids du véhicule à vide (25% du poids max)
                                                     .poidsSubst(31.1)
                                                     .destination(destination)
+                                                    //(Volume estimé - Volume classe)/2 = Ecart/2
                                                     .volumeMoyen(61.3)
+                                                    //Poids Estimé / la densité du produit
                                                     .volumeSubst(50.2)
                                                     .vehicule(vehiculeDTO)
                                                     .site(siteDTO)
@@ -191,13 +196,14 @@ public class ChargementService implements IChargementService {
 
         // Table SITE: nom et localité db_site_nom et db_site_localite
         //REFERIENTIEL: nom -> site sur fichier et alimenter la localité
+        String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
 
-        return this.siteService.rechercherSite(SiteDTO.builder()
-                        .nom(ligneChargement.get(header.indexOf(mapCorrespondance.get("db_site_nom"))).toUpperCase())
-                        .build())
-                .get()
-                .stream()
-                .findFirst().get();
+        return Iterables.getOnlyElement(Try.of(() -> SiteDTO.builder()
+                                                            .nom(siteName.toUpperCase())
+                                                            .build())
+                                            .mapTry(this.siteService::rechercherSite)
+                                            .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Site : %s",e.getMessage())))
+                                            .get().get());
     }
 
 
@@ -213,16 +219,15 @@ public class ChargementService implements IChargementService {
         //site: site_origine et region
         //exploitation: nom -> Prevenance
         //REF recherche nom et alimenter la région
-        return Try.of(() -> ExploitationDTO.builder()
-                                .nom(ligneChargement.get(header.indexOf(mapCorrespondance.get("db_exploitation_nom"))).toUpperCase())
+        String exploitationName = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.exploitation.nom"))));
+
+        return Iterables.getOnlyElement(Try.of(() -> ExploitationDTO.builder()
+                                .nom(exploitationName.toUpperCase())
                                 .build())
                 .mapTry(this.exploitationService::rechercherSiteExploitation)
                 .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Site d'exploitation: %s",e.getMessage())))
                 .get()
-                .get()
-                .stream()
-                .filter(Objects::nonNull)
-                .findFirst().get();
+                .get());
     }
 
     /**
@@ -235,11 +240,14 @@ public class ChargementService implements IChargementService {
      */
     private ProduitDTO rechercherProduit(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
 
+        // le nom du produit à rechercher
+        String produitName = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.produit.nom"))));
+
         return Try.of(() -> ProduitDTO.builder()
-                                .nomSRC(ligneChargement.get(header.indexOf(mapCorrespondance.get("db_produit_nom"))).toUpperCase())
+                                .nomSRC(produitName.toUpperCase())
                                 .build())
                     .mapTry(this.produitService::rechercherProduit)
-                    .onFailure(e -> ChargementService.log.error("Erreur lors de la recherche du Produit: %s",e.getMessage()))
+                    .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Produit: %s",e.getMessage())))
                     .get().get();
 
     }
@@ -251,11 +259,16 @@ public class ChargementService implements IChargementService {
     private VehiculeDTO enregistrerVehicule(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header) throws DscomTechnicalException {
         //VEHICULE: transpoteur et categorie
         //immatriculation -> immatriculation dans le fichier
+        String immatriculation = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.voiture.immatriculation"))));
+
+        // rechercher la catégorie dans le référentiel
+        CategorieDTO categorieDTO = this.rechercherCategorie(ligneChargement, mapCorrespondance, header);
+
         return this.voitureService.enregistrerVehicule(VehiculeDTO.builder()
                 .dateCreation(new Date())
                         .transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
-                        .categorie(this.enregistrerCategorie(ligneChargement, mapCorrespondance, header))
-                .immatriculation(ligneChargement.get(header.indexOf(mapCorrespondance.get("db_voiture_immatriculation"))).toUpperCase())
+                        .categorie(categorieDTO)
+                .immatriculation(immatriculation.toUpperCase())
                 .build()).get();
     }
 
@@ -267,17 +280,17 @@ public class ChargementService implements IChargementService {
      * @param header header
      * @return l'objet enregisté
      */
-    private CategorieDTO enregistrerCategorie(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header) throws DscomTechnicalException {
+    private CategorieDTO rechercherCategorie(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header) throws DscomTechnicalException {
         //CATEGORIE:
         // type -> class dans le fichier et volume à voir
-        return Try.of(() -> CategorieDTO.builder()
-                                .dateCreation(new Date())
-                                .type(ligneChargement.get(header.indexOf(mapCorrespondance.get("db_categorie_type"))).toUpperCase())
-                                .volume(20.2) //TODO: calcul du volume
+        String classeVehicule = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.categorie.type"))));
+
+        return Iterables.getOnlyElement(Try.of(() -> CategorieDTO.builder()
+                                .type(classeVehicule.toUpperCase())
                                 .build())
-                .mapTry(this.categorieService::enregistrerCategorie)
-                .onFailure(e -> ChargementService.log.error(": %s", e.getMessage()))
-                .get().get();
+                .mapTry(this.categorieService::rechercherCategorie)
+                .onFailure(e -> ChargementService.log.error(String.format(" Erreur lors de la rechercher de la categorie: %s", e.getMessage())))
+                .get().get());
     }
 
     /**

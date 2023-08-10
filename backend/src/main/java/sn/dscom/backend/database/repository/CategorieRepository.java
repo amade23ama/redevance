@@ -28,6 +28,15 @@ public interface CategorieRepository extends JpaRepository<CategorieEntity,Long>
      * @param volume volume
      * @return TransporteurEntity
      */
-    @Query(value = "select categorie from CategorieEntity categorie where categorie.type = :type and  categorie.volume=:volume")
+    @Query(value = "select categorie from CategorieEntity categorie where categorie.type =:type and  categorie.volume=:volume")
     CategorieEntity isCategorieExist(@Param("type") String type, @Param("volume") double volume);
+
+    /**
+     * rechercher Categorie By Type
+     *
+     * @param type la classe
+     * @return CategorieEntity
+     */
+    @Query(value = "select categorie from CategorieEntity categorie where categorie.type =:type")
+    CategorieEntity rechercherCategorieByType(@Param("type") String type);
 }

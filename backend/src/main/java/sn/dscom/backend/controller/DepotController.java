@@ -172,7 +172,7 @@ public class DepotController {
                     List<String> chargement = tabToList(nextLine);
 
                     // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
-                    String nomProduit = chargement.get(header.indexOf(mapInverse.get("db_produit_nom"))).toUpperCase();
+                    String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
                     Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
 
                     if(produitDTO.isPresent()){

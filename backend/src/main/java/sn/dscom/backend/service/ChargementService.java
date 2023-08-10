@@ -162,21 +162,27 @@ public class ChargementService implements IChargementService {
         String poidsMesure = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poids"))));
         String poidsMax = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poidsMax"))));
 
+        Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax));
+
+        Double volumeEstime = ChargementUtils.getVolumeEstime(poidsEstime, produitDTO.getDensiteKGM());
+
+        Double ecart = ChargementUtils.getEcart(volumeEstime, vehiculeDTO.getCategorie().getVolume());
+
         // enregistrer Chargement
         ChargementDTO chargementDTO = ChargementDTO.builder()
                                                     .dateCreation(new Date())
                                                     .datePesage(new Date())
                                                     .poids(Double.valueOf(poidsMesure))
                                                     //la diference entre le volume estimé et le volume du véhicule
-                                                    .ecart(23.03)
+                                                    .ecart(ecart)
                                                     .poidsMax(Double.valueOf(poidsMax))
-                                                    // la difference entre le poids moyen et le poids du véhicule à vide (25% du poids max)
-                                                    .poidsSubst(31.1)
+                                                    // la difference entre le poids mesuré et le poids du véhicule à vide (25% du poids max)
+                                                    .poidsSubst(poidsEstime)
                                                     .destination(destination)
                                                     //(Volume estimé - Volume classe)/2 = Ecart/2
-                                                    .volumeMoyen(61.3)
+                                                    .volumeMoyen(ecart/2)
                                                     //Poids Estimé / la densité du produit
-                                                    .volumeSubst(50.2)
+                                                    .volumeSubst(volumeEstime)
                                                     .vehicule(vehiculeDTO)
                                                     .site(siteDTO)
                                                     .exploitation(exploitationDTO)

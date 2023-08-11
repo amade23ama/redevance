@@ -1,5 +1,10 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
+form{
+
+}
+
+
 fieldset {
   font-family: sans-serif;
   background: #fffdfd;
@@ -10,18 +15,10 @@ fieldset {
 
 fieldset legend {
   background: $orange-500!important;
-  color: #ffffff;
   padding: 5px 10px ;
-  font-size: 16px;
   border-radius: 5px;
   border: 1px solid $orange-500!important;
   border-radius: 0.25em!important;
 }
-.stepper--conteneur{
-  padding-left: 1em;
-  padding-right: 1em;
-  padding-top: 1em;
-}
-.mat-card{
-  border-bottom: solid $orange-600 !important;
+.contenair-btn{
 }

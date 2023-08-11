@@ -7,6 +7,7 @@ import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -180,7 +181,6 @@ public class DepotController {
                         ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
                         listChargementAEffectuer.add(chargementDTO);
                     }
-
                 }
 
                 // On modifie le depot avec la liste des chargements et l'heure de fin
@@ -190,12 +190,15 @@ public class DepotController {
                 log.info(" entete du fichier "+header);
             }catch (IOException | CsvValidationException e) {
                 e.printStackTrace();
+
+                // mise à jour du dépot
+                this.definirDepot(depot);
                 throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
             }
-
-            // todo
         } catch (Exception e) {
             e.printStackTrace();
+            // mise à jour du dépot
+            this.definirDepot(depot);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
 
@@ -312,6 +315,21 @@ public class DepotController {
     public ResponseEntity<Boolean> supprimerDepot(@RequestBody DepotDTO depotDTO) {
         //supprimer Depot
         return  ResponseEntity.ok(depotService.supprimerDepot(depotDTO).booleanValue());
+    }
+
+    /**
+     * a la fin du dépot ou lors que le depot est en erreur
+     *
+     * @param depot the depot
+     */
+    private void definirDepot( final DepotDTO depot){
+        // on recupère le dépot et on la met à jour le compteur d'erreur et la date de fin du chargment
+        DepotDTO depotDTO = this.depotService.rechercherDepotById(depot.getId()).get();
+        int nbErreur = depotDTO.getNbChargementErreur();
+        depotDTO.setNbChargementErreur(nbErreur + 1);
+        depotDTO.setDateHeureFinDepot(new Date());
+        Try.of(() -> depotDTO)
+                .mapTry(this.depotService::enregistrerDepot);
     }
 
 }

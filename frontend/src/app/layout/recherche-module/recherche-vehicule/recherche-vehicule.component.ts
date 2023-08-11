@@ -7,6 +7,7 @@ import { VehiculeService } from 'src/app/core/services/vehicule.service';
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Site} from "../../../core/interfaces/site";
 import {Router} from "@angular/router";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -14,7 +15,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./recherche-vehicule.component.scss']
 })
 export class RechercheVehiculeComponent implements OnInit{
-
+  search:FormControl =new FormControl('');
   /** la liste des véhicules */
   listVehicule: MatTableDataSource<Vehicule>;
 

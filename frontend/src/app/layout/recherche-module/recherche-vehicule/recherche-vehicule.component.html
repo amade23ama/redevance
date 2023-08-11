@@ -1,20 +1,15 @@
-<mat-card class="mt-2">
-  <div class="nb-pastille"fxLayout fxLayoutAlign="space-between center">
-    <label class="nb-label blue-label">
-      nombre de result
-    </label>
-    <button mat-mini-fab
-            matTooltipPosition="left"
-            matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
-            matTooltipClass="custom-tooltip"
-            (keydown)="ouvreNouveauVehicule()" (click)="ouvreNouveauVehicule()"
-            class="new--contract--button">
-
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+<div class="mt-05">
+  <app-actions-critere-btns
+    [numberResult]="2"
+    [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
+    [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
+    [tooltip]="appConfig.getLabel('header.btn.utilisateur.creer.tooltip')"
+    [search]="search"
+    (btnAjouter)="ouvreNouveauVehicule()"
+  >
+  </app-actions-critere-btns>
     <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-        <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z1 table-parent" matSort>
+        <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
             <ng-container matColumnDef="Prenom">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -96,5 +91,5 @@
         </mat-paginator>
 
     </div>
-</mat-card >
+</div>
 

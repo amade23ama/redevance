@@ -1,6 +1,6 @@
 <fieldset class="mt-1">
-  <legend>{{titre}}</legend>
-  <mat-card class="mt-1 mat-card">
+  <legend class="titre-form">{{titre}}</legend>
+  <div class="mt-1">
     <form  class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
@@ -80,7 +80,7 @@
         </mat-form-field>
       </div>
     </form>
-  </mat-card>
+  </div>
 
   <div class="mat-elevation-z0 mt-1">
     <app-action-btns [btns]="btns"  (btnClick)="transporteurAction($event)"></app-action-btns>

@@ -7,6 +7,7 @@ import { SiteService } from 'src/app/core/services/site.service';
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {Router} from "@angular/router";
 import {AppConfigService} from "../../../core/services/app-config.service";
+import {FormControl} from "@angular/forms";
 
 @Component({
   selector: 'recherche-site',
@@ -14,7 +15,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
   styleUrls: ['./recherche-site.component.scss']
 })
 export class RechercheSiteComponent implements OnInit {
-
+  search:FormControl =new FormControl('');
    /** la liste des véhicules */
    listSites: MatTableDataSource<Site>;
 
@@ -26,8 +27,8 @@ export class RechercheSiteComponent implements OnInit {
    pageSizeOptions: number[] = [5, 10, 20];
    pageSize = 5; // nb ligne par page par défaut
 
-   // les noms des colones
-   displayedColumns: string[] = ['Nom', 'Localite', 'Date Creation', 'Date Modification','actions'];
+   // les noms des colones  'Date Modification',
+   displayedColumns: string[] = ['Nom', 'Localite', 'Date Creation','actions'];
 
   /** site Service */
   constructor(public appConfig: AppConfigService, private siteService: SiteService,private router:Router){}

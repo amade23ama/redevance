@@ -14,7 +14,7 @@ import java.util.Date;
 class SiteConverterTest {
 
     /** Site Converteur */
-    private Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
+    private final Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
 
     /**
      * reverse

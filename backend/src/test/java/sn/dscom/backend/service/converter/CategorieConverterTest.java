@@ -14,7 +14,7 @@ import java.util.Date;
 class CategorieConverterTest {
 
     /** categorie Converter */
-    private Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
+    private final Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
 
     /**
      * reverse test()

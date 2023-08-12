@@ -2,7 +2,6 @@ package sn.dscom.backend.service.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 import sn.dscom.backend.common.dto.CategorieDTO;
 import sn.dscom.backend.common.dto.TransporteurDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
@@ -13,24 +12,15 @@ import sn.dscom.backend.database.entite.VehiculeEntity;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Vehicule ConverterTest
  */
-@Disabled
 class VehiculeConverterTest {
 
     /**
      * vehicule Converter
      */
-    Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
-
-    /** transporteur Converter*/
-    private Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
-
-    /** categorie Converter */
-    Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
+    private final Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
 
     /**
      * reverse test
@@ -54,7 +44,7 @@ class VehiculeConverterTest {
                         .dateCreation(new Date())
                         .dateModification(new Date())
                         .type("1DH")
-                        .adresse("Dakar")
+                        .adresse("Dakar".toUpperCase())
                         .email("test@test.sn")
                         .nom("NOM")
                         .prenom("PRENOM")
@@ -98,7 +88,7 @@ class VehiculeConverterTest {
                         .dateCreation(new Date())
                         .dateModification(new Date())
                         .type("1DH")
-                        .adresse("Dakar")
+                        .adresse("Dakar".toUpperCase())
                         .email("test@test.sn")
                         .nom("NOM")
                         .prenom("PRENOM")

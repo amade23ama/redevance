@@ -3,7 +3,6 @@ package sn.dscom.backend.service.converter;
 import com.google.common.collect.MoreCollectors;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.DepotDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Disabled
 class DepotConverterTest {
 
     /**
@@ -86,7 +84,7 @@ class DepotConverterTest {
     private DepotEntity buildDepotEntity() {
         return DepotEntity.builder()
                 .id(1L)
-                .nom("nom")
+                .nom("nom".toUpperCase())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())
                 .dateHeureDepot(new Date())
@@ -108,7 +106,7 @@ class DepotConverterTest {
     private DepotDTO buildDepotDTO() {
         return DepotDTO.builder()
                 .id(1L)
-                .nom("nom")
+                .nom("nom".toUpperCase())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())
                 .dateHeureDepot(new Date())

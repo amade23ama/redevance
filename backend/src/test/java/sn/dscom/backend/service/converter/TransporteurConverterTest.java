@@ -2,23 +2,19 @@ package sn.dscom.backend.service.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Disabled;
 import sn.dscom.backend.common.dto.TransporteurDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.TransporteurEntity;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Transporteur ConverterTest
  */
-@Disabled
 class TransporteurConverterTest {
 
     /** transporteur Converter*/
-    private Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
+    private final Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
 
     /**
      * reverse test
@@ -31,10 +27,10 @@ class TransporteurConverterTest {
                                                         .dateCreation(new Date())
                                                         .dateModification(new Date())
                                                         .type("1DH")
-                                                        .adresse("Dakar")
+                                                        .adresse("Dakar".toUpperCase())
                                                         .email("test@test.sn")
-                                                        .nom("NOM")
-                                                        .prenom("PRENOM")
+                                                        .nom("NOM".toUpperCase())
+                                                        .prenom("PRENOM".toUpperCase())
                                                         .build();
 
         //WHEN
@@ -65,10 +61,10 @@ class TransporteurConverterTest {
                                                         .dateCreation(new Date())
                                                         .dateModification(new Date())
                                                         .type("1DH")
-                                                        .adresse("Dakar")
+                                                        .adresse("Dakar".toUpperCase())
                                                         .email("test@test.sn")
-                                                        .nom("NOM")
-                                                        .prenom("PRENOM")
+                                                        .nom("NOM".toUpperCase())
+                                                        .prenom("PRENOM".toUpperCase())
                                                         .build();
 
         //WHEN

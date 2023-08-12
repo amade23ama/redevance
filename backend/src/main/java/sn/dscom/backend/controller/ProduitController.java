@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.service.interfaces.IProduitService;
 
 import java.time.LocalDateTime;
@@ -29,6 +30,7 @@ public class ProduitController {
 
     /**
      * Permet de rechercher la liste des Produits en base
+     *
      * @return la liste des produits
      */
     @GetMapping(path = "/rechercher", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -36,7 +38,7 @@ public class ProduitController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ProduitDTO>> rechercherProduits() {
         log.info("Rechercher Produits");
-        return  ResponseEntity.ok(produitService.rechercherProduits().get());
+        return ResponseEntity.ok(produitService.rechercherProduits().get());
     }
 
     /**
@@ -50,7 +52,7 @@ public class ProduitController {
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<ProduitDTO> enregistrerProduit(@RequestBody ProduitDTO produitDTO) {
         log.info("Enregistrer Produits");
-        return  ResponseEntity.ok(produitService.enregistrerProduit(produitDTO).get());
+        return ResponseEntity.ok(produitService.enregistrerProduit(produitDTO).get());
     }
 
     /**
@@ -63,6 +65,13 @@ public class ProduitController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<Integer> getCompteurProduits() {
         log.info("compter Produits");
-        return  ResponseEntity.ok(produitService.compterProduit());
+        return ResponseEntity.ok(produitService.compterProduit());
+    }
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ProduitDTO chargerProduitParId(@PathVariable Long id) {
+        return produitService.chargerProduitParId(id);
     }
 }
+

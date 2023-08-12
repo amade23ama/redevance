@@ -9,6 +9,7 @@ import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
+import sn.dscom.backend.database.entite.ProduitEntity;
 import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.SiteRepository;
 import sn.dscom.backend.service.converter.SiteConverter;
@@ -120,5 +121,15 @@ public class SiteService implements ISiteService {
     @Override
     public Integer compterSite(LocalDateTime dateMiseEnService) {
         return siteRepository.compterSitePardate(dateMiseEnService);
+    }
+
+    @Override
+    public SiteDTO chargerSiteDTOParId(Long id) {
+        Optional<SiteEntity> site = siteRepository.findById(id);
+        if (site.isPresent()) {
+            return this.siteConverteur.reverse(site.get());
+        } else {
+            throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+        }
     }
 }

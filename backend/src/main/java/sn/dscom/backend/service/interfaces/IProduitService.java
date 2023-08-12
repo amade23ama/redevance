@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.dto.UtilisateurDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,4 +37,5 @@ public interface IProduitService {
      * @return le nombre
      */
     Integer compterProduit();
+    ProduitDTO chargerProduitParId(Long id);
 }

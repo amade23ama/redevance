@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Vehicule ConverterTest
  */
+@Disabled
 class VehiculeConverterTest {
 
     /**

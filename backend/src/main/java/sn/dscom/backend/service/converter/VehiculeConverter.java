@@ -60,7 +60,7 @@ public class VehiculeConverter implements Transformer<VehiculeDTO, VehiculeEntit
 
         return VehiculeEntity.builder()
                 .id(vehiculeDTO.getId())
-                .immatriculation(vehiculeDTO.getImmatriculation())
+                .immatriculation(vehiculeDTO.getImmatriculation().trim().toUpperCase())
                 .categorieEntity(this.categorieConverter.transform(vehiculeDTO.getCategorie()))
                 .transporteurEntity(this.transporteurConverter.transform(vehiculeDTO.getTransporteur()))
                 .dateCreation(vehiculeDTO.getId() == null ? new Date() : vehiculeDTO.getDateCreation())

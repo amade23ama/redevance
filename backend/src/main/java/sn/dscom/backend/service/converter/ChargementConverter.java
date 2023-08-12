@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.converter;
 
+import com.google.common.base.Strings;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.*;
@@ -98,7 +99,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .ecart(chargementDTO.getEcart())
                 .poidsMax(chargementDTO.getPoidsMax())
                 .poidsSubsitance(chargementDTO.getPoidsSubst())
-                .destination(chargementDTO.getDestination())
+                .destination(Strings.isNullOrEmpty(chargementDTO.getDestination()) ? chargementDTO.getDestination() : chargementDTO.getDestination().trim().toUpperCase())
                 .volumeMoyen(chargementDTO.getVolumeMoyen())
                 .volumeSubsitance(chargementDTO.getVolumeSubst())
                 .vehiculeEntity(this.vehiculeConverter.transform(chargementDTO.getVehicule()))

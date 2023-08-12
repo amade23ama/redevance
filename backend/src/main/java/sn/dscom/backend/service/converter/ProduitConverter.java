@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.converter;
 
+import com.google.common.base.Strings;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ProduitEntity;
@@ -50,8 +51,8 @@ public class ProduitConverter implements Transformer<ProduitDTO,ProduitEntity> {
         }
         return ProduitEntity.builder()
                 .id(produitDTO.getId())
-                .nomNORM(produitDTO.getNomNORM())
-                .nomSRC(produitDTO.getNomSRC())
+                .nomNORM(Strings.isNullOrEmpty(produitDTO.getNomNORM()) ? produitDTO.getNomNORM() : produitDTO.getNomNORM().trim().toUpperCase())
+                .nomSRC(Strings.isNullOrEmpty(produitDTO.getNomSRC()) ? produitDTO.getNomSRC() : produitDTO.getNomSRC().trim().toUpperCase())
                 .densiteGRM(produitDTO.getDensiteGRM())
                 .densiteKGM(produitDTO.getDensiteKGM())
                 .dateCreation(produitDTO.getId() == null ? new Date() :produitDTO.getDateCreation())

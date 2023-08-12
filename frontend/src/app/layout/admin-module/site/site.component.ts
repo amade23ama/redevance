@@ -13,9 +13,7 @@ import {Site} from "../../../core/interfaces/site";
 import {SiteService} from "../../../core/services/site.service";
 import {ActivatedRoute} from "@angular/router";
 
-class Bank {
-  name:string
-}
+
 
 @Component({
   selector: 'app-site',
@@ -38,11 +36,6 @@ export class SiteComponent implements OnInit {
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
   })
-  radioOptions = [
-    { label: 'Option 1', value: true },
-    { label: 'Option 2', value: true },
-    { label: 'Option 3', value: true }
-  ];
 
   btns: ActionBtn[] = [];
   siteCourant:Site;

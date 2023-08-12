@@ -68,7 +68,7 @@ export class SiteService {
         this.setNbSites(res);
       }),
       catchError((err) => {
-        return throwError(() => err) // RXJS 7+
+        return throwError(() => err)
       })
     )
   }
@@ -88,14 +88,14 @@ export class SiteService {
    * @returns la liste des Site
    */
   getSiteById(id: number){
-    return this.httpClient.get<Site>(this.url + `/rechercherById/${id}`)
+    return this.httpClient.get<Site>(this.url + `/${id}`)
     .pipe(
       tap((res)=> {
         this.setSiteCourant(Site.fromJson(res,Site))
       }),
       catchError((err) => {
         this.notification.error("erreur de chargement du site")
-        return throwError(() => err) // RXJS 7+
+        return throwError(() => err)
       })
     )
   }
@@ -121,7 +121,7 @@ export class SiteService {
         console.log("suppression du site d'id: ", id);
       }),
       catchError((err) => {
-        return throwError(() => err) // RXJS 7+
+        return throwError(() => err)
       })
     )
   }
@@ -140,7 +140,7 @@ export class SiteService {
       }),
       catchError((err) => {
         this.notification.error("erreur d'enregistement du site")
-        return throwError(() => err) // RXJS 7+
+        return throwError(() => err)
       })
     );
   }

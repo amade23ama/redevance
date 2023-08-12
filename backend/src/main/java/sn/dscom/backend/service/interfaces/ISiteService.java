@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.dto.SiteDTO;
 
 import java.time.LocalDateTime;
@@ -48,4 +49,5 @@ public interface ISiteService {
      * @return le nombre de site
      */
     Integer compterSite(LocalDateTime dateMiseEnService);
+    SiteDTO chargerSiteDTOParId(Long id);
 }

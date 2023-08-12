@@ -3,11 +3,15 @@ package sn.dscom.backend.service;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ProduitEntity;
+import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.database.repository.ProduitRepository;
 import sn.dscom.backend.service.converter.ProduitConverter;
 import sn.dscom.backend.service.interfaces.IProduitService;
@@ -86,5 +90,15 @@ public class ProduitService implements IProduitService {
     @Override
     public Integer compterProduit() {
         return ((int) this.produitRepository.count());
+    }
+
+    @Override
+    public ProduitDTO chargerProduitParId(Long id) {
+        Optional<ProduitEntity> produit = produitRepository.findById(id);
+        if (produit.isPresent()) {
+            return this.produitConverteur.reverse(produit.get());
+        } else {
+            throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+        }
     }
 }

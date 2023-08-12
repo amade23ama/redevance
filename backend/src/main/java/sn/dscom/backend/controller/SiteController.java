@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.service.interfaces.ISiteService;
 
@@ -81,5 +82,10 @@ public class SiteController {
     public ResponseEntity<Integer> getCompteurSites() {
         log.info("Compter Site");
         return  ResponseEntity.ok(this.siteService.compterSite(LocalDateTime.now()));
+    }
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public SiteDTO chargerSiteDTOParId(@PathVariable Long id) {
+        return siteService.chargerSiteDTOParId(id);
     }
 }

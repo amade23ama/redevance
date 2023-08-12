@@ -28,7 +28,7 @@ export class RechercheVehiculeComponent implements OnInit{
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['Prenom', 'Nom', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume'];
+  displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume'];
 
   /** constructor */
   constructor(public appConfig: AppConfigService,private vehiculeService: VehiculeService,

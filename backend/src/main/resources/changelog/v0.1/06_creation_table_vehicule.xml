@@ -18,7 +18,7 @@
             <constraints primaryKey="true"/>
         </column>
         <column name="IMMATRICULATION" type="varchar(50)" remarks="Identifiant technique de la voiture">
-            <constraints unique="true" nullable="false"/>
+            <constraints nullable="false"/>
         </column>
 
         <column name="ID_TRANSPORTEUR" type="bigint" remarks="Identifiant technique du transporteur">
@@ -44,7 +44,9 @@
         </column>
 
     </createTable>
-
+        <addUniqueConstraint columnNames="IMMATRICULATION, ID_TRANSPORTEUR"
+                             constraintName="uk_unique_combination"
+                             tableName="VEHICULE"/>
         <addForeignKeyConstraint baseColumnNames="ID_TRANSPORTEUR"
                                  baseTableName="VEHICULE"
                                  constraintName="fk_ID_TRANSPORTEUR"

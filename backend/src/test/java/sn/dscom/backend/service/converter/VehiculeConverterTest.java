@@ -2,6 +2,7 @@ package sn.dscom.backend.service.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 import sn.dscom.backend.common.dto.CategorieDTO;
 import sn.dscom.backend.common.dto.TransporteurDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;

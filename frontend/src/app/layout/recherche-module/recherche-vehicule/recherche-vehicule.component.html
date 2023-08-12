@@ -11,25 +11,34 @@
     <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
         <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
-            <ng-container matColumnDef="Prenom">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Prenom</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div class="d-flex">{{element?.transporteur.prenom}}</div>
-                </td>
-            </ng-container>
+          <ng-container matColumnDef="NomRS">
+            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+              <div class="d-flex">Prenom-Nom/RS</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom
+                :element?.transporteur.prenom+" "+element?.transporteur.nom}}</div>
+            </td>
+          </ng-container>
+          <!--
+        <ng-container matColumnDef="Prenom">
+            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+              <div class="d-flex">Prenom</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex">{{element?.transporteur.prenom}}</div>
+            </td>
+        </ng-container>
 
-            <!-- COLONNE : NOM -->
-            <ng-container matColumnDef="Nom">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Nom</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div class="d-flex">{{element?.transporteur.nom}}</div>
-                </td>
-            </ng-container>
-
+        <ng-container matColumnDef="Nom">
+            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+              <div class="d-flex">Nom</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex">{{element?.transporteur.nom}}</div>
+            </td>
+        </ng-container>
+           ---->
             <!-- COLONNE : TELEPHONE-->
             <ng-container matColumnDef="Téléphone">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -73,7 +82,7 @@
             <!-- COLONNE : Volume -->
             <ng-container matColumnDef="Volume">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Volume</div>
+                  <div class="d-flex">Volume(m3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element.categorie.volume}}</div>

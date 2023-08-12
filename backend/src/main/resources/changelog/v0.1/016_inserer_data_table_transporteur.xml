@@ -9,7 +9,7 @@
     <changeSet id="016_inserer_data_table_transporteur_1" author="waly">
         <insert tableName="TRANSPORTEUR">
             <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
-            <column name="TYPE" value="Personne morale" />
+            <column name="TYPE" value="S" />
             <column name="NOM_RAISON_SOCIALE" value="DMB" />
             <column name="PRENOM" value="" />
             <column name="TELEPHONE" value="00221775678987" />
@@ -18,7 +18,7 @@
         </insert>
         <insert tableName="TRANSPORTEUR">
             <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
-            <column name="TYPE" value="Personne physique" />
+            <column name="TYPE" value="P" />
             <column name="NOM_RAISON_SOCIALE" value="DIOUF" />
             <column name="PRENOM" value="Djibril" />
             <column name="TELEPHONE" value="00221789764534" />
@@ -27,7 +27,7 @@
         </insert>
         <insert tableName="TRANSPORTEUR">
             <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
-            <column name="TYPE" value="Personne morale" />
+            <column name="TYPE" value="S" />
             <column name="NOM_RAISON_SOCIALE" value="EIFFAGE MARINE" />
             <column name="PRENOM" value="" />
             <column name="TELEPHONE" value="00221768789045" />
@@ -36,7 +36,7 @@
         </insert>
         <insert tableName="TRANSPORTEUR">
             <column name="ID_TRANSPORTEUR" valueComputed="NEXTVAL('mydscm.SEQ_TRANSPORTEUR')"/>
-            <column name="TYPE" value="Personne physique" />
+            <column name="TYPE" value="P" />
             <column name="NOM_RAISON_SOCIALE" value="MBODJ" />
             <column name="PRENOM" value="ABDOU" />
             <column name="TELEPHONE" value="00221787567895" />

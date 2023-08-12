@@ -1,6 +1,7 @@
 package sn.dscom.backend.service.converter;
 
 import com.google.common.base.MoreObjects;
+import com.google.common.base.Strings;
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.DepotDTO;
 import sn.dscom.backend.common.dto.UtilisateurDTO;
@@ -79,7 +80,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
 
         return DepotEntity.builder()
                 .id(depotDTO.getId())
-                .nom(depotDTO.getNom())
+                .nom(Strings.isNullOrEmpty(depotDTO.getNom()) ? depotDTO.getNom() : depotDTO.getNom().trim().toUpperCase())
                 .dateHeureDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
                 .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
                 .deposeur(this.utilisateurTransformer.transform(depotDTO.getDeposeur()))

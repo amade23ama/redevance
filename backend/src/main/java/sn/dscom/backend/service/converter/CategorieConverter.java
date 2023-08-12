@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.converter;
 
+import com.google.common.base.Strings;
 import sn.dscom.backend.common.dto.CategorieDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
@@ -52,7 +53,7 @@ public class CategorieConverter implements Transformer<CategorieDTO, CategorieEn
                                 .id(categorieDTO.getId())
                                 .dateCreation(categorieDTO.getId() == null ? new Date() : categorieDTO.getDateCreation())
                                 .dateModification(categorieDTO.getId() == null ? null : new Date())
-                                .type(categorieDTO.getType())
+                                .type(Strings.isNullOrEmpty(categorieDTO.getType()) ? categorieDTO.getType() : categorieDTO.getType().trim().toUpperCase())
                                 .volume(categorieDTO.getVolume())
                                 .build();
     }

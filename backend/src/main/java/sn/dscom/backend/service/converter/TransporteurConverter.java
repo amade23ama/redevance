@@ -1,4 +1,5 @@
 package sn.dscom.backend.service.converter;
+import com.google.common.base.Strings;
 import sn.dscom.backend.common.dto.TransporteurDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.TransporteurEntity;
@@ -52,12 +53,12 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
 
         return TransporteurEntity.builder()
                 .id(transporteurDTO.getId())
-                .type(transporteurDTO.getType())
-                .nom(transporteurDTO.getNom())
-                .prenom(transporteurDTO.getPrenom())
+                .type(Strings.isNullOrEmpty(transporteurDTO.getType()) ? transporteurDTO.getType() : transporteurDTO.getType().trim().toUpperCase())
+                .nom(transporteurDTO.getNom().trim().toUpperCase())
+                .prenom(Strings.isNullOrEmpty(transporteurDTO.getPrenom()) ? transporteurDTO.getPrenom() : transporteurDTO.getPrenom().trim().toUpperCase())
                 .email(transporteurDTO.getEmail())
                 .telephone(transporteurDTO.getTelephone())
-                .adresse(transporteurDTO.getAdresse())
+                .adresse(Strings.isNullOrEmpty(transporteurDTO.getAdresse()) ? transporteurDTO.getAdresse() : transporteurDTO.getAdresse().trim().toUpperCase())
                 .dateCreation(transporteurDTO.getId() == null ? new Date() : transporteurDTO.getDateCreation())
                 .dateModification(transporteurDTO.getId() == null ? null : new Date())
                 .build();

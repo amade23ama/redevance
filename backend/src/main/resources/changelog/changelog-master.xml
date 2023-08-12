@@ -26,4 +26,5 @@
   <include file="changelog/v0.1/017_1_inserer_data_table_categorie.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/017_inserer_data_table_vehicule.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/018_inserer_data_table_chargement.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/017_1_20230812_inserer_data_table_categorie.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

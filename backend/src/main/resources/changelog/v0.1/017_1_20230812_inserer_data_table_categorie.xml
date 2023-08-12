@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="017_1_20230812_inserer_data_table_categorie" author="waly">
+            <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P11" />
+            <column name="VOLUME" value="8" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P11P" />
+            <column name="VOLUME" value="8" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P11R11" />
+            <column name="VOLUME" value="8" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P11R12" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P12" />
+            <column name="VOLUME" value="16" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P12P" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P12R12" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P13" />
+            <column name="VOLUME" value="16" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P13R2" />
+            <column name="VOLUME" value="16" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P21" />
+            <column name="VOLUME" value="16" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P22" />
+            <column name="VOLUME" value="17" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P22P" />
+            <column name="VOLUME" value="17" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P23" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="P33" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T11S1" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T11S4" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T12S1" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T12S2" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T12S3" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T12S3C" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T12S3H" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T13S3" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T21S3" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T22S2" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T22S3" />
+            <column name="VOLUME" value="20" />
+        </insert>
+        <insert tableName="CATEGORIE">
+            <column name="ID_CATEGORIE" valueComputed="NEXTVAL('mydscm.SEQ_CATEGORIE')"/>
+            <column name="TYPE" value="T22S4" />
+            <column name="VOLUME" value="20" />
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

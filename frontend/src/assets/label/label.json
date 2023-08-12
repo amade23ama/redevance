@@ -99,6 +99,10 @@
     "header.btn.utilisateur.creer.tooltip": " creer un utilisateur",
     "error.login.or.email.invalid": "Login ou Email est invalid !",
     "error.unsufisiantDroit": " vous n a pas les droits requises",
-    "error.password.obligatoire": "Le password est obligatoire"
+    "error.password.obligatoire": "Le password est obligatoire",
+    "label.tooltip.utilisateur":"Creer un utilisateur",
+    "label.tooltip.produit":"Creer un produit",
+    "label.tooltip.site":"Creer un site de pesage",
+    "label.tooltip.exploitation":"Creer un site d'exploitation"
   }
 }

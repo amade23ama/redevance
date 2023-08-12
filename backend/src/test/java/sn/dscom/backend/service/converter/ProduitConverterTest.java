@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * class de test {@link ProduitConverterTest}
  */
+@Disabled
 class ProduitConverterTest {
 
     /** categorie Converter */

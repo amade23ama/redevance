@@ -1,26 +1,27 @@
 package sn.dscom.backend.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.ProduitDTO;
-import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.service.interfaces.IProduitService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * @apiNote Controlleur REST exsposant les services produit
  * @author diome
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/produit")
 public class ProduitController {
+
+    /** Logger Factory */
+    private static final Logger logger = LoggerFactory.getLogger(ProduitController.class);
 
     /**
      * produitService
@@ -34,10 +35,9 @@ public class ProduitController {
      * @return la liste des produits
      */
     @GetMapping(path = "/rechercher", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ProduitDTO>> rechercherProduits() {
-        log.info("Rechercher Produits");
+        ProduitController.logger.info("Rechercher Produits");
         return ResponseEntity.ok(produitService.rechercherProduits().get());
     }
 
@@ -48,10 +48,9 @@ public class ProduitController {
      * @return l'entité
      */
     @PostMapping(path = "/enregistrer", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<ProduitDTO> enregistrerProduit(@RequestBody ProduitDTO produitDTO) {
-        log.info("Enregistrer Produits");
+        ProduitController.logger.info("Enregistrer Produits");
         return ResponseEntity.ok(produitService.enregistrerProduit(produitDTO).get());
     }
 
@@ -61,10 +60,9 @@ public class ProduitController {
      * @return le nombre de produit
      */
     @GetMapping(path = "/compter", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<Integer> getCompteurProduits() {
-        log.info("compter Produits");
+        ProduitController.logger.info("compter Produits");
         return ResponseEntity.ok(produitService.compterProduit());
     }
 

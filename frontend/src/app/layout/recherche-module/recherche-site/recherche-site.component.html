@@ -1,5 +1,5 @@
 <div class="mt-05">
-  <app-actions-critere-btns
+  <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
     [numberResult]="2"
     [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
     [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
@@ -8,7 +8,7 @@
     (btnAjouter)="ouvreNouveauSite()"
   >
   </app-actions-critere-btns>
-    <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
         <table mat-table matSort  [dataSource]="listSites"  class="mat-elevation-z0 table-parent" matSort>
             <ng-container matColumnDef="Nom">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -55,5 +55,31 @@
         </mat-paginator>
 
     </div>
+  <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="sites$|async as sites">
+    <div>
+      <button mat-fab
+              matTooltipPosition="left"
+              matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
+              matTooltipClass="custom-tooltip"
+              (keydown)="ouvreNouveauSite()" (click)="ouvreNouveauSite()"
+              class="new--contract--button-mobil">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div *ngFor="let site of sites" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
+      <div fxLayout="row" fxLayoutAlign="start none"  >
+        <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
+          <button class="circular-button"  (click)="chargerSite(site)">{{initial(site)}}</button>
+        </div>
+        <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
+          <div class="titre-prenom">{{site.nom}}</div>
+          <div class="titre-second">Localite : {{site.localite}}</div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
+
+
 </div>
 

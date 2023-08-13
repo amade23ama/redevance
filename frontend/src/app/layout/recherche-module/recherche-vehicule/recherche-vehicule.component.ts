@@ -8,6 +8,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {Site} from "../../../core/interfaces/site";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
+import {Utilisateur} from "../../../core/interfaces/utilisateur";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -29,9 +30,9 @@ export class RechercheVehiculeComponent implements OnInit{
 
   // les noms des colones
   displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume'];
-
+  vehicules$=this.vehiculeService.vehicules$
   /** constructor */
-  constructor(public appConfig: AppConfigService,private vehiculeService: VehiculeService,
+  constructor(public appConfig: AppConfigService,public vehiculeService: VehiculeService,
               private router:Router) {}
 
 
@@ -55,5 +56,8 @@ export class RechercheVehiculeComponent implements OnInit{
   }
   ouvreNouveauVehicule(){
     this.router.navigate(['admin/vehicule'])
+  }
+  initial(vehicule: Vehicule){
+    return vehicule.immatriculation.charAt(0).toUpperCase()
   }
 }

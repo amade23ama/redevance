@@ -7,6 +7,7 @@ import { ProduitService } from 'src/app/core/services/produit.service';
 import {Router} from "@angular/router";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {FormControl} from "@angular/forms";
+import {Utilisateur} from "../../../core/interfaces/utilisateur";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -28,7 +29,7 @@ export class RechercheProduitComponent implements OnInit {
 
   // les noms des colones
   displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','actions'];
-
+  produits$=this.produitService.produits$;
   /** constructor */
   constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router){
   }
@@ -52,5 +53,8 @@ export class RechercheProduitComponent implements OnInit {
   }
   creeNouveauProduit(){
     this.router.navigate(['admin/produit']);
+  }
+  initial(produit: Produit){
+    return produit.nomNORM.charAt(0).concat(produit.nomSRC.charAt(0)).toUpperCase();
   }
 }

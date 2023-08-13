@@ -65,7 +65,16 @@ export class ProduitService {
    * @returns la liste des véhicules
    */
   rechercherProduits(): Observable<Array<Produit>> {
-    return this.httpClient.get<Array<Produit>>(this.url + '/rechercher').pipe(share());
+    //return this.httpClient.get<Array<Produit>>(this.url + '/rechercher').pipe(share());
+    return this.httpClient.get<Array<Produit>>(this.url + '/rechercher') .pipe(
+      tap((res) => {
+        this.setProduits(res)
+      }),
+      catchError((err) => {
+        this.notification.error(" erreurr de recuperation Produit ")
+        return throwError(() => err) // RXJS 7+
+      })
+    )
   }
 
   /**

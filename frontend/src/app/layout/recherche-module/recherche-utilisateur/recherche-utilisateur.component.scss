@@ -76,7 +76,8 @@ mat-card{
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: $orange-500!important;
+  /*background-color: $orange-500!important;*/
+  background-color: $orange-50!important;
   color: #ffffff;
   border: none;
   outline: none;
@@ -101,7 +102,7 @@ mat-card{
 .new--contract--button-mobil{
   position: absolute;
   left: 76%;
-  top: 78vh;
+  top: 76vh;
   transform: translate(50%, -42%);
   &.mat-button-disabled {
     background-color: gray;

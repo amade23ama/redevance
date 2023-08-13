@@ -86,7 +86,9 @@
     <div *ngFor="let produit of produits" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
       <div fxLayout="row" fxLayoutAlign="start none"  >
         <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
-          <button class="circular-button"  (click)="chargerProduit(produit)">{{initial(produit)}}</button>
+          <button class="circular-button"  (click)="chargerProduit(produit)">
+            <mat-icon>grain</mat-icon>
+          </button>
         </div>
         <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
           <div class="titre-prenom">{{produit.nomNORM}} {{produit.nomSRC}}</div>

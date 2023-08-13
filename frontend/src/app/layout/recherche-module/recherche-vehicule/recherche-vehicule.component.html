@@ -16,8 +16,7 @@
               <div class="d-flex">Prenom-Nom/RS</div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom
-                :element?.transporteur.prenom+" "+element?.transporteur.nom}}</div>
+              <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom :element?.transporteur.nom}}</div>
             </td>
           </ng-container>
           <!--

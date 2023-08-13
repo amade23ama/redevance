@@ -93,7 +93,7 @@ public class ProduitService implements IProduitService {
     @Override
     public Optional<ProduitDTO> rechercherProduit(ProduitDTO produitDTO) {
 
-        ProduitService.logger.info(String.format("Chargement lors du produit: %s", produitDTO));
+        ProduitService.logger.info(String.format("Recherche du produit: %s", produitDTO));
         ProduitEntity produitEntity = this.produitRepository.rechercherProduitByCriteres(produitDTO.getNomSRC(), produitDTO.getNomNORM());
 
         return Optional.of(Try.of(() -> produitEntity)

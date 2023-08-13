@@ -1,6 +1,7 @@
 package sn.dscom.backend.service;
 
 import com.google.common.base.Strings;
+import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -97,7 +98,7 @@ public class CategorieService implements ICategorieService {
 
         //retourne la liste
         return Optional.of(listCategorieFind.stream()
-                .map(categorieEntity -> this.categorieConverter.reverse(categorieEntity))
+                .map(this.categorieConverter::reverse)
                 //Filtre sur les elements nulls
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
@@ -114,9 +115,22 @@ public class CategorieService implements ICategorieService {
         CategorieService.log.info("Recherche de catégories par crirère");
         //recherche par id
         if (categorieDTO.getId() != null) {
-            return Optional.of(Collections.singletonList(this.categorieConverter.reverse(this.categorieRepository.findById(categorieDTO.getId()).get())));
+            CategorieService.log.info(String.format("Recherche de catégories par id: %s", categorieDTO.getId()));
+            return Optional.of(Collections.singletonList(Try.of(() -> this.categorieRepository.findById(categorieDTO.getId()).get())
+                    .mapTry(this.categorieConverter::reverse)
+                    .onFailure(e -> CategorieService.log.error(String.format("Erreur lors du categorieConverter.reverse : %s", e.getMessage())))
+                    .get()));
+
         } else if (!Strings.isNullOrEmpty(categorieDTO.getType())) {
-            return Optional.of(Collections.singletonList(this.categorieConverter.reverse(this.categorieRepository.rechercherCategorieByType(categorieDTO.getType()))));
+
+            CategorieService.log.info(String.format("Recherche de catégories par crirère: %s", categorieDTO.getType()));
+            return Optional.of(Collections.singletonList(Try.of(categorieDTO::getType)
+                    .mapTry(this.categorieRepository::rechercherCategorieByType)
+                    .onFailure(e -> CategorieService.log.error(String.format("Erreur lors de la rechercher Categorie By Type: %s", e.getMessage())))
+                    .mapTry(this.categorieConverter::reverse)
+                    .onFailure(e -> CategorieService.log.error(String.format("Erreur lors du categorieConverter.reverse : %s", e.getMessage())))
+                    .get()));
+
         }
         //TODO: a implementer pour d'autre recherche
         return Optional.empty();

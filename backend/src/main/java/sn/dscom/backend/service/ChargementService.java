@@ -27,6 +27,10 @@ import java.util.stream.Collectors;
 @Transactional
 public class ChargementService implements IChargementService {
 
+    /**
+     * TYPE_PERSONNE_PHYSIQUE
+     */
+    public static final String TYPE_PERSONNE_PHYSIQUE = "P";
     /** Logger Factory */
     static Logger log = LoggerFactory.getLogger(DepotController.class);
 
@@ -205,7 +209,7 @@ public class ChargementService implements IChargementService {
         String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
 
         return Iterables.getOnlyElement(Try.of(() -> SiteDTO.builder()
-                                                            .nom(siteName.toUpperCase())
+                                                            .nom(siteName.trim().toUpperCase())
                                                             .build())
                                             .mapTry(this.siteService::rechercherSite)
                                             .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Site : %s",e.getMessage())))
@@ -228,7 +232,7 @@ public class ChargementService implements IChargementService {
         String exploitationName = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.exploitation.nom"))));
 
         return Iterables.getOnlyElement(Try.of(() -> ExploitationDTO.builder()
-                                .nom(exploitationName.toUpperCase())
+                                .nom(exploitationName.trim().toUpperCase())
                                 .build())
                 .mapTry(this.exploitationService::rechercherSiteExploitation)
                 .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Site d'exploitation: %s",e.getMessage())))
@@ -250,7 +254,7 @@ public class ChargementService implements IChargementService {
         String produitName = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.produit.nom"))));
 
         return Try.of(() -> ProduitDTO.builder()
-                                .nomSRC(produitName.toUpperCase())
+                                .nomSRC(produitName.trim().toUpperCase())
                                 .build())
                     .mapTry(this.produitService::rechercherProduit)
                     .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Produit: %s",e.getMessage())))
@@ -291,12 +295,14 @@ public class ChargementService implements IChargementService {
         // type -> class dans le fichier et volume à voir
         String classeVehicule = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.categorie.type"))));
 
-        return Iterables.getOnlyElement(Try.of(() -> CategorieDTO.builder()
-                                .type(classeVehicule.toUpperCase())
-                                .build())
+        List<CategorieDTO> list = Try.of(() -> CategorieDTO.builder()
+                        .type(classeVehicule.trim().toUpperCase())
+                        .build())
                 .mapTry(this.categorieService::rechercherCategorie)
                 .onFailure(e -> ChargementService.log.error(String.format(" Erreur lors de la rechercher de la categorie: %s", e.getMessage())))
-                .get().get());
+                .get().get();
+
+        return Iterables.getOnlyElement(list);
     }
 
     /**
@@ -315,7 +321,7 @@ public class ChargementService implements IChargementService {
         String proprietaire = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.transporteur.nom"))));
         return this.transporteurService.enregistrerTransporteur(TransporteurDTO.builder()
                 .dateCreation(new Date())
-                .type("Personne physique")
+                .type(TYPE_PERSONNE_PHYSIQUE)
                 .nom(ChargementUtils.getNomOrRaisonSociale(proprietaire))
                 //.prenom(data[maps.get("transporteur").get("db_transporteur_nom")].toUpperCase())
                 .telephone(ChargementUtils.getTelephone(proprietaire))

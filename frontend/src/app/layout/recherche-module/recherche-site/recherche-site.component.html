@@ -69,7 +69,9 @@
     <div *ngFor="let site of sites" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
       <div fxLayout="row" fxLayoutAlign="start none"  >
         <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
-          <button class="circular-button"  (click)="chargerSite(site)">{{initial(site)}}</button>
+          <button class="circular-button"  (click)="chargerSite(site)">
+            <mat-icon>line_weight</mat-icon>
+          </button>
         </div>
         <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
           <div class="titre-prenom">{{site.nom}}</div>

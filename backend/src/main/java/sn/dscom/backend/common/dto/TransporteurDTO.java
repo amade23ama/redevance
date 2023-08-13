@@ -1,30 +1,44 @@
 package sn.dscom.backend.common.dto;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
 import lombok.*;
-import sn.dscom.backend.database.entite.VehiculeEntity;
 
-import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-@Getter
-@Setter
+
+/**
+ * TransporteurDTO
+ */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class TransporteurDTO {
-    //todo
+public class TransporteurDTO implements Serializable {
+    /** id */
     private Long id;
+
+    /** type */
     private String type;
+
+    /** nom */
     private String nom;
+
+    /** prenom */
     private String prenom;
+
+    /** telephone */
     private String telephone;
+
+    /** email */
     private String email;
+
+    /** adresse */
     private String adresse;
+
+    /** dateCreation */
     private Date dateCreation;
+
+    /** dateModification */
     private Date dateModification;
 
     //TODO: ici on devrait retourner que la ref ou id des véhicules

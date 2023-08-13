@@ -33,7 +33,7 @@ public class ProduitService implements IProduitService {
     private final Transformer<ProduitDTO, ProduitEntity> produitConverteur = new ProduitConverter();
 
     /** produit Repository */
-    ProduitRepository produitRepository;
+    private final ProduitRepository produitRepository;
 
     /**
      * Produit Service
@@ -53,7 +53,7 @@ public class ProduitService implements IProduitService {
     public Optional<List<ProduitDTO>> rechercherProduits() {
 
         try {
-            ProduitService.logger.info(String.format("Recherche des produits"));
+            ProduitService.logger.info("Recherche des produits");
             List<ProduitEntity> listProduitsFind = this.produitRepository.findAll();
 
             return Optional.of(listProduitsFind.stream()
@@ -79,8 +79,9 @@ public class ProduitService implements IProduitService {
 
         return Optional.of(Try.of(() -> this.produitConverteur.transform(produitDTO))
                 .mapTry(this.produitRepository::save)
-                .mapTry(produitConverteur::reverse)
                 .onFailure(e -> ProduitService.logger.error(String.format("Erreur leur de l'enregistrement du produit : %s ",e.getMessage())))
+                .mapTry(produitConverteur::reverse)
+                .onFailure(e -> ProduitService.logger.error(String.format("Erreur leur du reverse du produit : %s ",e.getMessage())))
                 .get());
     }
 

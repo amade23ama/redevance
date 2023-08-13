@@ -1,9 +1,10 @@
 package sn.dscom.backend.service;
 
+import io.vavr.control.Try;
 import lombok.Builder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.TransporteurDTO;
@@ -15,10 +16,7 @@ import sn.dscom.backend.service.converter.TransporteurConverter;
 import sn.dscom.backend.service.interfaces.ITransporteurService;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,15 +26,18 @@ import java.util.stream.Collectors;
 @Transactional
 public class TransporteurService implements ITransporteurService {
 
+    /** Logger Factory */
+    static Logger logger = LoggerFactory.getLogger(TransporteurService.class);
+
     /** transporteur Repository */
-    private TransporteurRepository transporteurRepository;
+    private final TransporteurRepository transporteurRepository;
 
     /** transporteur Converter */
     private final Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
 
     /**
      * TransporteurService
-     * @param transporteurRepository
+     * @param transporteurRepository transporteurRepository
      */
     @Builder
     public TransporteurService(TransporteurRepository transporteurRepository) {
@@ -52,18 +53,23 @@ public class TransporteurService implements ITransporteurService {
     @Override
     public Optional<TransporteurDTO> enregistrerTransporteur(TransporteurDTO transporteurDTO) {
 
+        TransporteurService.logger.info(String.format("Enregistrer Transporteur: %s", transporteurDTO));
         // Vérifiacation
         TransporteurEntity transporteurEntity = this.transporteurRepository.isTransporteurExist(transporteurDTO.getNom().toUpperCase(), transporteurDTO.getTelephone().toUpperCase());
 
         // s'il existe on renvoit le site existant
         if(transporteurEntity != null && transporteurDTO.getId() == null ){
+            TransporteurService.logger.info(String.format("Le Transporteur existe déja en base: %s", transporteurEntity));
             return Optional.of(this.transporteurConverter.reverse(transporteurEntity));
         }
 
         //C'est la séquence qui génère l'id en cas de création
-        return Optional.of(
-                this.transporteurConverter.reverse(this.transporteurRepository.save(this.transporteurConverter.transform(transporteurDTO)))
-                );
+        TransporteurEntity transporteurEnregistrer = Try.of(() -> this.transporteurConverter.transform(transporteurDTO))
+                                                        .mapTry(this.transporteurRepository::save)
+                                                        .onFailure(e -> TransporteurService.logger.info(String.format("Erreur de l'nregistrement du Transporteur: %s", e.getMessage())))
+                                                        .get();
+
+        return Optional.of(this.transporteurConverter.reverse(transporteurEnregistrer));
     }
 
     /**
@@ -79,7 +85,7 @@ public class TransporteurService implements ITransporteurService {
 
         //retourne la liste
         return Optional.of(listTranporteurFind.stream()
-                .map(siteEntity -> this.transporteurConverter.reverse(siteEntity))
+                .map(this.transporteurConverter::reverse)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
     }
@@ -94,7 +100,7 @@ public class TransporteurService implements ITransporteurService {
     public Optional<List<TransporteurDTO>> rechercherTransporteur(TransporteurDTO transporteurDTO) {
         //recherche par id
         if (transporteurDTO.getId() != null) {
-            return Optional.of(Arrays.asList(this.transporteurConverter.reverse(this.transporteurRepository.findById(transporteurDTO.getId()).get())));
+            return Optional.of(Collections.singletonList(this.transporteurConverter.reverse(this.transporteurRepository.findById(transporteurDTO.getId()).get())));
         }
         //TODO: a implementer pour d'autre recherche
         return Optional.empty();

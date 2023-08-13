@@ -117,7 +117,9 @@
     <div *ngFor="let voiture of vehicules" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
       <div fxLayout="row" fxLayoutAlign="start none"  >
         <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
-          <button class="circular-button"  (click)="chargervehicule(voiture)">{{initial(voiture)}}</button>
+          <button class="circular-button"  (click)="chargervehicule(voiture)">
+            <mat-icon> directions_car</mat-icon>
+          </button>
         </div>
         <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
           <div class="titre-prenom">{{voiture.immatriculation}}</div>

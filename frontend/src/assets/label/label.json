@@ -104,6 +104,7 @@
     "label.tooltip.produit":"Creer un produit",
     "label.tooltip.site":"Creer un site de pesage",
     "label.tooltip.exploitation":"Creer un site d'exploitation",
-    "label.tooltip.voiture":"Creer une voiture"
+    "label.tooltip.voiture":"Creer une voiture",
+    "label.info.mail": "Nous avons envoyé le login et mots de passe à l'adresse:"
   }
 }

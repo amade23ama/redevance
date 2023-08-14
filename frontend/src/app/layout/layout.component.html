@@ -12,16 +12,14 @@
       </a>
       <span class="example-spacer"></span>
       <div fxShow="true" fxHide.lt-md="true">
-        <a mat-button  routerLink="/recherche/user">Utilisateur</a>
+        <a mat-button  routerLink="">Chargements</a>
+        <a mat-button   routerLink="/recherche/vehicule" >Vehicules</a>
+        <a mat-button routerLink="/recherche/produit">Produits</a>
+        <a mat-button  routerLink="/recherche/site">Sites de pesage</a>
         <!--<a mat-button [matMenuTriggerFor]="menuVehicule">Vehicule</a> -->
-        <a mat-button   routerLink="/recherche/vehicule" >Vehicule</a>
-        <a mat-button routerLink="/recherche/produit">Produit</a>
-        <!-- <a mat-button [matMenuTriggerFor]="menuProduit">Produit</a> -->
-        <!-- <a mat-button [matMenuTriggerFor]="menuSite">Site de pesage</a> -->
-        <!-- <a mat-button [matMenuTriggerFor]="menuExploiation">Site d'exploitation</a>-->
-        <a mat-button  routerLink="/recherche/site">Site de pesage</a>
-        <a mat-button routerLink="/recherche/exploitation">Site d'exploitation</a>
-        <a mat-button [matMenuTriggerFor]="menuDepot">Depot</a>
+        <a mat-button routerLink="/recherche/exploitation">Sites d'exploitation</a>
+        <a mat-button [matMenuTriggerFor]="menuDepot">Importations</a>
+        <a mat-button  routerLink="/recherche/user">Utilisateurs</a>
       </div>
       <div class="toolbar-item-spacer" fxShow fxHide.gt-sm [fxFlex]="70"></div>
       <button mat-icon-button fxShow fxHide.gt-sm (click)="logout()" href="#">
@@ -35,11 +33,11 @@
     <mat-sidenav color="primary" #sidenav fxLayout="column" mode="over"  opened="false" fxHide.gt-sm="true">
       <div fxLayout="column" class="mat-sidenav-menu">
         <a mat-button routerLink="" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">home</a>
-        <a mat-button routerLink="/recherche/user" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Utilisateur</a>
-        <a mat-button routerLink="/recherche/site" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Site de pesage</a>
-        <a mat-button routerLink="/recherche/vehicule" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Vehicule</a>
-        <a  mat-button routerLink="/recherche/exploitation"  class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Site d'exploitation</a>
-        <a mat-button routerLink="/recherche/produit" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Produit</a>
+        <a mat-button routerLink="/recherche/user" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Utilisateurs</a>
+        <a mat-button routerLink="/recherche/site" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Sites de pesage</a>
+        <a mat-button routerLink="/recherche/vehicule" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Vehicules</a>
+        <a  mat-button routerLink="/recherche/exploitation"  class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Sites d'exploitation</a>
+        <a mat-button routerLink="/recherche/produit" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">Produits</a>
       </div>
     </mat-sidenav>
       <mat-sidenav-content >

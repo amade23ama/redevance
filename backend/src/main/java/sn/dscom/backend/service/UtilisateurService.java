@@ -13,10 +13,13 @@ import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.database.repository.UtilisateurRepository;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.interfaces.IUtilisateurService;
+import sn.dscom.backend.service.mail.EmailDetails;
+import sn.dscom.backend.service.mail.IMailService;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +32,10 @@ public class UtilisateurService implements IUtilisateurService {
     /** utilisateur Repository*/
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    /** mailService */
+    @Autowired
+    private IMailService mailService;
 
 
     public UtilisateurDTO sauvegarderUtilisateur(UtilisateurDTO utilisateurDTO) {
@@ -52,10 +59,25 @@ public class UtilisateurService implements IUtilisateurService {
             i++;
         }
         utilisateurDTO.setLogin(login);
-        utilisateurDTO.setPassword(login);
+        String mdp = UUID.randomUUID().toString();
+        utilisateurDTO.setPassword(mdp);
         if (utilisateurDTO.getId() == null) {
             utilisateurDTO.setActive(utilisateurDTO.isActive());
             UtilisateurEntity user = utilisateurRepository.save(UtilisateurConverter.toUtilisateurEntity(utilisateurDTO));
+
+            //Envoi du mail
+            String msgBody = """
+                    Bonjour,
+                    Voici votre mot de passe: 
+                    """ + mdp + " et votre login: " + login;
+
+            // Envoi du méssage
+            this.mailService.envoiMail(EmailDetails.builder()
+                    .recipient(user.getEmail())
+                    .subject("Mail de confirmation")
+                    .msgBody(msgBody)
+                    .build());
+
             return utilisateurTransformer.reverse(user);
         }
         return null;
@@ -69,8 +91,8 @@ public class UtilisateurService implements IUtilisateurService {
     /**
      * pour active ou desactive un utilisateur
      *
-     * @param utilisateurDTO
-     * @return
+     * @param utilisateurDTO utilisateurDTO
+     * @return UtilisateurDTO
      */
     public UtilisateurDTO activeOrDesactiveUtilisateur(UtilisateurDTO utilisateurDTO) {
         UtilisateurEntity userDetail = utilisateurRepository.findById(utilisateurDTO.getId()).orElse(null);
@@ -128,7 +150,7 @@ public class UtilisateurService implements IUtilisateurService {
     }
 
     public boolean checkEmail(Long id,String email) {
-       Integer nb= utilisateurRepository.checkEmailExists(email,id);
+        Integer nb= utilisateurRepository.checkEmailExists(email,id);
         return nb>0?true:false;
     }
 

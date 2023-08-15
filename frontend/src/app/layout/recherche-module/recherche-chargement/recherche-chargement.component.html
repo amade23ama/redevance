@@ -13,12 +13,12 @@
   <div  class="table-container" *ngIf="chargements$|async as char">
     <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort>
 
-     <ng-container matColumnDef="depot">
+     <ng-container matColumnDef="datePesage">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">N°Depot</div>
+          <div class="d-flex">datePesage</div>
         </th>
         <td mat-cell *matCellDef="let element">
-          <div class="d-flex">111</div>
+          <div class="d-flex">{{element.datePesage}}</div>
         </td>
       </ng-container>
       <ng-container matColumnDef="exploitation">
@@ -62,7 +62,7 @@
           <div class="d-flex">{{element.vehicule.immatriculation}}</div>
         </td>
       </ng-container>
-
+<!--
       <ng-container matColumnDef="categorie" fxHide.xs>
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
           <div class="d-flex">Classe</div>
@@ -71,7 +71,7 @@
           <div class="d-flex">{{element.vehicule.categorie.type}}</div>
         </td>
       </ng-container>
-
+  -->
       <ng-container matColumnDef="poids" fxHide.xs>
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
           <div class="d-flex">Pds</div>
@@ -99,6 +99,9 @@
           <div class="d-flex">{{element.poidsSubst}}</div>
         </td>
       </ng-container>
+
+
+
       <ng-container matColumnDef="volumeSubst" fxHide.xs>
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
           <div class="d-flex">VmSubst</div>
@@ -107,7 +110,14 @@
           <div class="d-flex">{{element.volumeSubst}}</div>
         </td>
       </ng-container>
-
+      <ng-container matColumnDef="volumeMoyen" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">volumeMoyen</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.volumeMoyen}}</div>
+        </td>
+      </ng-container>
       <ng-container matColumnDef="ecart" fxHide.xs>
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
           <div class="d-flex">EC</div>

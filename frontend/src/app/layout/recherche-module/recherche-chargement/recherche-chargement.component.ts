@@ -27,9 +27,9 @@ export  class RechercheChargementComponent implements  OnInit{
   pageSizeOptions: number[] = [5, 10, 20];
   pageSize = 5; // nb ligne par page par défaut
   rechercheChargements: Chargement[] = [];
-  // les noms des colones  'Date Modification',
-  displayedColumns: string[] =['depot','exploitation', 'destination', 'site','vehicule','transporteur','categorie'
-  ,'poids','poidsSubst','volumeSubst','ecart'];
+  // les noms des colones  'Date Modification',,'categorie'
+  displayedColumns: string[] =['datePesage','exploitation', 'destination', 'site','vehicule','transporteur'
+  ,'poids','poidsSubst','volumeSubst','volumeMoyen','ecart'];
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService) {
    // this.initDisplayColumn();
   }

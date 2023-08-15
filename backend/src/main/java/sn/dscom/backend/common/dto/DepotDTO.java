@@ -51,4 +51,7 @@ public class DepotDTO implements Serializable {
     /** le fichier à charger */
     private List<ChargementDTO> chargementDTOList;
 
+    /** le site*/
+    private SiteDTO site;
+
 }

@@ -93,6 +93,8 @@
     "error.email.invalid": "Email est invalid !",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",
+    "recherche.depot.pluriel.label": "depot trouvés",
+    "recherche.depot.singulier.label": "depot trouvé",
     "btn.utilisateur.bloquer.tooltip": "bloquer l'utilisateur",
     "btn.utilisateur.debloquer.tooltip": "debloquer l'utilisateur",
     "btn.utilisateur.modif.tooltip": "modifier l'utilisateur",
@@ -105,6 +107,7 @@
     "label.tooltip.site":"Creer un site de pesage",
     "label.tooltip.exploitation":"Creer un site d'exploitation",
     "label.tooltip.voiture":"Creer une voiture",
+    "label.tooltip.depot": "Creer un import",
     "label.info.mail": "Nous avons envoyé le login et mots de passe à l'adresse:"
   }
 }

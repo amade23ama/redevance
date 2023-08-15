@@ -21,10 +21,6 @@ const routes: Routes = [{
       component: RechercheDepotComponent
     },
     {
-      path: 'contact',
-      component: RechercheDepotComponent
-    },
-    {
       path: 'site',
       component: RechercheSiteComponent
     },

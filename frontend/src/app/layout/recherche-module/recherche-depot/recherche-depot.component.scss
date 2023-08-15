@@ -18,7 +18,7 @@
 }
 
 .nb-label {
-  // margin: 12px;
+// margin: 12px;
   font-size: 13px;
 }
 .mat-header-utilisateur{
@@ -44,16 +44,16 @@ mat-card{
 }
 
 .blue-label {
-  //color: $orange-500!important;
+//color: $orange-500!important;
   font-size: 13px !important;
   font-family: Calibri !important;
 }
 .blue-label-icon {
   color: $orange-500!important;
-  &:hover {
-    cursor: pointer;
-    color: $orange-500!important;
-  }
+&:hover {
+   cursor: pointer;
+   color: $orange-500!important;
+ }
 }
 
 
@@ -105,12 +105,12 @@ tr{
   left: 76%;
   top: 76vh;
   transform: translate(50%, -42%);
-  &.mat-button-disabled {
-    background-color: gray;
-  }
-  background-color: $orange-500!important;
-  width: 50px!important;
-  height: 50px!important;
+&.mat-button-disabled {
+   background-color: gray;
+ }
+background-color: $orange-500!important;
+width: 50px!important;
+height: 50px!important;
 }
 .titre-profil{
   text-transform: capitalize;

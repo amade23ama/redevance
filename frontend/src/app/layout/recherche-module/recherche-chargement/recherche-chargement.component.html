@@ -1,1 +1,130 @@
-<div> list du charment associe au depot</div>
+<div class="mt-05">
+  <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
+                            [numberResult]="2"
+                            [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
+                            [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
+                            [tooltip]="appConfig.getLabel('label.tooltip.site')"
+                            [search]="search"
+                            (btnAjouter)="ouvreNouveauChargement()"
+  >
+  </app-actions-critere-btns>
+
+
+  <div  class="table-container" *ngIf="chargements$|async as char">
+    <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort>
+
+     <ng-container matColumnDef="depot">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">N°Depot</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">111</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="exploitation">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Origine</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element!?.exploitation?.nom}}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="destination">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Dest</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.destination}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="site" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Site</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.site.nom}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="transporteur" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Transporteur</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.vehicule.transporteur.nom}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="vehicule" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Vehicule</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.vehicule.immatriculation}}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="categorie" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Classe</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.vehicule.categorie.type}}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="poids" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Pds</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.poids}}</div>
+        </td>
+      </ng-container>
+<!--
+      <ng-container matColumnDef="poidsMax" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">pds</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.poidsMax}}</div>
+        </td>
+      </ng-container>
+      -->
+
+      <ng-container matColumnDef="poidsSubst" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">PdsSubst</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.poidsSubst}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="volumeSubst" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">VmSubst</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.volumeSubst}}</div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ecart" fxHide.xs>
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">EC</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element.ecart}}</div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+
+    </table>
+    <mat-paginator [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   showFirstLastButtons>
+    </mat-paginator>
+
+  </div>
+</div>

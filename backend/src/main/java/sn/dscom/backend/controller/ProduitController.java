@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.service.interfaces.IProduitService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @apiNote Controlleur REST exsposant les services produit
@@ -38,7 +40,14 @@ public class ProduitController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ProduitDTO>> rechercherProduits() {
         ProduitController.logger.info("Rechercher Produits");
-        return ResponseEntity.ok(produitService.rechercherProduits().get());
+        Optional<List<ProduitDTO>> list = produitService.rechercherProduits();
+
+        // Appel du service rechercherProduits
+        // si vide on retour une erreur 404
+        return Try.withCatch(list::get)
+                .peek(listProduit -> ProduitController.logger.info(String.format("ProduitController -> Rechercher Produits: %s", listProduit.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

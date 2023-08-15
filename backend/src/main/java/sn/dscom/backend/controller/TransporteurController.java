@@ -1,6 +1,6 @@
 package sn.dscom.backend.controller;
 
-import lombok.extern.log4j.Log4j;
+import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +12,7 @@ import sn.dscom.backend.service.interfaces.ITransporteurService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de sur les transporteurs
@@ -52,7 +53,14 @@ public class TransporteurController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<TransporteurDTO>> rechercherTransporteur(@PathVariable long id) {
         TransporteurController.LOGGER.info("TransporteurController: rechercherTransporteur: ");
-        return  ResponseEntity.ok(this.transporteurService.rechercherTransporteur(TransporteurDTO.builder().id(id).build()).get());
+        Optional<List<TransporteurDTO>> listTransporteur = this.transporteurService.rechercherTransporteur(TransporteurDTO.builder().id(id).build());
+
+        // Appel du service rechercherTransporteur
+        // si vide on renvoit 404
+        return Try.withCatch(listTransporteur::get)
+                .peek(list -> TransporteurController.LOGGER.info(String.format("TransporteurController: rechercherTransporteur: %s", list.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -63,7 +71,15 @@ public class TransporteurController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<TransporteurDTO>> rechercherTransporteurs() {
         TransporteurController.LOGGER.info("TransporteurController: rechercherTransporteurs: ");
-        return  ResponseEntity.ok(this.transporteurService.rechercherTransporteurs().get());
+
+        Optional<List<TransporteurDTO>> listTransporteur = this.transporteurService.rechercherTransporteurs();
+
+        //Appel du service rechercherTransporteurs
+        // si vide on renvoit 404
+        return Try.withCatch(listTransporteur::get)
+                .peek(list -> TransporteurController.LOGGER.info(String.format("TransporteurController: rechercherTransporteurs: %s", list.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

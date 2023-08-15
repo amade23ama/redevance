@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,12 @@ public class CategorieController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<CategorieDTO>> rechercherCategorie(@PathVariable long id) {
         CategorieController.LOGGER.info("CategorieController: rechercherCategorie: ");
-        return  ResponseEntity.ok(this.categorieService.rechercherCategorie(CategorieDTO.builder().id(id).build()).get());
+        //Appel du service rechercherCatégorie
+        // si vide on renvoit 404
+        return Try.withCatch(() -> this.categorieService.rechercherCategorie(CategorieDTO.builder().id(id).build()).get())
+                .peek(listCategorie -> CategorieController.LOGGER.info(String.format("CategorieController: rechercherCategorie: %s", listCategorie.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -63,7 +69,13 @@ public class CategorieController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<CategorieDTO>> rechercherCategories() {
         CategorieController.LOGGER.info("CategorieController: rechercherCategories: ");
-        return  ResponseEntity.ok(this.categorieService.rechercherCategories().get());
+
+        //Appel du service rechercherCatégories
+        // si vide on renvoit 404
+        return Try.withCatch(() -> this.categorieService.rechercherCategories().get())
+                .peek(listCategorie -> CategorieController.LOGGER.info(String.format("CategorieController: rechercherCategories: %s", listCategorie.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

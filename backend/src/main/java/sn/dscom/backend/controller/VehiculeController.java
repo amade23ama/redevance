@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +85,12 @@ public class VehiculeController {
         // si on trouve au moins une donnée à la retour
         if (list.isPresent()){
             VehiculeController.LOGGER.info("rechercherVehicules");
-            return ResponseEntity.ok(list.get());
+            //Appel du service rechercherVehicules
+            // si vide on renvoit 404
+            return Try.withCatch(list::get)
+                    .peek(listVoiture -> VehiculeController.LOGGER.info(String.format("VehiculeController: rechercherVehicules: %s", listVoiture.size())))
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         }
 
         // sinon on léve une exception: 404 Not Found.

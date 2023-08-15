@@ -182,6 +182,13 @@
             <artifactId>spring-boot-starter-mail</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.oath.cyclops/cyclops -->
+        <dependency>
+            <groupId>com.oath.cyclops</groupId>
+            <artifactId>cyclops</artifactId>
+            <version>10.4.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

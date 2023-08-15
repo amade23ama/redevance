@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import sn.dscom.backend.service.interfaces.ISiteService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité Site
@@ -48,7 +50,14 @@ public class SiteController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<SiteDTO>> rechercherSite(@PathVariable long id) {
         SiteController.LOGGER.info("SiteController: rechercherSite");
-        return  ResponseEntity.ok(this.siteService.rechercherSite(SiteDTO.builder().id(id).build()).get());
+        Optional<List<SiteDTO>>  list = this.siteService.rechercherSite(SiteDTO.builder().id(id).build());
+
+        // Appel du service rechercherSite
+        // si vide on renvoit 404
+        return Try.withCatch(list::get)
+                .peek(listSite -> SiteController.LOGGER.info(String.format("SiteController: rechercherSite: %s",listSite)))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -59,7 +68,14 @@ public class SiteController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<SiteDTO>> rechercherSites() {
         SiteController.LOGGER.info("SiteController: rechercherSites");
-        return  ResponseEntity.ok(this.siteService.rechercherSites().get());
+        Optional<List<SiteDTO>>  list = this.siteService.rechercherSites();
+
+        // Appel du service rechercherSite
+        // si vide on renvoit 404
+        return Try.withCatch(list::get)
+                .peek(listSite -> SiteController.LOGGER.info(String.format("SiteController: rechercherSite: %s",listSite)))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

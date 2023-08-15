@@ -26,7 +26,6 @@ import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +37,7 @@ import java.util.stream.Collectors;
 public class DepotController {
 
     /** Logger Factory */
-   static Logger log= LoggerFactory.getLogger(DepotController.class);
+   private static final Logger log= LoggerFactory.getLogger(DepotController.class);
     /**
      * depot Service
      */
@@ -283,7 +282,14 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<DepotDTO>> rechercherDepot() {
         //rechercher all Depots
-        return  ResponseEntity.ok(depotService.rechercherDepots().get());
+        Optional<List<DepotDTO>> list = depotService.rechercherDepots();
+
+        // Appel du service rechercherDepot
+        // si vide on retour une erreur 404
+        return cyclops.control.Try.withCatch(list::get)
+                .peek(listDepotDTO -> DepotController.log.info(String.format("DepotController -> rechercherDepot: %s", listDepotDTO.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -308,7 +314,14 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<DepotDTO>> rechercherDepotByCriteres(@PathVariable DepotDTO depotDTO) {
         //rechercher Depot By Criteres
-        return  ResponseEntity.ok(depotService.rechercherDepotByCriteres(depotDTO).get());
+        Optional<List<DepotDTO>> list = depotService.rechercherDepotByCriteres(depotDTO);
+
+        // Appel du service rechercherProduits
+        // si vide on retour une erreur 404
+        return cyclops.control.Try.withCatch(list::get)
+                .peek(listDepotDTO -> DepotController.log.info(String.format("DepotController -> rechercherDepotByCriteres: %s", listDepotDTO.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")

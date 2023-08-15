@@ -1,6 +1,6 @@
 package sn.dscom.backend.controller;
 
-import lombok.extern.log4j.Log4j;
+import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.service.interfaces.IChargementService;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de chargement
@@ -49,6 +50,13 @@ public class ChargementController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ChargementDTO>> rechercherChargements() {
         ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
-        return  ResponseEntity.ok(this.chargementService.rechercherChargements().get());
+        Optional<List<ChargementDTO>> list = this.chargementService.rechercherChargements();
+
+        // Appel du service rechercherSitesExploitation
+        // si vide on retour une erreur 404
+        return Try.withCatch(list::get)
+                .peek(listChargementDTO -> ChargementController.LOGGER.info(String.format("ChargementController -> rechercherChargements: %s", listChargementDTO.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

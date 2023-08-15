@@ -1,6 +1,8 @@
 package sn.dscom.backend.controller;
 
 import lombok.extern.log4j.Log4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,10 +16,12 @@ import java.util.List;
  * @apiNote Controller REST des opérations sur la fonctionnalité de chargement
  * @version 1
  */
-@Log4j
 @RestController
 @RequestMapping("api/v1/chargement")
 public class ChargementController {
+
+    /** Logger Factory */
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChargementController.class);
 
     /**
      * chargement Service
@@ -33,6 +37,7 @@ public class ChargementController {
     @PostMapping(path = "/enregistrer")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<ChargementDTO> enregistrerChargement(@RequestBody ChargementDTO chargementDTO) {
+        ChargementController.LOGGER.info("ChargementController: enregistrerChargement: ");
         return ResponseEntity.ok(this.chargementService.enregistrerChargement(chargementDTO).get());
     }
 
@@ -43,6 +48,7 @@ public class ChargementController {
     @GetMapping(path = "/rechercher")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ChargementDTO>> rechercherChargements() {
+        ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
         return  ResponseEntity.ok(this.chargementService.rechercherChargements().get());
     }
 }

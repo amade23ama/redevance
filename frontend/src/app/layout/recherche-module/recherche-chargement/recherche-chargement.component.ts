@@ -8,6 +8,8 @@ import {MatSort} from "@angular/material/sort";
 import {Chargement} from "../../../core/interfaces/chargement";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {DatePipe} from "@angular/common";
+import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -70,5 +72,9 @@ export  class RechercheChargementComponent implements  OnInit{
 
      // ['exploitation', 'destination', 'site','transporteur',
    // 'vehicule','classe','poids','PoidsMax','PoidsEstime','volumeEstime','ecart']//,'vmMoyen'];
+  }
+  formatDate(dateCreation: Date) {
+    return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+      .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
 }

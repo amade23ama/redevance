@@ -9,6 +9,8 @@ import {Site} from "../../../core/interfaces/site";
 import {Router} from "@angular/router";
 import {FormControl} from "@angular/forms";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {DatePipe} from "@angular/common";
+import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -29,7 +31,7 @@ export class RechercheVehiculeComponent implements OnInit{
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume'];
+  displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume','dateCreation'];
   vehicules$=this.vehiculeService.vehicules$
   /** constructor */
   constructor(public appConfig: AppConfigService,public vehiculeService: VehiculeService,
@@ -59,5 +61,9 @@ export class RechercheVehiculeComponent implements OnInit{
   }
   initial(vehicule: Vehicule){
     return vehicule.immatriculation.charAt(0).toUpperCase()
+  }
+  formatDate(dateCreation: Date) {
+    return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+      .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
 }

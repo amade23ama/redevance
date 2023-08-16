@@ -8,6 +8,8 @@ import {Router} from "@angular/router";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {FormControl} from "@angular/forms";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {DatePipe} from "@angular/common";
+import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -28,7 +30,7 @@ export class RechercheProduitComponent implements OnInit {
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','actions'];
+  displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
   produits$=this.produitService.produits$;
   /** constructor */
   constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router){
@@ -56,5 +58,9 @@ export class RechercheProduitComponent implements OnInit {
   }
   initial(produit: Produit){
     return produit.nomNORM.charAt(0).concat(produit.nomSRC.charAt(0)).toUpperCase();
+  }
+  formatDate(dateCreation: Date) {
+    return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+      .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
 }

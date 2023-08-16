@@ -9,6 +9,8 @@ import {Site} from "../../../core/interfaces/site";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Depot} from "../../../core/interfaces/infotuiles/depot";
+import {DatePipe} from "@angular/common";
+import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 
 @Component({
   selector: 'app-recherche-depot',
@@ -17,7 +19,7 @@ import {Depot} from "../../../core/interfaces/infotuiles/depot";
 })
 export class RechercheDepotComponent implements OnInit{
   search:FormControl =new FormControl('');
-  displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','statut','deposeur'];
+  displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','dateHeureFinDepot','statut','deposeur'];
   depots$=this.depotService.depots$;
   listDepots: MatTableDataSource<Depot>;
   // La pagination
@@ -42,5 +44,9 @@ export class RechercheDepotComponent implements OnInit{
       this.listDepots.paginator=this.paginator;
       this.listDepots.sort=this.sort;
     })
+  }
+  formatDate(dateCreation: Date) {
+    return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+      .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
 }

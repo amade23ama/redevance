@@ -9,7 +9,7 @@ export abstract class BuilderDtoJsonAbstract {
   public static readonly JSON_DATE_FORMAT: string = 'yyyy-MM-ddTHH:mm:ss.SSS';
   public static readonly DATE_FORMAT_BASE: string = 'dd/MM/YYYY HH:mm:ss';
   public static readonly DATE_FORMAT_SIMPLE: string = 'dd/MM/YYYY hh:mm';
-
+  public static readonly DATE_FORMAT_SIMPLEJSON: string = 'dd-MM-YYYY hh:mm';
   /**
    * convert json object to dto
    * @param json

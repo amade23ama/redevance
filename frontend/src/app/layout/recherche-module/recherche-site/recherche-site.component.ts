@@ -31,7 +31,7 @@ export class RechercheSiteComponent implements OnInit {
    pageSize = 5; // nb ligne par page par défaut
 
    // les noms des colones  'Date Modification',
-   displayedColumns: string[] = ['Nom', 'Localite', 'Date Creation','actions'];
+   displayedColumns: string[] = ['nom','localite','dateCreation','actions'];
  sites$=this.siteService.sites$
   /** site Service */
   constructor(public appConfig: AppConfigService, public siteService: SiteService,private router:Router){}

@@ -203,6 +203,7 @@ public class DepotController {
                 e.printStackTrace();
                 // mise à jour du dépot
                 depot.setStatut(StatutEnum.ERREUR.getCode());
+                depot.setSite(siteDTO);
                 this.definirDepot(depot);
                 throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
             }
@@ -210,6 +211,7 @@ public class DepotController {
             e.printStackTrace();
             // mise à jour du dépot
             depot.setStatut(StatutEnum.ERREUR.getCode());
+            depot.setSite(siteDTO);
             this.definirDepot(depot);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
@@ -356,6 +358,7 @@ public class DepotController {
         depotDTO.setNbChargementErreur(nbErreur + 1);
         depotDTO.setStatut(depot.getStatut());
         depotDTO.setDateHeureFinDepot(new Date());
+        depotDTO.setSite(depot.getSite());
         Try.of(() -> depotDTO)
                 .mapTry(this.depotService::enregistrerDepot);
     }

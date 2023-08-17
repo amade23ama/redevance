@@ -19,11 +19,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.constants.Enum.StatutEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.service.ChargementService;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
+import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
@@ -158,7 +160,7 @@ public class DepotController {
                 mapInverse.put(v,k);
             });
             // enregister le depot
-            depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom)).get();
+            depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom, StatutEnum.ENCOURS.getCode())).get();
             List<String> header = null;
             try{
                 Reader reader = new InputStreamReader(file.getInputStream());
@@ -193,18 +195,21 @@ public class DepotController {
                 // On modifie le depot avec la liste des chargements et l'heure de fin
                 depot.setChargementDTOList(listChargementAEffectuer);
                 depot.setDateHeureFinDepot( new Date());
+                depot.setStatut(StatutEnum.SUCCES.getCode());
                 depot.setSite(siteDTO);
                 this.depotService.enregistrerDepot(depot);
                 log.info(" entete du fichier "+header);
             }catch (IOException | CsvValidationException e) {
                 e.printStackTrace();
                 // mise à jour du dépot
+                depot.setStatut(StatutEnum.ERREUR.getCode());
                 this.definirDepot(depot);
                 throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
             }
         } catch (Exception e) {
             e.printStackTrace();
             // mise à jour du dépot
+            depot.setStatut(StatutEnum.ERREUR.getCode());
             this.definirDepot(depot);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
@@ -232,9 +237,10 @@ public class DepotController {
      * @param nom nom
      * @return DepotDTO
      */
-    private static DepotDTO buildDepot(MultipartFile file, UtilisateurDTO utilisateurDTO, String nom) {
+    private static DepotDTO buildDepot(MultipartFile file, UtilisateurDTO utilisateurDTO, String nom, String statut) {
         return DepotDTO.builder()
                 .nom(nom)
+                .statut(statut)
                 .nbChargementReDeposes(1)
                 .nomFichier(file.getName())
                 .nbChargementErreur(0)
@@ -348,6 +354,7 @@ public class DepotController {
         DepotDTO depotDTO = this.depotService.rechercherDepotById(depot.getId()).get();
         int nbErreur = depotDTO.getNbChargementErreur();
         depotDTO.setNbChargementErreur(nbErreur + 1);
+        depotDTO.setStatut(depot.getStatut());
         depotDTO.setDateHeureFinDepot(new Date());
         Try.of(() -> depotDTO)
                 .mapTry(this.depotService::enregistrerDepot);

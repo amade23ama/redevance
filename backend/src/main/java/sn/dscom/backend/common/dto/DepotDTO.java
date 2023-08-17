@@ -1,5 +1,6 @@
 package sn.dscom.backend.common.dto;
 
+import jakarta.persistence.Column;
 import lombok.*;
 import sn.dscom.backend.database.entite.ChargementEntity;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
@@ -32,6 +33,9 @@ public class DepotDTO implements Serializable {
 
     /** nom Fichier */
     private String nomFichier;
+
+    /** statut */
+    private String statut;
 
     /** deposeur */
     private UtilisateurDTO deposeur;

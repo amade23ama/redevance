@@ -244,7 +244,7 @@ public class DepotController {
                 .nom(nom)
                 .statut(statut)
                 .nbChargementReDeposes(1)
-                .nomFichier(file.getName())
+                .nomFichier(file.getOriginalFilename())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())
                 .deposeur(utilisateurDTO)

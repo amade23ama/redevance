@@ -10,6 +10,7 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -31,8 +32,9 @@ export  class RechercheChargementComponent implements  OnInit{
   rechercheChargements: Chargement[] = [];
   // les noms des colones  'Date Modification',,'categorie'
   displayedColumns: string[] =['datePesage','exploitation', 'destination', 'site','vehicule','transporteur'
-  ,'poids','poidsSubst','volumeSubst','volumeMoyen','ecart'];
-  constructor(public appConfig: AppConfigService,public chargementService:ChargementService) {
+  ,'poids','poidsSubst','volumeSubst','volumeMoyen','ecart','actions'];
+  constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
+              private router:Router) {
    // this.initDisplayColumn();
   }
   ngOnInit() {
@@ -53,7 +55,7 @@ export  class RechercheChargementComponent implements  OnInit{
   }
 
   ouvreNouveauChargement(){
-
+    this.router.navigate(['depot/creer'])
   }
   initDisplayColumn(){
    // this.displayedColumns.push('num')
@@ -76,5 +78,8 @@ export  class RechercheChargementComponent implements  OnInit{
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
+  }
+  chargerChargement(element:Chargement){
+
   }
 }

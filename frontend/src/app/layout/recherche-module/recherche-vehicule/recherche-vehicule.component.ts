@@ -31,7 +31,7 @@ export class RechercheVehiculeComponent implements OnInit{
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume','dateCreation'];
+  displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
   /** constructor */
   constructor(public appConfig: AppConfigService,public vehiculeService: VehiculeService,
@@ -65,5 +65,8 @@ export class RechercheVehiculeComponent implements OnInit{
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
+  }
+  chargerVoiture(vehicule: Vehicule){
+    this.router.navigate(['admin/vehicule'], {queryParams: {'contextInfo':vehicule.id }});
   }
 }

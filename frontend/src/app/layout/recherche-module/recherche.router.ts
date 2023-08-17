@@ -37,7 +37,7 @@ const routes: Routes = [{
       component: RechercheExploitationComponent
     },
     {
-      path: 'chargement',
+      path: 'chargements',
       component: RechercheChargementComponent
     },
   ]

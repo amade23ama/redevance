@@ -16,7 +16,7 @@ import {DepotService} from "../../../core/services/depot.service";
 })
 export class DepotCreationComponent implements  OnInit{
   numero$=this.depotService.numeroDepot$
-  titre="créaction d'un dépot";
+  titre="créaction un import";
   typeFile=".txt,.csv"
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl()

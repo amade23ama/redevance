@@ -32,7 +32,7 @@ export class RechercheDepotComponent implements OnInit{
   constructor(public appConfig: AppConfigService,private router:Router,public depotService:DepotService) {
   }
   ouvreNouveauDepot(){
-
+    this.router.navigate(['depot/creer'])
   }
 
   ngOnInit(): void {

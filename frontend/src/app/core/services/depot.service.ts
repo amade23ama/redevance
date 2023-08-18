@@ -10,7 +10,7 @@ import {
 } from "../../layout/depot-module/depot-validation-column-popup/depot-validation-column-popup.component";
 import {FileInfo} from "../interfaces/file.info";
 import {Site} from "../interfaces/site";
-import {Depot} from "../interfaces/infotuiles/depot";
+import {Depot} from "../interfaces/depot";
 
 @Injectable({
   providedIn:"root"

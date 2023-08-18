@@ -1,4 +1,4 @@
-import {Utilisateur} from "../utilisateur";
+import {Utilisateur} from "./utilisateur";
 
 export class Depot{
   /** id */

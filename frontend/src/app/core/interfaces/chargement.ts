@@ -1,5 +1,5 @@
 import {BuilderDtoJsonAbstract} from "./BuilderDtoJsonAbstract";
-import {Depot} from "./infotuiles/depot";
+import {Depot} from "./depot";
 import {Site} from "./site";
 import {Vehicule} from "./vehicule";
 import {Exploitation} from "./exploitation";

@@ -8,7 +8,7 @@ import {MatTableDataSource} from "@angular/material/table";
 import {Site} from "../../../core/interfaces/site";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
-import {Depot} from "../../../core/interfaces/infotuiles/depot";
+import {Depot} from "../../../core/interfaces/depot";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 
@@ -19,7 +19,8 @@ import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbs
 })
 export class RechercheDepotComponent implements OnInit{
   search:FormControl =new FormControl('');
-  displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','dateHeureFinDepot','statut','deposeur'];
+  displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','dateHeureFinDepot','statut','deposeur','nbChargementErreur'
+  ,'nbChargementDeposes'];
   depots$=this.depotService.depots$;
   listDepots: MatTableDataSource<Depot>;
   // La pagination

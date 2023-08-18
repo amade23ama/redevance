@@ -17,6 +17,7 @@ import sn.dscom.backend.service.converter.ChargementConverter;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
 
+import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -166,8 +167,9 @@ public class ChargementService implements IChargementService {
         String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.destination"))));
         String poidsMesure = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poids"))));
         String poidsMax = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poidsMax"))));
+        String datePesage = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.date"))));
 
-        Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax));
+        Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax), vehiculeDTO.getCategorie().getVolume());
 
         Double volumeEstime = ChargementUtils.getVolumeEstime(poidsEstime, produitDTO.getDensiteKGM());
 
@@ -176,6 +178,7 @@ public class ChargementService implements IChargementService {
         // enregistrer Chargement
         return ChargementDTO.builder()
                             .dateCreation(new Date())
+                            //.datePesage(new Date(Integer.parseInt(Arrays.asList(datePesage.split("/")).get(2)),Integer.parseInt(Arrays.asList(datePesage.split("/")).get(1)),Integer.parseInt(Arrays.asList(datePesage.split("/")).get(0))))
                             .datePesage(new Date())
                             .poids(Double.valueOf(poidsMesure))
                             //la diference entre le volume estimé et le volume du véhicule

@@ -3,9 +3,9 @@
     "label.info.application": "Bienvenue sur l'application de REDEVANCE",
      "label.direction.nom": "Direction du Controle et de la Surveillance des Opérations Minières",
     "label.direction.cycle": "D.C.S.O.M",
-    "label.ministere":"Ministères",
+    "label.ministere":"Ministère Des Mines",
     "label.ministere.mines":"Des Mines",
-    "label.ministere.geologie":"Et de la Géologies",
+    "label.ministere.geologie":"Et de la Géologie",
     "label.devise":"Un Peuple-Un But-Une Foi",
     "label.republique ":"République du Sénégal",
     "label.republique.senegal":"Des Mines",
@@ -108,6 +108,8 @@
     "label.tooltip.exploitation":"Creer un site d'exploitation",
     "label.tooltip.voiture":"Creer une voiture",
     "label.tooltip.depot": "Creer un import",
-    "label.info.mail": "Nous avons envoyé le login et mots de passe à l'adresse:"
+    "label.info.mail": "Nous avons envoyé le login et mots de passe à l'adresse:",
+    "footer.donnee.perso": "Données personelles",
+    "footer.contact": "Contact"
   }
 }

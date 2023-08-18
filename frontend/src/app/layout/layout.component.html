@@ -1,5 +1,5 @@
 
-<div *ngIf="isLoggedIn" class="flex-container page " fxLayout="column" >
+<div *ngIf="isLoggedIn" class="flex-container" fxLayout="column" >
     <app-dscom-header></app-dscom-header>
     <mat-toolbar color="" class="menu-toolbar">
       <div fxShow="true" fxHide.gt-sm="true">
@@ -73,11 +73,3 @@
   <a mat-menu-item routerLink="/depot/creer">creer depot</a>
   <a mat-menu-item  routerLink="/recherche/depots">liste depots</a>
 </mat-menu>
-<!--
-        <a mat-button routerLink="" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">home</a>
-        <a mat-button routerLink="/admin" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer utilisateur</a>
-        <a mat-button routerLink="/admin/site" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer site</a>
-        <a mat-button routerLink="/admin/vehicule" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer vehicule</a>
-        <a mat-button routerLink="/admin/transpoteur" class="mat-sidenav-menu-but" (click)="sidenav.toggle()">creer transpoteur</a>
-        <a  mat-button routerLink="/recherche/user"  class="mat-sidenav-menu-but" (click)="sidenav.toggle()">liste utilisateur</a>
--->

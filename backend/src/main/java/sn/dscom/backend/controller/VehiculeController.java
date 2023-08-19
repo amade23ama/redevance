@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 
@@ -95,5 +96,11 @@ public class VehiculeController {
 
         // sinon on léve une exception: 404 Not Found.
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public VehiculeDTO chargerVehiculeDTOParId(@PathVariable Long id) {
+        return this.voitureService.chargerVehiculeDTOParId(id);
     }
 }

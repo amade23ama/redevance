@@ -1,44 +1,47 @@
+
 <form class="mt-1" [formGroup]="myform">
   <fieldset>
     <legend class="titre-form">{{titre}}</legend>
-    <div class="mt-05" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
-      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-      <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-        <mat-label>immatriculation</mat-label>
-        <input matInput  type="text"
-               [formControl]="immatriculation"/>
-        <button  matSuffix mat-icon-button aria-label="Clear"
-                 (click)="reset('immatriculation')">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-error *ngIf="immatriculation.errors?.hasOwnProperty('required')">
-          {{appConfig.getLabel('error.champ.obligatoire')}}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-        <mat-label>classe </mat-label>
-        <input matInput  type="text"
-               [formControl]="nom"/>
-        <button  matSuffix mat-icon-button aria-label="Clear"
-                 (click)="reset('nom')">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-error *ngIf="nom.errors?.hasOwnProperty('required')">
-          {{appConfig.getLabel('error.champ.obligatoire')}}
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-        <mat-label>volume </mat-label>
-        <input matInput  type="text"
-               [formControl]="volume"/>
-        <button  matSuffix mat-icon-button aria-label="Clear"
-                 (click)="reset('volume')">
-          <mat-icon>close</mat-icon>
-        </button>
-        <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
-          {{appConfig.getLabel('error.champ.obligatoire')}}
-        </mat-error>
-      </mat-form-field>
+    <div class="mt-05" fxLayout fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
+      <div fxFlex="100">
+        <mat-form-field class="champ--operateur"  appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>immatriculation</mat-label>
+          <input matInput  type="text"
+                 [formControl]="immatriculation"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('immatriculation')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="immatriculation.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div formGroupName="myFormCategorie" fxLayoutGap="10px" fxFlex="100">
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>classe </mat-label>
+          <input matInput  type="text"
+                 [formControl]="type"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('type')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="type.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>volume </mat-label>
+          <input matInput  type="text"
+                 [formControl]="volume"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('volume')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
       </div>
     </div>
   </fieldset>

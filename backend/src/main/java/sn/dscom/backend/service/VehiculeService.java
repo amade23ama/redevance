@@ -2,9 +2,13 @@ package sn.dscom.backend.service;
 
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.VehiculeDTO;
+import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
+import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.entite.VehiculeEntity;
 import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.converter.VehiculeConverter;
@@ -114,5 +118,15 @@ public class VehiculeService implements IVoitureService{
             log.error("exception sur la suppression de l'entité avec id: {} ",voiture.getId(), e);
         }
 
+    }
+
+    @Override
+    public VehiculeDTO chargerVehiculeDTOParId(Long id) {
+        Optional<VehiculeEntity> vehicule = this.vehiculeRepository.findById(id);
+        if (vehicule.isPresent()) {
+            return this.vehiculeConverter.reverse(vehicule.get());
+        } else {
+            throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+        }
     }
 }

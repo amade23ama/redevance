@@ -4,6 +4,9 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 import {ActionBtn} from "../../../core/interfaces/actionBtn";
 import {Actions} from "../../../core/enum/actions";
 import {VehiculeService} from "../../../core/services/vehicule.service";
+import {ActivatedRoute} from "@angular/router";
+import {Site} from "../../../core/interfaces/site";
+import {Vehicule} from "../../../core/interfaces/vehicule";
 
 @Component({
   selector: 'app-vehicule',
@@ -29,6 +32,13 @@ export class VehiculeComponent implements OnInit {
   transAdresse: FormControl = new FormControl();
   transTelephone: FormControl = new FormControl();
   transEmail:FormControl = new FormControl();
+  categorieId: FormControl = new FormControl();
+  type: FormControl = new FormControl();
+  myFormCategorie:FormGroup = this.builder.group({
+    id:this.categorieId,
+    volume:this.volume,
+    type:this.type
+})
   myformTransport: FormGroup = this.builder.group({
     id:this.transId ,
     adresse: this.transAdresse,
@@ -36,22 +46,34 @@ export class VehiculeComponent implements OnInit {
     prenom:this.transPrenom,
     telephone:this.transTelephone,
     email:this.transEmail
-  })
+  });
   myform: FormGroup = this.builder.group({
     id: this. id,
     immatriculation: this.immatriculation,
-    nom: this.nom,
-    volume:this.volume,
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
-    transporteur:this.myformTransport
+    transporteur:this.myformTransport,
+    categorie:this.myFormCategorie
   })
+  vehiculeCourant:Vehicule;
   constructor(public builder:FormBuilder,public appConfig:AppConfigService,
-              public vehiculeService:VehiculeService) {
+              public vehiculeService:VehiculeService,private readonly activatedRoute: ActivatedRoute) {
   }
   ngOnInit(): void {
-    this.initListbtns()
-    this.majBtnActive()
+    this.activatedRoute.queryParams?.subscribe(async params => {
+      this.initListbtns();
+      if (params['contextInfo']) {
+        //this.titre="Modification Site"
+        this.vehiculeService.getVehiculeById(params['contextInfo']).subscribe(()=>{
+          this.vehiculeCourant=this.vehiculeService.getVehiculeCourant()
+          this.myform.patchValue(this.vehiculeCourant)
+          this.majBtnActive()
+        })
+      } else {
+        //this.titre="Creation Site";
+        this.majBtnActive()
+      }
+    });
   }
   sauvegarder(){
 

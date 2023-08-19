@@ -34,26 +34,27 @@ export class VehiculeComponent implements OnInit {
   transEmail:FormControl = new FormControl();
   categorieId: FormControl = new FormControl();
   type: FormControl = new FormControl();
-  myFormCategorie:FormGroup = this.builder.group({
+  categorie:FormGroup = this.builder.group({
     id:this.categorieId,
     volume:this.volume,
     type:this.type
 })
-  myformTransport: FormGroup = this.builder.group({
+  transporteur: FormGroup = this.builder.group({
     id:this.transId ,
     adresse: this.transAdresse,
     nom: this.transNom,
     prenom:this.transPrenom,
     telephone:this.transTelephone,
-    email:this.transEmail
+    email:this.transEmail,
+    type:this.transType
   });
   myform: FormGroup = this.builder.group({
     id: this. id,
     immatriculation: this.immatriculation,
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
-    transporteur:this.myformTransport,
-    categorie:this.myFormCategorie
+    transporteur:this.transporteur,
+    categorie:this.categorie
   })
   vehiculeCourant:Vehicule;
   constructor(public builder:FormBuilder,public appConfig:AppConfigService,

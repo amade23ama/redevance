@@ -19,7 +19,7 @@
   <include file="changelog/v0.1/011_creation_table_depot_chargement.xml" relativeToChangelogFile="false"/>
   <!-- ajouter data -->
   <include file="changelog/v0.1/012_inserer_data_table_profil.xml" relativeToChangelogFile="false"/>
-  <include file="changelog/v0.1/013_inserer_data_table_site.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/013_inserer_data_table_site.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/014_inserer_data_table_site_exploitation.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/015_inserer_data_table_produit.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/016_inserer_data_table_transporteur.xml" relativeToChangelogFile="false"/>

@@ -4,6 +4,8 @@ import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.SiteEntity;
 
+import java.util.Date;
+
 /**
  * Site Converter
  */
@@ -49,8 +51,8 @@ public class SiteConverter implements Transformer<SiteDTO, SiteEntity> {
                 .id(siteDTO.getId())
                 .nom(siteDTO.getNom().trim().toUpperCase())
                 .localite(siteDTO.getLocalite().trim().toUpperCase())
-                .dateCreation(siteDTO.getDateCreation())
-                .dateModification(siteDTO.getDateModification())
+                .dateCreation(siteDTO.getId() == null ? new Date() : siteDTO.getDateCreation())
+                .dateModification(siteDTO.getId() == null ? null : new Date())
                 .build();
         return siteEntity;
     }

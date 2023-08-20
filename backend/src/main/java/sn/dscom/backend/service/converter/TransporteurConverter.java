@@ -57,7 +57,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
                 .nom(transporteurDTO.getNom().trim().toUpperCase())
                 .prenom(Strings.isNullOrEmpty(transporteurDTO.getPrenom()) ? transporteurDTO.getPrenom() : transporteurDTO.getPrenom().trim().toUpperCase())
                 .email(transporteurDTO.getEmail())
-                .telephone(transporteurDTO.getTelephone())
+                .telephone(Strings.isNullOrEmpty(transporteurDTO.getTelephone()) ? transporteurDTO.getTelephone() : transporteurDTO.getTelephone().trim())
                 .adresse(Strings.isNullOrEmpty(transporteurDTO.getAdresse()) ? transporteurDTO.getAdresse() : transporteurDTO.getAdresse().trim().toUpperCase())
                 .dateCreation(transporteurDTO.getId() == null ? new Date() : transporteurDTO.getDateCreation())
                 .dateModification(transporteurDTO.getId() == null ? null : new Date())

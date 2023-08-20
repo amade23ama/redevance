@@ -55,7 +55,7 @@ public class TransporteurService implements ITransporteurService {
 
         TransporteurService.logger.info(String.format("Enregistrer Transporteur: %s", transporteurDTO));
         // Vérifiacation
-        TransporteurEntity transporteurEntity = this.transporteurRepository.isTransporteurExist(transporteurDTO.getNom().toUpperCase(), transporteurDTO.getTelephone().toUpperCase());
+        TransporteurEntity transporteurEntity = this.transporteurRepository.isTransporteurExist(transporteurDTO.getNom().trim().toUpperCase(), transporteurDTO.getTelephone().trim().toUpperCase());
 
         // s'il existe on renvoit le site existant
         if(transporteurEntity != null && transporteurDTO.getId() == null ){

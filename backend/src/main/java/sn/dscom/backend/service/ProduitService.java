@@ -1,22 +1,20 @@
 package sn.dscom.backend.service;
 
+import io.vavr.control.Try;
 import lombok.Builder;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ProduitEntity;
-import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.database.repository.ProduitRepository;
 import sn.dscom.backend.service.converter.ProduitConverter;
 import sn.dscom.backend.service.interfaces.IProduitService;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,19 +23,21 @@ import java.util.stream.Collectors;
 /**
  * @apiNote Service fournissant les opérateur sur les produits
  */
-@Slf4j
 @Transactional
 public class ProduitService implements IProduitService {
+
+    /** Logger Factory */
+    private static final Logger logger = LoggerFactory.getLogger(ProduitService.class);
 
     /** produit Converteur */
     private final Transformer<ProduitDTO, ProduitEntity> produitConverteur = new ProduitConverter();
 
     /** produit Repository */
-    ProduitRepository produitRepository;
+    private final ProduitRepository produitRepository;
 
     /**
      * Produit Service
-     * @param produitRepository
+     * @param produitRepository produitRepository
      */
     @Builder
     public ProduitService(ProduitRepository produitRepository) {
@@ -51,12 +51,20 @@ public class ProduitService implements IProduitService {
      */
     @Override
     public Optional<List<ProduitDTO>> rechercherProduits() {
-        List<ProduitEntity> listProduitsFind = this.produitRepository.findAll();
 
-        return Optional.of(listProduitsFind.stream()
-                .map(produitEntity -> this.produitConverteur.reverse(produitEntity))
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList()));
+        try {
+            ProduitService.logger.info("Recherche des produits");
+            List<ProduitEntity> listProduitsFind = this.produitRepository.findAll();
+
+            return Optional.of(listProduitsFind.stream()
+                    .map(this.produitConverteur::reverse)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList()));
+        }catch (Exception e){
+            ProduitService.logger.error(String.format("Erreur leur de la recherche de produit : %s ",e.getMessage()));
+            throw new CommonMetierException(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErreurEnum.ERR_INATTENDUE);
+        }
+
     }
 
     /**
@@ -68,7 +76,13 @@ public class ProduitService implements IProduitService {
     @Override
     public Optional<ProduitDTO> enregistrerProduit(ProduitDTO produitDTO) {
         //C'est la séquence qui génère l'id en cas de création
-        return Optional.of(this.produitConverteur.reverse(this.produitRepository.save(this.produitConverteur.transform(produitDTO))));
+
+        return Optional.of(Try.of(() -> this.produitConverteur.transform(produitDTO))
+                .mapTry(this.produitRepository::save)
+                .onFailure(e -> ProduitService.logger.error(String.format("Erreur leur de l'enregistrement du produit : %s ",e.getMessage())))
+                .mapTry(produitConverteur::reverse)
+                .onFailure(e -> ProduitService.logger.error(String.format("Erreur leur du reverse du produit : %s ",e.getMessage())))
+                .get());
     }
 
     /**
@@ -80,7 +94,13 @@ public class ProduitService implements IProduitService {
     @Override
     public Optional<ProduitDTO> rechercherProduit(ProduitDTO produitDTO) {
 
-        return Optional.of(this.produitConverteur.reverse(this.produitRepository.rechercherProduitByCriteres(produitDTO.getNomSRC(), produitDTO.getNomNORM())));
+        ProduitService.logger.info(String.format("Recherche du produit: %s", produitDTO));
+        ProduitEntity produitEntity = this.produitRepository.rechercherProduitByCriteres(produitDTO.getNomSRC(), produitDTO.getNomNORM());
+
+        return Optional.of(Try.of(() -> produitEntity)
+                .mapTry(this.produitConverteur::reverse)
+                .onFailure(e -> ProduitService.logger.error(String.format("Chargement lors du produit: %s", e.getMessage())))
+                .get());
     }
 
     /**
@@ -92,12 +112,25 @@ public class ProduitService implements IProduitService {
         return ((int) this.produitRepository.count());
     }
 
+    /**
+     * charger Produit Par Id
+     *
+     * @param id id
+     * @return ProduitDTO
+     */
     @Override
     public ProduitDTO chargerProduitParId(Long id) {
+
+        ProduitService.logger.info(String.format("Chargement lors du produit: %s", id));
         Optional<ProduitEntity> produit = produitRepository.findById(id);
+        // on retourne le produit trouvé
         if (produit.isPresent()) {
-            return this.produitConverteur.reverse(produit.get());
+            return Try.of(produit::get)
+                    .mapTry(this.produitConverteur::reverse)
+                    .onFailure(e -> ProduitService.logger.error(String.format("Erreur leur du reverse du produit %s ",e.getMessage())))
+                    .get();
         } else {
+            ProduitService.logger.info(String.format("Le produit d'id %s n'est pas trouvé en base ", id));
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
     }

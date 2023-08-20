@@ -27,7 +27,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   prenom="prenom"
   pageSizeOptions: number[] = [5, 10, 20];
   rechercheUtilisateurListe: Utilisateur[] = [];
-  displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil',"actions"];
+  displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil','dateCreation',"actions"];
   pageSize = 5;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -56,7 +56,8 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
    * @param dateCreation
    */
   formatDate(dateCreation: Date) {
-    return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE)).transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLE);
+    return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+      .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
 
   convertToLowercase(text:string){

@@ -2,7 +2,6 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {MaterialModule} from "../../material.module";
 import {ConfigurationComponent} from "./configuration/configuration.component";
-import {UtilisateurCreateComponent} from "./utilisateur/utilisateur-create/utilisateur-create.component";
 import {LogsComponent} from "./logs/logs.component";
 import {MonitoreComponent} from "./monitore/monitore.component";
 import {AdminRouter} from "./admin.router";
@@ -10,7 +9,6 @@ import { SiteComponent } from './site/site.component';
 import { VehiculeComponent } from './vehicule/vehicule.component';
 import {UserModule} from "./utilisateur/utilisateur.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { TransporteurComponent } from './transporteur/transporteur.component';
 import {AdminComponent} from "./admin.component";
 import {RouterModule, RouterOutlet} from "@angular/router";
 import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
@@ -25,7 +23,6 @@ import {ExploitationComponent} from "./exploitation/exploitation.component";
     MonitoreComponent,
     SiteComponent,
     VehiculeComponent,
-    TransporteurComponent,
     AdminComponent,
     ProduitComponent,
     ExploitationComponent

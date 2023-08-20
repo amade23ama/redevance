@@ -1,0 +1,34 @@
+.recap-info {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid #138836;
+  background: #ecf1ed;
+  align-self: stretch;
+  color: #138836;
+  font-family: Calibri;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+}
+.recap-infoT {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 8px;
+  border: 1px solid #A11C36;
+  background:  #FBECE6;
+  align-self: stretch;
+  color:  #A11C36;
+  font-family: Calibri;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+}

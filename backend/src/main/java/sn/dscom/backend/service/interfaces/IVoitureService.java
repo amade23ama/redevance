@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 
 import java.util.List;
@@ -40,5 +41,5 @@ public interface IVoitureService {
      */
     void supprimerVehicule(VehiculeDTO voiture);
 
-
+    VehiculeDTO chargerVehiculeDTOParId(Long id);
 }

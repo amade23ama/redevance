@@ -9,6 +9,8 @@ import {
   DepotValidationColumnPopupComponent
 } from "../../layout/depot-module/depot-validation-column-popup/depot-validation-column-popup.component";
 import {FileInfo} from "../interfaces/file.info";
+import {Site} from "../interfaces/site";
+import {Depot} from "../interfaces/depot";
 
 @Injectable({
   providedIn:"root"
@@ -21,6 +23,7 @@ export class DepotService{
   fileInfoCourant: FileInfo = new FileInfo();
   fichierCourant: FormData =new FormData();
   private _numeroDepot$: BehaviorSubject<number> = new BehaviorSubject(<number>(null));
+  private _depots: BehaviorSubject<Depot[]> = new BehaviorSubject<Depot[]>( []);
   constructor(private http:HttpClient,private notification: NotificationService,
               public dialog: MatDialog,) {
   }
@@ -85,4 +88,23 @@ export class DepotService{
  get numeroDepot$(){
     return this._numeroDepot$.asObservable()
  }
+   setDepots(depots:Depot[]){
+    this._depots.next(depots)
+  }
+  get depots$(){
+    return this._depots.asObservable()
+  }
+
+  getAllDepots(){
+    return this.http.get<Depot[]>(this.url + '/rechercher')
+      .pipe(
+        tap((res:Depot[])=> {
+          this.setDepots(res);
+        }),
+        catchError((err) => {
+          this.notification.error("erreur de chargement des depots")
+          return throwError(() => err)
+        })
+      )
+  }
 }

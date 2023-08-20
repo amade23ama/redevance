@@ -17,6 +17,7 @@ import {RedevanceModule} from "../redevanceModule/redevance.module";
 import { FormulaireUtilisateurComponent } from './formulaire-utilisateur/formulaire-utilisateur.component';
 import {ActionsCritereBtnsComponent} from "./actions-critere-btns/actions-critere-btns.component";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
+import {DscomExtensibleComponent} from "./dscom-extensible/dscom.extensible.component";
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
     ConfirmationDialogComponent,
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
-    ActionsCritereBtnsComponent
+    ActionsCritereBtnsComponent,
+    DscomExtensibleComponent
   ],
   imports: [
     CommonModule,
@@ -49,7 +51,8 @@ import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
     DscomHeaderComponent,
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
-    ActionsCritereBtnsComponent
+    ActionsCritereBtnsComponent,
+    DscomExtensibleComponent
   ],
   providers: [],
 })

@@ -75,9 +75,9 @@ public class UtilisateurController {
     }
 
     /**
-     *
-     * @param email
-     * @return
+     * checkEmail
+     * @param email email
+     * @return boolean
      */
     @GetMapping(value = "/utilisateur/exist/{email}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")

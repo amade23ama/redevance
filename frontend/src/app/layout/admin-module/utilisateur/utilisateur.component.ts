@@ -35,6 +35,7 @@ export class UtilisateurComponent implements OnInit{
   btns: ActionBtn[] = [];
   myform :FormGroup
   isUpdate:boolean
+  displayEmail=false;
   constructor(public utilisateurService:UtilisateurService,private readonly activatedRoute: ActivatedRoute,
               public builder:FormBuilder,public appConfig: AppConfigService,
               private readonly authService: AuthService) {
@@ -110,7 +111,9 @@ export class UtilisateurComponent implements OnInit{
   utilisateurAction(event: Actions){
     if (event === Actions.ENREGISTRER) {
     const b= this.myform.value;
-      this.utilisateurService.enregistrer(this.myform.value).subscribe()
+      this.utilisateurService.enregistrer(this.myform.value).subscribe(()=>{
+        this.displayEmail=true;
+      })
     }
     if (event === Actions.MODIFIER) {
       const b= this.myform.value;

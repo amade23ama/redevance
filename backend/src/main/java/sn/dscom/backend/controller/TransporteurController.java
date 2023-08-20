@@ -1,6 +1,8 @@
 package sn.dscom.backend.controller;
 
-import lombok.extern.log4j.Log4j;
+import cyclops.control.Try;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,15 +12,18 @@ import sn.dscom.backend.service.interfaces.ITransporteurService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de sur les transporteurs
  * @version 1
  */
-@Log4j
 @RestController
 @RequestMapping("api/v1/transporteur")
 public class TransporteurController {
+
+    /** Logger Factory */
+    private static final Logger LOGGER = LoggerFactory.getLogger(TransporteurController.class);
 
     /**
      * transporteur Service
@@ -35,7 +40,7 @@ public class TransporteurController {
     @PostMapping(path = "/enregistrer")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<TransporteurDTO> enregistrerTransporteur(@RequestBody TransporteurDTO transporteurDTO) {
-
+        TransporteurController.LOGGER.info("TransporteurController: enregistrerTransporteur: ");
         return ResponseEntity.ok(this.transporteurService.enregistrerTransporteur(transporteurDTO).get());
     }
 
@@ -47,7 +52,15 @@ public class TransporteurController {
     @GetMapping(path = "/rechercherById/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<TransporteurDTO>> rechercherTransporteur(@PathVariable long id) {
-        return  ResponseEntity.ok(this.transporteurService.rechercherTransporteur(TransporteurDTO.builder().id(id).build()).get());
+        TransporteurController.LOGGER.info("TransporteurController: rechercherTransporteur: ");
+        Optional<List<TransporteurDTO>> listTransporteur = this.transporteurService.rechercherTransporteur(TransporteurDTO.builder().id(id).build());
+
+        // Appel du service rechercherTransporteur
+        // si vide on renvoit 404
+        return Try.withCatch(listTransporteur::get)
+                .peek(list -> TransporteurController.LOGGER.info(String.format("TransporteurController: rechercherTransporteur: %s", list.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -57,7 +70,16 @@ public class TransporteurController {
     @GetMapping(path = "/rechercher")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<TransporteurDTO>> rechercherTransporteurs() {
-        return  ResponseEntity.ok(this.transporteurService.rechercherTransporteurs().get());
+        TransporteurController.LOGGER.info("TransporteurController: rechercherTransporteurs: ");
+
+        Optional<List<TransporteurDTO>> listTransporteur = this.transporteurService.rechercherTransporteurs();
+
+        //Appel du service rechercherTransporteurs
+        // si vide on renvoit 404
+        return Try.withCatch(listTransporteur::get)
+                .peek(list -> TransporteurController.LOGGER.info(String.format("TransporteurController: rechercherTransporteurs: %s", list.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -71,6 +93,7 @@ public class TransporteurController {
     @DeleteMapping(path = "/supprimer/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Boolean> supprimerTransporteur(@PathVariable long id) {
+        TransporteurController.LOGGER.info("TransporteurController: supprimerTransporteur: ");
         return  ResponseEntity.ok(this.transporteurService.supprimerTransporteur(TransporteurDTO.builder().id(id).build()));
     }
 
@@ -82,7 +105,7 @@ public class TransporteurController {
     @GetMapping(path = "/compter")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<Integer> getCompteurTransporteurs() {
-        log.info("Compter les Transporteurs");
+        TransporteurController.LOGGER.info("TransporteurController: Compter les Transporteurs: ");
         return  ResponseEntity.ok(this.transporteurService.compterTransporteurs(LocalDateTime.now()));
     }
 

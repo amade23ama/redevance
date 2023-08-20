@@ -84,7 +84,7 @@ class DepotConverterTest {
     private DepotEntity buildDepotEntity() {
         return DepotEntity.builder()
                 .id(1L)
-                .nom("nom")
+                .nom("nom".toUpperCase())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())
                 .dateHeureDepot(new Date())
@@ -106,7 +106,7 @@ class DepotConverterTest {
     private DepotDTO buildDepotDTO() {
         return DepotDTO.builder()
                 .id(1L)
-                .nom("nom")
+                .nom("nom".toUpperCase())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())
                 .dateHeureDepot(new Date())

@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {AppConfigService} from "../../../core/services/app-config.service";
-import {Transporteur} from "../../../core/interfaces/transporteur";
 import {ActionBtn} from "../../../core/interfaces/actionBtn";
 import {Actions} from "../../../core/enum/actions";
 import {VehiculeService} from "../../../core/services/vehicule.service";
+import {ActivatedRoute} from "@angular/router";
+import {Site} from "../../../core/interfaces/site";
+import {Vehicule} from "../../../core/interfaces/vehicule";
 
 @Component({
   selector: 'app-vehicule',
@@ -12,29 +14,67 @@ import {VehiculeService} from "../../../core/services/vehicule.service";
   styleUrls: ['./vehicule.component.scss']
 })
 export class VehiculeComponent implements OnInit {
-
+  types=[{code:'S',libelle:'societe'},{code:'P',libelle:'particulier'}]
   btns: ActionBtn[] = [];
   titre="Creer un Nouveau  Vehicule"
+  titreTransport="Creer un Nouveau  Transporteur"
   id: FormControl = new FormControl();
   immatriculation: FormControl = new FormControl();
   nom: FormControl = new FormControl();
   volume: FormControl = new FormControl();
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();
+
+  transId: FormControl = new FormControl();
+  transPrenom: FormControl = new FormControl();
+  transNom: FormControl = new FormControl();
+  transType: FormControl = new FormControl();
+  transAdresse: FormControl = new FormControl();
+  transTelephone: FormControl = new FormControl();
+  transEmail:FormControl = new FormControl();
+  categorieId: FormControl = new FormControl();
+  type: FormControl = new FormControl();
+  categorie:FormGroup = this.builder.group({
+    id:this.categorieId,
+    volume:this.volume,
+    type:this.type
+})
+  transporteur: FormGroup = this.builder.group({
+    id:this.transId ,
+    adresse: this.transAdresse,
+    nom: this.transNom,
+    prenom:this.transPrenom,
+    telephone:this.transTelephone,
+    email:this.transEmail,
+    type:this.transType
+  });
   myform: FormGroup = this.builder.group({
     id: this. id,
     immatriculation: this.immatriculation,
-    nom: this.nom,
-    volume:this.volume,
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
+    transporteur:this.transporteur,
+    categorie:this.categorie
   })
+  vehiculeCourant:Vehicule;
   constructor(public builder:FormBuilder,public appConfig:AppConfigService,
-              public vehiculeService:VehiculeService) {
+              public vehiculeService:VehiculeService,private readonly activatedRoute: ActivatedRoute) {
   }
   ngOnInit(): void {
-    this.initListbtns()
-    this.majBtnActive()
+    this.activatedRoute.queryParams?.subscribe(async params => {
+      this.initListbtns();
+      if (params['contextInfo']) {
+        //this.titre="Modification Site"
+        this.vehiculeService.getVehiculeById(params['contextInfo']).subscribe(()=>{
+          this.vehiculeCourant=this.vehiculeService.getVehiculeCourant()
+          this.myform.patchValue(this.vehiculeCourant)
+          this.majBtnActive()
+        })
+      } else {
+        //this.titre="Creation Site";
+        this.majBtnActive()
+      }
+    });
   }
   sauvegarder(){
 

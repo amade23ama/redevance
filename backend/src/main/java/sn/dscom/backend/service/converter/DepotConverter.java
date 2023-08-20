@@ -2,12 +2,15 @@ package sn.dscom.backend.service.converter;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import sn.dscom.backend.common.constants.Enum.StatutEnum;
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.DepotDTO;
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ChargementEntity;
 import sn.dscom.backend.database.entite.DepotEntity;
+import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 
 import java.util.Collections;
@@ -28,6 +31,8 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
      */
     private final Transformer<ChargementDTO, ChargementEntity> chargementConverter = new ChargementConverter();
 
+    /** Site Converteur */
+    private final Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
 
     /**
      * transformation de {@link DepotEntity} en {@link DepotDTO}
@@ -48,6 +53,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
 
         return DepotDTO.builder()
                 .id(depotEntity.getId())
+                .statut(depotEntity.getStatut())
                 .nom(depotEntity.getNom())
                 .dateHeureDepot(depotEntity.getDateHeureDepot())
                 .dateHeureFinDepot(depotEntity.getDateHeureFinDepot())
@@ -56,6 +62,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nbChargementErreur(depotEntity.getNbChargementErreur())
                 .nomFichier(depotEntity.getNomFichier())
                 .nbChargementReDeposes(depotEntity.getNbChargementReDeposes())
+                .site(this.siteConverteur.reverse(depotEntity.getSiteEntity()))
                 .chargementDTOList(listChargement.stream()
                         .map(this.chargementConverter::reverse)
                         .collect(Collectors.toList()))
@@ -80,6 +87,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
 
         return DepotEntity.builder()
                 .id(depotDTO.getId())
+                .statut(depotDTO.getStatut())
                 .nom(Strings.isNullOrEmpty(depotDTO.getNom()) ? depotDTO.getNom() : depotDTO.getNom().trim().toUpperCase())
                 .dateHeureDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
                 .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
@@ -88,6 +96,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nbChargementErreur(depotDTO.getNbChargementErreur())
                 .nomFichier(depotDTO.getNomFichier())
                 .nbChargementReDeposes(depotDTO.getNbChargementReDeposes())
+                .siteEntity(this.siteConverteur.transform(depotDTO.getSite()))
                 .chargementEntityList(listChargement.stream()
                         .map(this.chargementConverter::transform)
                         .collect(Collectors.toList()))

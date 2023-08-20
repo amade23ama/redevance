@@ -23,6 +23,7 @@
             <constraints foreignKeyName="FK_DEPOSEUR" nullable="false"/>
         </column>
         -->
+        <column name="ID_SITE" type="bigint" remarks="Identifiant technique du site"/>
         <column name="NOM_DEPOT" type="varchar(60)"/>
         <column name="STATUT" type="varchar(60)"/>
         <column name="DATEHEUREDEBUT" type="timestamp" defaultValueDate="${now}">

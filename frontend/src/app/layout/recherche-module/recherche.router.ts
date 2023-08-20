@@ -21,10 +21,6 @@ const routes: Routes = [{
       component: RechercheDepotComponent
     },
     {
-      path: 'contact',
-      component: RechercheDepotComponent
-    },
-    {
       path: 'site',
       component: RechercheSiteComponent
     },
@@ -41,7 +37,7 @@ const routes: Routes = [{
       component: RechercheExploitationComponent
     },
     {
-      path: 'chargement',
+      path: 'chargements',
       component: RechercheChargementComponent
     },
   ]

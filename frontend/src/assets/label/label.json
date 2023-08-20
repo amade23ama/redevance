@@ -3,9 +3,9 @@
     "label.info.application": "Bienvenue sur l'application de REDEVANCE",
      "label.direction.nom": "Direction du Controle et de la Surveillance des Opérations Minières",
     "label.direction.cycle": "D.C.S.O.M",
-    "label.ministere":"Ministères",
+    "label.ministere":"Ministère Des Mines",
     "label.ministere.mines":"Des Mines",
-    "label.ministere.geologie":"Et de la Géologies",
+    "label.ministere.geologie":"Et de la Géologie",
     "label.devise":"Un Peuple-Un But-Une Foi",
     "label.republique ":"République du Sénégal",
     "label.republique.senegal":"Des Mines",
@@ -93,6 +93,8 @@
     "error.email.invalid": "Email est invalid !",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",
+    "recherche.depot.pluriel.label": "depot trouvés",
+    "recherche.depot.singulier.label": "depot trouvé",
     "btn.utilisateur.bloquer.tooltip": "bloquer l'utilisateur",
     "btn.utilisateur.debloquer.tooltip": "debloquer l'utilisateur",
     "btn.utilisateur.modif.tooltip": "modifier l'utilisateur",
@@ -103,6 +105,11 @@
     "label.tooltip.utilisateur":"Creer un utilisateur",
     "label.tooltip.produit":"Creer un produit",
     "label.tooltip.site":"Creer un site de pesage",
-    "label.tooltip.exploitation":"Creer un site d'exploitation"
+    "label.tooltip.exploitation":"Creer un site d'exploitation",
+    "label.tooltip.voiture":"Creer une voiture",
+    "label.tooltip.depot": "Creer un import",
+    "label.info.mail": "Nous avons envoyé le login et mots de passe à l'adresse:",
+    "footer.donnee.perso": "Données personelles",
+    "footer.contact": "Contact"
   }
 }

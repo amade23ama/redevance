@@ -13,11 +13,12 @@ import { RechercheVehiculeComponent } from './recherche-vehicule/recherche-vehic
 import { RechercheExploitationComponent } from './recherche-exploitation/recherche-exploitation.component';
 import {RechercheChargementComponent} from "./recherche-chargement/recherche-chargement.component";
 import {SharedModule} from "../shared-Module/shared.module";
+import {RechercheDepotComponent} from "./recherche-depot/recherche-depot.component";
 
 @NgModule({
   declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent,
     RechercheProduitComponent, RechercheVehiculeComponent, RechercheExploitationComponent,
-    RechercheChargementComponent],
+    RechercheChargementComponent,RechercheDepotComponent],
   imports: [RechercheRouter, MatTableModule, NgForOf,
     MatIconModule, MaterialModule, NgIf, LayoutModule, AsyncPipe, SharedModule],
   exports:[]

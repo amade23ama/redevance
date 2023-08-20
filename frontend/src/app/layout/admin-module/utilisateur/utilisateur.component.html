@@ -1,4 +1,5 @@
-
+<app-dscom-extensible [displayEmail]="displayEmail"
+[email]="email.value"></app-dscom-extensible>
   <fieldset class="mt-1">
     <legend class="titre-form">{{titre}}</legend>
      <form  [formGroup]="myform">
@@ -14,8 +15,8 @@
                                     [update]="true">
         </app-formulaire-utilisateur>
      </form>
-    <div class="contenair-btn">
-      <app-action-btns [btns]="btns"  (btnClick)="utilisateurAction($event)"></app-action-btns>
-    </div>
-  </fieldset>
 
+  </fieldset>
+  <div class="contenair-btn">
+    <app-action-btns [btns]="btns"  (btnClick)="utilisateurAction($event)"></app-action-btns>
+  </div>

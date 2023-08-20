@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import io.vavr.control.Try;
@@ -18,15 +19,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.constants.Enum.StatutEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
+import sn.dscom.backend.service.ChargementService;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
+import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +41,7 @@ import java.util.stream.Collectors;
 public class DepotController {
 
     /** Logger Factory */
-   static Logger log= LoggerFactory.getLogger(DepotController.class);
+   private static final Logger log= LoggerFactory.getLogger(DepotController.class);
     /**
      * depot Service
      */
@@ -69,7 +72,11 @@ public class DepotController {
     @Autowired
     private ConnectedUtilisateurService connectedUtilisateurService;
 
-
+    /**
+     * site Service
+     */
+    @Autowired
+    private ISiteService siteService;
 
     /**
      * get header
@@ -128,19 +135,16 @@ public class DepotController {
 
         // Utilisateur
         UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
-
         // La liste des produits en base
         List<ProduitDTO> produitDTOS = this.produitService.rechercherProduits().get();
-
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
-
         // la liste des chargements à effectuer
         List<ChargementDTO> listChargementAEffectuer = new ArrayList<>();
-
         // Le Depot
         DepotDTO depot = new DepotDTO();
         String nom;
+        SiteDTO siteDTO = null;
 
         // Controle sur le fichier
         if (file.isEmpty()) {
@@ -156,13 +160,12 @@ public class DepotController {
                 mapInverse.put(v,k);
             });
             // enregister le depot
-            depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom)).get();
+            depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom, StatutEnum.ENCOURS.getCode())).get();
             List<String> header = null;
             try{
                 Reader reader = new InputStreamReader(file.getInputStream());
                 CSVReader csvReader = new CSVReader(reader) ;
                 header = tabToList(csvReader.readNext());
-
                 // next Line
                 String [] nextLine;
 
@@ -171,6 +174,10 @@ public class DepotController {
                 {
                     // Ligne de chargement
                     List<String> chargement = tabToList(nextLine);
+                    // rechercher Site
+                    if(null == siteDTO) {
+                        siteDTO = this.rechercherSite(chargement, mapInverse, header);
+                    }
 
                     // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
                     String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
@@ -180,24 +187,31 @@ public class DepotController {
                         //Chargement d'une ligne du fichier
                         ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
                         listChargementAEffectuer.add(chargementDTO);
+                    }else{
+                        DepotController.log.info(String.format("Le %s n'existe pas dans le référentiel.", nomProduit));
                     }
                 }
 
                 // On modifie le depot avec la liste des chargements et l'heure de fin
                 depot.setChargementDTOList(listChargementAEffectuer);
                 depot.setDateHeureFinDepot( new Date());
+                depot.setStatut(StatutEnum.SUCCES.getCode());
+                depot.setSite(siteDTO);
                 this.depotService.enregistrerDepot(depot);
                 log.info(" entete du fichier "+header);
             }catch (IOException | CsvValidationException e) {
                 e.printStackTrace();
-
                 // mise à jour du dépot
+                depot.setStatut(StatutEnum.ERREUR.getCode());
+                depot.setSite(siteDTO);
                 this.definirDepot(depot);
                 throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
             }
         } catch (Exception e) {
             e.printStackTrace();
             // mise à jour du dépot
+            depot.setStatut(StatutEnum.ERREUR.getCode());
+            depot.setSite(siteDTO);
             this.definirDepot(depot);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
@@ -225,11 +239,12 @@ public class DepotController {
      * @param nom nom
      * @return DepotDTO
      */
-    private static DepotDTO buildDepot(MultipartFile file, UtilisateurDTO utilisateurDTO, String nom) {
+    private static DepotDTO buildDepot(MultipartFile file, UtilisateurDTO utilisateurDTO, String nom, String statut) {
         return DepotDTO.builder()
                 .nom(nom)
+                .statut(statut)
                 .nbChargementReDeposes(1)
-                .nomFichier(file.getName())
+                .nomFichier(file.getOriginalFilename())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())
                 .deposeur(utilisateurDTO)
@@ -283,7 +298,14 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<DepotDTO>> rechercherDepot() {
         //rechercher all Depots
-        return  ResponseEntity.ok(depotService.rechercherDepots().get());
+        Optional<List<DepotDTO>> list = depotService.rechercherDepots();
+
+        // Appel du service rechercherDepot
+        // si vide on retour une erreur 404
+        return cyclops.control.Try.withCatch(list::get)
+                .peek(listDepotDTO -> DepotController.log.info(String.format("DepotController -> rechercherDepot: %s", listDepotDTO.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -308,7 +330,14 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<DepotDTO>> rechercherDepotByCriteres(@PathVariable DepotDTO depotDTO) {
         //rechercher Depot By Criteres
-        return  ResponseEntity.ok(depotService.rechercherDepotByCriteres(depotDTO).get());
+        Optional<List<DepotDTO>> list = depotService.rechercherDepotByCriteres(depotDTO);
+
+        // Appel du service rechercherProduits
+        // si vide on retour une erreur 404
+        return cyclops.control.Try.withCatch(list::get)
+                .peek(listDepotDTO -> DepotController.log.info(String.format("DepotController -> rechercherDepotByCriteres: %s", listDepotDTO.size())))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
@@ -327,9 +356,32 @@ public class DepotController {
         DepotDTO depotDTO = this.depotService.rechercherDepotById(depot.getId()).get();
         int nbErreur = depotDTO.getNbChargementErreur();
         depotDTO.setNbChargementErreur(nbErreur + 1);
+        depotDTO.setStatut(depot.getStatut());
         depotDTO.setDateHeureFinDepot(new Date());
+        depotDTO.setSite(depot.getSite());
         Try.of(() -> depotDTO)
                 .mapTry(this.depotService::enregistrerDepot);
+    }
+
+    /**
+     * rechercher site en base
+     *
+     * @param ligneChargement siteDTO
+     * @param mapCorrespondance maps
+     * @return l'objet enregisté
+     */
+    private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
+
+        // Table SITE: nom et localité db_site_nom et db_site_localite
+        //REFERIENTIEL: nom -> site sur fichier et alimenter la localité
+        String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
+
+        return Iterables.getOnlyElement(Try.of(() -> SiteDTO.builder()
+                        .nom(siteName.trim().toUpperCase())
+                        .build())
+                .mapTry(this.siteService::rechercherSite)
+                .onFailure(e -> DepotController.log.error(String.format("Erreur lors de la recherche du Site : %s",e.getMessage())))
+                .get().get());
     }
 
 }

@@ -2,15 +2,11 @@ package sn.dscom.backend.service.converter;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import sn.dscom.backend.common.dto.CategorieDTO;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
-import sn.dscom.backend.database.entite.CategorieEntity;
 import sn.dscom.backend.database.entite.ProduitEntity;
 
 import java.util.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * class de test {@link ProduitConverterTest}
@@ -18,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProduitConverterTest {
 
     /** categorie Converter */
-    private Transformer<ProduitDTO, ProduitEntity> produitConverter = new ProduitConverter();
+    private final Transformer<ProduitDTO, ProduitEntity> produitConverter = new ProduitConverter();
 
     /**
      * test reverse
@@ -56,7 +52,7 @@ class ProduitConverterTest {
                 .dateModification(new Date())
                 .densiteGRM(1.2)
                 .densiteKGM(2.1)
-                .nomNORM("nom1")
+                .nomNORM("nom1".toUpperCase())
                 .nomSRC("SRC")
                 .build();
     }
@@ -73,7 +69,7 @@ class ProduitConverterTest {
                 .dateModification(new Date())
                 .densiteGRM(1.2)
                 .densiteKGM(2.1)
-                .nomNORM("nom1")
+                .nomNORM("nom1".toUpperCase())
                 .nomSRC("SRC")
                 .build();
     }

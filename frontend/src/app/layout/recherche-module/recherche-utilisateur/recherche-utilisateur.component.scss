@@ -22,13 +22,14 @@
   font-size: 13px;
 }
 .mat-header-utilisateur{
-  background-color: #fcf5f3;
+
 }
 .table-header{
-  color: $orange-700!important;
   text-transform: uppercase;
   font-family: normal;
   font-weight: 900;
+  background-color: $orange-40 !important;
+  color: white!important;
 }
 .pagination-btn-nb-label {
   transform: translateY(5%);
@@ -76,7 +77,8 @@ mat-card{
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: $orange-500!important;
+  /*background-color: $orange-500!important;*/
+  background-color: $orange-50!important;
   color: #ffffff;
   border: none;
   outline: none;
@@ -101,7 +103,7 @@ mat-card{
 .new--contract--button-mobil{
   position: absolute;
   left: 76%;
-  top: 78vh;
+  top: 76vh;
   transform: translate(50%, -42%);
   &.mat-button-disabled {
     background-color: gray;
@@ -122,5 +124,13 @@ mat-card{
   padding-left: 0.6em!important;
 }
 
+.mat-mdc-table .mdc-data-table__row:nth-child(even) {
+  background-color: #fdf9f7!important;
+}
 
-
+.mat-mdc-table .mdc-data-table__row:nth-child(odd) {
+  background-color: white;
+}
+.table-parent{
+  border: solid 1px $orange-40 !important;
+}

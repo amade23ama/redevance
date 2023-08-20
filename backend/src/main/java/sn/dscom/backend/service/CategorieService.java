@@ -1,12 +1,11 @@
 package sn.dscom.backend.service;
 
 import com.google.common.base.Strings;
+import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.CategorieDTO;
@@ -14,7 +13,6 @@ import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.controller.DepotController;
 import sn.dscom.backend.database.entite.CategorieEntity;
-import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.CategorieRepository;
 import sn.dscom.backend.service.converter.CategorieConverter;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
@@ -33,10 +31,10 @@ import java.util.stream.Collectors;
 public class CategorieService implements ICategorieService {
 
     /** Logger Factory */
-    static Logger log = LoggerFactory.getLogger(DepotController.class);
+    private static final Logger log = LoggerFactory.getLogger(DepotController.class);
 
     /** categorie Repository */
-    private CategorieRepository categorieRepository;
+    private final CategorieRepository categorieRepository;
 
     /** categorie Converter */
     private final Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
@@ -97,7 +95,7 @@ public class CategorieService implements ICategorieService {
 
         //retourne la liste
         return Optional.of(listCategorieFind.stream()
-                .map(categorieEntity -> this.categorieConverter.reverse(categorieEntity))
+                .map(this.categorieConverter::reverse)
                 //Filtre sur les elements nulls
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
@@ -114,9 +112,38 @@ public class CategorieService implements ICategorieService {
         CategorieService.log.info("Recherche de catégories par crirère");
         //recherche par id
         if (categorieDTO.getId() != null) {
-            return Optional.of(Collections.singletonList(this.categorieConverter.reverse(this.categorieRepository.findById(categorieDTO.getId()).get())));
+            CategorieService.log.info(String.format("Recherche de catégories par id: %s", categorieDTO.getId()));
+            Optional<CategorieEntity> categorieEntity = this.categorieRepository.findById(categorieDTO.getId());
+
+            // Si on trouve rien on lève une axception
+            if (categorieEntity.isEmpty()){
+                CategorieService.log.info(String.format("La Categorie d'id %s n'est pas trouvé en base ", categorieDTO.getId()));
+                throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+            }
+            return Optional.of(Collections.singletonList(Try.of(categorieEntity::get)
+                    .mapTry(this.categorieConverter::reverse)
+                    .onFailure(e -> CategorieService.log.error(String.format("Erreur lors du categorieConverter.reverse : %s", e.getMessage())))
+                    .get()));
+
         } else if (!Strings.isNullOrEmpty(categorieDTO.getType())) {
-            return Optional.of(Collections.singletonList(this.categorieConverter.reverse(this.categorieRepository.rechercherCategorieByType(categorieDTO.getType()))));
+            //Recherche par type
+            CategorieService.log.info(String.format("Recherche de catégories par crirère: %s", categorieDTO.getType()));
+            CategorieEntity categorieEntity = Try.of(categorieDTO::getType)
+                    .mapTry(this.categorieRepository::rechercherCategorieByType)
+                    .onFailure(e -> CategorieService.log.error(String.format("Erreur lors de la rechercher Categorie By Type: %s", e.getMessage())))
+                    .get();
+
+            // Si on trouve rien on lève une axception
+            if (null == categorieEntity){
+                CategorieService.log.info(String.format("La Categorie de type %s n'est pas trouvé en base ", categorieDTO.getType()));
+                throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+            }
+
+            return Optional.of(Collections.singletonList(Try.of(() -> categorieEntity)
+                    .mapTry(this.categorieConverter::reverse)
+                    .onFailure(e -> CategorieService.log.error(String.format("Erreur lors du categorieConverter.reverse : %s", e.getMessage())))
+                    .get()));
+
         }
         //TODO: a implementer pour d'autre recherche
         return Optional.empty();

@@ -1,14 +1,14 @@
 <div class="mt-05">
-  <app-actions-critere-btns
+  <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
     [numberResult]="2"
     [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
     [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
-    [tooltip]="appConfig.getLabel('header.btn.utilisateur.creer.tooltip')"
+    [tooltip]="appConfig.getLabel('label.tooltip.voiture')"
     [search]="search"
     (btnAjouter)="ouvreNouveauVehicule()"
   >
   </app-actions-critere-btns>
-    <div class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
         <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
           <ng-container matColumnDef="NomRS">
@@ -16,8 +16,7 @@
               <div class="d-flex">Prenom-Nom/RS</div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom
-                :element?.transporteur.prenom+" "+element?.transporteur.nom}}</div>
+              <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom :element?.transporteur.nom}}</div>
             </td>
           </ng-container>
           <!--
@@ -88,6 +87,24 @@
                   <div class="d-flex">{{element.categorie.volume}}</div>
                 </td>
             </ng-container>
+          <ng-container matColumnDef="dateCreation">
+            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+              <div class="d-flex">date Creation</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex">{{formatDate(element.dateCreation)}}</div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+              <div class="d-flex">actions</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+                <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon" (click)="chargerVoiture(element)">create</mat-icon>
+              </div>
+            </td>
+          </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
@@ -100,5 +117,39 @@
         </mat-paginator>
 
     </div>
+
+
+
+  <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="vehicules$|async as vehicules">
+    <div>
+      <button mat-fab
+              matTooltipPosition="left"
+              matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
+              matTooltipClass="custom-tooltip"
+              (keydown)="ouvreNouveauVehicule()" (click)="ouvreNouveauVehicule()"
+              class="new--contract--button-mobil">
+
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+    <div *ngFor="let voiture of vehicules" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
+      <div fxLayout="row" fxLayoutAlign="start none"  >
+        <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
+          <button class="circular-button"  (click)="chargervehicule(voiture)">
+            <mat-icon> directions_car</mat-icon>
+          </button>
+        </div>
+        <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
+          <div class="titre-prenom">{{voiture.immatriculation}}</div>
+          <div class="titre-second">{{voiture.categorie.type}} - {{voiture.categorie.volume}} (cm3)</div>
+          <div class="titre-second">{{voiture.transporteur.nom}}</div>
+          <div class="titre-second">{{voiture.transporteur.telephone}}
+            <mat-icon> local_phone</mat-icon>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </div>
+  </div>
 </div>
 

@@ -12,8 +12,6 @@ import sn.dscom.backend.database.entite.VehiculeEntity;
 
 import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * Vehicule ConverterTest
  */
@@ -22,13 +20,7 @@ class VehiculeConverterTest {
     /**
      * vehicule Converter
      */
-    Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
-
-    /** transporteur Converter*/
-    private Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
-
-    /** categorie Converter */
-    Transformer<CategorieDTO, CategorieEntity> categorieConverter = new CategorieConverter();
+    private final Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
 
     /**
      * reverse test
@@ -52,7 +44,7 @@ class VehiculeConverterTest {
                         .dateCreation(new Date())
                         .dateModification(new Date())
                         .type("1DH")
-                        .adresse("Dakar")
+                        .adresse("Dakar".toUpperCase())
                         .email("test@test.sn")
                         .nom("NOM")
                         .prenom("PRENOM")
@@ -96,7 +88,7 @@ class VehiculeConverterTest {
                         .dateCreation(new Date())
                         .dateModification(new Date())
                         .type("1DH")
-                        .adresse("Dakar")
+                        .adresse("Dakar".toUpperCase())
                         .email("test@test.sn")
                         .nom("NOM")
                         .prenom("PRENOM")

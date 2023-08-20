@@ -1,15 +1,15 @@
 package sn.dscom.backend.service;
 
+import io.vavr.control.Try;
 import lombok.Builder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
-import sn.dscom.backend.database.entite.ProduitEntity;
 import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.SiteRepository;
 import sn.dscom.backend.service.converter.SiteConverter;
@@ -25,15 +25,17 @@ import java.util.stream.Collectors;
 @Transactional
 public class SiteService implements ISiteService {
 
+    /** Logger Factory */
+    private static final Logger logger = LoggerFactory.getLogger(SiteService.class);
     /** site Repository */
-    private SiteRepository siteRepository;
+    private final SiteRepository siteRepository;
 
     /** Site Converteur */
     private final Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
 
     /**
      * SiteService
-     * @param siteRepository
+     * @param siteRepository siteRepository
      */
     @Builder
     public SiteService(SiteRepository siteRepository) {
@@ -72,7 +74,7 @@ public class SiteService implements ISiteService {
 
         //retourne la liste
         return Optional.of(listSitesFind.stream()
-                .map(siteEntity -> this.siteConverteur.reverse(siteEntity))
+                .map(this.siteConverteur::reverse)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
     }
@@ -85,19 +87,36 @@ public class SiteService implements ISiteService {
      */
     @Override
     public Optional<List<SiteDTO>> rechercherSite(SiteDTO siteDTO) {
+        //siteDTOList
+        List<SiteDTO> siteDTOList = null;
+        // Recherche par id
         if (siteDTO.getId() != null) {
-            return Optional.of(Arrays.asList(this.siteConverteur.reverse(this.siteRepository.findById(siteDTO.getId()).get())));
+            Optional<SiteEntity> siteEntity = this.siteRepository.findById(siteDTO.getId());
+            // Si le site n'existe pas
+            if(siteEntity.isEmpty()){
+                SiteService.logger.info(String.format("Le Site d'id %s n'est pas trouvé en base ", siteDTO.getId()));
+                throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+            }
+
+            siteDTOList = Collections.singletonList(Try.of(siteEntity::get)
+                                                            .mapTry(this.siteConverteur::reverse)
+                                                            .get());
+
         } else if (siteDTO.getNom() != null) {
-            return Optional.of(Arrays.asList(this.siteConverteur.reverse(this.siteRepository.rechercherSiteByCriteres(siteDTO.getNom()))));
+            SiteEntity siteEntity = this.siteRepository.rechercherSiteByCriteres(siteDTO.getNom());
+            siteDTOList = Collections.singletonList(Try.of(() -> siteEntity)
+                                                            .mapTry(this.siteConverteur::reverse)
+                                                            .get());
         }
         //TODO: a implementer pour d'autre recherche
-        return Optional.empty();
+        assert siteDTOList != null;
+        return Optional.of(siteDTOList);
     }
 
     /**
      * Permet de supprimer un site
      *
-     * @param siteDTO
+     * @param siteDTO siteDTO
      * @return true si supprimé
      */
     @Override
@@ -115,7 +134,7 @@ public class SiteService implements ISiteService {
     /**
      * Permet de comter le nombre de site en base
      *
-     * @param dateMiseEnService
+     * @param dateMiseEnService dateMiseEnService
      * @return le nombre de site
      */
     @Override
@@ -123,6 +142,11 @@ public class SiteService implements ISiteService {
         return siteRepository.compterSitePardate(dateMiseEnService);
     }
 
+    /**
+     * charger SiteDTO Par Id
+     * @param id id
+     * @return SiteDTO
+     */
     @Override
     public SiteDTO chargerSiteDTOParId(Long id) {
         Optional<SiteEntity> site = siteRepository.findById(id);

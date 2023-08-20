@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {catchError, Observable, share, tap, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, Observable, share, tap, throwError} from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Vehicule } from '../interfaces/vehicule';
 import {Exploitation} from "../interfaces/exploitation";
 import {NotificationService} from "./notification.service";
+import {Produit} from "../interfaces/produit";
+import {Site} from "../interfaces/site";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,9 @@ export class VehiculeService {
 
   /** url de base des webservices vehicule */
   private url = environment.apiUrl + '/v1/vehicule';
-
+  private _vehicules$: BehaviorSubject<Vehicule[]> = new BehaviorSubject<Vehicule[]>( []);
+  vehiculeCourant: Vehicule = new Vehicule();
+  private _vehicule$: BehaviorSubject<Vehicule> = new BehaviorSubject<Vehicule>(null);
   /** constructor */
   constructor(private httpClient: HttpClient,private notification: NotificationService) { }
 
@@ -45,7 +49,15 @@ export class VehiculeService {
    * @returns la liste des véhicules
    */
   rechercherVehicules(): Observable<Array<Vehicule>> {
-    return this.httpClient.get<Array<Vehicule>>(this.url + '/rechercher').pipe(share());
+    return this.httpClient.get<Array<Vehicule>>(this.url + '/rechercher').pipe(
+      tap((res:Vehicule[])=> {
+        this.setVehicules(res)
+      }),
+      catchError((err) => {
+        this.notification.error("erreur de recuperation voiture")
+        return throwError(() => err)
+      })
+    );
   }
 
   /**
@@ -65,5 +77,41 @@ export class VehiculeService {
   supprimerVehicule(vehicule: Vehicule): Observable<boolean> {
     //const param = new HttpParams().set('id',id);
     return this.httpClient.post<boolean>(this.url + '/supprimer', vehicule).pipe(share());
+  }
+  get vehicules$(): Observable<Vehicule[]> { // getter ou selector
+    return this._vehicules$.asObservable()
+  }
+
+  setVehicules(res: Vehicule[]) {
+    this._vehicules$.next(res)
+  }
+
+  /**
+   * appel du service rechercherSites pour rechercher la liste des véhicules
+   * @returns la liste des Site
+   */
+  getVehiculeById(id: number){
+    return this.httpClient.get<Vehicule>(this.url + `/${id}`)
+      .pipe(
+        tap((res)=> {
+          this.setVehiculeCourant(Vehicule.fromJson(res,Vehicule))
+        }),
+        catchError((err) => {
+          this.notification.error("erreur de chargement du site")
+          return throwError(() => err)
+        })
+      )
+  }
+  setVehicule(vehicule:Vehicule){
+    this._vehicule$.next(vehicule)
+  }
+  get vehicule$(){
+    return this._vehicule$.asObservable()
+  }
+  setVehiculeCourant(vehicule: Vehicule) {
+    this.vehiculeCourant = vehicule
+  }
+  getVehiculeCourant() {
+    return this.vehiculeCourant ;
   }
 }

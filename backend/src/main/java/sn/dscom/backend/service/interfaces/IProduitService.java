@@ -37,5 +37,11 @@ public interface IProduitService {
      * @return le nombre
      */
     Integer compterProduit();
+
+    /**
+     * charger Produit ParId
+     * @param id id
+     * @return ProduitDTO
+     */
     ProduitDTO chargerProduitParId(Long id);
 }

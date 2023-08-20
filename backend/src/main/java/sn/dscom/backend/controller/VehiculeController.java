@@ -1,12 +1,14 @@
 package sn.dscom.backend.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import cyclops.control.Try;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sn.dscom.backend.common.constants.Enum.DroitEnum;
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 
@@ -16,10 +18,12 @@ import java.util.Optional;
 /**
  * Controlleur REST exsposant les services véhicule
  */
-@Slf4j
 @RestController
 @RequestMapping("/api/v1/vehicule")
 public class VehiculeController {
+
+    /** Logger Factory */
+    private static final Logger LOGGER = LoggerFactory.getLogger(VehiculeController.class);
 
     /** voitureService */
     @Autowired
@@ -34,26 +38,26 @@ public class VehiculeController {
     @ResponseBody
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<VehiculeDTO> enregistrerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
-        log.info("enregistrer Vehicule");
+        VehiculeController.LOGGER.info("TransporteurController: enregistrerVehicule: ");
         return ResponseEntity.ok(this.voitureService.enregistrerVehicule(vehiculeDTO).get());
     }
 
     /**
      * Permet de modifier un véhicule en base
-     * @param vehiculeDTO
+     * @param vehiculeDTO vehiculeDTO
      * @return le véhicule modifié
      */
     @PostMapping(path = "/modifier", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<VehiculeDTO> modifierVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
-        log.info("Modification de l'entité voiture d'identifiant: {}", vehiculeDTO.getId());
+        VehiculeController.LOGGER.info(String.format("Modification de l'entité voiture d'identifiant: %s", vehiculeDTO.getId()));
         return ResponseEntity.ok(this.voitureService.modifierVehicule(vehiculeDTO).get());
     }
 
     /**
      * Permet de supprimer un véhicule en base avec le parametre souhaité
-     * @param vehiculeDTO
+     * @param vehiculeDTO vehiculeDTO
      * @return true l'entité est supprimé
      */
     @PostMapping(path = "/supprimer", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,7 +66,7 @@ public class VehiculeController {
     public ResponseEntity<Boolean> supprimerVehicule(@RequestBody VehiculeDTO vehiculeDTO) {
 
         // Appel sur service pour supprimer
-        log.info("Suppression de l'entité voiture d'identifiant: {}", vehiculeDTO.getId());
+        VehiculeController.LOGGER.info(String.format("Suppression de l'entité voiture d'identifiant: %s", vehiculeDTO.getId()));
         this.voitureService.supprimerVehicule(vehiculeDTO);
         return ResponseEntity.ok(true);
     }
@@ -81,11 +85,22 @@ public class VehiculeController {
 
         // si on trouve au moins une donnée à la retour
         if (list.isPresent()){
-            log.info("rechercherVehicules");
-            return ResponseEntity.ok(list.get());
+            VehiculeController.LOGGER.info("rechercherVehicules");
+            //Appel du service rechercherVehicules
+            // si vide on renvoit 404
+            return Try.withCatch(list::get)
+                    .peek(listVoiture -> VehiculeController.LOGGER.info(String.format("VehiculeController: rechercherVehicules: %s", listVoiture.size())))
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         }
 
         // sinon on léve une exception: 404 Not Found.
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public VehiculeDTO chargerVehiculeDTOParId(@PathVariable Long id) {
+        return this.voitureService.chargerVehiculeDTOParId(id);
     }
 }

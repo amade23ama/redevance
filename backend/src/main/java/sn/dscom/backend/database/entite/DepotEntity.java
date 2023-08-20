@@ -23,23 +23,32 @@ public class DepotEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQUENCE_NAME)
     @SequenceGenerator(name = ID_SEQUENCE_NAME, sequenceName = ID_SEQUENCE_NAME, allocationSize = 1)
     private Long id;
+
     @Column(name = "NOM_DEPOT")
     private String nom;
+
     @Column(name = "DATEHEUREDEBUT")
     private Date dateHeureDepot;
+
     @Column(name = "DATEHEUREFIN")
     private Date dateHeureFinDepot;
+
     @Column(name = "STATUT")
     private String statut;
+
     @Column(name = "NOM_FICHIER")
     private String nomFichier;
+
     @ManyToOne
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
     private UtilisateurEntity deposeur;
+
     @Column(name = "NB_CHARGEMENT_DEPOT")
     private Integer nbChargementDeposes;
+
     @Column(name = "NB_CHARGEMENT_REDEPOT")
     private Integer nbChargementReDeposes;
+
     @Column(name = "NB_ERREUR")
     private Integer nbChargementErreur;
 
@@ -49,5 +58,9 @@ public class DepotEntity {
             joinColumns = @JoinColumn(name = "ID_DEPOT"),
             inverseJoinColumns = @JoinColumn(name = "ID_CHARGEMENT"))
     private List<ChargementEntity> chargementEntityList;
+
+    @ManyToOne
+    @JoinColumn(name = "ID_SITE")
+    private SiteEntity siteEntity ;
 
 }

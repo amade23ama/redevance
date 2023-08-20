@@ -2,7 +2,6 @@ import {RouterModule, Routes} from "@angular/router";
 import {UtilisateurCreateComponent} from "./utilisateur/utilisateur-create/utilisateur-create.component";
 import {SiteComponent} from "./site/site.component";
 import {AdminComponent} from "./admin.component";
-import {TransporteurComponent} from "./transporteur/transporteur.component";
 import {VehiculeComponent} from "./vehicule/vehicule.component";
 import {UtilisateurComponent} from "./utilisateur/utilisateur.component";
 import {ProduitComponent} from "./produit/produit.component";
@@ -23,10 +22,6 @@ const routes: Routes = [{
           {
             path: 'vehicule',
             component: VehiculeComponent
-          },
-          {
-            path: 'transpoteur',
-            component: TransporteurComponent
           },
           {
             path: 'utilisateur',

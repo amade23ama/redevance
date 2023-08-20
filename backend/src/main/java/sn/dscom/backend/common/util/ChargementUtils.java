@@ -2,6 +2,9 @@ package sn.dscom.backend.common.util;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /**
  * Classe utilitaire
  */
@@ -35,8 +38,12 @@ public abstract class ChargementUtils {
      * @param poidsMax le poids maximum par la plateforme
      * @return le poids Estimé
      */
-    public static Double getPoidsEstime(final Double poidsMesure, final Double poidsMax){
-        return poidsMesure - POIDS_25 * poidsMax;
+    public static Double getPoidsEstime(final Double poidsMesure, final Double poidsMax, final Double volumeVehicul){
+        if (volumeVehicul == 0) {
+            return precisionDouble(poidsMesure - POIDS_25 * poidsMax);
+        }else {
+            return precisionDouble(poidsMesure - volumeVehicul);
+        }
 
     }
 
@@ -48,7 +55,7 @@ public abstract class ChargementUtils {
      * @return l'ecart
      */
     public static Double getEcart(final Double volumeEstime, final Double volumeClasse){
-        return volumeEstime - volumeClasse;
+        return precisionDouble(volumeEstime - volumeClasse);
     }
 
     /**
@@ -59,7 +66,7 @@ public abstract class ChargementUtils {
      * @return Volume Moyen
      */
     public static Double getVolumeMoyen(final Double volumeEstime, final Double volumeClasse){
-        return getEcart(volumeEstime,volumeClasse)/2;
+        return precisionDouble(getEcart(volumeEstime,volumeClasse)/2);
     }
 
     /**
@@ -69,6 +76,19 @@ public abstract class ChargementUtils {
      * @return Volume Estime
      */
     public static Double getVolumeEstime(final Double poidsEstime, final Double densiteProduit){
-        return poidsEstime/densiteProduit;
+        return precisionDouble(poidsEstime/densiteProduit);
+    }
+
+    /**
+     * precisionDouble
+     * @param value value
+     * @return Double
+     */
+    private static Double precisionDouble(Double value) throws ArithmeticException {
+        try {
+            return BigDecimal.valueOf(value).setScale(3, RoundingMode.UP).doubleValue();
+        } catch (ArithmeticException exception) {
+            throw new ArithmeticException();
+        }
     }
 }

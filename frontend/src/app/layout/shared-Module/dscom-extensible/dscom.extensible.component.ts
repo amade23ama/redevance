@@ -9,6 +9,8 @@ import {AppConfigService} from "../../../core/services/app-config.service";
 export class DscomExtensibleComponent implements OnInit{
   @Input() displayEmail:boolean
   @Input() email:string;
+  @Input() displayNumDepot:boolean
+  @Input() messageDepot:string;
   constructor(public appConfig: AppConfigService) {
   }
   ngOnInit() {

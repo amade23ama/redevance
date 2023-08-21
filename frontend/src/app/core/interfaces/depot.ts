@@ -1,6 +1,9 @@
 import {Utilisateur} from "./utilisateur";
+import {DatePipe} from "@angular/common";
+import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
+import {Profil} from "./profil";
 
-export class Depot{
+export class Depot extends BuilderDtoJsonAbstract{
   /** id */
   id:number;
 
@@ -28,5 +31,16 @@ export class Depot{
 
   /** nb Chargement Erreur */
   nbChargementErreur :number;
-
+  static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
+    const depot: any = BuilderDtoJsonAbstract.fromJson(json, Depot);
+    if (json.dateHeureDepot) {
+      depot.dateHeureDepot= (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+        .transform(json.dateHeureDepot, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON)
+    }
+    if (json.dateHeureFinDepot) {
+      depot.dateHeureFinDepot= (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
+        .transform(json.dateHeureFinDepot, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON)
+    }
+    return depot;
+  }
 }

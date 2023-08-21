@@ -99,7 +99,7 @@ export class DepotService{
     return this.http.get<Depot[]>(this.url + '/rechercher')
       .pipe(
         tap((res:Depot[])=> {
-          this.setDepots(res);
+          this.setDepots(res.map((result)=>Depot.fromJson(result,Depot)));
         }),
         catchError((err) => {
           this.notification.error("erreur de chargement des depots")

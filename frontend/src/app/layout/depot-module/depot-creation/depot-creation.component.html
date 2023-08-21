@@ -1,5 +1,7 @@
-<div fxLayout fxLayout="row" fxLayoutAlign="space-around center" *ngIf="numero$ |async as num ">
-  <span class="numero-depot mt-02">{{appConfig.getLabel('depot.creer.numero')}}{{num}}</span>
+<div fxLayout fxLayout="row" fxLayoutAlign="space-around center" >
+  <app-dscom-extensible *ngIf="numero$ |async as num " [displayNumDepot]="true"
+                        messageDepot="{{appConfig.getLabel('depot.creer.numero')}}{{num}}">
+  </app-dscom-extensible>
 </div>
 <fieldset class="mt-1">
   <legend class="titre-form">{{titre}}</legend>

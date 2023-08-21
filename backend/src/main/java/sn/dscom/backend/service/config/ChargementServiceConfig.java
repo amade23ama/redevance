@@ -22,7 +22,7 @@ public class ChargementServiceConfig {
     @Bean
     public ChargementService chargementService(ChargementRepository chargementRepository, ISiteService siteService, IExploitationService exploitationService,
                                                IProduitService produitService, IVoitureService voitureService, ITransporteurService transporteurService,
-                                               ICategorieService categorieService, Environment environment) {
+                                               ICategorieService categorieService, Environment environment, IDepotService depotService) {
         return ChargementService.builder()
                 .chargementRepository(chargementRepository)
                 .siteService(siteService)
@@ -32,6 +32,7 @@ public class ChargementServiceConfig {
                 .transporteurService(transporteurService)
                 .categorieService(categorieService)
                 .environment(environment)
+                .depotService(depotService)
                 .build();
     }
 }

@@ -4,6 +4,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Classe utilitaire
@@ -90,5 +93,23 @@ public abstract class ChargementUtils {
         } catch (ArithmeticException exception) {
             throw new ArithmeticException();
         }
+    }
+
+    /**
+     * getDateHeureChargement
+     * @param date date
+     * @param heure  heure
+     * @return Date
+     * @throws ParseException ParseException
+     */
+    public static Date getDateHeureChargement(String date, String heure){
+        String dateHeure = date.concat(" ").concat(heure);
+        SimpleDateFormat parser = new SimpleDateFormat("d/MM/yyyy HH:mm:ss");
+        try {
+            return  parser.parse(dateHeure);
+        }catch (ParseException exception){
+            exception.getStackTrace();
+        }
+        return new Date();
     }
 }

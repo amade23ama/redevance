@@ -42,6 +42,7 @@ public class DepotController {
 
     /** Logger Factory */
    private static final Logger log= LoggerFactory.getLogger(DepotController.class);
+
     /**
      * depot Service
      */
@@ -140,7 +141,7 @@ public class DepotController {
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
         // la liste des chargements à effectuer
-        List<ChargementDTO> listChargementAEffectuer = new ArrayList<>();
+       // List<ChargementDTO> listChargementAEffectuer = new ArrayList<>();
         // Le Depot
         DepotDTO depot = new DepotDTO();
         String nom;
@@ -178,25 +179,28 @@ public class DepotController {
                     if(null == siteDTO) {
                         siteDTO = this.rechercherSite(chargement, mapInverse, header);
                     }
-
                     // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
                     String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
                     Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
 
                     if(produitDTO.isPresent()){
                         //Chargement d'une ligne du fichier
-                        ChargementDTO chargementDTO = this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
-                        listChargementAEffectuer.add(chargementDTO);
+                        this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
+                        //listChargementAEffectuer.add(chargementDTO);
                     }else{
-                        DepotController.log.info(String.format("Le %s n'existe pas dans le référentiel.", nomProduit));
+                        DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
                     }
                 }
 
                 // On modifie le depot avec la liste des chargements et l'heure de fin
-                depot.setChargementDTOList(listChargementAEffectuer);
+                /*depot.setChargementDTOList(listChargementAEffectuer);*/
+                //rechercherDepotById
+                DepotDTO depotCreat = this.depotService.rechercherDepotById(depot.getId()).get();
                 depot.setDateHeureFinDepot( new Date());
                 depot.setStatut(StatutEnum.SUCCES.getCode());
-                depot.setSite(siteDTO);
+                depot.setNbChargementReDeposes(depotCreat.getNbChargementReDeposes());
+                depot.setNbChargementDeposes(depotCreat.getNbChargementDeposes());
+                depot.setNbChargementErreur(depotCreat.getNbChargementErreur());
                 this.depotService.enregistrerDepot(depot);
                 log.info(" entete du fichier "+header);
             }catch (IOException | CsvValidationException e) {
@@ -243,7 +247,8 @@ public class DepotController {
         return DepotDTO.builder()
                 .nom(nom)
                 .statut(statut)
-                .nbChargementReDeposes(1)
+                .nbChargementReDeposes(0)
+                .nbChargementDeposes(0)
                 .nomFichier(file.getOriginalFilename())
                 .nbChargementErreur(0)
                 .dateHeureDepot(new Date())

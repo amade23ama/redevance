@@ -11,6 +11,8 @@ import {MatSort} from "@angular/material/sort";
 import {Depot} from "../../../core/interfaces/depot";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import {DepotChargementComponent} from "../../depot-module/depot-chargement/depot-chargement.component";
+import {Utilisateur} from "../../../core/interfaces/utilisateur";
 
 @Component({
   selector: 'app-recherche-depot',
@@ -49,5 +51,9 @@ export class RechercheDepotComponent implements OnInit{
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
+  }
+  chargerDepot(depot:Depot){
+    console.log("vvv")
+    this.router.navigate(['recherche/depotChargement'], {queryParams: {'contextInfo':depot.id }});
   }
 }

@@ -7,6 +7,7 @@ import { RechercheUtilisateurComponent } from "./recherche-utilisateur/recherche
 import { RechercheVehiculeComponent } from "./recherche-vehicule/recherche-vehicule.component";
 import { RechercheComponent } from "./recherche.component";
 import {RechercheChargementComponent} from "./recherche-chargement/recherche-chargement.component";
+import {RechercheChargementDepotComponent} from "./recherche-chargement-depot/recherche-chargement-depot.component";
 
 const routes: Routes = [{
   path: '',
@@ -40,6 +41,11 @@ const routes: Routes = [{
       path: 'chargements',
       component: RechercheChargementComponent
     },
+    {
+      path: 'depotChargement',
+      component:  RechercheChargementDepotComponent
+    },
+
   ]
 }
 ]

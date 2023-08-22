@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Functions;
 import com.google.common.base.Predicates;
 import com.google.common.base.Splitter;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
@@ -175,20 +176,23 @@ public class DepotController {
                 {
                     // Ligne de chargement
                     List<String> chargement = tabToList(nextLine);
-                    // rechercher Site
-                    if(null == siteDTO) {
-                        siteDTO = this.rechercherSite(chargement, mapInverse, header);
-                    }
-                    // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
-                    String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
-                    Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
+                    //Certains fichier csv peuvent contenir de ligne vide dans ce cas on ne traite pas la ligne
+                    if (chargement.size() != 0){
+                        // rechercher Site
+                        if(null == siteDTO) {
+                            siteDTO = this.rechercherSite(chargement, mapInverse, header);
+                        }
+                        // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
+                        String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
+                        Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
 
-                    if(produitDTO.isPresent()){
-                        //Chargement d'une ligne du fichier
-                        this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
-                        //listChargementAEffectuer.add(chargementDTO);
-                    }else{
-                        DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
+                        if(produitDTO.isPresent()){
+                            //Chargement d'une ligne du fichier
+                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
+                            //listChargementAEffectuer.add(chargementDTO);
+                        }else{
+                            DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
+                        }
                     }
                 }
 

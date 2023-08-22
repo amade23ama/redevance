@@ -134,10 +134,10 @@ public class CategorieService implements ICategorieService {
                     .get();
 
             // Si on trouve rien on lève une axception
-            if (null == categorieEntity){
+           /* if (null == categorieEntity){
                 CategorieService.log.info(String.format("La Categorie de type %s n'est pas trouvé en base ", categorieDTO.getType()));
                 throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
-            }
+            }*/
 
             return Optional.of(Collections.singletonList(Try.of(() -> categorieEntity)
                     .mapTry(this.categorieConverter::reverse)

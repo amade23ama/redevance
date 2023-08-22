@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import io.vavr.control.Try;
 import lombok.Builder;
@@ -27,6 +28,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -189,14 +192,16 @@ public class ChargementService implements IChargementService {
         ChargementService.log.info(String.format("Chargement de ligne : %s", ligneChargement));
         // rechercher du site d'Exploitation
         ExploitationDTO exploitationDTO = this.rechercherExploitation(ligneChargement, mapCorrespondance, header);
-
-        if (exploitationDTO != null){
+        // rechercher la catégorie dans le référentiel
+        CategorieDTO categorieDTO = this.rechercherCategorie(ligneChargement, mapCorrespondance, header);
+        // rechercher Site
+        SiteDTO siteDTO = this.rechercherSite(ligneChargement, mapCorrespondance, header);
+        // si on trouve pas la class, exploitation, site pessage
+        if (exploitationDTO != null && categorieDTO != null && siteDTO != null){
             //rechercherDepotById
             DepotDTO depotCreat = this.depotService.rechercherDepotById(depot.getId()).get();
             // Enregistrement du véhicule
-            VehiculeDTO vehiculeDTO = this.enregistrerVehicule(ligneChargement, mapCorrespondance, header);
-            // rechercher Site
-            SiteDTO siteDTO = this.rechercherSite(ligneChargement, mapCorrespondance, header);
+            VehiculeDTO vehiculeDTO = this.enregistrerVehicule(ligneChargement, mapCorrespondance, header, categorieDTO);
             // rechercher Produit
             ProduitDTO produitDTO = this.rechercherProduit(ligneChargement, mapCorrespondance, header);
             // Enregistrement du véhicule
@@ -234,8 +239,11 @@ public class ChargementService implements IChargementService {
             this.depotService.enregistrerDepot(depot);
 
         }else {
+            String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
+            String classeVehicule = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.categorie.type"))));
             String exploitationName = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.exploitation.nom"))));
-            ChargementService.log.info(String.format("Le site d'explitation n'existe pas dans le reférentiel : %s", exploitationName));
+
+            ChargementService.log.info(String.format("Le site d'explitation %s, le site de pessage %s ou la classe de la voiture %s n'existe pas dans le reférentiel.", exploitationName, siteName, classeVehicule));
         }
 
     }
@@ -269,8 +277,8 @@ public class ChargementService implements IChargementService {
                 // la difference entre le poids mesuré et le poids du véhicule à vide (25% du poids max)
                 .poidsSubst(poidsEstime)
                 .destination(destination)
-                //(Volume estimé - Volume classe)/2 = Ecart/2
-                .volumeMoyen(ecart / 2)
+                //(Volume estimé + Volume classe)/2 = Ecart/2
+                .volumeMoyen(ChargementUtils.getVolumeMoyen(poidsEstime, vehiculeDTO.getCategorie().getVolume()))
                 //Poids Estimé / la densité du produit
                 .volumeSubst(volumeEstime)
                 .vehicule(vehiculeDTO)
@@ -351,13 +359,11 @@ public class ChargementService implements IChargementService {
      * save en base
      * @return l'objet enregisté
      */
-    private VehiculeDTO enregistrerVehicule(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header) throws DscomTechnicalException {
+    private VehiculeDTO enregistrerVehicule(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, CategorieDTO categorieDTO) throws DscomTechnicalException {
         //VEHICULE: transpoteur et categorie
         //immatriculation -> immatriculation dans le fichier
         String immatriculation = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.voiture.immatriculation"))));
 
-        // rechercher la catégorie dans le référentiel
-        CategorieDTO categorieDTO = this.rechercherCategorie(ligneChargement, mapCorrespondance, header);
         return Try.of(() -> VehiculeDTO.builder()
                                 .dateCreation(new Date())
                                 .transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))

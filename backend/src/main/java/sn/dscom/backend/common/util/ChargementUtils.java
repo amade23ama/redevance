@@ -41,13 +41,9 @@ public abstract class ChargementUtils {
      * @param poidsMax le poids maximum par la plateforme
      * @return le poids Estimé
      */
-    public static Double getPoidsEstime(final Double poidsMesure, final Double poidsMax, final Double volumeVehicul){
-        if (volumeVehicul == 0) {
-            return precisionDouble(poidsMesure - POIDS_25 * poidsMax);
-        }else {
-            return precisionDouble(poidsMesure - volumeVehicul);
-        }
+    public static Double getPoidsEstime(final Double poidsMesure, final Double poidsMax, final Double poidsVehicul){
 
+            return precisionDouble(poidsMesure - POIDS_25 * poidsMax);
     }
 
     /**
@@ -69,13 +65,13 @@ public abstract class ChargementUtils {
      * @return Volume Moyen
      */
     public static Double getVolumeMoyen(final Double volumeEstime, final Double volumeClasse){
-        return precisionDouble(getEcart(volumeEstime,volumeClasse)/2);
+        return precisionDouble((volumeEstime + volumeClasse)/2);
     }
 
     /**
      * C'est le poids estimé sur la dentisité
      * @param poidsEstime poids Estime
-     * @param densiteProduit densite Produit
+     * @param densiteProduit densite Produit kg/m3
      * @return Volume Estime
      */
     public static Double getVolumeEstime(final Double poidsEstime, final Double densiteProduit){

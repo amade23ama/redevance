@@ -1,32 +1,57 @@
+<div class="mt-1" >
+  <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="8px">
+    <div class="entete-import" fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="10px">
+      <div class="titre-demande"><span>Import N°: 1111</span> </div>
+      <div class="sepDiv"></div>
+      <div class="pl-1"><span>Nom du fichier : import-thies-2020.csv</span></div>
+      <div class="sepDiv"></div>
+      <div class="pl-1"><span>Import Nom :thies-2020</span></div>
+      <div class="sepDiv"></div>
+      <div class="pl-1"><span>Import Etat : Success</span></div>
+    </div>
+    <div fxLayout="column" class="bilan">
+      <div class="titre">{{appConfig.getLabel("bilan.import")}}</div>
+    <div class="mt-1"fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="1px">
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="result-titre">{{appConfig.getLabel("bilan.import.chargement")}}</div>
+        <div class="result-continue">20</div>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="result-titre">{{appConfig.getLabel("bilan.import.depose")}}</div>
+        <div class="result-continue">15</div>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="result-titre">{{appConfig.getLabel("bilan.import.redepose")}}</div>
+        <div class="result-continue">5</div>
+      </div>
 
-<div class="mt-05">
-<div fxLayout="column" fxLayoutGap="10px" >
-  <div fxLayout="row" fxLayoutAlign="space-around center" >
-  <div>Numero :1100</div>
-  <div>Nom du depot: testest</div>
-  <div>Etat du depot : Encours ..</div>
-</div>
-  <div fxLayout="row" fxLayoutAlign="space-around center" >
-    <div>Nom du Site de pesage: thies</div>
-    <div>nom du fichier : depot-thies.xml</div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="result-titre">{{appConfig.getLabel("bilan.import.error")}}</div>
+        <div class="result-continue">5</div>
+      </div>
+    </div>
+
+      <div class="mt-1"fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="1px">
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+          <div class="result-titre">{{appConfig.getLabel("bilan.import.error.technique")}}</div>
+          <div class="result-continue">0</div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+          <div class="result-titre">{{appConfig.getLabel("bilan.import.error.doublon")}}</div>
+          <div class="result-continue">1</div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+          <div class="result-titre">{{appConfig.getLabel("bilan.import.error.site")}}</div>
+          <div class="result-continue">3</div>
+        </div>
+
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+          <div class="result-titre">{{appConfig.getLabel("bilan.import.error.produit.inconnue")}}</div>
+          <div class="result-continue">1</div>
+        </div>
+      </div>
+  </div>
   </div>
 </div>
-  <div fxLayout="column" fxLayoutGap="10px" >
-    <div fxLayout="row" fxLayoutAlign="space-around center" >
-      <div>Total de chargement</div>
-      <div> Nombre</div>
-      <div>Nom du depot: testest</div>
-      <div>Etat du depot : Encours ..</div>
-    </div>
-    <div fxLayout="row" fxLayoutAlign="space-around center" >
-      <div>Nombre d’analyses redéposées</div>
-      <div>Nombre de chargement en erreur suite au contrôle :</div>
-      <div>Etat du depot : Encours ..</div>
-    </div>
-  </div>
-  <div fxLayout="column" fxLayoutGap="10px" >
-    <div fxLayout="row" fxLayoutAlign="space-around center" >
-      <div>Liste Erreur</div>
-    </div>
-  </div>
-</div>
+
+

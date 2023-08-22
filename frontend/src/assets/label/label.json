@@ -110,6 +110,40 @@
     "label.tooltip.depot": "Creer un import",
     "label.info.mail": "Nous avons envoyé le login et mots de passe à l'adresse:",
     "footer.donnee.perso": "Données personelles",
-    "footer.contact": "Contact"
+    "footer.contact": "Contact",
+    "bilan.import": "Bilan de l'import et interaction avec les depots précédents",
+    "bilan.import.chargement": "Total de chargement",
+    "bilan.import.depose": "Total de chargement deposé",
+    "bilan.import.redepose": "Total de chargement redeposé",
+    "bilan.import.error": "Total de chargement erreur",
+    "bilan.import.error.technique": "Rejetees à cause d'erreur technique ",
+    "bilan.import.error.doublon": "Rejetees à cause de doublons",
+    "bilan.import.error.site": "Rejetees car le site incconnue",
+    "bilan.import.error.produit.inconnue": "Rejetees car produit inconnue"
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

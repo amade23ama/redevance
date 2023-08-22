@@ -1,0 +1,44 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+.entete-import{
+  color: #191C1B!important;
+  font-family: Calibri;
+  font-size: 14px!important;
+  font-style: normal!important;
+  font-weight: 700!important;
+  padding: 15px!important;
+  font-weight: 900;
+  background-color: $orange-40 !important;
+  color: white!important;
+}
+.sepDiv{
+    width: 2px!important;
+    background-color: $white;
+    min-height: 100% !important;
+}
+.titre{
+  font-size: 13px!important;
+  font-style: normal!important;
+}
+.result-titre{
+  color: #7B8583;
+  font-family: Calibri;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 16px;
+
+}
+.result-continue{
+  color: #191C1B;
+  font-family: Calibri;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+.bilan{
+  padding: 15px!important;
+  background: linear-gradient(90deg, #fff, #fffbfb);
+  border-bottom: solid 1px $orange-40 !important;
+}

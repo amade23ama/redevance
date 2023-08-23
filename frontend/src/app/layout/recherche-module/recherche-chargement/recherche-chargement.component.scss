@@ -25,11 +25,12 @@
 
 }
 .table-header{
-  text-transform: uppercase;
+  text-transform:capitalize;
   font-family: normal;
   font-weight: 900;
   background-color: $orange-40 !important;
   color: white!important;
+
 }
 .pagination-btn-nb-label {
   transform: translateY(5%);

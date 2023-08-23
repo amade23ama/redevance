@@ -11,6 +11,7 @@ import {
 import {FileInfo} from "../interfaces/file.info";
 import {Site} from "../interfaces/site";
 import {Depot} from "../interfaces/depot";
+import {Utilisateur} from "../interfaces/utilisateur";
 
 @Injectable({
   providedIn:"root"
@@ -24,6 +25,7 @@ export class DepotService{
   fichierCourant: FormData =new FormData();
   private _numeroDepot$: BehaviorSubject<number> = new BehaviorSubject(<number>(null));
   private _depots: BehaviorSubject<Depot[]> = new BehaviorSubject<Depot[]>( []);
+  private _depot: BehaviorSubject<Depot> = new BehaviorSubject<Depot>( {}as null);
   constructor(private http:HttpClient,private notification: NotificationService,
               public dialog: MatDialog,) {
   }
@@ -106,5 +108,23 @@ export class DepotService{
           return throwError(() => err)
         })
       )
+  }
+  getDepotParId(id: number) {
+    return this.http.get<Depot>(this.url+`/rechercherById/${id}`)
+      .pipe(
+        tap((depot:Depot) => {
+          this.setDepot(Depot.fromJson(depot,Depot))
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation depot ")
+          return throwError(() => err)
+        })
+      )
+  }
+  setDepot(depot:Depot){
+    this._depot.next(depot)
+  }
+  get depot$(){
+    return this._depot.asObservable()
   }
 }

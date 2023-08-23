@@ -123,9 +123,9 @@ public class DepotService implements IDepotService {
     @Override
     public Optional<DepotDTO> rechercherDepotById(long id) {
         try {
-            Optional<DepotEntity> exploitationEntity = depotRepository.findById(id);
-            if (exploitationEntity.isPresent()) {
-                return Optional.of(this.depotConverteur.reverse(exploitationEntity.get()));
+            Optional<DepotEntity> depotEntity = depotRepository.findById(id);
+            if (depotEntity.isPresent()) {
+                return Optional.of(this.depotConverteur.reverse(depotEntity.get()));
             }
             // retourner un message d'erreur édéquat: ici "le site avec {id} n'existe pas -> 404"
             // ce n'est pas une erreur inattendue: ErreurEnum.ERR_INATTENDUE

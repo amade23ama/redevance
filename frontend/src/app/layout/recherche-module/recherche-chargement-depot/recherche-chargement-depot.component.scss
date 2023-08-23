@@ -12,7 +12,7 @@
   color: white!important;
 }
 .sepDiv{
-    width: 2px!important;
+   // width: 2px!important;
     background-color: $white;
     min-height: 100% !important;
 }
@@ -40,5 +40,18 @@
 .bilan{
   padding: 15px!important;
   background: linear-gradient(90deg, #fff, #fffbfb);
-  border-bottom: solid 1px $orange-40 !important;
+ // border-bottom: solid 1px $orange-40 !important;
+}
+.titre-demande{
+  font-size: 14px!important;
+}
+.depot-continue{
+  font-family: Calibri;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+.bilan-depot{
+  border: solid 1px $orange-40 !important;
 }

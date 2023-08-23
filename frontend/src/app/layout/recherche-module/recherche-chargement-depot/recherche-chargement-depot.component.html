@@ -1,13 +1,44 @@
-<div class="mt-1" >
-  <div fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="8px">
+<div class="mt-1" *ngIf="depot$ |async as depot">
+  <div class="bilan-depot" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="8px">
     <div class="entete-import" fxLayout="row" fxLayoutAlign="space-between stretch" fxLayoutGap="10px">
-      <div class="titre-demande"><span>Import N°: 1111</span> </div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Numero Import</div>
+        <div class="depot-continue">{{depot.id}}</div>
+      </div>
       <div class="sepDiv"></div>
-      <div class="pl-1"><span>Nom du fichier : import-thies-2020.csv</span></div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Site de pesage </div>
+        <div class="depot-continue">{{depot.site.nom}}</div>
+      </div>
       <div class="sepDiv"></div>
-      <div class="pl-1"><span>Import Nom :thies-2020</span></div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Nom du fichier </div>
+        <div class="depot-continue">{{depot.nomFichier}}</div>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Nom import </div>
+        <div class="depot-continue">{{depot.nom}}</div>
+      </div>
       <div class="sepDiv"></div>
-      <div class="pl-1"><span>Import Etat : Success</span></div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Date Debut de traitement</div>
+        <div class="depot-continue">{{depot.dateHeureDepot}}</div>
+      </div>
+      <div class="sepDiv"></div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Date fin de traitement</div>
+        <div class="depot-continue">{{depot.dateHeureFinDepot}}</div>
+      </div>
+      <div class="sepDiv"></div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Status </div>
+        <div class="depot-continue ">{{depot.statut}}</div>
+      </div>
+      <div class="sepDiv"></div>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="20">
+        <div class="titre-demande">Deposeur</div>
+        <div class="depot-continue ">{{depot.deposeur.prenom}}</div>
+      </div>
     </div>
     <div fxLayout="column" class="bilan">
       <div class="titre">{{appConfig.getLabel("bilan.import")}}</div>

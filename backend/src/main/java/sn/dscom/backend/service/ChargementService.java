@@ -1,6 +1,7 @@
 package sn.dscom.backend.service;
 
 import com.google.common.base.Predicates;
+import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import io.vavr.control.Try;
 import lombok.Builder;
@@ -12,24 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.common.util.pojo.Transformer;
-import sn.dscom.backend.database.entite.ChargementEntity;
-import sn.dscom.backend.database.entite.ProduitEntity;
-import sn.dscom.backend.database.entite.SiteEntity;
-import sn.dscom.backend.database.entite.VehiculeEntity;
+import sn.dscom.backend.database.entite.*;
 import sn.dscom.backend.database.repository.ChargementRepository;
-import sn.dscom.backend.service.converter.ChargementConverter;
-import sn.dscom.backend.service.converter.ProduitConverter;
-import sn.dscom.backend.service.converter.SiteConverter;
-import sn.dscom.backend.service.converter.VehiculeConverter;
+import sn.dscom.backend.service.converter.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -50,6 +41,11 @@ public class ChargementService implements IChargementService {
      * chargement Transformer
      */
     private final Transformer<ChargementDTO, ChargementEntity> chargementConverter = new ChargementConverter();
+
+    /**
+     * explitation Converteur
+     */
+    private final Transformer<ExploitationDTO, ExploitationEntity> explitationConverteur = new ExploitationConverter();
 
 
     /**
@@ -246,6 +242,48 @@ public class ChargementService implements IChargementService {
             ChargementService.log.info(String.format("Le site d'explitation %s, le site de pessage %s ou la classe de la voiture %s n'existe pas dans le reférentiel.", exploitationName, siteName, classeVehicule));
         }
 
+    }
+
+    /**
+     * rechercher Chargements par:
+     * -Origine
+     * -Destination
+     * -Site
+     * -Date, l’utilisateur doit pouvoir rechercher:
+     * -par année (exemple 2022)
+     * -par date exacte (01/01/2022)
+     * Il est possible de combiner les filtres sur plusieurs champs pour affiner sa recherche.
+     *
+     * @param chargementDTO chargementDTO
+     * @return liste
+     */
+    @Override
+    public Optional<List<ChargementDTO>> rechercherChargements(ChargementDTO chargementDTO) {
+        // Rechercher les chargements en fonction de l'Origine
+        Optional<List<ChargementEntity>> listChargement = Optional.of(new ArrayList<>());
+        if (chargementDTO.getDatePesage() != null && !Strings.isNullOrEmpty(chargementDTO.getDestination())) {
+            listChargement = this.chargementRepository.findChargementEntitiesByDatePassageAfterAndDestination(chargementDTO.getDatePesage(), chargementDTO.getDestination().trim().toUpperCase());
+
+        }else if (!Strings.isNullOrEmpty(chargementDTO.getDestination())) {
+            listChargement = this.chargementRepository.findChargementEntitiesByDestination(chargementDTO.getDestination().trim().toUpperCase());
+
+        }else if (chargementDTO.getExploitation() != null && !Strings.isNullOrEmpty(chargementDTO.getExploitation().getNom())) {
+            listChargement = this.chargementRepository.findChargementEntitiesByExploitationEntity(this.explitationConverteur.transform(chargementDTO.getExploitation()));
+
+        }else if (chargementDTO.getSite() != null && !Strings.isNullOrEmpty(chargementDTO.getSite().getNom())) {
+            listChargement = this.chargementRepository.findChargementEntitiesBySiteEntity(this.siteConverteur.transform(chargementDTO.getSite()));
+
+        }else if (chargementDTO.getDatePesage() != null) {
+            listChargement = this.chargementRepository.findChargementEntitiesByDatePassageAfter(chargementDTO.getDatePesage());
+
+        }
+
+        return Optional.of(
+                Try.of(listChargement::get).get()
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .map(this.chargementConverter::reverse)
+                        .collect(Collectors.toList()));
     }
 
     /**

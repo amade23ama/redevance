@@ -4,12 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import sn.dscom.backend.database.entite.ChargementEntity;
-import sn.dscom.backend.database.entite.ProduitEntity;
-import sn.dscom.backend.database.entite.SiteEntity;
-import sn.dscom.backend.database.entite.VehiculeEntity;
+import sn.dscom.backend.database.entite.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +19,46 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
 
     @Query(value = "select c from ChargementEntity c where c.siteEntity=:siteEntity AND c.produitEntity=:produitEntity AND c.vehiculeEntity=:vehiculeEntity AND c.destination=:destination AND c.poids=:poidMax AND c.poidsMax=:poidMesure")
     Optional<ChargementEntity> isChargementExist(@Param("siteEntity") SiteEntity siteEntity, @Param("produitEntity") ProduitEntity produitEntity, @Param("vehiculeEntity") VehiculeEntity vehiculeEntity, @Param("destination") String destination, @Param("poidMax") Double poidMax, @Param("poidMesure") Double poidMesure);
+
+    /**
+     * find Chargement By Destination
+     * @param destination destination
+     * @return la liste
+     */
+    //@Query(value = "select c from ChargementEntity c where c.destination=:destination")
+    Optional<List<ChargementEntity>> findChargementEntitiesByDestination(@Param("destination") String destination);
+
+    /**
+     * find Chargement Entities By Exploitation Entity : Origine
+     * @param exploitationEntity exploitationEntity
+     * @return la liste
+     */
+    //@Query(value = "select c from ChargementEntity c where c.exploitationEntity=:exploitationEntity")
+    Optional<List<ChargementEntity>> findChargementEntitiesByExploitationEntity(@Param("exploitationEntity") ExploitationEntity exploitationEntity);
+
+    /**
+     * find Chargement Entities By SiteEntity : Site de pesage
+     * @param siteEntity siteEntity
+     * @return la liste
+     */
+    Optional<List<ChargementEntity>> findChargementEntitiesBySiteEntity(@Param("siteEntity") SiteEntity siteEntity);
+
+    /**
+     * find Chargement Entities By DatePassageAfter
+     * @param datePesage datePesage
+     * @return la liste
+     */
+    Optional<List<ChargementEntity>> findChargementEntitiesByDatePassageAfter(@Param("datePesage") Date datePesage);
+
+    /**
+     * findChargementEntitiesByDatePassageAfterAndDestination
+     * @param datePesage datePesage
+     * @param destination destination
+     * @return la liste
+     */
+    Optional<List<ChargementEntity>> findChargementEntitiesByDatePassageAfterAndDestination(@Param("datePesage") Date datePesage, @Param("destination") String destination);
+
+
+
+
 }

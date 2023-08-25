@@ -9,7 +9,7 @@ import { DscomMessageComponent } from './dscom-message/dscom-message.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { ConfirmationDialogComponent } from './dialog/confirmation-dialog/confirmation-dialog.component';
 import { ActionBtnsComponent } from './action-btns/action-btns.component';
-import {AsyncPipe, CommonModule, NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {CommonModule, NgOptimizedImage} from "@angular/common";
 import {MaterialModule} from "../../material.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {RouterOutlet} from "@angular/router";
@@ -18,7 +18,6 @@ import { FormulaireUtilisateurComponent } from './formulaire-utilisateur/formula
 import {ActionsCritereBtnsComponent} from "./actions-critere-btns/actions-critere-btns.component";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
 import {DscomExtensibleComponent} from "./dscom-extensible/dscom.extensible.component";
-import {DcsomGrapheSimpleComponent} from "./dcsom-graphe/dcsom-graphe-simple/dcsom-graphe-simple.component";
 
 @NgModule({
   declarations: [
@@ -34,8 +33,7 @@ import {DcsomGrapheSimpleComponent} from "./dcsom-graphe/dcsom-graphe-simple/dcs
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
     ActionsCritereBtnsComponent,
-    DscomExtensibleComponent,
-    DcsomGrapheSimpleComponent
+    DscomExtensibleComponent
   ],
   imports: [
     CommonModule,
@@ -43,13 +41,9 @@ import {DcsomGrapheSimpleComponent} from "./dcsom-graphe/dcsom-graphe-simple/dcs
     NgOptimizedImage,
     ReactiveFormsModule,
     RouterOutlet,
-    FormsModule,
-    AsyncPipe,
-    NgIf,
-    MaterialModule,
-    NgForOf,
-    MatLegacyChipsModule,
     RedevanceModule,
+    FormsModule,
+    MatLegacyChipsModule,
   ],
   exports: [
     DscomFooterComponent,
@@ -58,8 +52,7 @@ import {DcsomGrapheSimpleComponent} from "./dcsom-graphe/dcsom-graphe-simple/dcs
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
     ActionsCritereBtnsComponent,
-    DscomExtensibleComponent,
-    DcsomGrapheSimpleComponent
+    DscomExtensibleComponent
   ],
   providers: [],
 })

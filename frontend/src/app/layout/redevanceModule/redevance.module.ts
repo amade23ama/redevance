@@ -12,10 +12,11 @@ import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
     UserInfoComponent
   ],
   imports: [
-
-    SharedModule,
+    AsyncPipe,
+    NgIf,
     MaterialModule,
-    AsyncPipe
+    NgForOf,
+    MatLegacyChipsModule
   ],
   exports: [
     HomeCardComponent

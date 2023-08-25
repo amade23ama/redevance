@@ -42,6 +42,7 @@ import {PortalModule} from "@angular/cdk/portal";
 import {ScrollingModule} from "@angular/cdk/scrolling";
 import {A11yModule} from "@angular/cdk/a11y";
 import {FlexLayoutModule} from "@angular/flex-layout";
+import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
 
 @NgModule({
   exports: [
@@ -89,7 +90,7 @@ import {FlexLayoutModule} from "@angular/flex-layout";
     PortalModule,
     ScrollingModule,
     FlexLayoutModule,
-
+    MatLegacyChipsModule,
   ]
 })
 export class MaterialModule { }

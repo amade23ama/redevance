@@ -44,4 +44,18 @@ public interface IChargementService {
      * @param depotDTO depotDTO
      */
     void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depotDTO) throws DscomTechnicalException;
+
+    /**
+     * rechercher Chargements par:
+     * -Origine
+     * -Destination
+     * -Site
+     * -Date, l’utilisateur doit pouvoir rechercher:
+     * -par année (exemple 2022)
+     * -par date exacte (01/01/2022)
+     * Il est possible de combiner les filtres sur plusieurs champs pour affiner sa recherche.
+     * @param chargementDTO chargementDTO
+     * @return liste
+     */
+    Optional<List<ChargementDTO>> rechercherChargements(ChargementDTO chargementDTO);
 }

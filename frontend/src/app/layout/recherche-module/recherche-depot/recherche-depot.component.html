@@ -42,7 +42,7 @@
           <div class="d-flex">Date Creation</div>
         </th>
         <td mat-cell *matCellDef="let element">
-          <div class="d-flex">{{element?.dateHeureDepot}}</div>
+          <div class="d-flex">{{formatDate(element?.dateHeureDepot)}}</div>
         </td>
       </ng-container>
       <ng-container matColumnDef="dateHeureFinDepot">

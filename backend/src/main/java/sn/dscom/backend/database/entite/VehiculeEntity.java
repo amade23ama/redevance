@@ -24,7 +24,7 @@ public class VehiculeEntity {
     /**
      * Id du Transporteur.
      */
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_TRANSPORTEUR", nullable = false)
     private TransporteurEntity transporteurEntity;
     //@Column(name = "NOM")
@@ -35,7 +35,7 @@ public class VehiculeEntity {
     private Date dateCreation;
     @Column(name ="DATEMODIFICATION")
     private Date dateModification;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_CATEGORIE", nullable = false)
     private CategorieEntity categorieEntity;
 

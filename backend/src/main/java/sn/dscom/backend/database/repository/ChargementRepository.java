@@ -58,7 +58,12 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      */
     Optional<List<ChargementEntity>> findChargementEntitiesByDatePassageAfterAndDestination(@Param("datePesage") Date datePesage, @Param("destination") String destination);
 
-
-
+    /**
+     * quantiteParRegionParAn
+     * @param ListExploitationEntity ListExploitationEntity
+     * @return  la liste
+     */
+    @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.exploitationEntity in (:ListExploitationEntity) and c.datePassage>:datePesage")
+    Double quantiteParRegionParAn(@Param("ListExploitationEntity") List<ExploitationEntity> ListExploitationEntity, @Param("datePesage") Date datePesage);
 
 }

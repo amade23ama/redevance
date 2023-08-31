@@ -20,6 +20,7 @@ import sn.dscom.backend.service.interfaces.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -282,6 +283,25 @@ public class ChargementService implements IChargementService {
                         .filter(Objects::nonNull)
                         .map(this.chargementConverter::reverse)
                         .collect(Collectors.toList()));
+    }
+
+    /**
+     * quantite Par Region Par An
+     * @param listExploitation  listExploitation
+     * @param datePesage  datePesage
+     * @return la quantité
+     */
+    @Override
+    public double getQuantiteParRegionParAn(List<ExploitationDTO> listExploitation, Date dateDebut, Date dateFin) {
+        List<ExploitationEntity> listExploitationEntity = listExploitation.stream()
+                .map(this.explitationConverteur::transform)
+                .toList();
+        Double value = this.chargementRepository.quantiteParRegionParAn(listExploitationEntity, dateDebut, dateFin);
+
+        if (value == null)
+            return 0;
+
+        return value;
     }
 
     /**

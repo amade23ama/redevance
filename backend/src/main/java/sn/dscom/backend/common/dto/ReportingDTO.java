@@ -19,7 +19,7 @@ public class ReportingDTO implements Serializable {
     private String libelle;
 
     /** annee */
-    private String annee;
+    private int annee;
 
     /** data */
     private Double data;

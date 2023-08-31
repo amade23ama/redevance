@@ -2,9 +2,11 @@ package sn.dscom.backend.service.interfaces;
 
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.DepotDTO;
+import sn.dscom.backend.common.dto.ExploitationDTO;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,4 +60,6 @@ public interface IChargementService {
      * @return liste
      */
     Optional<List<ChargementDTO>> rechercherChargements(ChargementDTO chargementDTO);
+
+    double getQuantiteParRegionParAn(List<ExploitationDTO> istExploitation, Date dateDebut, Date dateFin);
 }

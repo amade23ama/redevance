@@ -108,4 +108,26 @@ public abstract class ChargementUtils {
         }
         return new Date();
     }
+
+    public static Date getDateDebutAnnee(String annee){
+        String dateDebut = "01/01/".concat(String.valueOf(annee)).concat(" ").concat("00:00:00");
+        SimpleDateFormat parser = new SimpleDateFormat("d/MM/yyyy HH:mm:ss");
+        try {
+            return  parser.parse(dateDebut);
+        }catch (ParseException exception){
+            exception.getStackTrace();
+        }
+        return new Date();
+    }
+
+    public static Date getDateFinAnnee(String annee){
+        String dateFin = "31/12/".concat(String.valueOf(annee)).concat(" ").concat("23:59:59");
+        SimpleDateFormat parser = new SimpleDateFormat("d/MM/yyyy HH:mm:ss");
+        try {
+            return  parser.parse(dateFin);
+        }catch (ParseException exception){
+            exception.getStackTrace();
+        }
+        return new Date();
+    }
 }

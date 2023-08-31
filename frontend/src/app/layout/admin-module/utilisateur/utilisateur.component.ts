@@ -128,6 +128,7 @@ export class UtilisateurComponent implements OnInit{
    this.myform?.valueChanges.subscribe((res) => {
      if (this.myform.valid) {
        this.majBtnState(Actions.ENREGISTRER, false)
+       this.majBtnState(Actions.MODIFIER, false)
      }
    })
  }

@@ -1,6 +1,5 @@
 package sn.dscom.backend.service;
 
-import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import io.vavr.control.Try;
@@ -103,7 +102,7 @@ public class ChargementService implements IChargementService {
     /**
      * vehicule Converter
      */
-    private Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+    private final Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
 
     /**
      * construction
@@ -181,7 +180,6 @@ public class ChargementService implements IChargementService {
      * @param ligneChargement ligneChargement
      * @param mapCorrespondance mapCorrespondance
      * @param header header
-     * @return ChargementDTO
      */
     @Override
     public void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depot) throws DscomTechnicalException {
@@ -446,7 +444,6 @@ public class ChargementService implements IChargementService {
     private TransporteurDTO enregistrerTransporteur(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
         //TRANSPORTEUR: NOM_RAISON_SOCIALE,TELEPHONE
         // type (PP ou PM), nom, prenom, raison social, telephone -> proprie/tel; mail? adress
-        /** proprietaire : Nom-RaisonSociale/telephone */
         String proprietaire = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.transporteur.nom"))));
         return Try.of(() -> TransporteurDTO.builder()
                                     .dateCreation(new Date())

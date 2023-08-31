@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HomeCard} from "../../../core/interfaces/infotuiles/homeCard";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {TypeInfoTuile} from "../../../core/enum/TypeInfoTuile";
 import {TuileService} from "../../../core/services/tuile.service";
+import {Bilan} from "../../../core/interfaces/infotuiles/bilan";
+import {ChartType} from "ng-apexcharts";
+import {Campagne} from "../../../core/interfaces/infotuiles/campagne";
 
 @Component({
   selector: 'app-home-card',
@@ -12,9 +15,22 @@ import {TuileService} from "../../../core/services/tuile.service";
   styleUrls: ['./home-card.component.scss']
 })
 export class HomeCardComponent implements  OnInit {
+
+  bilan:Bilan = Bilan.fromJson({annee:2020,
+    campagnes:[
+      Campagne.fromJson({quantite: 10, libelle: 'ARGILE'},Campagne),
+      Campagne.fromJson({ quantite: 20, libelle: 'ATTAPULGITE' },Campagne),
+      Campagne.fromJson({ quantite: 30, libelle: "BASALTE" },Campagne),
+      Campagne.fromJson({ quantite: 40, libelle: "CALCAIRE" },Campagne)
+    ],
+    description:" quantite de produits"
+  },Bilan)
+  chartType: ChartType="pie"
+  chartTypes: ChartType="bar"
   /** Tuiles. */
   //public infoTuiles: HomeCard[];
   infoTuiles$=this.tuileService.infoTuiles$
+
   constructor(public appConfig:AppConfigService,public router: Router,public auth:AuthService,
               public tuileService:TuileService) {
   }

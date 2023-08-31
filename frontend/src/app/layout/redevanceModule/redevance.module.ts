@@ -5,21 +5,28 @@ import { UserInfoComponent } from './user-info/user-info.component';
 import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
 import {MaterialModule} from "../../material.module";
 import {MatLegacyChipsModule} from "@angular/material/legacy-chips";
+import {DcsomGrapheSimpleComponent} from "./dcsom-graphe/dcsom-graphe-simple/dcsom-graphe-simple.component";
+import {NgApexchartsModule} from "ng-apexcharts";
+import {DcsomGrapheBarComponent} from "./dcsom-graphe/dcsom-graphe-bar/dcsom-graphe-bar.component";
 
 @NgModule({
   declarations: [
     HomeCardComponent,
-    UserInfoComponent
+    UserInfoComponent,
+    DcsomGrapheSimpleComponent,
+    DcsomGrapheBarComponent
   ],
   imports: [
     AsyncPipe,
     NgIf,
     MaterialModule,
     NgForOf,
-    MatLegacyChipsModule
+    MatLegacyChipsModule,
+    NgApexchartsModule
   ],
   exports: [
-    HomeCardComponent
+    HomeCardComponent,
+
   ],
   providers: [],
 })

@@ -1,24 +1,14 @@
 package sn.dscom.backend.controller;
 
-import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sn.dscom.backend.common.dto.ChargementDTO;
-import sn.dscom.backend.common.dto.ExploitationDTO;
-import sn.dscom.backend.common.dto.ReportingDTO;
+import sn.dscom.backend.common.dto.BilanDTO;
 import sn.dscom.backend.common.util.ChargementUtils;
-import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IReportingService;
-
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * ReportingController
@@ -36,54 +26,48 @@ public class ReportingController {
      * chargement Service
      */
     @Autowired
-    private IChargementService chargementService;
-
-    /**
-     * chargement Service
-     */
-    @Autowired
     private IReportingService reportingService;
 
     /**
      * rechercher Reporting Chargemnet
-     * @return la liste
+     * @return le bilan
      */
     @PostMapping(path = "/chargementByRegion")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ReportingDTO>> rechercherReportingChargementByRegion(@RequestParam("annee") int annee) {
+    public ResponseEntity<BilanDTO> rechercherReportingChargementByRegion(@RequestParam("annee") int annee) {
         ReportingController.LOGGER.info("ReportingController: rechercherReportingChargementByRegion");
-        List<ReportingDTO> liste = reportingService.rechercherReportingChargementByRegion(
+        BilanDTO bilan = reportingService.rechercherReportingChargementByRegion(
                 ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
                 ChargementUtils.getDateFinAnnee(String.valueOf(annee))
         );
-        return ResponseEntity.ok(liste);
+        return ResponseEntity.ok(bilan);
     }
 
     /**
      * rechercher Reporting Chargemnet
-     * @return la liste
+     * @return le bilan
      */
     @GetMapping(path = "/recouvrementAnnuel")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ReportingDTO>> recouvrementProduitParAnnee() {
+    public ResponseEntity<BilanDTO> recouvrementProduitParAnnee() {
         ReportingController.LOGGER.info("ReportingController: recouvrementProduitParAnnee");
-        List<ReportingDTO> liste = reportingService.getRecouvrementProduitParAnne();
+        BilanDTO bilan = reportingService.getRecouvrementProduitParAnne();
 
-        return ResponseEntity.ok(liste);
+        return ResponseEntity.ok(bilan);
     }
 
     /**
      * rechercher Reporting Chargemnet
-     * @return la liste
+     * @return le bilan
      */
     @PostMapping(path = "/produitParAn")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ReportingDTO>> reportingProduitByYear(@RequestParam("annee") int annee) {
+    public ResponseEntity<BilanDTO> reportingProduitByYear(@RequestParam("annee") int annee) {
         ReportingController.LOGGER.info("ExploitationController: rechercherSitesExploitation");
-        List<ReportingDTO> liste = reportingService.reportingProduitByYear(
+        BilanDTO bilan = reportingService.reportingProduitByYear(
                 ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
                 ChargementUtils.getDateFinAnnee(String.valueOf(annee))
         );
-        return ResponseEntity.ok(liste);
+        return ResponseEntity.ok(bilan);
     }
 }

@@ -5,10 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import sn.dscom.backend.common.dto.ChargementDTO;
-import sn.dscom.backend.common.dto.ExploitationDTO;
-import sn.dscom.backend.common.dto.ProduitDTO;
-import sn.dscom.backend.common.dto.ReportingDTO;
+import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.controller.ExploitationController;
 import sn.dscom.backend.database.repository.ExploitationRepository;
@@ -55,9 +52,9 @@ public class ReportingService implements IReportingService {
      * @return liste
      */
     @Override
-    public List<ReportingDTO> rechercherReportingChargementByRegion(Date dateDebut, Date dateFin) {
+    public BilanDTO rechercherReportingChargementByRegion(Date dateDebut, Date dateFin) {
         List<String> listRegion = this.exploitationService.getAllRegion();
-        List<ReportingDTO> reportingDTOList = new ArrayList<>();
+        List<CampagneBilanDTO> listCampagne = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateDebut);
         listRegion
@@ -66,59 +63,66 @@ public class ReportingService implements IReportingService {
 
 
 
-                    reportingDTOList.add(ReportingDTO.builder()
-                                                    .annee(calendar.get(Calendar.YEAR))
-                                                    .type("CHARG-AN-REGION")
+                    listCampagne.add(CampagneBilanDTO.builder()
                                                     .libelle(region)
-                                                    .data(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin)/1000)
+                                                    .quantite(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin)/1000)
                                                     .build());
                 });
-        return reportingDTOList;
+
+        return BilanDTO.builder()
+                .annee(calendar.get(Calendar.YEAR))
+                .description("Production par région")
+                .campagnes(listCampagne)
+                .build();
     }
 
     /**
      * @return liste
      */
     @Override
-    public List<ReportingDTO> getRecouvrementProduitParAnne() {
+    public BilanDTO getRecouvrementProduitParAnne() {
         List<ProduitDTO> listProduit = this.produitService.rechercherProduits().get();
-        List<ReportingDTO> reportingDTOList = new ArrayList<>();
+        List<CampagneBilanDTO> listCampagne = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int anneecourante = calendar.get(Calendar.YEAR);
         // les 5 derniers année
         for (int annee = 0; annee < 5;annee++ ){
             int anneeDeCalcul = anneecourante-annee;
-            reportingDTOList.add(ReportingDTO.builder()
-                    .annee(anneeDeCalcul)
-                    .type("RECOUVREMENT-PRODUIT")
+            listCampagne.add(CampagneBilanDTO.builder()
                     .libelle(String.valueOf(anneeDeCalcul))
-                    .data(this.chargementService.getRecouvrementProduitParAn(listProduit,
+                    .quantite(this.chargementService.getRecouvrementProduitParAn(listProduit,
                             ChargementUtils.getDateDebutAnnee(String.valueOf(anneeDeCalcul)),
                             ChargementUtils.getDateFinAnnee(String.valueOf(anneeDeCalcul)))/1000)
                     .build());
         }
-        return reportingDTOList;
+        return BilanDTO.builder()
+                .annee(calendar.get(Calendar.YEAR))
+                .description("Volume de substance recouvrée par AN")
+                .campagnes(listCampagne)
+                .build();
     }
 
     /**
      * @return list
      */
     @Override
-    public List<ReportingDTO> reportingProduitByYear(Date dateDebut, Date dateFin) {
+    public BilanDTO reportingProduitByYear(Date dateDebut, Date dateFin) {
         List<ProduitDTO> listProduit = this.produitService.rechercherProduits().get();
-        List<ReportingDTO> reportingDTOList = new ArrayList<>();
+        List<CampagneBilanDTO> listCampagne = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateDebut);
         listProduit
                 .forEach(product -> {
 
-                    reportingDTOList.add(ReportingDTO.builder()
-                            .annee(calendar.get(Calendar.YEAR))
-                            .type("PROD-AN")
+                    listCampagne.add(CampagneBilanDTO.builder()
                             .libelle(product.getNomSRC())
-                            .data(this.chargementService.getQuantiteProduitParAn(product, dateDebut, dateFin)/1000)
+                            .quantite(this.chargementService.getQuantiteProduitParAn(product, dateDebut, dateFin)/1000)
                             .build());
                 });
-        return reportingDTOList;
+        return BilanDTO.builder()
+                .annee(calendar.get(Calendar.YEAR))
+                .description("Quantité de substance par année")
+                .campagnes(listCampagne)
+                .build();
     }
 }

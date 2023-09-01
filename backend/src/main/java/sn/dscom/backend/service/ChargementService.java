@@ -324,6 +324,26 @@ public class ChargementService implements IChargementService {
     }
 
     /**
+     * get Recouvrement Produit Par Année
+     * @param listProduit listProduit
+     * @param dateDebut dateDebut
+     * @param dateFin dateFin
+     * @return la liste
+     */
+    @Override
+    public double getRecouvrementProduitParAn(List<ProduitDTO> listProduit, Date dateDebut, Date dateFin) {
+        List<ProduitEntity> listProduitEntity = listProduit.stream()
+                .map(this.produitConverteur::transform)
+                .toList();
+        Double value = this.chargementRepository.quantiteRecouvrementAnnuel(listProduitEntity, dateDebut, dateFin);
+
+        if (value == null)
+            return 0;
+
+        return value;
+    }
+
+    /**
      * buildChargement
      * @param vehiculeDTO vehiculeDTO
      * @param siteDTO siteDTO

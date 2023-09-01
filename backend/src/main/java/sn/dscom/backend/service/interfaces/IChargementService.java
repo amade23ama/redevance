@@ -65,4 +65,6 @@ public interface IChargementService {
     double getQuantiteParRegionParAn(List<ExploitationDTO> listExploitation, Date dateDebut, Date dateFin);
 
     double getQuantiteProduitParAn(ProduitDTO produit, Date dateDebut, Date dateFin);
+
+    double getRecouvrementProduitParAn(List<ProduitDTO> listProduit, Date dateDebut, Date dateFin);
 }

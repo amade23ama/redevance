@@ -4,10 +4,12 @@ import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.ExploitationDTO;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.dto.ReportingDTO;
+import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.controller.ExploitationController;
 import sn.dscom.backend.database.repository.ExploitationRepository;
 import sn.dscom.backend.service.interfaces.IChargementService;
@@ -50,7 +52,7 @@ public class ReportingService implements IReportingService {
     }
 
     /**
-     * @return
+     * @return liste
      */
     @Override
     public List<ReportingDTO> rechercherReportingChargementByRegion(Date dateDebut, Date dateFin) {
@@ -75,15 +77,31 @@ public class ReportingService implements IReportingService {
     }
 
     /**
-     * @return
+     * @return liste
      */
     @Override
-    public List<ReportingDTO> reportingProduitByExploitation() {
-        return null;
+    public List<ReportingDTO> getRecouvrementProduitParAnne() {
+        List<ProduitDTO> listProduit = this.produitService.rechercherProduits().get();
+        List<ReportingDTO> reportingDTOList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        int anneecourante = calendar.get(Calendar.YEAR);
+        // les 5 derniers année
+        for (int annee = 0; annee < 5;annee++ ){
+            int anneeDeCalcul = anneecourante-annee;
+            reportingDTOList.add(ReportingDTO.builder()
+                    .annee(anneeDeCalcul)
+                    .type("RECOUVREMENT-PRODUIT")
+                    .libelle(String.valueOf(anneeDeCalcul))
+                    .data(this.chargementService.getRecouvrementProduitParAn(listProduit,
+                            ChargementUtils.getDateDebutAnnee(String.valueOf(anneeDeCalcul)),
+                            ChargementUtils.getDateFinAnnee(String.valueOf(anneeDeCalcul)))/1000)
+                    .build());
+        }
+        return reportingDTOList;
     }
 
     /**
-     * @return
+     * @return list
      */
     @Override
     public List<ReportingDTO> reportingProduitByYear(Date dateDebut, Date dateFin) {

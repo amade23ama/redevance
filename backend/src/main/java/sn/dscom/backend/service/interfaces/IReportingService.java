@@ -13,7 +13,7 @@ public interface IReportingService {
 
     List<ReportingDTO> rechercherReportingChargementByRegion(Date dateDebut, Date dateFin);
 
-    List<ReportingDTO> reportingProduitByExploitation();
+    List<ReportingDTO> getRecouvrementProduitParAnne();
 
     List<ReportingDTO> reportingProduitByYear(Date dateDebut, Date dateFin);
 }

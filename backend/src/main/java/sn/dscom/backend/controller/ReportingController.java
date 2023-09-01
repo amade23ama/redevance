@@ -15,6 +15,7 @@ import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IReportingService;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -62,15 +63,13 @@ public class ReportingController {
      * rechercher Reporting Chargemnet
      * @return la liste
      */
-    @PostMapping(path = "/produitByExploitation")
+    @GetMapping(path = "/recouvrementAnnuel")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ReportingDTO>> reportingProduitByExploitation(@RequestParam("annee") int annee) {
-        ReportingController.LOGGER.info("ReportingController: rechercherSitesExploitation");
-        Optional<List<ChargementDTO>> list = this.chargementService.rechercherChargements();
+    public ResponseEntity<List<ReportingDTO>> recouvrementProduitParAnnee() {
+        ReportingController.LOGGER.info("ReportingController: recouvrementProduitParAnnee");
+        List<ReportingDTO> liste = reportingService.getRecouvrementProduitParAnne();
 
-        // Appel du service rechercherSitesExploitation
-        // si vide on retour une erreur 404
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(liste);
     }
 
     /**

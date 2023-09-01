@@ -44,4 +44,10 @@ public interface IProduitService {
      * @return ProduitDTO
      */
     ProduitDTO chargerProduitParId(Long id);
+
+    /**
+     * getAllProductName
+     * @return liste
+     */
+    List<String> getAllProductName();
 }

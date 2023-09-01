@@ -7,6 +7,7 @@ import sn.dscom.backend.service.ExploitationService;
 import sn.dscom.backend.service.ReportingService;
 import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IExploitationService;
+import sn.dscom.backend.service.interfaces.IProduitService;
 
 /**
  * ReportingServiceConfig
@@ -19,13 +20,15 @@ public class ReportingServiceConfig {
      *
      * @param exploitationService exploitationService
      * @param chargementService chargementService
+     * @param produitService produitService
      * @return Bean
      */
     @Bean
-    public ReportingService reportingService(final ExploitationService exploitationService, final IChargementService chargementService) {
+    public ReportingService reportingService(final ExploitationService exploitationService, final IChargementService chargementService, final IProduitService produitService) {
         return ReportingService.builder()
                 .exploitationService(exploitationService)
                 .chargementService(chargementService)
+                .produitService(produitService)
                 .build();
     }
 }

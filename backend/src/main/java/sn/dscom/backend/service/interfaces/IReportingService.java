@@ -15,5 +15,5 @@ public interface IReportingService {
 
     List<ReportingDTO> reportingProduitByExploitation();
 
-    List<ReportingDTO> reportingProduitByYear();
+    List<ReportingDTO> reportingProduitByYear(Date dateDebut, Date dateFin);
 }

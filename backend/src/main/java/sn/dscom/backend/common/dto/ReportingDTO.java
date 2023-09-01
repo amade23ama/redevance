@@ -22,5 +22,5 @@ public class ReportingDTO implements Serializable {
     private int annee;
 
     /** data */
-    private Double data;
+    private double data;
 }

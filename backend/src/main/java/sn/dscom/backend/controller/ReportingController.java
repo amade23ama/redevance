@@ -62,10 +62,10 @@ public class ReportingController {
      * rechercher Reporting Chargemnet
      * @return la liste
      */
-    @GetMapping(path = "/produit")
+    @PostMapping(path = "/produitByExploitation")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ReportingDTO>> reportingProduitByExploitation() {
-        ReportingController.LOGGER.info("ExploitationController: rechercherSitesExploitation");
+    public ResponseEntity<List<ReportingDTO>> reportingProduitByExploitation(@RequestParam("annee") int annee) {
+        ReportingController.LOGGER.info("ReportingController: rechercherSitesExploitation");
         Optional<List<ChargementDTO>> list = this.chargementService.rechercherChargements();
 
         // Appel du service rechercherSitesExploitation
@@ -77,14 +77,14 @@ public class ReportingController {
      * rechercher Reporting Chargemnet
      * @return la liste
      */
-    @GetMapping(path = "/produit1")
+    @PostMapping(path = "/produitParAn")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ReportingDTO>> reportingProduitByYear() {
+    public ResponseEntity<List<ReportingDTO>> reportingProduitByYear(@RequestParam("annee") int annee) {
         ReportingController.LOGGER.info("ExploitationController: rechercherSitesExploitation");
-        Optional<List<ChargementDTO>> list = this.chargementService.rechercherChargements();
-
-        // Appel du service rechercherSitesExploitation
-        // si vide on retour une erreur 404
-        return ResponseEntity.ok(null);
+        List<ReportingDTO> liste = reportingService.reportingProduitByYear(
+                ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
+                ChargementUtils.getDateFinAnnee(String.valueOf(annee))
+        );
+        return ResponseEntity.ok(liste);
     }
 }

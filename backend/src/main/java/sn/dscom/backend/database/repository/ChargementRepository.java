@@ -65,4 +65,13 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      */
     @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.exploitationEntity in (:listExploitationEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Double quantiteParRegionParAn(@Param("listExploitationEntity") List<ExploitationEntity> listExploitationEntity, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
+
+    /**
+     * quantiteParRegionParAn
+     * @param produit produit
+     * @return  la liste
+     */
+    @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.produitEntity=:produit and c.datePassage>:dateDebut and c.datePassage<:dateFin")
+    Double quantiteByProductByYear(@Param("produit") ProduitEntity produit, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
+
 }

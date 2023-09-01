@@ -6,11 +6,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.common.dto.ExploitationDTO;
+import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.dto.ReportingDTO;
 import sn.dscom.backend.controller.ExploitationController;
 import sn.dscom.backend.database.repository.ExploitationRepository;
 import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IExploitationService;
+import sn.dscom.backend.service.interfaces.IProduitService;
 import sn.dscom.backend.service.interfaces.IReportingService;
 
 import java.util.*;
@@ -35,10 +37,16 @@ public class ReportingService implements IReportingService {
      */
     private final IChargementService chargementService;
 
+    /**
+     * produitService
+     */
+    private final IProduitService produitService;
+
     @Builder
-    public ReportingService(final IExploitationService exploitationService, final IChargementService chargementService) {
+    public ReportingService(final IExploitationService exploitationService, final IChargementService chargementService, final IProduitService produitService) {
         this.exploitationService = exploitationService;
         this.chargementService = chargementService;
+        this.produitService = produitService;
     }
 
     /**
@@ -60,7 +68,7 @@ public class ReportingService implements IReportingService {
                                                     .annee(calendar.get(Calendar.YEAR))
                                                     .type("CHARG-AN-REGION")
                                                     .libelle(region)
-                                                    .data(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin))
+                                                    .data(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin)/1000)
                                                     .build());
                 });
         return reportingDTOList;
@@ -78,7 +86,21 @@ public class ReportingService implements IReportingService {
      * @return
      */
     @Override
-    public List<ReportingDTO> reportingProduitByYear() {
-        return null;
+    public List<ReportingDTO> reportingProduitByYear(Date dateDebut, Date dateFin) {
+        List<ProduitDTO> listProduit = this.produitService.rechercherProduits().get();
+        List<ReportingDTO> reportingDTOList = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateDebut);
+        listProduit
+                .forEach(product -> {
+
+                    reportingDTOList.add(ReportingDTO.builder()
+                            .annee(calendar.get(Calendar.YEAR))
+                            .type("PROD-AN")
+                            .libelle(product.getNomSRC())
+                            .data(this.chargementService.getQuantiteProduitParAn(product, dateDebut, dateFin)/1000)
+                            .build());
+                });
+        return reportingDTOList;
     }
 }

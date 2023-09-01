@@ -134,4 +134,14 @@ public class ProduitService implements IProduitService {
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
     }
+
+    /**
+     * getAllProductName
+     *
+     * @return liste
+     */
+    @Override
+    public List<String> getAllProductName() {
+        return this.produitRepository.findListProductName();
+    }
 }

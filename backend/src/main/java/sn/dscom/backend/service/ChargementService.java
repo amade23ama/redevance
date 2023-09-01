@@ -288,7 +288,8 @@ public class ChargementService implements IChargementService {
     /**
      * quantite Par Region Par An
      * @param listExploitation  listExploitation
-     * @param datePesage  datePesage
+     * @param dateDebut  dateDebut
+     * @param dateFin  dateFin
      * @return la quantité
      */
     @Override
@@ -297,6 +298,24 @@ public class ChargementService implements IChargementService {
                 .map(this.explitationConverteur::transform)
                 .toList();
         Double value = this.chargementRepository.quantiteParRegionParAn(listExploitationEntity, dateDebut, dateFin);
+
+        if (value == null)
+            return 0;
+
+        return value;
+    }
+
+    /**
+     * get Quantite Produit ParAn
+     * @param produit produit
+     * @param dateDebut dateDebut
+     * @param dateFin dateFin
+     * @return la liste
+     */
+    @Override
+    public double getQuantiteProduitParAn(ProduitDTO produit, Date dateDebut, Date dateFin) {
+        ProduitEntity produitEntity = this.produitConverteur.transform(produit);
+        Double value = this.chargementRepository.quantiteByProductByYear(produitEntity, dateDebut, dateFin);
 
         if (value == null)
             return 0;

@@ -1,4 +1,4 @@
-
+<!--
 <div class="card--container mt-1" fxLayout="row" fxLayout fxLayoutAlign="space-around none"
      *ngIf="infoTuiles$ | async as infoTuiles" fxLayout.lt-md="column"
      fxLayoutAlign.lt-md="center none" fxLayoutGap="5"   >
@@ -27,23 +27,59 @@
     </section>
     <section class="detail--section" *ngIf="card.details?.length > 0">
       <hr/>
-      <!--<h3 class="mb-3 mt-4">{{appConfig.getLabel('card.detail.title')}}</h3>-->
       <mat-chip-list>
 
       </mat-chip-list>
     </section>
     <section class="campaign--section" *ngIf="card.campagnes?.length > 0">
       <hr/>
-     <!-- <h3 class="mb-3 mt-4">{{appConfig.getLabel('card.campaign.title')}}</h3>-->
       <mat-chip-list>
 
       </mat-chip-list>
     </section>
   </mat-card>
 </div>
-<div class="mt-1">
-<app-dcsom-graphe-simple
-  [chartType]=chartType
-  [bilan]=bilan>
-</app-dcsom-graphe-simple>
+  -->
+<div class="mt-02">
+  <div class="entete-acceuil" fxLayout="row" fxLayout fxLayoutAlign="space-between center"
+       fxLayoutAlign.lt-md="space-between center" fxLayoutGap="5px" fxLayoutGap.lt-md="1px">
+    <div fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
+
+      <mat-form-field class="champ--operateur" appearance="outline"
+                      fxFlex="100" floatLabel="always">
+        <mat-label>année</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let annee of annees" [value]="annee.value">
+            {{annee.libelle}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="result-titre">Véhicule</div>
+      <div class="result-continue">1234</div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="result-titre">Transporteur</div>
+      <div class="result-continue">2000</div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="result-titre">Site de Pesage</div>
+      <div class="result-continue">13</div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-05" fxLayout fxLayout="row" fxLayout.lt-md="column"
+     fxLayoutAlign="space-around" >
+  <div fxFlex="50" fxFlex.lt-md="100">
+    <app-dcsom-graphe-bar
+    [homeCard]="campagnesProduits$">
+    </app-dcsom-graphe-bar>
+  </div>
+  <div fxFlex="50" fxFlex.lt-md="100">
+    <app-dcsom-graphe-cercle
+      [homeCard]="campagnesRegions$">
+    </app-dcsom-graphe-cercle>
+  </div>
 </div>

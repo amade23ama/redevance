@@ -3,15 +3,18 @@ import {Injectable} from "@angular/core";
 import {SERVER_API_URL} from "../../app.constants";
 import {environment} from "../../../environments/environment";
 import {HomeCard} from "../interfaces/infotuiles/homeCard";
-import {BehaviorSubject, catchError, map, Observable, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from "rxjs";
 import {Utilisateur} from "../interfaces/utilisateur";
+import {Detail} from "../interfaces/infotuiles/detail";
+import {Campagne} from "../interfaces/infotuiles/campagne";
 @Injectable({providedIn: 'root'})
 export class TuileService {
   readonly url = environment.apiUrl
 
 
   private _infoTuiles$: BehaviorSubject<HomeCard[]> = new BehaviorSubject<HomeCard[]>(null);
-
+  private _campagnesProduits$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
+  private _campagnesRegion$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   constructor(private http: HttpClient) {
   }
 
@@ -38,4 +41,71 @@ export class TuileService {
   setInfoTuiles(res: HomeCard[]) {
     this._infoTuiles$.next(res)
   }
+  get campagnesRegions$(): Observable<HomeCard> {
+    return this._campagnesRegion$.asObservable()
+  }
+
+  setCampagnesRegion(res: HomeCard) {
+    this._campagnesRegion$.next(res)
+  }
+  get campagnesProduits$(): Observable<HomeCard> {
+    return this._campagnesProduits$.asObservable()
+  }
+
+  setCampagnesProduits(res: HomeCard) {
+    this._campagnesProduits$.next(res)
+  }
+  getcampagnesProduits(annee:Date): Observable<HomeCard> {
+    const produit:HomeCard=HomeCard.fromJson({
+      annee:new Date(),
+      typeTuile: null,
+      valeur:null,
+      details: null,
+      campagnes: this.dataTest,
+      descriptif:"tes",
+      value:123
+    },HomeCard)
+    this.setCampagnesProduits(produit)
+
+    return of();
+  }
+  getcampagnesRegions(annee:Date): Observable<HomeCard> {
+    const regions:HomeCard=HomeCard.fromJson({
+      annee:new Date(),
+      typeTuile: null,
+      valeur:null,
+      details: null,
+      campagnes: this.dataRegion,
+      descriptif:"production Regionnale",
+      value:123
+    },HomeCard)
+    this.setCampagnesRegion(regions)
+ console.error("xxxxxxxxxxxxxxxx")
+    return of();
+  }
+  dataTest = [
+    { name: "ATTAPULGITE", value: 105000 },
+    { name: "BASALTE", value: 55000 },
+    { name: "ARGILE", value: 15000 },
+    { name: "COQUILLAGE", value: 150000 },
+    { name: "GRES", value: 20000 },
+    { name: "LATERITE", value: 105000 },
+    { name: "MANGANESE", value: 55000 },
+    { name: "PHOSPHATE", value: 15000 },
+    { name: "QUARTZITE", value: 150000 },
+    { name: "SABLE", value: 20000 },
+    { name: "SILEX", value: 105000 },
+    { name: "ZIRCON", value: 55000 }
+  ]
+  dataRegion = [
+    { name: "DAKAR", value: 105000 },
+    { name: "TAMBACOUNDA", value: 55000 },
+    { name: "THIES", value: 15000 },
+    { name: "KOLDA", value: 150000 },
+    { name: "ZIGUINCHOR", value: 20000 },
+    { name: "KEDOUGOU", value: 105000 },
+    { name: "SAINT-LOUIS", value: 55000 },
+    { name: "LOUGA", value: 15000 },
+    { name: "DIOURBEL", value: 150000 },
+  ]
 }

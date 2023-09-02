@@ -1,13 +1,9 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {HomeCard} from "../../../core/interfaces/infotuiles/homeCard";
+import {Component, OnInit} from '@angular/core';
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {Router} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {TypeInfoTuile} from "../../../core/enum/TypeInfoTuile";
 import {TuileService} from "../../../core/services/tuile.service";
-import {Bilan} from "../../../core/interfaces/infotuiles/bilan";
-import {ChartType} from "ng-apexcharts";
-import {Campagne} from "../../../core/interfaces/infotuiles/campagne";
 
 @Component({
   selector: 'app-home-card',
@@ -15,26 +11,22 @@ import {Campagne} from "../../../core/interfaces/infotuiles/campagne";
   styleUrls: ['./home-card.component.scss']
 })
 export class HomeCardComponent implements  OnInit {
-
-  bilan:Bilan = Bilan.fromJson({annee:2020,
-    campagnes:[
-      Campagne.fromJson({quantite: 10, libelle: 'ARGILE'},Campagne),
-      Campagne.fromJson({ quantite: 20, libelle: 'ATTAPULGITE' },Campagne),
-      Campagne.fromJson({ quantite: 30, libelle: "BASALTE" },Campagne),
-      Campagne.fromJson({ quantite: 40, libelle: "CALCAIRE" },Campagne)
-    ],
-    description:" quantite de produits"
-  },Bilan)
-  chartType: ChartType="pie"
-  chartTypes: ChartType="bar"
+  annees: AnneeSelect[] = [
+    {value: '2023', libelle: '2023'},
+    {value: '2023', libelle: '2023'},
+    {value: '2023', libelle: '2023'},
+  ];
   /** Tuiles. */
   //public infoTuiles: HomeCard[];
   infoTuiles$=this.tuileService.infoTuiles$
-
+  campagnesProduits$=this.tuileService.campagnesProduits$
+  campagnesRegions$=this.tuileService.campagnesRegions$
   constructor(public appConfig:AppConfigService,public router: Router,public auth:AuthService,
               public tuileService:TuileService) {
   }
   ngOnInit(): void {
+    this.tuileService.getcampagnesProduits(new Date()).subscribe()
+    this.tuileService.getcampagnesRegions(new Date()).subscribe()
     this.tuileService.getInfosTuiles().subscribe()
   }
   public getTitreTuile(typeHomecard: string):string{
@@ -117,4 +109,9 @@ export class HomeCardComponent implements  OnInit {
   chargerdepot(val:any,valeur:any){
 
   }
+
+}
+interface AnneeSelect {
+  value: string;
+  libelle: string;
 }

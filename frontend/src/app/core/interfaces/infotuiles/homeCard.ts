@@ -3,10 +3,9 @@ import {Detail} from "./detail";
 import {Campagne} from "./campagne";
 
 export class HomeCard extends BuilderDtoJsonAbstract{
-
+  annee: Date;
   /** Type de la tuile. */
   typeTuile: string;
-
   /** Valeur. */
   valeur: number;
 
@@ -15,7 +14,8 @@ export class HomeCard extends BuilderDtoJsonAbstract{
 
   /** Campagnes d'une tuile. */
   campagnes: Campagne[];
-
+  descriptif:string;
+  value:number;
   /**
    * From json custom pour gérer les objets inclus
    * @param json Json à parser

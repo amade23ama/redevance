@@ -9,6 +9,7 @@ import {DcsomGrapheBarComponent} from "./dcsom-graphe/dcsom-graphe-bar/dcsom-gra
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {DcsomGrapheCercleComponent} from "./dcsom-graphe/dcsom-graphe-cercle/dcsom-graphe-cercle.component";
 import {DcsomGrapheBarSimpleComponent} from "./dcsom-graphe/dcsom-graphe-bar-simple/dcsom-graphe-bar-simple.component";
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {DcsomGrapheBarSimpleComponent} from "./dcsom-graphe/dcsom-graphe-bar-sim
     MatLegacyChipsModule,
     NgApexchartsModule,
     NgxChartsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     HomeCardComponent,

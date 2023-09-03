@@ -5,6 +5,8 @@ import {AuthService} from "../../../core/services/auth.service";
 import {TypeInfoTuile} from "../../../core/enum/TypeInfoTuile";
 import {TuileService} from "../../../core/services/tuile.service";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
+import {FormControl} from "@angular/forms";
+import {startWith} from "rxjs";
 
 @Component({
   selector: 'app-home-card',
@@ -12,11 +14,12 @@ import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
   styleUrls: ['./home-card.component.scss']
 })
 export class HomeCardComponent implements  OnInit {
+  reach :FormControl =new FormControl("2023")
   isLtMd: boolean;
   annees: AnneeSelect[] = [
     {value: '2023', libelle: '2023'},
-    {value: '2023', libelle: '2023'},
-    {value: '2023', libelle: '2023'},
+    {value: '2022', libelle: '2022'},
+    {value: '2021', libelle: '2021'},
   ];
   /** Tuiles. */
   //public infoTuiles: HomeCard[];
@@ -28,10 +31,15 @@ export class HomeCardComponent implements  OnInit {
               public tuileService:TuileService) {
   }
   ngOnInit(): void {
-    this.tuileService.getcampagnesProduits(new Date()).subscribe()
-    this.tuileService.getcampagnesRegions(new Date()).subscribe()
-    this.tuileService.getcampagnesAnnnes(new Date()).subscribe()
     this.tuileService.getInfosTuiles().subscribe()
+    this.reach.valueChanges.pipe((startWith('2023'))).subscribe(( res)=>{
+      this.tuileService.getcampagnesProduits(new Date()).subscribe()
+      this.tuileService.getcampagnesRegions(new Date()).subscribe()
+      this.tuileService.getcampagnesAnnnes(new Date()).subscribe()
+    })
+    this.reach.valueChanges.subscribe((res)=>{
+
+    })
   }
   public getTitreTuile(typeHomecard: string):string{
     switch (typeHomecard) {

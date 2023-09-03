@@ -73,24 +73,22 @@
     </div>
   </div>
 </div>-->
-<div class="mt-02 global">
+<div class="mt-05 global">
   <div class="entete-acceuil" fxLayout="row" fxLayout fxLayoutAlign="space-between center"
        fxLayoutAlign.lt-md="space-between center" fxLayoutGap="5px" fxLayoutGap.lt-md="1px">
 
        <!-- ANNEE-->
     <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
-
         <mat-form-field class="champ--operateur" appearance="outline"
                         fxFlex="20" floatLabel="always">
           <mat-label>Année</mat-label>
-          <mat-select>
+          <mat-select [formControl]="reach" >
             <mat-option *ngFor="let annee of annees" [value]="annee.value">
               {{annee.libelle}}
             </mat-option>
           </mat-select>
         </mat-form-field>
     </div>
-
     <!-- BLOC CHARGEMENT -->
     <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
       <div fxLayout="column" fxLayoutAlign="start stretch">
@@ -103,12 +101,12 @@
   <!-- BLOC GRAPHE -->
   <div class="mt-02 graphe" fxLayout fxLayout="row" fxLayout.lt-md="column"
       fxLayoutAlign="space-around" fxLayoutGap="2">
-    <div fxFlex="35" fxFlex.lt-md="100">
+    <div fxFlex="40" fxFlex.lt-md="100">
       <app-dcsom-graphe-bar
       [homeCard]="campagnesProduits$">
       </app-dcsom-graphe-bar>
     </div>
-    <div fxFlex="35" fxFlex.lt-md="100">
+    <div fxFlex="30" fxFlex.lt-md="100">
       <app-dcsom-graphe-cercle
         [homeCard]="campagnesRegions$">
       </app-dcsom-graphe-cercle>

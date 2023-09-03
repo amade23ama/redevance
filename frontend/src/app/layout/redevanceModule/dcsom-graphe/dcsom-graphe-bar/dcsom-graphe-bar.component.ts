@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {Observable} from "rxjs";
 import {HomeCard} from "../../../../core/interfaces/infotuiles/homeCard";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 
 @Component({
@@ -10,9 +11,17 @@ import {HomeCard} from "../../../../core/interfaces/infotuiles/homeCard";
 })
 export class DcsomGrapheBarComponent  implements  OnInit{
   @Input() homeCard:Observable<HomeCard>
-  constructor() {
+  isLtMd: boolean;
+
+  constructor(private breakpointObserver: BreakpointObserver) {
+
   }
   ngOnInit() {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset, Breakpoints.Small])
+      .subscribe((result) => {
+        this.isLtMd = !result.matches;
+      });
   }
 
 }

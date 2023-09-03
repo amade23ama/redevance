@@ -70,8 +70,8 @@
   </div>
 </div>
 
-<div class="mt-05" fxLayout fxLayout="row" fxLayout.lt-md="column"
-     fxLayoutAlign="space-around" >
+<div class="mt-02 graphe" fxLayout fxLayout="row" fxLayout.lt-md="column"
+     fxLayoutAlign="space-around" fxLayoutGap="2">
   <div fxFlex="50" fxFlex.lt-md="100">
     <app-dcsom-graphe-bar
     [homeCard]="campagnesProduits$">
@@ -83,3 +83,10 @@
     </app-dcsom-graphe-cercle>
   </div>
 </div>
+
+<div>
+  <app-dcsom-graphe-bar-simple
+    [homeCard]="compagneAnnee$">
+  </app-dcsom-graphe-bar-simple>
+</div>
+

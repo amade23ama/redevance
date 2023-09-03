@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {TypeInfoTuile} from "../../../core/enum/TypeInfoTuile";
 import {TuileService} from "../../../core/services/tuile.service";
+import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 @Component({
   selector: 'app-home-card',
@@ -11,6 +12,7 @@ import {TuileService} from "../../../core/services/tuile.service";
   styleUrls: ['./home-card.component.scss']
 })
 export class HomeCardComponent implements  OnInit {
+  isLtMd: boolean;
   annees: AnneeSelect[] = [
     {value: '2023', libelle: '2023'},
     {value: '2023', libelle: '2023'},
@@ -21,12 +23,14 @@ export class HomeCardComponent implements  OnInit {
   infoTuiles$=this.tuileService.infoTuiles$
   campagnesProduits$=this.tuileService.campagnesProduits$
   campagnesRegions$=this.tuileService.campagnesRegions$
+  compagneAnnee$=this.tuileService.campagnesAnnnes$
   constructor(public appConfig:AppConfigService,public router: Router,public auth:AuthService,
               public tuileService:TuileService) {
   }
   ngOnInit(): void {
     this.tuileService.getcampagnesProduits(new Date()).subscribe()
     this.tuileService.getcampagnesRegions(new Date()).subscribe()
+    this.tuileService.getcampagnesAnnnes(new Date()).subscribe()
     this.tuileService.getInfosTuiles().subscribe()
   }
   public getTitreTuile(typeHomecard: string):string{

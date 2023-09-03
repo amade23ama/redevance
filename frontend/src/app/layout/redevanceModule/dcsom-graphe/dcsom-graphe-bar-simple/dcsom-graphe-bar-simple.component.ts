@@ -4,17 +4,12 @@ import {HomeCard} from "../../../../core/interfaces/infotuiles/homeCard";
 import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 
 @Component({
-  selector: 'app-dcsom-graphe-cercle',
-  templateUrl: './dcsom-graphe-cercle.component.html',
-  styleUrls: ['./dcsom-graphe-cercle.component.scss']
+  selector: 'app-dcsom-graphe-bar-simple',
+  templateUrl: './dcsom-graphe-bar-simple.component.html',
+  styleUrls: ['./dcsom-graphe-bar-simple.component.scss']
 })
-export class DcsomGrapheCercleComponent implements OnInit{
+export class DcsomGrapheBarSimpleComponent implements  OnInit{
   @Input() homeCard:Observable<HomeCard>
-  gradient: boolean = true;
-  showLegend: boolean = true;
-  showLabels: boolean = true;
-  isDoughnut: boolean = false;
-  legendPosition: string = 'below';
   isLtMd: boolean;
   constructor(private breakpointObserver: BreakpointObserver) {
     this.breakpointObserver
@@ -23,15 +18,6 @@ export class DcsomGrapheCercleComponent implements OnInit{
         this.isLtMd = !result.matches;
       });
   }
-
   ngOnInit() {
-  }
-  onSelect(data:any): void {
-  }
-
-  onActivate(data:any): void {
-  }
-
-  onDeactivate(data:any): void {
   }
 }

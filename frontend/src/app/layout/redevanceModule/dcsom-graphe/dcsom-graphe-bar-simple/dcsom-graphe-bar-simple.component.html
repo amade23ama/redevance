@@ -1,0 +1,12 @@
+<div  *ngIf="homeCard |async as  homecard" class="graphe-annee">
+  <ngx-charts-bar-vertical
+    [results]="homecard.campagnes"
+    [xAxisLabel]="'produit'"
+    [yAxisLabel]="'quantite(tonnes)'"
+    [legend]="false"
+    [showYAxisLabel]="true"
+    [xAxis]="true"
+    [yAxis]="true"
+    [gradient]="true">
+  </ngx-charts-bar-vertical>
+</div>

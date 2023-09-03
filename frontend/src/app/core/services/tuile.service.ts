@@ -15,6 +15,7 @@ export class TuileService {
   private _infoTuiles$: BehaviorSubject<HomeCard[]> = new BehaviorSubject<HomeCard[]>(null);
   private _campagnesProduits$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesRegion$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
+  private _campagnesAnnnes$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   constructor(private http: HttpClient) {
   }
 
@@ -55,6 +56,15 @@ export class TuileService {
   setCampagnesProduits(res: HomeCard) {
     this._campagnesProduits$.next(res)
   }
+
+  get campagnesAnnnes$(): Observable<HomeCard> {
+    return this._campagnesAnnnes$.asObservable()
+  }
+
+  setCampagnesAnnnes(res: HomeCard) {
+    this._campagnesAnnnes$.next(res)
+  }
+
   getcampagnesProduits(annee:Date): Observable<HomeCard> {
     const produit:HomeCard=HomeCard.fromJson({
       annee:new Date(),
@@ -83,6 +93,21 @@ export class TuileService {
  console.error("xxxxxxxxxxxxxxxx")
     return of();
   }
+
+  getcampagnesAnnnes(annee:Date): Observable<HomeCard> {
+    const produit:HomeCard=HomeCard.fromJson({
+      annee:new Date(),
+      typeTuile: null,
+      valeur:null,
+      details: null,
+      campagnes: this.dataAnnee,
+      descriptif:"tes",
+      value:123
+    },HomeCard)
+    this.setCampagnesAnnnes(produit)
+
+    return of();
+  }
   dataTest = [
     { name: "ATTAPULGITE", value: 105000 },
     { name: "BASALTE", value: 55000 },
@@ -107,5 +132,12 @@ export class TuileService {
     { name: "SAINT-LOUIS", value: 55000 },
     { name: "LOUGA", value: 15000 },
     { name: "DIOURBEL", value: 150000 },
+  ]
+  dataAnnee = [
+    { name: "2020", value: 105 },
+    { name: "2021", value: 550 },
+    { name: "2022", value: 150},
+    { name: "2023", value: 150 },
+    { name: "2019", value: 200}
   ]
 }

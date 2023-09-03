@@ -1,4 +1,8 @@
-<div  *ngIf="homeCard |async as  homecard">
+<!--
+<fieldset>
+  <legend class="titre-form">test</legend>
+  -->
+<div class="graphe-bar" *ngIf="homeCard |async as  homecard"  [ngClass]="{'responsive-column-layout': isLtMd}">
 <ngx-charts-bar-vertical
   [results]="homecard.campagnes"
   [xAxisLabel]="'produit'"
@@ -10,5 +14,3 @@
   [gradient]="true">
 </ngx-charts-bar-vertical>
 </div>
-<!--  [legendTitle]="'Product Sale Chart'"-->
-<!--[scheme]="colorScheme"-->

@@ -1,4 +1,5 @@
-<div *ngIf="homeCard |async as  homecard">
+
+<div  class="graphe-bar" *ngIf="homeCard |async as  homecard" [ngClass]="{'responsive-column-layout': isLtMd}">
   <ngx-charts-pie-chart
     [results]="homecard.campagnes"
     [gradient]="gradient"

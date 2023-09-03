@@ -1,1 +1,9 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+.responsive-column-layout{
+  height: 40vh;
+}
 
+.graphe-bar{
+  border: 0.01em solid $orange-600!important;
+}

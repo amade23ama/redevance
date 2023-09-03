@@ -8,13 +8,15 @@ import {NgApexchartsModule} from "ng-apexcharts";
 import {DcsomGrapheBarComponent} from "./dcsom-graphe/dcsom-graphe-bar/dcsom-graphe-bar.component";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {DcsomGrapheCercleComponent} from "./dcsom-graphe/dcsom-graphe-cercle/dcsom-graphe-cercle.component";
+import {DcsomGrapheBarSimpleComponent} from "./dcsom-graphe/dcsom-graphe-bar-simple/dcsom-graphe-bar-simple.component";
 
 @NgModule({
   declarations: [
     HomeCardComponent,
     UserInfoComponent,
     DcsomGrapheBarComponent,
-    DcsomGrapheCercleComponent
+    DcsomGrapheCercleComponent,
+    DcsomGrapheBarSimpleComponent
   ],
   imports: [
     AsyncPipe,

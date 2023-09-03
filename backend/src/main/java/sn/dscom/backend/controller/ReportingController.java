@@ -10,6 +10,8 @@ import sn.dscom.backend.common.dto.BilanDTO;
 import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.service.interfaces.IReportingService;
 
+import java.util.List;
+
 /**
  * ReportingController
  * @version 1
@@ -63,10 +65,36 @@ public class ReportingController {
     @PostMapping(path = "/produitParAn")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<BilanDTO> reportingProduitByYear(@RequestParam("annee") int annee) {
-        ReportingController.LOGGER.info("ExploitationController: rechercherSitesExploitation");
+        ReportingController.LOGGER.info("ReportingController: rechercherSitesExploitation");
         BilanDTO bilan = reportingService.reportingProduitByYear(
                 ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
                 ChargementUtils.getDateFinAnnee(String.valueOf(annee))
+        );
+        return ResponseEntity.ok(bilan);
+    }
+
+    /**
+     * getListAnnees
+     * @return le liste
+     */
+    @GetMapping(path = "/getAnnees")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<List<String>> getListAnnees() {
+        return ResponseEntity.ok(reportingService.getListeAnnees().stream().map(annee -> annee.substring(0,4)).toList());
+    }
+
+    /**
+     * get Chargement Annuel
+     * @return le liste
+     * http://localhost:8080/api/v1/reporting/getChargementsAnnuel/2023
+     */
+    @GetMapping(path = "/getChargementsAnnuel/{annee}")
+   @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<BilanDTO> getChargementsAnnuel(@PathVariable("annee") String annee) {
+        ReportingController.LOGGER.info("ReportingController: getChargementsAnnuel");
+        BilanDTO bilan = reportingService.getChargementsAnnuel(
+                ChargementUtils.getDateDebutAnnee(annee),
+                ChargementUtils.getDateFinAnnee(annee)
         );
         return ResponseEntity.ok(bilan);
     }

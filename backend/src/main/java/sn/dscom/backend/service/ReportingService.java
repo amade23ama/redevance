@@ -3,19 +3,15 @@ package sn.dscom.backend.service;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import sn.dscom.backend.common.constants.Enum.TypeInfoTuileEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.ChargementUtils;
-import sn.dscom.backend.controller.ExploitationController;
-import sn.dscom.backend.database.repository.ExploitationRepository;
 import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IExploitationService;
 import sn.dscom.backend.service.interfaces.IProduitService;
 import sn.dscom.backend.service.interfaces.IReportingService;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Service de fourniseur de reporting ou de tableau de bord
@@ -54,7 +50,7 @@ public class ReportingService implements IReportingService {
     @Override
     public BilanDTO rechercherReportingChargementByRegion(Date dateDebut, Date dateFin) {
         List<String> listRegion = this.exploitationService.getAllRegion();
-        List<CampagneBilanDTO> listCampagne = new ArrayList<>();
+        List<CampagneDTO> listCampagne = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateDebut);
         listRegion
@@ -63,7 +59,7 @@ public class ReportingService implements IReportingService {
 
 
 
-                    listCampagne.add(CampagneBilanDTO.builder()
+                    listCampagne.add(CampagneDTO.builder()
                                                     .libelle(region)
                                                     .quantite(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin)/1000)
                                                     .build());
@@ -72,6 +68,7 @@ public class ReportingService implements IReportingService {
         return BilanDTO.builder()
                 .annee(calendar.get(Calendar.YEAR))
                 .description("Production par région")
+                .typeTuile(TypeInfoTuileEnum.REGION.getCode())
                 .campagnes(listCampagne)
                 .build();
     }
@@ -82,13 +79,13 @@ public class ReportingService implements IReportingService {
     @Override
     public BilanDTO getRecouvrementProduitParAnne() {
         List<ProduitDTO> listProduit = this.produitService.rechercherProduits().get();
-        List<CampagneBilanDTO> listCampagne = new ArrayList<>();
+        List<CampagneDTO> listCampagne = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         int anneecourante = calendar.get(Calendar.YEAR);
         // les 5 derniers année
         for (int annee = 0; annee < 5;annee++ ){
             int anneeDeCalcul = anneecourante-annee;
-            listCampagne.add(CampagneBilanDTO.builder()
+            listCampagne.add(CampagneDTO.builder()
                     .libelle(String.valueOf(anneeDeCalcul))
                     .quantite(this.chargementService.getRecouvrementProduitParAn(listProduit,
                             ChargementUtils.getDateDebutAnnee(String.valueOf(anneeDeCalcul)),
@@ -98,6 +95,7 @@ public class ReportingService implements IReportingService {
         return BilanDTO.builder()
                 .annee(calendar.get(Calendar.YEAR))
                 .description("Volume de substance recouvrée par AN")
+                .typeTuile(TypeInfoTuileEnum.ANNUEL.getCode())
                 .campagnes(listCampagne)
                 .build();
     }
@@ -108,13 +106,13 @@ public class ReportingService implements IReportingService {
     @Override
     public BilanDTO reportingProduitByYear(Date dateDebut, Date dateFin) {
         List<ProduitDTO> listProduit = this.produitService.rechercherProduits().get();
-        List<CampagneBilanDTO> listCampagne = new ArrayList<>();
+        List<CampagneDTO> listCampagne = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateDebut);
         listProduit
                 .forEach(product -> {
 
-                    listCampagne.add(CampagneBilanDTO.builder()
+                    listCampagne.add(CampagneDTO.builder()
                             .libelle(product.getNomSRC())
                             .quantite(this.chargementService.getQuantiteProduitParAn(product, dateDebut, dateFin)/1000)
                             .build());
@@ -122,7 +120,40 @@ public class ReportingService implements IReportingService {
         return BilanDTO.builder()
                 .annee(calendar.get(Calendar.YEAR))
                 .description("Quantité de substance par année")
+                .typeTuile(TypeInfoTuileEnum.PRODUIT.getCode())
                 .campagnes(listCampagne)
+                .build();
+    }
+
+    /**
+     * getListeAnnees
+     *
+     * @return liste
+     */
+    @Override
+    public List<String> getListeAnnees() {
+        return this.chargementService.getListeAnnee();
+    }
+
+    /**
+     * getChargementsAnnuel
+     *
+     * @param dateDebutAnnee dateDebutAnnee
+     * @param dateFinAnnee   dateFinAnnee
+     * @return liste
+     */
+    @Override
+    public BilanDTO getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(dateDebutAnnee);
+        return BilanDTO.builder()
+                .annee(calendar.get(Calendar.YEAR))
+                .description("Chargement annuel")
+                .typeTuile(TypeInfoTuileEnum.CHARGEMENT.getCode())
+                .campagnes(Collections.singletonList(CampagneDTO.builder()
+                                .libelle(TypeInfoTuileEnum.CHARGEMENT.getCode())
+                                .quantite(this.chargementService.getChargementsAnnuel(dateDebutAnnee, dateFinAnnee))
+                                .build()))
                 .build();
     }
 }

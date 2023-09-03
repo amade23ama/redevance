@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.http.ResponseEntity;
 import sn.dscom.backend.common.dto.BilanDTO;
 import sn.dscom.backend.common.dto.ReportingDTO;
 
@@ -17,4 +18,18 @@ public interface IReportingService {
     BilanDTO getRecouvrementProduitParAnne();
 
     BilanDTO reportingProduitByYear(Date dateDebut, Date dateFin);
+
+    /**
+     * getListeAnnees
+     * @return liste
+     */
+    List<String> getListeAnnees();
+
+    /**
+     * getChargementsAnnuel
+     * @param dateDebutAnnee dateDebutAnnee
+     * @param dateFinAnnee dateFinAnnee
+     * @return liste
+     */
+    BilanDTO getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
 }

@@ -23,6 +23,6 @@ public class BilanDTO implements Serializable {
     private String typeTuile;//"PRODUIT"/"REGION"/"ANNUEL"/"CHARGEMENT"/
 
     /** campagnes */
-    private List<CampagneBilanDTO> campagnes;
+    private List<CampagneDTO> campagnes;
 
 }

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import sn.dscom.backend.common.dto.BilanDTO;
 import sn.dscom.backend.database.entite.*;
 
 import java.time.LocalDateTime;
@@ -84,4 +85,19 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
     @Query(value = "SELECT sum(c.volumeSubsitance) FROM ChargementEntity c WHERE c.produitEntity in (:listProduitEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Double quantiteRecouvrementAnnuel(@Param("listProduitEntity") List<ProduitEntity> listProduitEntity, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 
+    /**
+     * getListeAnnee
+     * @return liste année
+     */
+    @Query(value = "SELECT DATE_PART('YEAR', c.datePassage) AS published_year FROM ChargementEntity c GROUP BY DATE_PART('YEAR', c.datePassage)")
+    List<String> getListeAnnee();
+
+    /**
+     * countChargementAnnuel
+     * @param dateDebut dateDebut
+     * @param dateFin dateFin
+     * @return le nombre de chargement annuel
+     */
+    @Query(value = "select count(c) from ChargementEntity c where c.datePassage>:dateDebut and c.datePassage<:dateFin")
+    Integer countChargementAnnuel(@Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 }

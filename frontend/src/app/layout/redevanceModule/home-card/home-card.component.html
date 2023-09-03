@@ -40,7 +40,7 @@
   </mat-card>
 </div>
   -->
-<div class="mt-02">
+<!--<div class="mt-02">
   <div class="entete-acceuil" fxLayout="row" fxLayout fxLayoutAlign="space-between center"
        fxLayoutAlign.lt-md="space-between center" fxLayoutGap="5px" fxLayoutGap.lt-md="1px">
     <div fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
@@ -56,6 +56,10 @@
       </mat-form-field>
     </div>
     <div fxLayout="column" fxLayoutAlign="start stretch">
+      <div class="result-titre">Chargement</div>
+      <div class="result-continue">52000</div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start stretch">
       <div class="result-titre">Véhicule</div>
       <div class="result-continue">1234</div>
     </div>
@@ -68,25 +72,56 @@
       <div class="result-continue">13</div>
     </div>
   </div>
+</div>-->
+<div class="mt-02 global">
+  <div class="entete-acceuil" fxLayout="row" fxLayout fxLayoutAlign="space-between center"
+       fxLayoutAlign.lt-md="space-between center" fxLayoutGap="5px" fxLayoutGap.lt-md="1px">
+
+       <!-- ANNEE-->
+    <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
+
+        <mat-form-field class="champ--operateur" appearance="outline"
+                        fxFlex="20" floatLabel="always">
+          <mat-label>Année</mat-label>
+          <mat-select>
+            <mat-option *ngFor="let annee of annees" [value]="annee.value">
+              {{annee.libelle}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+
+    <!-- BLOC CHARGEMENT -->
+    <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
+      <div fxLayout="column" fxLayoutAlign="start stretch">
+        <div class="result-titre">Chargement</div>
+        <div class="result-continue">52000</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOC GRAPHE -->
+  <div class="mt-02 graphe" fxLayout fxLayout="row" fxLayout.lt-md="column"
+      fxLayoutAlign="space-around" fxLayoutGap="2">
+    <div fxFlex="35" fxFlex.lt-md="100">
+      <app-dcsom-graphe-bar
+      [homeCard]="campagnesProduits$">
+      </app-dcsom-graphe-bar>
+    </div>
+    <div fxFlex="35" fxFlex.lt-md="100">
+      <app-dcsom-graphe-cercle
+        [homeCard]="campagnesRegions$">
+      </app-dcsom-graphe-cercle>
+    </div>
+    <div fxFlex="30" fxFlex.lt-md="100">
+      <app-dcsom-graphe-bar-simple
+        [homeCard]="compagneAnnee$">
+      </app-dcsom-graphe-bar-simple>
+    </div>
+
+  </div>
 </div>
 
-<div class="mt-02 graphe" fxLayout fxLayout="row" fxLayout.lt-md="column"
-     fxLayoutAlign="space-around" fxLayoutGap="2">
-  <div fxFlex="50" fxFlex.lt-md="100">
-    <app-dcsom-graphe-bar
-    [homeCard]="campagnesProduits$">
-    </app-dcsom-graphe-bar>
-  </div>
-  <div fxFlex="50" fxFlex.lt-md="100">
-    <app-dcsom-graphe-cercle
-      [homeCard]="campagnesRegions$">
-    </app-dcsom-graphe-cercle>
-  </div>
-</div>
 
-<div>
-  <app-dcsom-graphe-bar-simple
-    [homeCard]="compagneAnnee$">
-  </app-dcsom-graphe-bar-simple>
-</div>
+
 

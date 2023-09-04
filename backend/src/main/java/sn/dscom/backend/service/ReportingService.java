@@ -69,7 +69,7 @@ public class ReportingService implements IReportingService {
                 .annee(calendar.get(Calendar.YEAR))
                 .description("Production par région")
                 .typeTuile(TypeInfoTuileEnum.REGION.getCode())
-                .campagnes(listCampagne)
+                .campagnes(this.getNotEmptyCampagne(listCampagne))
                 .build();
     }
 
@@ -96,7 +96,7 @@ public class ReportingService implements IReportingService {
                 .annee(calendar.get(Calendar.YEAR))
                 .description("Volume de substance recouvrée par AN")
                 .typeTuile(TypeInfoTuileEnum.ANNUEL.getCode())
-                .campagnes(listCampagne)
+                .campagnes(this.getNotEmptyCampagne(listCampagne))
                 .build();
     }
 
@@ -121,7 +121,7 @@ public class ReportingService implements IReportingService {
                 .annee(calendar.get(Calendar.YEAR))
                 .description("Quantité de substance par année")
                 .typeTuile(TypeInfoTuileEnum.PRODUIT.getCode())
-                .campagnes(listCampagne)
+                .campagnes(this.getNotEmptyCampagne(listCampagne))
                 .build();
     }
 
@@ -155,5 +155,17 @@ public class ReportingService implements IReportingService {
                                 .quantite(this.chargementService.getChargementsAnnuel(dateDebutAnnee, dateFinAnnee))
                                 .build()))
                 .build();
+    }
+
+    /**
+     * getNotEmptyCampagne
+     * @param listCampagne listCampagne
+     * @return liste
+     */
+    private List<CampagneDTO> getNotEmptyCampagne(List<CampagneDTO> listCampagne) {
+
+        return listCampagne.stream()
+                .filter(campagneDTO -> campagneDTO.getQuantite() != 0.0)
+                .toList();
     }
 }

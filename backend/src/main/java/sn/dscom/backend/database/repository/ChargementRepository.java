@@ -82,7 +82,7 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      * @param dateFin dateFin
      * @return liste
      */
-    @Query(value = "SELECT sum(c.volumeSubsitance) FROM ChargementEntity c WHERE c.produitEntity in (:listProduitEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
+    @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.produitEntity in (:listProduitEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Double quantiteRecouvrementAnnuel(@Param("listProduitEntity") List<ProduitEntity> listProduitEntity, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 
     /**

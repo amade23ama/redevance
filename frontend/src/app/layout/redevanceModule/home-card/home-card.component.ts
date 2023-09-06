@@ -4,9 +4,9 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../../core/services/auth.service";
 import {TypeInfoTuile} from "../../../core/enum/TypeInfoTuile";
 import {TuileService} from "../../../core/services/tuile.service";
-import {BreakpointObserver, Breakpoints} from "@angular/cdk/layout";
 import {FormControl} from "@angular/forms";
 import {startWith} from "rxjs";
+import {ReferenceService} from "../../../core/services/reference.service";
 
 @Component({
   selector: 'app-home-card',
@@ -14,30 +14,30 @@ import {startWith} from "rxjs";
   styleUrls: ['./home-card.component.scss']
 })
 export class HomeCardComponent implements  OnInit {
-  reach :FormControl =new FormControl("2023")
+  reach :FormControl =new FormControl('')
   isLtMd: boolean;
-  annees: AnneeSelect[] = [
-    {value: '2023', libelle: '2023'},
-    {value: '2022', libelle: '2022'},
-    {value: '2021', libelle: '2021'},
-  ];
-  /** Tuiles. */
-  //public infoTuiles: HomeCard[];
   infoTuiles$=this.tuileService.infoTuiles$
   campagnesProduits$=this.tuileService.campagnesProduits$
   campagnesRegions$=this.tuileService.campagnesRegions$
   compagneAnnee$=this.tuileService.campagnesAnnnes$
+  annees$=this.referenceService.annees$
+  anneeMax:number;
   constructor(public appConfig:AppConfigService,public router: Router,public auth:AuthService,
-              public tuileService:TuileService) {
+              public tuileService:TuileService,public readonly  referenceService:ReferenceService) {
   }
   ngOnInit(): void {
-    this.tuileService.getInfosTuiles().subscribe()
-    this.reach.valueChanges.pipe((startWith('2023'))).subscribe(( res)=>{
-      this.tuileService.getcampagnesProduits(new Date()).subscribe()
-      this.tuileService.getcampagnesRegions(new Date()).subscribe()
-      this.tuileService.getcampagnesAnnnes(new Date()).subscribe()
+    //this.tuileService.getInfosTuiles().subscribe()
+    this.referenceService.annees$.subscribe((res)=>{
+      this.anneeMax=res.length>0?Math.max(...res):null
+      this.reach.setValue(this.anneeMax)
     })
-    this.reach.valueChanges.subscribe((res)=>{
+      this.reach.valueChanges.pipe((startWith(this.anneeMax))).subscribe(( value)=>{
+        if(value!=null){
+          this.tuileService.getcampagnesProduits(value).subscribe()
+          this.tuileService.getcampagnesRegions(value).subscribe()
+          this.tuileService.getcampagnesAnnnes(value).subscribe()
+        }
+
 
     })
   }
@@ -122,8 +122,4 @@ export class HomeCardComponent implements  OnInit {
 
   }
 
-}
-interface AnneeSelect {
-  value: string;
-  libelle: string;
 }

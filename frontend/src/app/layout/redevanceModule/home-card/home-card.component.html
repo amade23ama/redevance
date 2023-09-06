@@ -76,15 +76,14 @@
 <div class="mt-05 global">
   <div class="entete-acceuil" fxLayout="row" fxLayout fxLayoutAlign="space-between center"
        fxLayoutAlign.lt-md="space-between center" fxLayoutGap="5px" fxLayoutGap.lt-md="1px">
-
        <!-- ANNEE-->
     <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
         <mat-form-field class="champ--operateur" appearance="outline"
-                        fxFlex="20" floatLabel="always">
+                        fxFlex="20" floatLabel="always" *ngIf="annees$ |async as annees">
           <mat-label>Année</mat-label>
           <mat-select [formControl]="reach" >
-            <mat-option *ngFor="let annee of annees" [value]="annee.value">
-              {{annee.libelle}}
+            <mat-option *ngFor="let annee of annees" [value]="annee">
+              {{annee}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -116,7 +115,6 @@
         [homeCard]="compagneAnnee$">
       </app-dcsom-graphe-bar-simple>
     </div>
-
   </div>
 </div>
 

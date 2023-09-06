@@ -7,6 +7,7 @@ import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from 
 import {Utilisateur} from "../interfaces/utilisateur";
 import {Detail} from "../interfaces/infotuiles/detail";
 import {Campagne} from "../interfaces/infotuiles/campagne";
+import {NotificationService} from "./notification.service";
 @Injectable({providedIn: 'root'})
 export class TuileService {
   readonly url = environment.apiUrl
@@ -16,7 +17,7 @@ export class TuileService {
   private _campagnesProduits$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesRegion$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesAnnnes$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient,private notification: NotificationService) {
   }
 
   /**
@@ -65,8 +66,20 @@ export class TuileService {
     this._campagnesAnnnes$.next(res)
   }
 
-  getcampagnesProduits(annee:Date): Observable<HomeCard> {
-    const produit:HomeCard=HomeCard.fromJson({
+  getcampagnesProduits(annee:number): Observable<HomeCard> {
+    console.error("annnee",annee)
+    return this.http.get<HomeCard>(this.url + `/v1/reporting/produitParAn/${annee}`)
+      .pipe(
+        tap((res)=>{
+            this.setCampagnesProduits(HomeCard.fromJson(res,HomeCard));
+          },
+          catchError((err) => {
+            //this.notification.error(" erreur de recuperation config ")
+            return throwError(() => err)
+          })
+        )
+      )
+   /* const produit:HomeCard=HomeCard.fromJson({
       annee:new Date(),
       typeTuile: null,
       valeur:null,
@@ -74,13 +87,26 @@ export class TuileService {
       campagnes: this.dataTest,
       descriptif:"tes",
       value:123
-    },HomeCard)
-    this.setCampagnesProduits(produit)
+    },HomeCard)*/
 
-    return of();
+    //this.setCampagnesProduits(produit)
+
+    //return of();
   }
-  getcampagnesRegions(annee:Date): Observable<HomeCard> {
-    const regions:HomeCard=HomeCard.fromJson({
+  getcampagnesRegions(annee:number): Observable<HomeCard> {
+
+    return this.http.get<HomeCard>(this.url + `/v1/reporting/chargementByRegion/${annee}`)
+      .pipe(
+        tap((res)=>{
+            this.setCampagnesRegion(HomeCard.fromJson(res,HomeCard));
+          },
+          catchError((err) => {
+            this.notification.error(" erreur de recuperation config ")
+            return throwError(() => err)
+          })
+        )
+      )
+    /*const regions:HomeCard=HomeCard.fromJson({
       annee:new Date(),
       typeTuile: null,
       valeur:null,
@@ -92,10 +118,22 @@ export class TuileService {
     this.setCampagnesRegion(regions)
  console.error("xxxxxxxxxxxxxxxx")
     return of();
+    */
   }
 
-  getcampagnesAnnnes(annee:Date): Observable<HomeCard> {
-    const produit:HomeCard=HomeCard.fromJson({
+  getcampagnesAnnnes(annee:number): Observable<HomeCard> {
+    return this.http.get<HomeCard>(this.url + `/v1/reporting/getChargementsAnnuel/${annee}`)
+      .pipe(
+        tap((res)=>{
+            this.setCampagnesAnnnes(HomeCard.fromJson(res,HomeCard));
+          },
+          catchError((err) => {
+            this.notification.error(" erreur de recuperation config ")
+            return throwError(() => err)
+          })
+        )
+      )
+   /* const produit:HomeCard=HomeCard.fromJson({
       annee:new Date(),
       typeTuile: null,
       valeur:null,
@@ -107,6 +145,7 @@ export class TuileService {
     this.setCampagnesAnnnes(produit)
 
     return of();
+    */
   }
   dataTest = [
     { name: "ATTAPULGITE", value: 105000 },

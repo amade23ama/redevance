@@ -90,7 +90,7 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      * @return liste année
      */
     @Query(value = "SELECT DATE_PART('YEAR', c.datePassage) AS published_year FROM ChargementEntity c GROUP BY DATE_PART('YEAR', c.datePassage)")
-    List<String> getListeAnnee();
+    List<Integer> getListeAnnee();
 
     /**
      * countChargementAnnuel

@@ -10,6 +10,9 @@ import sn.dscom.backend.common.dto.BilanDTO;
 import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.service.interfaces.IReportingService;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -34,9 +37,9 @@ public class ReportingController {
      * rechercher Reporting Chargemnet
      * @return le bilan
      */
-    @PostMapping(path = "/chargementByRegion")
-    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<BilanDTO> rechercherReportingChargementByRegion(@RequestParam("annee") int annee) {
+    @GetMapping(path = "/chargementByRegion/{annee}")
+    //@PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<BilanDTO> rechercherReportingChargementByRegion(@PathVariable int annee) {
         ReportingController.LOGGER.info("ReportingController: rechercherReportingChargementByRegion");
         BilanDTO bilan = reportingService.rechercherReportingChargementByRegion(
                 ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
@@ -62,9 +65,9 @@ public class ReportingController {
      * rechercher Reporting Chargemnet
      * @return le bilan
      */
-    @PostMapping(path = "/produitParAn")
+    @GetMapping(path = "/produitParAn/{annee}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<BilanDTO> reportingProduitByYear(@RequestParam("annee") int annee) {
+    public ResponseEntity<BilanDTO> reportingProduitByYear(@PathVariable int annee) {
         ReportingController.LOGGER.info("ReportingController: rechercherSitesExploitation");
         BilanDTO bilan = reportingService.reportingProduitByYear(
                 ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
@@ -78,9 +81,11 @@ public class ReportingController {
      * @return le liste
      */
     @GetMapping(path = "/getAnnees")
-    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<String>> getListAnnees() {
-        return ResponseEntity.ok(reportingService.getListeAnnees().stream().map(annee -> annee.substring(0,4)).toList());
+    public ResponseEntity<List<Integer>> getListAnnees() {
+        List<Integer> listAnnee = reportingService.getListeAnnees();
+        //Par ordre décroissant
+        Collections.reverse(listAnnee);
+        return ResponseEntity.ok(listAnnee);
     }
 
     /**
@@ -89,12 +94,12 @@ public class ReportingController {
      * http://localhost:8080/api/v1/reporting/getChargementsAnnuel/2023
      */
     @GetMapping(path = "/getChargementsAnnuel/{annee}")
-   @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<BilanDTO> getChargementsAnnuel(@PathVariable("annee") String annee) {
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<BilanDTO> getChargementsAnnuel(@PathVariable int annee) {
         ReportingController.LOGGER.info("ReportingController: getChargementsAnnuel");
         BilanDTO bilan = reportingService.getChargementsAnnuel(
-                ChargementUtils.getDateDebutAnnee(annee),
-                ChargementUtils.getDateFinAnnee(annee)
+                ChargementUtils.getDateDebutAnnee(String.valueOf(annee)),
+                ChargementUtils.getDateFinAnnee(String.valueOf(annee))
         );
         return ResponseEntity.ok(bilan);
     }

@@ -1,8 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
-import org.springframework.http.ResponseEntity;
 import sn.dscom.backend.common.dto.BilanDTO;
-import sn.dscom.backend.common.dto.ReportingDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -23,7 +21,7 @@ public interface IReportingService {
      * getListeAnnees
      * @return liste
      */
-    List<String> getListeAnnees();
+    List<Integer> getListeAnnees();
 
     /**
      * getChargementsAnnuel

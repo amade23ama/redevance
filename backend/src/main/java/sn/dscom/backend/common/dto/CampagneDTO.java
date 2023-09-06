@@ -12,9 +12,9 @@ import java.io.Serializable;
 @Builder
 public class CampagneDTO implements Serializable {
 
-    /** quantite */
-    private double quantite;
+    /** value */
+    private double value;
 
-    /** libelle */
-    private String libelle;
+    /** name */
+    private String name;
 }

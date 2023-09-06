@@ -69,7 +69,7 @@ public interface IChargementService {
      * getListeAnnee
      * @return liste
      */
-    List<String> getListeAnnee();
+    List<Integer> getListeAnnee();
 
     /**
      *

@@ -60,8 +60,8 @@ public class ReportingService implements IReportingService {
 
 
                     listCampagne.add(CampagneDTO.builder()
-                                                    .libelle(region)
-                                                    .quantite(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin)/1000)
+                                                    .name(region)
+                                                    .value(this.chargementService.getQuantiteParRegionParAn(listExploitation, dateDebut, dateFin)/1000)
                                                     .build());
                 });
 
@@ -86,8 +86,8 @@ public class ReportingService implements IReportingService {
         for (int annee = 0; annee < 5;annee++ ){
             int anneeDeCalcul = anneecourante-annee;
             listCampagne.add(CampagneDTO.builder()
-                    .libelle(String.valueOf(anneeDeCalcul))
-                    .quantite(this.chargementService.getRecouvrementProduitParAn(listProduit,
+                    .name(String.valueOf(anneeDeCalcul))
+                    .value(this.chargementService.getRecouvrementProduitParAn(listProduit,
                             ChargementUtils.getDateDebutAnnee(String.valueOf(anneeDeCalcul)),
                             ChargementUtils.getDateFinAnnee(String.valueOf(anneeDeCalcul)))/1000)
                     .build());
@@ -113,8 +113,8 @@ public class ReportingService implements IReportingService {
                 .forEach(product -> {
 
                     listCampagne.add(CampagneDTO.builder()
-                            .libelle(product.getNomSRC())
-                            .quantite(this.chargementService.getQuantiteProduitParAn(product, dateDebut, dateFin)/1000)
+                            .name(product.getNomSRC())
+                            .value(this.chargementService.getQuantiteProduitParAn(product, dateDebut, dateFin)/1000)
                             .build());
                 });
         return BilanDTO.builder()
@@ -131,7 +131,7 @@ public class ReportingService implements IReportingService {
      * @return liste
      */
     @Override
-    public List<String> getListeAnnees() {
+    public List<Integer> getListeAnnees() {
         return this.chargementService.getListeAnnee();
     }
 
@@ -151,8 +151,8 @@ public class ReportingService implements IReportingService {
                 .description("Chargement annuel")
                 .typeTuile(TypeInfoTuileEnum.CHARGEMENT.getCode())
                 .campagnes(Collections.singletonList(CampagneDTO.builder()
-                                .libelle(TypeInfoTuileEnum.CHARGEMENT.getCode())
-                                .quantite(this.chargementService.getChargementsAnnuel(dateDebutAnnee, dateFinAnnee))
+                                .name(TypeInfoTuileEnum.CHARGEMENT.getCode())
+                                .value(this.chargementService.getChargementsAnnuel(dateDebutAnnee, dateFinAnnee))
                                 .build()))
                 .build();
     }
@@ -165,7 +165,7 @@ public class ReportingService implements IReportingService {
     private List<CampagneDTO> getNotEmptyCampagne(List<CampagneDTO> listCampagne) {
 
         return listCampagne.stream()
-                .filter(campagneDTO -> campagneDTO.getQuantite() != 0.0)
+                .filter(campagneDTO -> campagneDTO.getValue() != 0.0)
                 .toList();
     }
 }

@@ -349,7 +349,7 @@ public class ChargementService implements IChargementService {
      * @return liste
      */
     @Override
-    public List<String> getListeAnnee() {
+    public List<Integer> getListeAnnee() {
         return this.chargementRepository.getListeAnnee();
     }
 

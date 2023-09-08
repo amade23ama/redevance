@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -20,20 +21,27 @@ public class UtilisateurController {
     private IUtilisateurService utilisateurService;
 
     /**
-     *
-     * @param utilisateurDTO
-     * @return
+     * enregistrerUtilisateur
+     * @param utilisateurDTO utilisateurDTO
+     * @return utilisateurDTO
      */
     @PostMapping (value = "/utilisateur/enregistrer")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public UtilisateurDTO enregistrerUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
+
+        // check des champs obligatoires
+        Preconditions.checkNotNull(utilisateurDTO.getNom(), "Le Nom est obligatoir");
+        Preconditions.checkNotNull(utilisateurDTO.getPrenom(), "Le Prenom est obligatoir");
+        Preconditions.checkNotNull(utilisateurDTO.getEmail(), "Le Prenom est obligatoir");
+        Preconditions.checkNotNull(utilisateurDTO.getTelephone(), "Le Telephone est obligatoir");
+
         return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
     }
 
     /**
-     *
-     * @param email
-     * @return
+     * chargerUtilisateurParMail
+     * @param email email
+     * @return UtilisateurDTO
      */
     @GetMapping(value = "/utilisateur/{email}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
@@ -42,8 +50,8 @@ public class UtilisateurController {
     }
 
     /**
-     *
-     * @return
+     * chargerUtilisateurs
+     * @return la liste
      */
     @GetMapping(value = "/utilisateur/users")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
@@ -52,9 +60,9 @@ public class UtilisateurController {
     }
 
     /**
-     *
-     * @param id
-     * @return
+     * chargerUtilisateurParId
+     * @param id id
+     * @return UtilisateurDTO
      */
     @GetMapping(value = "/utilisateur/get/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
@@ -63,10 +71,10 @@ public class UtilisateurController {
     }
 
     /**
-     *
-     * @param id
-     * @param email
-     * @return
+     * checkEmail
+     * @param id id
+     * @param email email
+     * @return true or false
      */
     @GetMapping(value = "/utilisateur/exist/{id}/{email}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
@@ -86,9 +94,9 @@ public class UtilisateurController {
     }
 
     /**
-     *
-     * @param utilisateurDTO
-     * @return
+     * sauvegarderUtilisateur
+     * @param utilisateurDTO utilisateurDTO
+     * @return UtilisateurDTO
      */
     @PutMapping (value = "/utilisateur/enregistrer")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")

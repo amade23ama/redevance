@@ -37,6 +37,10 @@ export class ProduitComponent implements OnInit{
   })
   btns: ActionBtn[] = [];
   produitCourant:Produit;
+
+  // indique si on est mode modification ou pas
+  isModeModification = false;
+
   constructor(private builder: FormBuilder,public appConfig:AppConfigService,public produitService:ProduitService,
   private readonly activatedRoute: ActivatedRoute, public dialog: MatDialog) {
   }
@@ -45,6 +49,7 @@ export class ProduitComponent implements OnInit{
     this.activatedRoute.queryParams?.subscribe(async params => {
       this.initListbtns();
       if (params['contextInfo']) {
+        this.isModeModification = true;
         this.titre="Modification Produit"
         this.produitService.getProduitParId(params['contextInfo']).subscribe(()=>{
           this.produitCourant=this.produitService.getProduitCourant()
@@ -52,6 +57,7 @@ export class ProduitComponent implements OnInit{
           this.majBtnActive()
         })
       } else {
+        this.isModeModification = false;
         this.titre="Création Produit";
         this.majBtnActive()
       }
@@ -93,18 +99,25 @@ export class ProduitComponent implements OnInit{
   majBtnActive(){
     this.myform?.valueChanges.subscribe((res)=>{
       if(this.myform.invalid){
-        this.btns.forEach(b=>{
-          b.disabled=true
+        this.btns.forEach(b => {
+          // Si le formulaire n'est pas valide, on désactive le bouton ENREGISTRER
+          if (b.label === 'ENREGISTRER') {
+            b.disabled = true;
+          }
         });
       }else{
-        this.btns.forEach(b=>{
-          b.disabled=false
+        this.btns.forEach(b => {
+         b.disabled=false
         });
       }
     })
     if(!this.myform.invalid){
       this.btns.forEach(b=>{
-        b.disabled=false
+        // En modification on modification on désactive le bouton ENREGISTRER tant qu'il n'y ait pas d'action de modification
+        if (b.label === 'ENREGISTRER' && this.isModeModification) {
+          b.disabled = true;
+        }else{ b.disabled=false }
+        
       });
     }
   }

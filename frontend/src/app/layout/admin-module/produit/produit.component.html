@@ -5,8 +5,8 @@
     <form  class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>nom SRC </mat-label>
-          <input matInput  type="text"
+          <mat-label>Nom source </mat-label>
+          <input matInput type="text"
                  [formControl]="nomSRC"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
                    (click)="reset('nomSRC')">
@@ -18,7 +18,7 @@
         </mat-form-field>
 
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>nom NORM </mat-label>
+          <mat-label>Nom normalisé </mat-label>
           <input matInput  type="text"
                  [formControl]="nomNORM"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
@@ -33,11 +33,11 @@
 
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>densite en GRM </mat-label>
-          <input matInput  type="text"
+          <mat-label>Densité en gramme </mat-label>
+          <input matInput  type="number"
                  [formControl]="densiteGRM"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('nomSRC')">
+                   (click)="reset('densiteGRM')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="densiteGRM.errors?.hasOwnProperty('required')">
@@ -46,11 +46,11 @@
         </mat-form-field>
 
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>densite en KGM </mat-label>
-          <input matInput  type="text"
+          <mat-label>Densité en kilogramme </mat-label>
+          <input matInput  type="number"
                  [formControl]="densiteKGM"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('vdensiteKGM')">
+                   (click)="reset('densiteKGM')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="densiteKGM.errors?.hasOwnProperty('required')">

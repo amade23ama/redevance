@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from "@angular/router";
 import { RegexConstantes } from 'src/app/core/constantes/regexConstantes';
+import { AnnulationModaleComponent } from 'src/app/core/modals/annulation-modale/annulation-modale.component';
 import { Actions } from "../../../core/enum/actions";
 import { ActionBtn } from "../../../core/interfaces/actionBtn";
 import { Vehicule } from "../../../core/interfaces/vehicule";
@@ -58,8 +60,9 @@ export class VehiculeComponent implements OnInit {
   })
   vehiculeCourant:Vehicule;
 
-  constructor(public builder:FormBuilder,public appConfig:AppConfigService,
-              public vehiculeService:VehiculeService,private readonly activatedRoute: ActivatedRoute) {
+  constructor(public builder:FormBuilder, public appConfig:AppConfigService,
+              public vehiculeService:VehiculeService, private readonly activatedRoute: ActivatedRoute,
+              public dialog: MatDialog) {
   }
   ngOnInit(): void {
     this.activatedRoute.queryParams?.subscribe(async params => {
@@ -104,9 +107,16 @@ export class VehiculeComponent implements OnInit {
     //return false
   }
 
+  /** Action sur les boutons Enregistrer ou ANNULER */
   vehiculeAction(event: Actions){
+    //Le click sur le bouton Enregistrer
     if (event === Actions.ENREGISTRER) {
       this.vehiculeService.enregistrerVehicule(this.myform.value).subscribe()
+    }
+
+    //Le click sur le bouton Annuler
+    if (event === Actions.ANNULER) {
+      this.ouvrirModaleAnnulation('0ms', '0ms'); //Ouverture de la modale d'annulation
     }
   }
   majBtnActive(){
@@ -126,6 +136,16 @@ export class VehiculeComponent implements OnInit {
         b.disabled=false
       });
     }
+  }
+
+  /** ouvrir Modale Annulation */
+  ouvrirModaleAnnulation(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(AnnulationModaleComponent, {
+      width: '500px',
+      data: {url: '/recherche/vehicule'},
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
   }
 }
 

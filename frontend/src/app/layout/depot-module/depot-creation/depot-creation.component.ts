@@ -1,13 +1,15 @@
-import {Component, OnInit} from "@angular/core";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {ParamService} from "../../../core/services/param.service";
-import {SiteService} from "../../../core/services/site.service";
-import {ActivatedRoute} from "@angular/router";
-import {FileValidators} from "ngx-file-drag-drop";
-import {DepotService} from "../../../core/services/depot.service";
+import { Component, OnInit } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { ActivatedRoute } from "@angular/router";
+import { FileValidators } from "ngx-file-drag-drop";
+import { AnnulationModaleComponent } from "src/app/core/modals/annulation-modale/annulation-modale.component";
+import { Actions } from "../../../core/enum/actions";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { DepotService } from "../../../core/services/depot.service";
+import { ParamService } from "../../../core/services/param.service";
+import { SiteService } from "../../../core/services/site.service";
 
 @Component({
   selector: 'app-depot-creation',
@@ -26,7 +28,7 @@ export class DepotCreationComponent implements  OnInit{
     nom: this.nom,
     file:this.file
   })
-  constructor(private builder: FormBuilder,
+  constructor(private builder: FormBuilder, public dialog: MatDialog,
               public appConfig:AppConfigService,private paramService: ParamService,
               public siteService:SiteService, private readonly activatedRoute: ActivatedRoute,
               public depotService:DepotService) {
@@ -89,7 +91,11 @@ export class DepotCreationComponent implements  OnInit{
     formData.append('file', file);
     console.log("File changed!");
   }
+
+  /** Action sur les boutons ENREGISTRER ou ANNULER */
   depotAction(event: Actions) {
+
+    //Le click sur le bouton ENREGISTRER
     if (event === Actions.ENREGISTRER) {
       const file: File = this.myform.value.file[0];
       const formData: FormData = new FormData();
@@ -99,9 +105,22 @@ export class DepotCreationComponent implements  OnInit{
         this.depotService.ouvreValidationColumnPopUpDepot("valider la correspondant");
       })
     }
-    if(event===Actions.ANNULER){
 
+    //Le click sur le bouton Annuler
+    if (event === Actions.ANNULER) {
+      this.ouvrirModaleAnnulation('0ms', '0ms'); //Ouverture de la modale d'annulation
     }
+
     this.file.setValue('');
+  }
+
+  /** ouvrir Modale Annulation */
+  ouvrirModaleAnnulation(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(AnnulationModaleComponent, {
+      width: '500px',
+      data: {url: '/recherche/depots'},
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
   }
 }

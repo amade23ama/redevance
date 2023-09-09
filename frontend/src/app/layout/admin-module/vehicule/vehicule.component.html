@@ -4,12 +4,11 @@
     <legend class="titre-form">{{titre}}</legend>
     <div class="mt-05" fxLayout fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
       <div fxFlex="100">
+        <!-- Immatriculation -->
         <mat-form-field class="champ--operateur"  appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>immatriculation</mat-label>
-          <input matInput  type="text"
-                 [formControl]="immatriculation"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('immatriculation')">
+          <mat-label>Immatriculation</mat-label>
+          <input matInput  type="text" [formControl]="immatriculation"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('immatriculation')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="immatriculation.errors?.hasOwnProperty('required')">
@@ -18,24 +17,22 @@
         </mat-form-field>
       </div>
       <div formGroupName="categorie" fxLayoutGap="10px" fxFlex="100">
+        <!-- Classe -->
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>classe </mat-label>
-          <input matInput  type="text"
-                 [formControl]="type"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('type')">
+          <mat-label>Classe </mat-label>
+          <input matInput  type="text" [formControl]="type"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('type')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="type.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
           </mat-error>
         </mat-form-field>
+        <!-- Volume -->
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>volume </mat-label>
-          <input matInput  type="text"
-                 [formControl]="volume"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('volume')">
+          <mat-label>Volume </mat-label>
+          <input matInput  type="number" [formControl]="volume"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('volume')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
@@ -56,69 +53,63 @@
               {{ typ.code }} - {{ typ.libelle }}
             </mat-option>
           </mat-select>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('transType')">
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transType')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="transType.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
           </mat-error>
         </mat-form-field>
-        <mat-form-field class="champ--operateur" appearance="outline"
-                        fxFlex="50" fxFlex.lt-md="100"
-                        floatLabel="always">
+        <!-- Adresse -->
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" fxFlex.lt-md="100" floatLabel="always">
           <mat-label>Adresse</mat-label>
-          <input matInput
-                 [formControl]="transAdresse"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('transAdresse')">
+          <input matInput [formControl]="transAdresse"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transAdresse')">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
       </div>
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+        <!-- nom ou  numero Siret-->
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>{{transType.value==='P'?'nom':'numero Siret'}} </mat-label>
-          <input matInput  type="text"
-                 [formControl]="transNom"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('transNom')">
+          <mat-label>{{transType.value==='P'?'Nom':'Numéro Siret'}} </mat-label>
+          <input matInput  type="text" [formControl]="transNom"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transNom')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="transporteur.get('nom').hasError('pattern')">{{appConfig?.getLabel('error.caractere.invalid')}}</mat-error>
           <mat-error *ngIf="nom.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
           </mat-error>
         </mat-form-field>
-        <mat-form-field  *ngIf="transType.value==='P'"
-                         class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>prenom </mat-label>
-          <input matInput  type="text"
-                 [formControl]="transPrenom"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('transPrenom')">
+        <!-- prenom-->
+        <mat-form-field  *ngIf="transType.value==='P'" class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Prenom </mat-label>
+          <input matInput  type="text" [formControl]="transPrenom"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transPrenom')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="transporteur.get('prenom').hasError('pattern')">{{appConfig?.getLabel('error.caractere.invalid')}}</mat-error>
           <mat-error *ngIf="transPrenom.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
           </mat-error>
         </mat-form-field>
       </div>
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+        <!-- E-mail -->
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>email </mat-label>
-          <input matInput  type="text"
-                 [formControl]="transEmail"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('transEmail')">
+          <mat-label>Mail </mat-label>
+          <input matInput  type="email" [formControl]="transEmail"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transEmail')">
             <mat-icon>close</mat-icon>
           </button>
+          <mat-error *ngIf="transporteur.get('email').hasError('pattern') || transporteur.get('email').hasError('email')">{{appConfig?.getLabel('error.email.invalid')}}</mat-error>
         </mat-form-field>
+        <!-- Téléphone -->
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>telephone</mat-label>
-          <input matInput  type="text"
-                 [formControl]="transTelephone"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('transTelephone')">
+          <mat-label>Téléphone</mat-label>
+          <input matInput  type="tel" [formControl]="transTelephone"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transTelephone')">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>

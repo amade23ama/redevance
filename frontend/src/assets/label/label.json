@@ -91,6 +91,7 @@
     "error.email.exist":"Email déjà existant !",
     "error.champ.obligatoire": "Le champ est obligatoire",
     "error.email.invalid": "Email est invalid !",
+    "error.caractere.invalid": "Caractères non autorisés",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",
     "recherche.depot.pluriel.label": "depot trouvés",

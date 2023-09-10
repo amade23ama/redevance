@@ -1,17 +1,15 @@
-import {AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ParamService} from "../../../core/services/param.service";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {debounceTime, distinctUntilChanged, map, Observable, of, startWith, tap} from "rxjs";
-import {animate, group, state, style, transition, trigger} from "@angular/animations";
-import {openCloseTransition} from "../../../core/interfaces/open-close.transition";
-import {MatRadioButton, MatRadioChange} from "@angular/material/radio";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {Produit} from "../../../core/interfaces/produit";
-import {Site} from "../../../core/interfaces/site";
-import {SiteService} from "../../../core/services/site.service";
-import {ActivatedRoute} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from "@angular/router";
+import { AnnulationModaleComponent } from 'src/app/core/modals/annulation-modale/annulation-modale.component';
+import { Actions } from "../../../core/enum/actions";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { openCloseTransition } from "../../../core/interfaces/open-close.transition";
+import { Site } from "../../../core/interfaces/site";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { ParamService } from "../../../core/services/param.service";
+import { SiteService } from "../../../core/services/site.service";
 
 
 
@@ -39,7 +37,7 @@ export class SiteComponent implements OnInit {
 
   btns: ActionBtn[] = [];
   siteCourant:Site;
-  constructor(private builder: FormBuilder,
+  constructor(private builder: FormBuilder, public dialog: MatDialog,
               public appConfig:AppConfigService,private paramService: ParamService,
               public siteService:SiteService, private readonly activatedRoute: ActivatedRoute) {
   }
@@ -80,10 +78,17 @@ export class SiteComponent implements OnInit {
     //return false
   }
 
-  utilisateurAction(event: Actions){
+  /** Action sur les boutons ENREGISTRER ou ANNULER */
+  siteAction(event: Actions){
+    //Le click sur le bouton ENREGISTRER
     if (event === Actions.ENREGISTRER) {
       const b= this.myform.value;
       this.siteService.enregistrerSite(this.myform.value).subscribe()
+    }
+
+    //Le click sur le bouton Annuler
+    if (event === Actions.ANNULER) {
+      this.ouvrirModaleAnnulation('0ms', '0ms'); //Ouverture de la modale d'annulation
     }
   }
   majBtnActive(){
@@ -130,6 +135,16 @@ export class SiteComponent implements OnInit {
     parentElement.classList.add('highlight');
   }
   */
+
+  /** ouvrir Modale Annulation */
+  ouvrirModaleAnnulation(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(AnnulationModaleComponent, {
+      width: '500px',
+      data: {url: '/recherche/site'},
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
+  }
 
 }
 

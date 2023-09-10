@@ -1,5 +1,9 @@
 package sn.dscom.backend.service;
 
+import com.google.common.base.Strings;
+import io.vavr.control.Try;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -26,8 +30,11 @@ import java.util.stream.Collectors;
 @Transactional
 public class UtilisateurService implements IUtilisateurService {
 
+    /** Logger Factory */
+    private static final Logger LOGGER = LoggerFactory.getLogger(UtilisateurService.class);
+
     /** utilisateur Transformer */
-    private Transformer<UtilisateurDTO, UtilisateurEntity> utilisateurTransformer = new UtilisateurConverter();
+    private final Transformer<UtilisateurDTO, UtilisateurEntity> utilisateurTransformer = new UtilisateurConverter();
 
     /** utilisateur Repository*/
     @Autowired
@@ -37,8 +44,14 @@ public class UtilisateurService implements IUtilisateurService {
     @Autowired
     private IMailService mailService;
 
-
+    /**
+     * sauvegarderUtilisateur
+     * @param utilisateurDTO utilisateurDTO
+     * @return UtilisateurDTO
+     */
     public UtilisateurDTO sauvegarderUtilisateur(UtilisateurDTO utilisateurDTO) {
+
+        //Dans le cas d'une modification
         if(utilisateurDTO.getId()!=null){
             Optional<UtilisateurEntity> user = utilisateurRepository.findById(utilisateurDTO.getId()) ;
             if(user.isPresent()){
@@ -49,9 +62,8 @@ public class UtilisateurService implements IUtilisateurService {
             }
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
         }
-        if (utilisateurDTO.getEmail().isEmpty() || utilisateurDTO.getPrenom().isEmpty() || utilisateurDTO.getNom().isEmpty()) {
-            return null;
-        }
+
+        // On génére le login
         String login = Utils.generateLogin(utilisateurDTO);
         int i = 1;
         while (loginExiste(login)) {
@@ -59,31 +71,45 @@ public class UtilisateurService implements IUtilisateurService {
             i++;
         }
         utilisateurDTO.setLogin(login);
-        String mdp = UUID.randomUUID().toString();
+        String mdp = UUID.randomUUID().toString().substring(0, 8);
         utilisateurDTO.setPassword(mdp);
         if (utilisateurDTO.getId() == null) {
+            Optional<UtilisateurEntity> userFinded = utilisateurRepository.findUtilisateurEntityByTelephoneEquals(utilisateurDTO.getTelephone());
+
+            if (userFinded.isPresent()) {
+                throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
+            }
             utilisateurDTO.setActive(utilisateurDTO.isActive());
-            UtilisateurEntity user = utilisateurRepository.save(UtilisateurConverter.toUtilisateurEntity(utilisateurDTO));
+            UtilisateurEntity user = Try.of(() -> UtilisateurConverter.toUtilisateurEntity(utilisateurDTO))
+                        .mapTry(utilisateurRepository::save)
+                        .getOrElseGet(ex -> UtilisateurEntity.builder().build());
+
+            UtilisateurService.LOGGER.info(String.format("l'utilisateur %s a été créé.", user.getLogin()));
 
             //Envoi du mail
-            String msgBody = """
-                    Bonjour,
-                    Voici votre mot de passe: 
-                    """ + mdp + " et votre login: " + login;
+            if (!Strings.isNullOrEmpty(user.getLogin())) {
+                String msgBody = """
+                            Bonjour,
+                            Voici votre mot de passe: 
+                            """ + mdp + " et votre login: " + login;
 
-            // Envoi du méssage
-            this.mailService.envoiMail(EmailDetails.builder()
-                    .recipient(user.getEmail())
-                    .subject("Mail de confirmation")
-                    .msgBody(msgBody)
-                    .build());
-
+                    // Envoi du méssage
+                this.mailService.envoiMail(EmailDetails.builder()
+                            .recipient(user.getEmail())
+                            .subject("Mail de confirmation")
+                            .msgBody(msgBody)
+                            .build());
+                }
             return utilisateurTransformer.reverse(user);
         }
         return null;
     }
 
-
+    /**
+     * mjUtilisateur
+     * @param utilisateurDTO utilisateurDTO
+     * @return UtilisateurDTO
+     */
     public UtilisateurDTO mjUtilisateur(UtilisateurDTO utilisateurDTO) {
         return miseaJourUtilisateur(utilisateurDTO);
     }
@@ -103,15 +129,22 @@ public class UtilisateurService implements IUtilisateurService {
         return utilisateurTransformer.reverse(userDetail);
     }
 
+    /**
+     * getAllUtilisateurs
+     * @return list
+     */
     public List<UtilisateurDTO> getAllUtilisateurs() {
         List<UtilisateurEntity> users = utilisateurRepository.findAll();
-        List<UtilisateurDTO> utilisateurDTOList = users.stream()
-                .map(u -> UtilisateurConverter.toUtilisateurDTO(u))
+        return users.stream()
+                .map(UtilisateurConverter::toUtilisateurDTO)
                 .collect(Collectors.toList());
-
-        return utilisateurDTOList;
     }
 
+    /**
+     * miseaJourUtilisateur
+     * @param utilisateurDTO UtilisateurDTO
+     * @return UtilisateurDTO
+     */
     private UtilisateurDTO miseaJourUtilisateur(UtilisateurDTO utilisateurDTO) {
         UtilisateurEntity user = UtilisateurConverter.toUtilisateurEntity(utilisateurDTO);
         UtilisateurEntity userDetail = utilisateurRepository.findById(utilisateurDTO.getId()).orElse(null);
@@ -127,19 +160,31 @@ public class UtilisateurService implements IUtilisateurService {
         return utilisateurTransformer.reverse(userDetail);
     }
 
+    /**
+     * chargerUtilisateur
+     * @param email email
+     * @return UtilisateurDTO
+     */
     public UtilisateurDTO chargerUtilisateur(String email) {
         UtilisateurEntity userDetail = utilisateurRepository.findUtilisateurEntitiesByLoginExists(email);
         return utilisateurTransformer.reverse(userDetail);
     }
 
+    /**
+     * loginExiste
+     * @param login login
+     * @return true or false
+     */
     private boolean loginExiste(String login) {
         Integer val = this.utilisateurRepository.checkUtilisateurEntitiesByLoginExists(login);
-        if (val > 0) {
-            return true;
-        }
-        return false;
+        return val > 0;
     }
 
+    /**
+     * chargerUtilisateurParId
+     * @param id id
+     * @return UtilisateurDTO
+     */
     public UtilisateurDTO chargerUtilisateurParId(Long id) {
         Optional<UtilisateurEntity> user = utilisateurRepository.findById(id);
         if (user.isPresent()) {
@@ -149,13 +194,24 @@ public class UtilisateurService implements IUtilisateurService {
         }
     }
 
+    /**
+     * checkEmail
+     * @param id id
+     * @param email email
+     * @return  true or false
+     */
     public boolean checkEmail(Long id,String email) {
         Integer nb= utilisateurRepository.checkEmailExists(email,id);
-        return nb>0?true:false;
+        return nb > 0;
     }
 
+    /**
+     * checkEmail
+     * @param email email
+     * @return  true or false
+     */
     public boolean checkEmail(String email) {
         Integer nb= utilisateurRepository.checkEmailExists(email);
-        return nb>0?true:false;
+        return nb > 0;
     }
 }

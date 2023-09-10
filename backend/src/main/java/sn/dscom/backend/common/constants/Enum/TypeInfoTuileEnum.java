@@ -10,7 +10,10 @@ public enum TypeInfoTuileEnum {
     DEPOT("DEPOT"),
     SITE("SITE"),
     TRANSPORTEUR("TRANSPORTEUR"),
-    CHARGEMENT("CHARGEMENT");
+    CHARGEMENT("CHARGEMENT"),
+    PRODUIT("PRODUIT"),
+    REGION("REGION"),
+    ANNUEL("ANNUEL");
 
     /**
      * Code de l'info tuile.

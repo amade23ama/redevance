@@ -1,30 +1,20 @@
 package sn.dscom.backend.common.dto;
 
-
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 import java.io.Serializable;
 
 /**
- * Campagne d'une tuile (home card).
+ * ReportingDTO
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Builder
 public class CampagneDTO implements Serializable {
 
-    /** serialVersionUID. */
-    private static final long serialVersionUID = 64L;
+    /** value */
+    private double value;
 
-    /** Année. */
-    private Integer annee;
-
-    /** Quantité. */
-    private Integer quantite;
+    /** name */
+    private String name;
 }

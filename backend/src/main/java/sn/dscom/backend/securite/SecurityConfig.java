@@ -43,7 +43,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/login/**").permitAll()
-                //.requestMatchers(HttpMethod.POST, "/api/v1/depot/**").permitAll()//à supprimer
+                .requestMatchers(HttpMethod.GET, "/api/v1/reporting/getAnnees").permitAll()
                 .requestMatchers("/api/**").authenticated()
                 .and()
                 .sessionManagement()

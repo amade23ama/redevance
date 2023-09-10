@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {VehiculeService} from "../../../core/services/vehicule.service";
-import {ActivatedRoute} from "@angular/router";
-import {Site} from "../../../core/interfaces/site";
-import {Vehicule} from "../../../core/interfaces/vehicule";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from "@angular/router";
+import { RegexConstantes } from 'src/app/core/constantes/regexConstantes';
+import { AnnulationModaleComponent } from 'src/app/core/modals/annulation-modale/annulation-modale.component';
+import { Actions } from "../../../core/enum/actions";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { Vehicule } from "../../../core/interfaces/vehicule";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { VehiculeService } from "../../../core/services/vehicule.service";
 
 @Component({
   selector: 'app-vehicule',
@@ -14,10 +16,10 @@ import {Vehicule} from "../../../core/interfaces/vehicule";
   styleUrls: ['./vehicule.component.scss']
 })
 export class VehiculeComponent implements OnInit {
-  types=[{code:'S',libelle:'societe'},{code:'P',libelle:'particulier'}]
+  types=[{code:'S',libelle:'sociéte'},{code:'P',libelle:'particulier'}]
   btns: ActionBtn[] = [];
-  titre="Creer un Nouveau  Vehicule"
-  titreTransport="Creer un Nouveau  Transporteur"
+  titre="Créer un nouveau  vehicule"
+  titreTransport="Créer un nouveau  transporteur"
   id: FormControl = new FormControl();
   immatriculation: FormControl = new FormControl();
   nom: FormControl = new FormControl();
@@ -26,12 +28,12 @@ export class VehiculeComponent implements OnInit {
   dateModification:FormControl = new FormControl();
 
   transId: FormControl = new FormControl();
-  transPrenom: FormControl = new FormControl();
-  transNom: FormControl = new FormControl();
+  transPrenom: FormControl = new FormControl('', {validators: [Validators.pattern(RegexConstantes.REGEX_NOM_PRENOM)]});
+  transNom: FormControl = new FormControl('', {validators: [Validators.pattern(RegexConstantes.REGEX_NOM_PRENOM)]});
   transType: FormControl = new FormControl();
   transAdresse: FormControl = new FormControl();
   transTelephone: FormControl = new FormControl();
-  transEmail:FormControl = new FormControl();
+  transEmail:FormControl = new FormControl('', {validators: [Validators.email, Validators.pattern(RegexConstantes.REGEX_MAIL)]});
   categorieId: FormControl = new FormControl();
   type: FormControl = new FormControl();
   categorie:FormGroup = this.builder.group({
@@ -57,8 +59,10 @@ export class VehiculeComponent implements OnInit {
     categorie:this.categorie
   })
   vehiculeCourant:Vehicule;
-  constructor(public builder:FormBuilder,public appConfig:AppConfigService,
-              public vehiculeService:VehiculeService,private readonly activatedRoute: ActivatedRoute) {
+
+  constructor(public builder:FormBuilder, public appConfig:AppConfigService,
+              public vehiculeService:VehiculeService, private readonly activatedRoute: ActivatedRoute,
+              public dialog: MatDialog) {
   }
   ngOnInit(): void {
     this.activatedRoute.queryParams?.subscribe(async params => {
@@ -103,9 +107,16 @@ export class VehiculeComponent implements OnInit {
     //return false
   }
 
+  /** Action sur les boutons Enregistrer ou ANNULER */
   vehiculeAction(event: Actions){
+    //Le click sur le bouton Enregistrer
     if (event === Actions.ENREGISTRER) {
       this.vehiculeService.enregistrerVehicule(this.myform.value).subscribe()
+    }
+
+    //Le click sur le bouton Annuler
+    if (event === Actions.ANNULER) {
+      this.ouvrirModaleAnnulation('0ms', '0ms'); //Ouverture de la modale d'annulation
     }
   }
   majBtnActive(){
@@ -125,6 +136,16 @@ export class VehiculeComponent implements OnInit {
         b.disabled=false
       });
     }
+  }
+
+  /** ouvrir Modale Annulation */
+  ouvrirModaleAnnulation(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(AnnulationModaleComponent, {
+      width: '500px',
+      data: {url: '/recherche/vehicule'},
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
   }
 }
 

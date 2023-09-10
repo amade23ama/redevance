@@ -1,7 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
 import sn.dscom.backend.common.dto.BilanDTO;
-import sn.dscom.backend.common.dto.ReportingDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -17,4 +16,18 @@ public interface IReportingService {
     BilanDTO getRecouvrementProduitParAnne();
 
     BilanDTO reportingProduitByYear(Date dateDebut, Date dateFin);
+
+    /**
+     * getListeAnnees
+     * @return liste
+     */
+    List<Integer> getListeAnnees();
+
+    /**
+     * getChargementsAnnuel
+     * @param dateDebutAnnee dateDebutAnnee
+     * @param dateFinAnnee dateFinAnnee
+     * @return liste
+     */
+    BilanDTO getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
 }

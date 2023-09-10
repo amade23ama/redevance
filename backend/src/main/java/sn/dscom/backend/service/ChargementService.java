@@ -344,6 +344,26 @@ public class ChargementService implements IChargementService {
     }
 
     /**
+     * getListeAnnee
+     *
+     * @return liste
+     */
+    @Override
+    public List<Integer> getListeAnnee() {
+        return this.chargementRepository.getListeAnnee();
+    }
+
+    /**
+     * @param dateDebutAnnee dateDebutAnnee
+     * @param dateFinAnnee   dateDebutAnnee
+     * @return liste
+     */
+    @Override
+    public Integer getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee) {
+        return this.chargementRepository.countChargementAnnuel( dateDebutAnnee, dateFinAnnee);
+    }
+
+    /**
      * buildChargement
      * @param vehiculeDTO vehiculeDTO
      * @param siteDTO siteDTO

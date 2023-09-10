@@ -22,6 +22,7 @@ import {AdminModule} from "./layout/admin-module/admin.module";
 import {LayoutModule} from "./layout/layout.module";
 import {NotificationService} from "./core/services/notification.service";
 import {SessionTimerService} from "./core/services/Session.timer.service";
+import {ReferenceService} from "./core/services/reference.service";
 //import {AutorisationDirective} from "./core/directives/autorisation.directive";
 
 @NgModule({
@@ -45,7 +46,7 @@ import {SessionTimerService} from "./core/services/Session.timer.service";
     LoginModule,
     LayoutModule,
   ],
-  providers: [Globals, RouteGuard, {
+  providers: [Globals, RouteGuard,ReferenceService, {
     provide: HTTP_INTERCEPTORS,
     useClass: IntercepteurService,
     multi: true
@@ -55,7 +56,14 @@ import {SessionTimerService} from "./core/services/Session.timer.service";
       useFactory: initLabel,
       deps: [AppConfigService],
       multi: true
-    }],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initReference,
+      deps: [ReferenceService],
+      multi: true
+    }
+    ],
   exports: [
   ],
   bootstrap: [AppComponent]
@@ -71,4 +79,9 @@ export function initLabel(appConfig: AppConfigService) {
       //appConfig.loadLabel();
     });
   };
+}
+export function initReference(referenceService:ReferenceService){
+  return ()=>{
+    referenceService.getAllAnnee().subscribe()
+  }
 }

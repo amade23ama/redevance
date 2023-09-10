@@ -28,5 +28,5 @@ public class HomeCardDTO implements Serializable {
     private List<DetailDTO> details;
 
     /** Campagnes d'une tuile. */
-    private List<CampagneDTO> campagnes;
+    private List<CampagneDTOOLD> campagnes;
 }

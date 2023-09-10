@@ -1,9 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
-import sn.dscom.backend.common.dto.ChargementDTO;
-import sn.dscom.backend.common.dto.DepotDTO;
-import sn.dscom.backend.common.dto.ExploitationDTO;
-import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
 import java.time.LocalDateTime;
@@ -67,4 +64,18 @@ public interface IChargementService {
     double getQuantiteProduitParAn(ProduitDTO produit, Date dateDebut, Date dateFin);
 
     double getRecouvrementProduitParAn(List<ProduitDTO> listProduit, Date dateDebut, Date dateFin);
+
+    /**
+     * getListeAnnee
+     * @return liste
+     */
+    List<Integer> getListeAnnee();
+
+    /**
+     *
+     * @param dateDebutAnnee dateDebutAnnee
+     * @param dateFinAnnee dateDebutAnnee
+     * @return liste
+     */
+    Integer getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
 }

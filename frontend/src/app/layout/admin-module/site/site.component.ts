@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from "@angular/router";
-import { AnnulationModaleComponent } from 'src/app/core/modals/annulation-modale/annulation-modale.component';
+import { ModalService } from 'src/app/core/services/modal.service';
+import { UrlService } from 'src/app/core/services/url.service';
 import { Actions } from "../../../core/enum/actions";
 import { ActionBtn } from "../../../core/interfaces/actionBtn";
 import { openCloseTransition } from "../../../core/interfaces/open-close.transition";
@@ -20,7 +21,7 @@ import { SiteService } from "../../../core/services/site.service";
   animations: [openCloseTransition]
 })
 export class SiteComponent implements OnInit {
-  titre="Creer un Nouveau  Site"
+  titre="Créer un nouveau site"
   show = false;
   id: FormControl = new FormControl()
   nom: FormControl = new FormControl('',[Validators.required])
@@ -37,15 +38,20 @@ export class SiteComponent implements OnInit {
 
   btns: ActionBtn[] = [];
   siteCourant:Site;
+
+  // indique si on est en modification
+  isModeModification = false;
+
   constructor(private builder: FormBuilder, public dialog: MatDialog,
               public appConfig:AppConfigService,private paramService: ParamService,
-              public siteService:SiteService, private readonly activatedRoute: ActivatedRoute) {
+              public siteService:SiteService, private readonly activatedRoute: ActivatedRoute,
+              public modalService: ModalService, public urlService: UrlService) {
   }
   ngOnInit(): void {
     console.error(" log")
     this.activatedRoute.queryParams?.subscribe(async params => {
-      this.initListbtns();
       if (params['contextInfo']) {
+        this.isModeModification = true;
         this.titre="Modification Site"
          this.siteService.getSiteById(params['contextInfo']).subscribe(()=>{
          this.siteCourant=this.siteService.getSiteCourant()
@@ -53,22 +59,25 @@ export class SiteComponent implements OnInit {
           this.majBtnActive()
         })
       } else {
+        this.isModeModification = false;
         this.titre="Creation Site";
         this.majBtnActive()
       }
+      this.initListbtns();
     });
   }
   reset(formToReset:any){
     this.myform.controls[formToReset]?.setValue('');
   }
 
+  // Création des boutons: Annuler, Créer, Modifier
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
-      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
-      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+      this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.creer'), Actions.CREER, !this.isModeModification, true, true, true, 'save'));
+      this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, this.isModeModification, true, true, true, 'create'));
     return this.btns;
   }
+
   isEnrgBtnDisplayed(){
     return true
     /* this.utilisateurCourant = this.utilisateurService.getUtilisateurCourant();
@@ -81,33 +90,43 @@ export class SiteComponent implements OnInit {
   /** Action sur les boutons ENREGISTRER ou ANNULER */
   siteAction(event: Actions){
     //Le click sur le bouton ENREGISTRER
-    if (event === Actions.ENREGISTRER) {
+    if (event === Actions.CREER || event === Actions.MODIFIER) {
       const b= this.myform.value;
       this.siteService.enregistrerSite(this.myform.value).subscribe()
     }
 
     //Le click sur le bouton Annuler
     if (event === Actions.ANNULER) {
-      this.ouvrirModaleAnnulation('0ms', '0ms'); //Ouverture de la modale d'annulation
+      this.modalService.ouvrirModaleAnnulation(this.urlService.getPreviousUrl(), this.isModeModification ? 'modification de site' : 'création  de site'); //Ouverture de la modale d'annulation
     }
   }
-  majBtnActive(){
+
+ // Activation et désactivation des boutons en fonction des actions de l'utilisateur
+ majBtnActive(){
+    // Formulaire non valid
     this.myform?.valueChanges.subscribe((res)=>{
       if(this.myform.invalid){
-        this.btns.forEach(b=>{
-          b.disabled=true
-        });
-      }else{
-        this.btns.forEach(b=>{
-          b.disabled=false
-        });
+          if (this.isModeModification) {
+            this.majBtnState(Actions.CREER, true, false);
+            this.majBtnState(Actions.MODIFIER, true, true);
+          }else{
+            this.majBtnState(Actions.CREER, true, true);
+            this.majBtnState(Actions.MODIFIER, true, false);
+          }
+      }
+
+      // Formulaire valid
+      if(!this.myform.invalid){
+          if (this.isModeModification) {
+            this.majBtnState(Actions.CREER, true, false);
+            this.majBtnState(Actions.MODIFIER, false, true);
+          }else{
+            this.majBtnState(Actions.CREER, false, true);
+            this.majBtnState(Actions.MODIFIER, true, false);
+          }
       }
     })
-    if(!this.myform.invalid){
-      this.btns.forEach(b=>{
-        b.disabled=false
-      });
-    }
+
   }
 
 
@@ -137,12 +156,12 @@ export class SiteComponent implements OnInit {
   */
 
   /** ouvrir Modale Annulation */
-  ouvrirModaleAnnulation(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(AnnulationModaleComponent, {
-      width: '500px',
-      data: {url: '/recherche/site'},
-      enterAnimationDuration,
-      exitAnimationDuration,
+  majBtnState(a: Actions, disabled: boolean, display: boolean) {
+    this.btns.forEach(b => {
+      if (b.id === a) {
+        b.disabled = disabled;
+        b.display = display;
+      }
     });
   }
 

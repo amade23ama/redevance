@@ -55,6 +55,7 @@
 
     "dcsom.actions.annuler": "ANNULER",
     "dcsom.actions.enregistrer": "ENREGISTRER",
+    "dcsom.actions.creer": "CREER",
     "dcsom.actions.modifier": "MODIFIER",
     "dcsom.actions.desactiver": "DESACTIVER",
     "dcsom.actions.activer": "ACTIVER",
@@ -120,7 +121,10 @@
     "bilan.import.error.technique": "Rejetées à cause d'erreur technique ",
     "bilan.import.error.doublon": "Rejetées à cause de doublons",
     "bilan.import.error.site": "Rejetées car le site incconnue",
-    "bilan.import.error.produit.inconnue": "Rejetées car produit inconnue"
+    "bilan.import.error.produit.inconnue": "Rejetées car produit inconnue",
+
+    "modal.annulation.title":"Attention {0} en cours !",
+    "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?"
   }
 }
 

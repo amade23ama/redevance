@@ -3,7 +3,8 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import { MatDialog } from "@angular/material/dialog";
 import { ActivatedRoute } from "@angular/router";
 import { FileValidators } from "ngx-file-drag-drop";
-import { AnnulationModaleComponent } from "src/app/core/modals/annulation-modale/annulation-modale.component";
+import { ModalService } from "src/app/core/services/modal.service";
+import { UrlService } from "src/app/core/services/url.service";
 import { Actions } from "../../../core/enum/actions";
 import { ActionBtn } from "../../../core/interfaces/actionBtn";
 import { AppConfigService } from "../../../core/services/app-config.service";
@@ -18,7 +19,7 @@ import { SiteService } from "../../../core/services/site.service";
 })
 export class DepotCreationComponent implements  OnInit{
   numero$=this.depotService.numeroDepot$
-  titre="créaction un import";
+  titre="Créer un import";
   typeFile=".txt,.csv"
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl()
@@ -31,6 +32,7 @@ export class DepotCreationComponent implements  OnInit{
   constructor(private builder: FormBuilder, public dialog: MatDialog,
               public appConfig:AppConfigService,private paramService: ParamService,
               public siteService:SiteService, private readonly activatedRoute: ActivatedRoute,
+              public modalService: ModalService, public urlService: UrlService,
               public depotService:DepotService) {
   }
 
@@ -108,19 +110,9 @@ export class DepotCreationComponent implements  OnInit{
 
     //Le click sur le bouton Annuler
     if (event === Actions.ANNULER) {
-      this.ouvrirModaleAnnulation('0ms', '0ms'); //Ouverture de la modale d'annulation
+      this.modalService.ouvrirModaleAnnulation(this.urlService.getPreviousUrl(), 'création de dépot'); //Ouverture de la modale d'annulation
     }
 
     this.file.setValue('');
-  }
-
-  /** ouvrir Modale Annulation */
-  ouvrirModaleAnnulation(enterAnimationDuration: string, exitAnimationDuration: string): void {
-    this.dialog.open(AnnulationModaleComponent, {
-      width: '500px',
-      data: {url: '/recherche/depots'},
-      enterAnimationDuration,
-      exitAnimationDuration,
-    });
   }
 }

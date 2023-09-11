@@ -410,13 +410,52 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   min-height: 24px!important;
 }
 
+
+/*##################################################
+#
+# CSS MODAL
+#
+ ##################################################*/
+
 /* bordure orange */
 .dcsom-br-orange-1 {
-  border: 1px #fd956f solid;
+  border: 1px $orange-40 solid;
+}
+
+.dcsom-br-mako-1 {
+  border: 1px $mako solid;
+}
+
+.dcsom-br-blue-1 {
+  border: 1px $blue solid;
 }
 
 /* border-redius */
 .dcsom-br-redius-2 {
   border-radius: 2px;
 }
+
+.dcsom-modal-title {
+  line-height: 1 !important;
+  margin-bottom: 0 !important;
+}
+
+.dcsom-text-info {
+  color: #2469ff !important;
+  
+}
+
+.dcsom-modal-text {
+  font-weight: bolder !important;
+}
+
+.dcsom-text-black {
+  color: $dark !important;
+}
+
+/*##################################################
+#
+# FIN CSS MODAL
+#
+ ##################################################*/
 

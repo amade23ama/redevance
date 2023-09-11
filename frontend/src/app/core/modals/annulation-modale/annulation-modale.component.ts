@@ -2,10 +2,13 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { AppConfigService } from '../../services/app-config.service';
 
 // Données propres à la modale
 export interface Donnees {
   url: string;
+  action: string;
+  titre: string;
 }
 
 @Component({
@@ -22,13 +25,13 @@ export interface Donnees {
 export class AnnulationModaleComponent {
 
   /** constructor */
-  constructor(public router: Router, public dialogRef: MatDialogRef<AnnulationModaleComponent>, @Inject(MAT_DIALOG_DATA) public data: Donnees) {}
+  constructor(public appConfig: AppConfigService, public router: Router, public dialogRef: MatDialogRef<AnnulationModaleComponent>, @Inject(MAT_DIALOG_DATA) public data: Donnees) {}
 
   /**
    * navigation vers la page de recherche du menu d'annulation
    */
   annuler(){
-    this.router.navigate([this.data.url]);
+    this.router.navigate([this.data?.url]);
   }
 
 }

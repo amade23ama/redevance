@@ -21,7 +21,7 @@
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>Classe </mat-label>
           <input matInput  type="text" [formControl]="type"/>
-          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('type')">
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="resetCategorie('type')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="type.errors?.hasOwnProperty('required')">
@@ -32,7 +32,7 @@
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>Volume </mat-label>
           <input matInput  type="number" [formControl]="volume"/>
-          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('volume')">
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="resetCategorie('volume')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">

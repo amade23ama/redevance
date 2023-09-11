@@ -64,7 +64,7 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      * @param listExploitationEntity ListExploitationEntity
      * @return  la liste
      */
-    @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.exploitationEntity in (:listExploitationEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
+    @Query(value = "SELECT sum(c.poidsSubsitance) FROM ChargementEntity c WHERE c.exploitationEntity in (:listExploitationEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Double quantiteParRegionParAn(@Param("listExploitationEntity") List<ExploitationEntity> listExploitationEntity, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 
     /**
@@ -72,7 +72,7 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      * @param produit produit
      * @return  la liste
      */
-    @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.produitEntity=:produit and c.datePassage>:dateDebut and c.datePassage<:dateFin")
+    @Query(value = "SELECT sum(c.poidsSubsitance) FROM ChargementEntity c WHERE c.produitEntity=:produit and c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Double quantiteByProductByYear(@Param("produit") ProduitEntity produit, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 
     /**
@@ -82,7 +82,7 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      * @param dateFin dateFin
      * @return liste
      */
-    @Query(value = "SELECT sum(c.poids) FROM ChargementEntity c WHERE c.produitEntity in (:listProduitEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
+    @Query(value = "SELECT sum(c.poidsSubsitance) FROM ChargementEntity c WHERE c.produitEntity in (:listProduitEntity) and c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Double quantiteRecouvrementAnnuel(@Param("listProduitEntity") List<ProduitEntity> listProduitEntity, @Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 
     /**

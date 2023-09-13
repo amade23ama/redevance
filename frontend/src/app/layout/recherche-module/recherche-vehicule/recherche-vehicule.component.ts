@@ -1,16 +1,14 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from "@angular/forms";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from "@angular/router";
 import { Vehicule } from 'src/app/core/interfaces/vehicule';
 import { VehiculeService } from 'src/app/core/services/vehicule.service';
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {Site} from "../../../core/interfaces/site";
-import {Router} from "@angular/router";
-import {FormControl} from "@angular/forms";
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
-import {DatePipe} from "@angular/common";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AppConfigService } from "../../../core/services/app-config.service";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -34,7 +32,7 @@ export class RechercheVehiculeComponent implements OnInit{
   displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
   /** constructor */
-  constructor(public appConfig: AppConfigService,public vehiculeService: VehiculeService,
+  constructor(public appConfig: AppConfigService, public vehiculeService: VehiculeService,
               private router:Router) {}
 
 

@@ -67,7 +67,7 @@ public class ReportingService implements IReportingService {
 
         return BilanDTO.builder()
                 .annee(calendar.get(Calendar.YEAR))
-                .description("Production par région")
+                .description("Exploitation minière par région")
                 .typeTuile(TypeInfoTuileEnum.REGION.getCode())
                 .campagnes(this.getNotEmptyCampagne(listCampagne))
                 .build();
@@ -94,7 +94,7 @@ public class ReportingService implements IReportingService {
         }
         return BilanDTO.builder()
                 .annee(calendar.get(Calendar.YEAR))
-                .description("Volume de substance recouvrée par AN")
+                .description("Evolution annuelle de l’exploitation minière")
                 .typeTuile(TypeInfoTuileEnum.ANNUEL.getCode())
                 .campagnes(this.getNotEmptyCampagne(listCampagne))
                 .build();
@@ -119,7 +119,7 @@ public class ReportingService implements IReportingService {
                 });
         return BilanDTO.builder()
                 .annee(calendar.get(Calendar.YEAR))
-                .description("Quantité de substance par année")
+                .description("Exploitation minière par type de produit")
                 .typeTuile(TypeInfoTuileEnum.PRODUIT.getCode())
                 .campagnes(this.getNotEmptyCampagne(listCampagne))
                 .build();

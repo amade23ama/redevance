@@ -1,8 +1,8 @@
-<div class="dcsom-br-orange-1 dcsom-br-redius-1 ">
-    <h1 mat-dialog-title>Annulation </h1>
-    <div mat-dialog-content > Voulez-vous annuler la saisie ?</div>
-    <div mat-dialog-actions>
-        <button mat-button mat-dialog-close>Non</button>
-        <button mat-button mat-dialog-close cdkFocusInitial (click)="annuler()">Oui</button>
+<div>
+    <h3 class="dcsom-modal-title dcsom-text-info dcsom-modal-text" mat-dialog-title>{{appConfig.getLabel('modal.annulation.title', this.data?.action)}}</h3>
+    <div class="mt-1 dcsom-text-black" mat-dialog-content >{{appConfig.getLabel('modal.annulation.body', this.data?.action)}}</div>
+    <div class="mt-2" mat-dialog-actions>
+        <button mat-button mat-raised-button mat-dialog-close>Non</button>
+        <button mat-button mat-raised-button mat-dialog-close cdkFocusInitial (click)="annuler()">Oui</button>
     </div>
 </div>

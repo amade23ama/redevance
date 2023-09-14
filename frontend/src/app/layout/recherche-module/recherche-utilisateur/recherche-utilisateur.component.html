@@ -7,7 +7,13 @@
                       [tooltip]="appConfig.getLabel('header.btn.utilisateur.creer.tooltip')"
                       [search]="search"
                       (btnAjouter)="ouvreNouveauUtilisateur()"
-                      >
+                      (btnAjouterFiltre)="ajouterFiltre($event)"
+                      (btnAnnulerFiltre)="annulerFiltre($event)"
+                      [critereRecherches]="critereRecherches$"
+
+  [resultautocompleteRecherche]=rechercheSuggestions$
+
+  >
 </app-actions-critere-btns>
 <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
 <table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent " matSort>

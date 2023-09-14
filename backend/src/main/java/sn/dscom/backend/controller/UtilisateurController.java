@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.service.interfaces.IUtilisateurService;
 
@@ -102,5 +103,10 @@ public class UtilisateurController {
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public UtilisateurDTO sauvegarderUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
         return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
+    }
+    @PostMapping (value = "/utilisateur/recherche")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public List<UtilisateurDTO> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
+             return utilisateurService.rechargementParCritere(critereRecherche);
     }
 }

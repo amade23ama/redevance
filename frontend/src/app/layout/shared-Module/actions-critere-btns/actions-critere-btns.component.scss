@@ -3,18 +3,23 @@
 .recherche{
   padding-right: 2em;
   padding-left: 2em;
+  margin-bottom: 2em;
 }
+/*
+.recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  min-height: 36px;
+}
+*/
 
 .recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
   padding-top: 4px;
   padding-bottom: 4px;
-  min-height: 36px;
+  min-height: 30px;
 }
-.recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  min-height: 36px;
-}
+
+/*
 .recherche-mat-form-field::ng-deep.mat-mdc-icon-button {
   position: absolute;
   top: 50%;
@@ -24,13 +29,26 @@
   transform: translate(-50%, -50%);
   color: $orange-600!important;
 }
+*/
 .new--depot--button {
   position: absolute;
 
-  left: 40%;
+  left: 2%;
   transform: translate(50%, -25%);
   &.mat-button-disabled {
     background-color: gray;
   }
   background-color: $orange-500!important;
+}
+.recherche-mat-form-field{
+  height: 24px!important;
+}
+.recherche-mat-form-field ::ng-deep.mat-mdc-form-field-subscript-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  position: relative;
+  height: 0px;
+}
+.test{
+  //border: 1px solid red;
 }

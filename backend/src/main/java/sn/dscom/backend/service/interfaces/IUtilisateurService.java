@@ -1,5 +1,7 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.web.bind.annotation.RequestBody;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.UtilisateurDTO;
 
 import java.util.List;
@@ -68,4 +70,6 @@ public interface IUtilisateurService {
      * @return boolean
      */
      boolean checkEmail(String email);
+
+    public List<UtilisateurDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

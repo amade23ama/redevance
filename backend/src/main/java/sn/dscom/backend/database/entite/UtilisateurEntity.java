@@ -46,7 +46,7 @@ public class UtilisateurEntity {
     private Date dateModification;
     @Column(name ="ACTIF")
     private boolean active;
-    @JsonIgnore
+    //@JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "UTILISATEUR_PROFIL",
             joinColumns = @JoinColumn(name = "ID_UTILISATEUR"),

@@ -8,6 +8,8 @@ import {Utilisateur} from "../interfaces/utilisateur";
 import {AbstractControl} from "@angular/forms";
 import {NotificationService} from "./notification.service";
 import * as clone from 'lodash';
+import {AutocompleteRecherche} from "../interfaces/autocomplete.recherche";
+import {CritereRecherche} from "../interfaces/critere.recherche";
 @Injectable({
   providedIn:'root'
 })
@@ -209,6 +211,19 @@ export class UtilisateurService {
     const login=input.value
     const status = await lastValueFrom(this.http.get<boolean>( this.url+`/login/${login}`))
     return status ? null:{ emailExists: true }
+  }
+  chargementUtilisateurParCritere(critereRecherche:CritereRecherche ) {
+    return this.http.post<Utilisateur[]>(this.url+"/utilisateur/recherche",critereRecherche)
+      .pipe(
+        tap((res:Utilisateur[]) => {
+          this.setUtilisateurs(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Utilisateur ")
+          return throwError(() => err)
+        })
+      )
+
   }
 }
 

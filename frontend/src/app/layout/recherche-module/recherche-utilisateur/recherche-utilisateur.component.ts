@@ -5,7 +5,7 @@ import {UtilisateurService} from "../../../core/services/utilisateur.service";
 import {AppConfigService} from "../../../core/services/app-config.service";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 import {DatePipe} from "@angular/common";
-import {Observable} from "rxjs";
+import {debounceTime, distinctUntilChanged, Observable, of, switchMap} from "rxjs";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {BreakpointObserver} from "@angular/cdk/layout";
@@ -14,6 +14,9 @@ import {ParamService} from "../../../core/services/param.service";
 import {Profil} from "../../../core/interfaces/profil";
 import {FormControl} from "@angular/forms";
 import {Filtre} from "../../../core/interfaces/filtre";
+import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
+import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 
 @Component({
   selector: 'app-recherche-utilisateur',
@@ -35,11 +38,16 @@ export class RechercheUtilisateurComponent implements OnInit{
   profils$ = this.paramService.profils$;
   profil:Profil[]=[];
   filtres:Filtre[]=[]
-constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
-            private router:Router,private paramService: ParamService) {
+  recherche: AutocompleteRecherche[] = [];
+  rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherches$
+  critereRecherches$=this.autocompleteRechercheService.critereRecherches$
+
+  constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
+            private router:Router,private paramService: ParamService,
+            private autocompleteRechercheService:AutocompleteRechercheService) {
 }
   ngOnInit(): void {
-    this.utilisateurService.getAllUtilisateur().subscribe()
+    //this.utilisateurService.getAllUtilisateur().subscribe()
     this.paramService.chargementProfils().subscribe()
     this.utilisateurService.utilisateurs$.subscribe((res)=>{
       if (res !== null) {
@@ -49,7 +57,16 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
         this.dataSource.sort=this.sort
       }
     })
-    this.initfiltre()
+
+    this.search.valueChanges?.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((capture) => {
+        console.log("capture",capture)
+          return this.autocompleteRechercheService.autocompleteUtilisateur(capture);
+      })
+    ).subscribe();
+    this.rechargementUtilisateur();
   }
   /**
    * Méthode de formatage de la date
@@ -89,8 +106,26 @@ constructor(public appConfig: AppConfigService,private readonly utilisateurServi
       this.filtres.splice(index, 1);
     }
   }
-  initfiltre(){
-    this.filtres.push({"id":1,libelle:"mamadou"})
-    this.filtres.push({"id":2,libelle:"moussa"})
+
+  ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.addAutocompleteRecherche(autocompleteRecherche)
+  }
+  annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.removeAutocompleteRecherche(autocompleteRecherche)
+  }
+  rechargementUtilisateur(){
+    this.critereRecherches$.subscribe((res)=>{
+      if(res) {
+        const critereRecherche   = {
+        autocompleteRecherches:res,
+        page :1,
+        size :20,
+        dateDebut :new Date(),
+        dateFin :new Date(),
+      } as CritereRecherche
+        this.utilisateurService.chargementUtilisateurParCritere(critereRecherche).subscribe()
+      }
+
+    })
   }
 }

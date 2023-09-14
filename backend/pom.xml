@@ -23,7 +23,7 @@
     <description>backend</description>
     <properties>
         <java.version>17</java.version>
-        <start-class>sn.dscom.backend.BackendApplication</start-class>
+        <!--<start-class>sn.dscom.backend.BackendApplication</start-class>-->
     </properties>
     <dependencies>
 
@@ -189,6 +189,25 @@
             <version>10.4.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-jpa</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>com.querydsl</groupId>
+            <artifactId>querydsl-core</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        -->
+        <!--
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+ -->
     </dependencies>
 
     <build>

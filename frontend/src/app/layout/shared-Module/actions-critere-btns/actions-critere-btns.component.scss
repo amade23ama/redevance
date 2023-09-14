@@ -5,6 +5,9 @@
   padding-left: 2em;
   margin-bottom: 2em;
 }
+.contenair-filter{
+  margin-bottom: 0.5em;
+}
 /*
 .recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
   padding-top: 4px;
@@ -33,7 +36,7 @@
 .new--depot--button {
   position: absolute;
 
-  left: 2%;
+  left: 95%;
   transform: translate(50%, -25%);
   &.mat-button-disabled {
     background-color: gray;
@@ -51,4 +54,9 @@
 }
 .test{
   //border: 1px solid red;
+}
+.btn-export{
+  color: white;
+  background-color: $orange-500!important;
+  //height: 24px!important;
 }

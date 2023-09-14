@@ -24,13 +24,21 @@ public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,L
 
 
     Optional<UtilisateurEntity> findUtilisateurEntityByTelephoneEquals(@Param("telephone") String telephone);
-    @Query("SELECT DISTINCT u " +
+    /*@Query("SELECT DISTINCT u " +
             "FROM UtilisateurEntity u " +
             "LEFT JOIN u.profils p " +
             "WHERE " +
             "(COALESCE(:profileIds, NULL) IS NULL OR p.code IN :profileIds) " +
             "AND " +
             "(COALESCE(:userIds, NULL) IS NULL OR u.id IN :userIds)")
+    */
+    @Query("SELECT DISTINCT u " +
+            "FROM UtilisateurEntity u " +
+            "LEFT JOIN u.profils p " +
+            "WHERE " +
+            "(:profileIds IS NULL OR p.code IN :profileIds) " +
+            "AND " +
+            "(:userIds IS NULL OR u.id IN :userIds)")
 
     List<UtilisateurEntity> rechargementParCritere(@Param("userIds") List<Long> userIds,
                                                    @Param("profileIds") List<String> profileIds);

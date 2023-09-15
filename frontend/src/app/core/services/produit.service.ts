@@ -6,6 +6,8 @@ import { Produit } from '../interfaces/produit';
 import {Utilisateur} from "../interfaces/utilisateur";
 import {NotificationService} from "./notification.service";
 import {Profil} from "../interfaces/profil";
+import {CritereRecherche} from "../interfaces/critere.recherche";
+import {Exploitation} from "../interfaces/exploitation";
 
 @Injectable({
   providedIn: 'root'
@@ -105,5 +107,17 @@ export class ProduitService {
   }
   getProduitCourant() {
     return this.produitCourant;
+  }
+  chargementProduitParCritere(critereRecherche:CritereRecherche ) {
+    return this.httpClient.post<Produit[]>(this.url+"/recherche",critereRecherche)
+      .pipe(
+        tap((res:Produit[]) => {
+          this.setProduits(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Utilisateur ")
+          return throwError(() => err)
+        })
+      )
   }
 }

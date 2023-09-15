@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Site } from '../interfaces/site';
 import {NotificationService} from "./notification.service";
 import {Produit} from "../interfaces/produit";
+import {CritereRecherche} from "../interfaces/critere.recherche";
 
 @Injectable({
   providedIn: 'root'
@@ -159,5 +160,17 @@ export class SiteService {
   }
   getSiteCourant() {
     return this.siteCourant;
+  }
+  chargementSiteParCritere(critereRecherche:CritereRecherche ) {
+    return this.httpClient.post<Site[]>(this.url+"/recherche",critereRecherche)
+      .pipe(
+        tap((res:Site[]) => {
+          this.setSites(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Utilisateur ")
+          return throwError(() => err)
+        })
+      )
   }
 }

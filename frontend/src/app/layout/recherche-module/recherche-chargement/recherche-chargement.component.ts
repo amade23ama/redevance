@@ -11,6 +11,9 @@ import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 import {Router} from "@angular/router";
+import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -33,8 +36,10 @@ export  class RechercheChargementComponent implements  OnInit{
   // les noms des colones  'Date Modification',,'categorie'
   displayedColumns: string[] =['datePesage','exploitation', 'destination', 'site','vehicule','transporteur'
   ,'poids','poidsSubst','volumeSubst','volumeMoyen','ecart','actions'];
+  rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesChargement$
+  critereRecherches$=this.autocompleteRechercheService.critereRecherchesChargement$
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
-              private router:Router) {
+              private router:Router, private autocompleteRechercheService:AutocompleteRechercheService) {
    // this.initDisplayColumn();
   }
   ngOnInit() {
@@ -51,7 +56,13 @@ export  class RechercheChargementComponent implements  OnInit{
         this.listChargements.sort=this.sort;
       }
       })
-
+    this.search.valueChanges?.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((capture) => {
+        return this.autocompleteRechercheService.autocompleteChargement(capture);
+      })
+    ).subscribe();
   }
 
   ouvreNouveauChargement(){
@@ -81,5 +92,14 @@ export  class RechercheChargementComponent implements  OnInit{
   }
   chargerChargement(element:Chargement){
 
+  }
+  export(){
+
+  }
+  ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.addAutocompleteRechercheChargement(autocompleteRecherche)
+  }
+  annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.removeAutocompleteRechercheChargement(autocompleteRecherche)
   }
 }

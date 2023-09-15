@@ -7,6 +7,7 @@ import {Exploitation} from "../interfaces/exploitation";
 import {NotificationService} from "./notification.service";
 import {Produit} from "../interfaces/produit";
 import {Site} from "../interfaces/site";
+import {CritereRecherche} from "../interfaces/critere.recherche";
 
 @Injectable({
   providedIn: 'root'
@@ -113,5 +114,17 @@ export class VehiculeService {
   }
   getVehiculeCourant() {
     return this.vehiculeCourant ;
+  }
+  chargementVehiculeParCritere(critereRecherche:CritereRecherche ) {
+    return this.httpClient.post<Vehicule[]>(this.url+"/recherche",critereRecherche)
+      .pipe(
+        tap((res:Vehicule[]) => {
+          this.setVehicules(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation vehicule ")
+          return throwError(() => err)
+        })
+      )
   }
 }

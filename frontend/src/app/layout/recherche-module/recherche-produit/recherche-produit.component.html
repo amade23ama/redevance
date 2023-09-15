@@ -5,7 +5,11 @@
     [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
     [tooltip]="appConfig.getLabel('label.tooltip.produit')"
     [search]="search"
-    (btnAjouter)="creeNouveauProduit()">
+    (btnAjouter)="creeNouveauProduit()"
+    (btnAjouterFiltre)="ajouterFiltre($event)"
+    (btnAnnulerFiltre)="annulerFiltre($event)"
+    [critereRecherches]="critereRecherches$"
+    [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
   <div fxShow="false" fxHide.gt-xs="false"
     class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">

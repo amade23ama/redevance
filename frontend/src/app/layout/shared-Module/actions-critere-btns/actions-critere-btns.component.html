@@ -1,5 +1,5 @@
 <div class="contenair-filter">
-  <div fxLayout="row" fxLayoutAlign="space-between stretch" >
+  <div fxLayout="row" fxLayoutAlign="space-between stretch"  class="container-action">
     <!--<div [fxFlex.lt-sm]="100" fxLayoutGap="10px" fxFlex="70">-->
       <mat-form-field [fxFlex.lt-sm]="100" fxFlex="30"
                       class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
@@ -17,17 +17,20 @@
           </div>
         </mat-autocomplete>
       </mat-form-field>
-    <mat-form-field class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
+    <mat-form-field *ngIf="visibleDate" class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
       <mat-label>annee</mat-label>
       <mat-select>
         <mat-option value="2020">2020</mat-option>
         <mat-option value="2021">2021</mat-option>
       </mat-select>
     </mat-form-field>
+    <div *ngIf="visibleExport">
     <button
-      mat-raised-button type="button" class="btn-export">
+      mat-raised-button type="button" class="btn-export"
+    (click)="export()">
       ExporterCSV
     </button>
+     </div>
     <!--</div>-->
     <div fxShow="false" fxHide.gt-xs="false" >
       <button mat-mini-fab

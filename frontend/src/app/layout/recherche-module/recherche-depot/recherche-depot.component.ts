@@ -13,6 +13,9 @@ import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 import {DepotChargementComponent} from "../../depot-module/depot-chargement/depot-chargement.component";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
+import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 
 @Component({
   selector: 'app-recherche-depot',
@@ -32,7 +35,10 @@ export class RechercheDepotComponent implements OnInit{
   // nombre de ligne par page
   pageSizeOptions: number[] = [5, 10, 20];
   pageSize = 5; // nb ligne par page par défaut
-  constructor(public appConfig: AppConfigService,private router:Router,public depotService:DepotService) {
+  rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesDepot$
+  critereRecherches$=this.autocompleteRechercheService.critereRecherchesDepot$
+  constructor(public appConfig: AppConfigService,private router:Router,public depotService:DepotService,
+              private autocompleteRechercheService:AutocompleteRechercheService) {
   }
   ouvreNouveauDepot(){
     this.router.navigate(['depot/creer'])
@@ -47,6 +53,13 @@ export class RechercheDepotComponent implements OnInit{
       this.listDepots.paginator=this.paginator;
       this.listDepots.sort=this.sort;
     })
+    this.search.valueChanges?.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((capture) => {
+        return this.autocompleteRechercheService.autocompleteDepot(capture);
+      })
+    ).subscribe();
   }
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
@@ -55,5 +68,12 @@ export class RechercheDepotComponent implements OnInit{
   chargerDepot(depot:Depot){
     console.log("vvv")
     this.router.navigate(['recherche/depotChargement'], {queryParams: {'contextInfo':depot.id }});
+  }
+
+  ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.addAutocompleteRechercheDepot(autocompleteRecherche)
+  }
+  annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.removeAutocompleteRechercheDepot(autocompleteRecherche)
   }
 }

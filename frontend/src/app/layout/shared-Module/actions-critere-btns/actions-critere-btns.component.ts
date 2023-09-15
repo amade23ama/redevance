@@ -23,16 +23,15 @@ export class ActionsCritereBtnsComponent implements OnInit{
   @Output() btnAjouterFiltre= new EventEmitter();
   @Output() btnAnnulerFiltre= new EventEmitter();
   @Input() critereRecherches:Observable<AutocompleteRecherche[]>
+  @Output() btnExport= new EventEmitter();
+  @Input() critereDate:string
+  @Input() visibleDate:boolean
+  @Input() visibleExport:boolean
   selectable: boolean = true;
   removable: boolean = true;
   constructor() {
   }
   ngOnInit() {
-    this.recherches = of([
-      { id: 1, libelle: 'Item 1', origine: 'Source A' },
-      { id: 2, libelle: 'Item 2', origine: 'Source B' },
-      { id: 3, libelle: 'Item 3', origine: 'Source C' },
-    ])
 
   }
   ajouter(){
@@ -44,10 +43,7 @@ export class ActionsCritereBtnsComponent implements OnInit{
   change(autocompleteRecherche:AutocompleteRecherche){
     this.btnAjouterFiltre.emit(autocompleteRecherche)
   }
-  searchxx(event: any) {
-    //this.auttocompleteRechercheService.getAutocompleteMatchesChips(event.query)
-     /* .then(data => {
-      this.searchSuggestions = data;
-    });*/
+  export(){
+      this.btnExport.emit(true)
   }
 }

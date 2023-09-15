@@ -6,6 +6,8 @@ import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
 import {Utilisateur} from "../interfaces/utilisateur";
 import {Chargement} from "../interfaces/chargement";
 import {NotificationService} from "./notification.service";
+import {CritereRecherche} from "../interfaces/critere.recherche";
+import {Vehicule} from "../interfaces/vehicule";
 
 @Injectable({
   providedIn:"root"
@@ -40,5 +42,17 @@ export class ChargementService{
   }
   get chargements$(){
     return this._chargements$.asObservable();
+  }
+  chargementChargementParCritere(critereRecherche:CritereRecherche ) {
+    return this.http.post<Chargement[]>(this.url+"/recherche",critereRecherche)
+      .pipe(
+        tap((res:Chargement[]) => {
+          this.setChargements(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Chargement ")
+          return throwError(() => err)
+        })
+      )
   }
 }

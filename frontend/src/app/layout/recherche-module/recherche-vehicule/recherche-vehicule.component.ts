@@ -9,6 +9,8 @@ import { Vehicule } from 'src/app/core/interfaces/vehicule';
 import { VehiculeService } from 'src/app/core/services/vehicule.service';
 import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
 import { AppConfigService } from "../../../core/services/app-config.service";
+import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
+import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -31,9 +33,11 @@ export class RechercheVehiculeComponent implements OnInit{
   // les noms des colones
   displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
+  rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesVehicule$
+  critereRecherches$=this.autocompleteRechercheService.critereRecherchesVehicule$
   /** constructor */
   constructor(public appConfig: AppConfigService, public vehiculeService: VehiculeService,
-              private router:Router) {}
+              private router:Router,private autocompleteRechercheService:AutocompleteRechercheService) {}
 
 
   ngOnInit(): void {
@@ -66,5 +70,11 @@ export class RechercheVehiculeComponent implements OnInit{
   }
   chargerVoiture(vehicule: Vehicule){
     this.router.navigate(['admin/vehicule'], {queryParams: {'contextInfo':vehicule.id }});
+  }
+  ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.addAutocompleteRechercheVehicule(autocompleteRecherche)
+  }
+  annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.removeAutocompleteRechercheVehicule(autocompleteRecherche)
   }
 }

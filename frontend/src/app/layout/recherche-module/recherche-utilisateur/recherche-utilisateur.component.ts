@@ -62,7 +62,6 @@ export class RechercheUtilisateurComponent implements OnInit{
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((capture) => {
-        console.log("capture",capture)
           return this.autocompleteRechercheService.autocompleteUtilisateur(capture);
       })
     ).subscribe();

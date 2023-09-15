@@ -11,6 +11,9 @@ import {FormControl} from "@angular/forms";
 import {Exploitation} from "../../../core/interfaces/exploitation";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 
 @Component({
   selector: 'recherche-site',
@@ -33,8 +36,11 @@ export class RechercheSiteComponent implements OnInit {
    // les noms des colones  'Date Modification',
    displayedColumns: string[] = ['nom','localite','dateCreation','actions'];
  sites$=this.siteService.sites$
+  rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesSite$
+  critereRecherches$=this.autocompleteRechercheService.critereRecherchesSite$
   /** site Service */
-  constructor(public appConfig: AppConfigService, public siteService: SiteService,private router:Router){}
+  constructor(public appConfig: AppConfigService, public siteService: SiteService,private router:Router,
+              private autocompleteRechercheService:AutocompleteRechercheService){}
 
 
   ngOnInit(): void {
@@ -52,7 +58,13 @@ export class RechercheSiteComponent implements OnInit {
       console.log("le nombre de site: ", nb);
     })
 
-
+    this.search.valueChanges?.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((capture) => {
+        return this.autocompleteRechercheService.autocompleteSite(capture);
+      })
+    ).subscribe();
   }
 
 
@@ -72,5 +84,11 @@ export class RechercheSiteComponent implements OnInit {
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
+  }
+  ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.addAutocompleteRechercheSite(autocompleteRecherche)
+  }
+  annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.removeAutocompleteRechercheSite(autocompleteRecherche)
   }
 }

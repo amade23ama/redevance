@@ -10,6 +10,9 @@ import {FormControl} from "@angular/forms";
 import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -32,8 +35,11 @@ export class RechercheProduitComponent implements OnInit {
   // les noms des colones
   displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
   produits$=this.produitService.produits$;
+  rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesProduit$
+  critereRecherches$=this.autocompleteRechercheService.critereRecherchesProduit$
   /** constructor */
-  constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router){
+  constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router,
+              private autocompleteRechercheService:AutocompleteRechercheService){
   }
 
   ngOnInit(): void {
@@ -44,7 +50,13 @@ export class RechercheProduitComponent implements OnInit {
     this.listProduit.paginator=this.paginator;
     this.listProduit.sort=this.sort;
     });
-
+    this.search.valueChanges?.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((capture) => {
+        return this.autocompleteRechercheService.autocompleteProduit(capture);
+      })
+    ).subscribe();
   }
 
   redirect(produit: Produit) {
@@ -62,5 +74,11 @@ export class RechercheProduitComponent implements OnInit {
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
+  }
+  ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.addAutocompleteRechercheProduit(autocompleteRecherche)
+  }
+  annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
+    this.autocompleteRechercheService.removeAutocompleteRechercheProduit(autocompleteRecherche)
   }
 }

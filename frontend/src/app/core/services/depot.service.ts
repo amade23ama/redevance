@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {Exploitation} from "../interfaces/exploitation";
-import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, of, tap, throwError} from "rxjs";
 import {NotificationService} from "./notification.service";
 import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
 import {
@@ -12,6 +12,8 @@ import {FileInfo} from "../interfaces/file.info";
 import {Site} from "../interfaces/site";
 import {Depot} from "../interfaces/depot";
 import {Utilisateur} from "../interfaces/utilisateur";
+import {AutocompleteRecherche} from "../interfaces/autocomplete.recherche";
+import {CritereRecherche} from "../interfaces/critere.recherche";
 
 @Injectable({
   providedIn:"root"
@@ -127,5 +129,17 @@ export class DepotService{
   }
   get depot$(){
     return this._depot.asObservable()
+  }
+  chargementDepotParCritere(critereRecherche:CritereRecherche ) {
+    return this.http.post<Depot[]>(this.url+"/recherche",critereRecherche)
+      .pipe(
+        tap((res:Depot[]) => {
+          this.setDepots(res);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Utilisateur ")
+          return throwError(() => err)
+        })
+      )
   }
 }

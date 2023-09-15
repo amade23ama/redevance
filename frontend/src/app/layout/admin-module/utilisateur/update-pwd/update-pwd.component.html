@@ -1,0 +1,36 @@
+<fieldset class="mt-1 pb-1 dcsom-fieldset-orange">
+    <legend class="titre-form">Modification de mot de passe</legend>
+    <!-- [formGroup]="userForm" [formControl]="prenom" (click)="reset('prenom')"-->
+    <form [formGroup]="changePwdForm" class="stepper--conteneur mt-1" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
+        <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+            <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                <mat-label>Mot de passe actuel </mat-label>
+                <input matInput [formControl]="actualPwd"  [type]="hideActual ? 'password' : 'text'" placeholder="Mot de passe actuel" required/>
+                <mat-icon matSuffix (click)="hideActual = !hideActual">{{hideActual ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="actualPwd.errors?.hasOwnProperty('isNotActual')">Le mot de passe est incorrect!</mat-error>
+                <mat-error *ngIf="actualPwd.errors?.hasOwnProperty('required')">{{appConfig.getLabel('error.champ.obligatoire')}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+            <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                <mat-label>Nouveau mot de passe </mat-label>
+                <input matInput [formControl]="newPwd" [type]="hideNew ? 'password' : 'text'" placeholder="Nouveau mot de passe" required/>
+                <mat-icon matSuffix (click)="hideNew = !hideNew">{{hideNew ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="newPwd.errors?.['minlength']">Veuillez choisir un mot de passe plus long.</mat-error>
+                <mat-error *ngIf="newPwd.errors?.hasOwnProperty('required')">{{appConfig.getLabel('error.champ.obligatoire')}}</mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+            <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                <mat-label>Confirmer le nouveau mot de passe </mat-label>
+                <input matInput [formControl]="confirmPwd"  [type]="hideNewConfirm ? 'password' : 'text'" placeholder="Confirmer le nouveau mot de passe" required />
+                <mat-icon matSuffix (click)="hideNewConfirm = !hideNewConfirm">{{hideNewConfirm ? 'visibility_off' : 'visibility'}}</mat-icon>
+                <mat-error *ngIf="confirmPwd.errors?.hasOwnProperty('isNotIdentique')">Mot de passe non identique</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</fieldset>
+<div class="contenair-btn">
+    <app-action-btns [btns]="boutons"  (btnClick)="utilisateurAction($event)"></app-action-btns>
+</div>
+

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from 'src/app/layout/shared-Module/dialog/confirmation-dialog/confirmation-dialog.component';
 import { AnnulationModaleComponent } from '../modals/annulation-modale/annulation-modale.component';
 
 @Injectable({
@@ -24,6 +25,20 @@ export class ModalService {
       width: '600px',
       position: {top:'200px'},
       data: {url: previousUrl, action: action},
+    });
+  }
+
+  /**
+   * Modal de confirmation
+   * @param info 
+   */
+  ouvrirModalConfirmation(info: string) {
+    this.dialog.open(ConfirmationDialogComponent, {
+      width: '400px',
+      position: {top:'200px'},
+      data: {
+        information: info,
+      },
     });
   }
 }

@@ -5,12 +5,14 @@ import { UtilisateurComponent } from './utilisateur.component';
 import {UtilisateurCreateComponent} from "./utilisateur-create/utilisateur-create.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {SharedModule} from "../../shared-Module/shared.module";
+import { UpdatePwdComponent } from './update-pwd/update-pwd.component';
 
 
 @NgModule({
   declarations: [
     UtilisateurComponent,
     UtilisateurCreateComponent,
+    UpdatePwdComponent,
   ],
   imports: [
     //AdminRouter,

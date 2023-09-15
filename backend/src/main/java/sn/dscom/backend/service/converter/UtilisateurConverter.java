@@ -117,6 +117,7 @@ public class UtilisateurConverter implements Transformer<UtilisateurDTO, Utilisa
         utilisateurEntity.setPrenom(utilisateurDTO.getPrenom());
         utilisateurEntity.setEmail(utilisateurDTO.getEmail());
         utilisateurEntity.setTelephone(utilisateurDTO.getTelephone());
+        utilisateurEntity.setPassword(utilisateurDTO.getPassword());
 
         final List<ProfilEntity> listeProfils = new ArrayList<>();
         if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {

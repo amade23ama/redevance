@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {AuthService} from "../../../core/services/auth.service";
-import {Router} from "@angular/router";
-import {UtilisateurService} from "../../../core/services/utilisateur.service";
-import {ParamService} from "../../../core/services/param.service";
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { Utilisateur } from 'src/app/core/interfaces/utilisateur';
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AuthService } from "../../../core/services/auth.service";
+import { UtilisateurService } from "../../../core/services/utilisateur.service";
 
 @Component({
   selector: 'app-dscom-header',
@@ -25,6 +25,14 @@ export class DscomHeaderComponent implements OnInit  {
     this.authService.logout().subscribe(()=>{
       this.router.navigate(["/login"]);
     })
+  }
+
+  /**
+   * modification du mot de passe
+   * @param utilisateurConnecte 
+   */
+  changerPW(utilisateurConnecte: Utilisateur) {
+    this.router.navigate(["admin/user/update"], {queryParams: {'contextInfo':utilisateurConnecte.id }});
   }
 
 

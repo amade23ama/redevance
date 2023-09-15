@@ -1,13 +1,9 @@
-import {HttpClient} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {SERVER_API_URL} from "../../app.constants";
-import {environment} from "../../../environments/environment";
-import {HomeCard} from "../interfaces/infotuiles/homeCard";
-import {BehaviorSubject, catchError, map, Observable, of, tap, throwError} from "rxjs";
-import {Utilisateur} from "../interfaces/utilisateur";
-import {Detail} from "../interfaces/infotuiles/detail";
-import {Campagne} from "../interfaces/infotuiles/campagne";
-import {NotificationService} from "./notification.service";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { HomeCard } from "../interfaces/infotuiles/homeCard";
+import { NotificationService } from "./notification.service";
 @Injectable({providedIn: 'root'})
 export class TuileService {
   readonly url = environment.apiUrl
@@ -122,7 +118,7 @@ export class TuileService {
   }
 
   getcampagnesAnnnes(annee:number): Observable<HomeCard> {
-    return this.http.get<HomeCard>(this.url + `/v1/reporting/getChargementsAnnuel/${annee}`)
+    return this.http.get<HomeCard>(this.url + `/v1/reporting/recouvrementAnnuel`)
       .pipe(
         tap((res)=>{
             this.setCampagnesAnnnes(HomeCard.fromJson(res,HomeCard));

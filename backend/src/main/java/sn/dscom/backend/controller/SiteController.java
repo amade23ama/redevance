@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.service.interfaces.ISiteService;
 
@@ -109,5 +110,17 @@ public class SiteController {
     public SiteDTO chargerSiteDTOParId(@PathVariable Long id) {
         SiteController.LOGGER.info("SiteController: Compter Site");
         return siteService.chargerSiteDTOParId(id);
+    }
+
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return la list
+     */
+    @PostMapping (value = "/rechercheBy")
+
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<List<SiteDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
+        return ResponseEntity.ok(this.siteService.rechargementParCritere(critereRecherche));
     }
 }

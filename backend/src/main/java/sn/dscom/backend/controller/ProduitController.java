@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.service.interfaces.IProduitService;
 
@@ -79,6 +80,17 @@ public class ProduitController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ProduitDTO chargerProduitParId(@PathVariable Long id) {
         return produitService.chargerProduitParId(id);
+    }
+
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return la list
+     */
+    @PostMapping (value = "/rechercheBy")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<List<ProduitDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
+        return ResponseEntity.ok(produitService.rechargementParCritere(critereRecherche));
     }
 }
 

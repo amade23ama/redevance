@@ -1,6 +1,6 @@
 package sn.dscom.backend.service.interfaces;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.ProduitDTO;
-import sn.dscom.backend.common.dto.UtilisateurDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -50,4 +50,11 @@ public interface IProduitService {
      * @return liste
      */
     List<String> getAllProductName();
+
+    /**
+     * rechargement Par Critere
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+     List<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

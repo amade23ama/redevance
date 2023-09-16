@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import sn.dscom.backend.database.entite.VehiculeEntity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Vehicule Repository
@@ -42,4 +43,11 @@ public interface VehiculeRepository extends JpaRepository<VehiculeEntity,Long> {
      */
     @Query(value = "select vehicule from VehiculeEntity vehicule where vehicule.immatriculation = :immatriculation")
     VehiculeEntity isVehiculeExist(@Param("immatriculation") String immatriculation);
+
+    /**
+     * findVehiculeEntitiesByIdIsIn
+     * @param idsVehicule idsVehicule
+     * @return la liste
+     */
+    List<VehiculeEntity> findVehiculeEntitiesByIdIsIn(@Param("idsVehicule") List<Long> idsVehicule);
 }

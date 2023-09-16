@@ -7,14 +7,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.dto.AutocompleteRecherche;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.ProduitDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.ProduitEntity;
+import sn.dscom.backend.database.entite.ProfilEntity;
+import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.database.repository.ProduitRepository;
 import sn.dscom.backend.service.converter.ProduitConverter;
+import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.interfaces.IProduitService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -143,5 +149,29 @@ public class ProduitService implements IProduitService {
     @Override
     public List<String> getAllProductName() {
         return this.produitRepository.findListProductName();
+    }
+
+    /**
+     * rechargement Par Critere
+     *
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+    @Override
+    public List<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+
+        List<Long> idsProduit = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                                                .filter(item -> item instanceof AutocompleteRecherche)
+                                                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ProduitEntity.class)
+                                                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                                                .toList());
+
+        return Try.of(() -> idsProduit)
+                .filter(Objects::nonNull)
+                .mapTry(this.produitRepository::findProduitEntitiesByIdIsIn)
+                .get()
+                .stream()
+                .map(this.produitConverteur::reverse)
+                .collect(Collectors.toList());
     }
 }

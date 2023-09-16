@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;import sn.dscom.backend.databas
 import sn.dscom.backend.database.entite.SiteEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Site Repository
@@ -37,4 +38,12 @@ public interface SiteRepository extends JpaRepository<SiteEntity,Long>{
      */
     @Query("SELECT site FROM SiteEntity site where site.nom =:nom")
     SiteEntity rechercherSiteByCriteres(@Param("nom") String nom);
+
+    /**
+     * findSiteEntitiesByIdIsIn
+     *
+     * @param idsSite idsSite
+     * @return la liste
+     */
+    List<SiteEntity> findSiteEntitiesByIdIsIn(@Param("idsSite") List<Long> idsSite);
 }

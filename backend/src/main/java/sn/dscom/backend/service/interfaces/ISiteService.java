@@ -1,6 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
-import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.SiteDTO;
 
 import java.time.LocalDateTime;
@@ -50,4 +50,11 @@ public interface ISiteService {
      */
     Integer compterSite(LocalDateTime dateMiseEnService);
     SiteDTO chargerSiteDTOParId(Long id);
+
+    /**
+     * rechargement Par Critere
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+     List<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.dto.AutocompleteRecherche;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
+import sn.dscom.backend.database.entite.ProduitEntity;
 import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.SiteRepository;
 import sn.dscom.backend.service.converter.SiteConverter;
@@ -155,5 +158,28 @@ public class SiteService implements ISiteService {
         } else {
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
+    }
+
+    /**
+     * rechargement Par Critere
+     *
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+    @Override
+    public List<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        return Try.of(() -> idsSite)
+                .filter(Objects::nonNull)
+                .mapTry(this.siteRepository::findSiteEntitiesByIdIsIn)
+                .get()
+                .stream()
+                .map(this.siteConverteur::reverse)
+                .collect(Collectors.toList());
     }
 }

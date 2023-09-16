@@ -35,4 +35,11 @@ public interface ProduitRepository extends JpaRepository<ProduitEntity,Long>{
      */
     @Query(value = "SELECT DISTINCT p.nomSRC FROM ProduitEntity p")
     List<String> findListProductName();
+
+    /**
+     * findProduitEntitiesByIdIsIn
+     * @param produitIds produitIds
+     * @return la liste
+     */
+    List<ProduitEntity> findProduitEntitiesByIdIsIn(@Param("produitIds") List<Long> produitIds);
 }

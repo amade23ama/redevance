@@ -1,10 +1,13 @@
 package sn.dscom.backend.service;
 
+import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.dto.AutocompleteRecherche;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
@@ -14,9 +17,7 @@ import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.converter.VehiculeConverter;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -128,5 +129,28 @@ public class VehiculeService implements IVoitureService{
         } else {
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
+    }
+
+    /**
+     * rechargement Par Critere
+     *
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+    @Override
+    public List<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        List<Long> idsVehicule = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == VehiculeEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        return Try.of(() -> idsVehicule)
+                .filter(Objects::nonNull)
+                .mapTry(this.vehiculeRepository::findVehiculeEntitiesByIdIsIn)
+                .get()
+                .stream()
+                .map(this.vehiculeConverter::reverse)
+                .collect(Collectors.toList());
     }
 }

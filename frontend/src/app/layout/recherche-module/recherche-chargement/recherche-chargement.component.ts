@@ -34,8 +34,8 @@ export  class RechercheChargementComponent implements  OnInit{
   pageSize = 5; // nb ligne par page par défaut
   rechercheChargements: Chargement[] = [];
   // les noms des colones  'Date Modification',,'categorie'
-  displayedColumns: string[] =['datePesage','exploitation', 'destination', 'site','vehicule','transporteur'
-  ,'poids','poidsSubst','volumeSubst','volumeMoyen','ecart','actions'];
+  displayedColumns: string[] =['datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
+  ,'poids','poidsSubst','volumeSubst','ecart','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesChargement$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesChargement$
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
@@ -73,6 +73,7 @@ export  class RechercheChargementComponent implements  OnInit{
     this.displayedColumns.push('exploitation')
     this.displayedColumns.push('destination')
     this.displayedColumns.push('site')
+    this.displayedColumns.push('produit')
     //this.displayedColumns.push('transporteur')
     //this.displayedColumns.push('vehicule')
     //this.displayedColumns.push('classe')

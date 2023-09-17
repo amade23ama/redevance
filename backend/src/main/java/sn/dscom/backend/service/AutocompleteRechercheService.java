@@ -40,6 +40,9 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     /** vehicule Repository */
     private final VehiculeRepository vehiculeRepository;
 
+    /** chargement Repository */
+    private ChargementRepository chargementRepository;
+
     /** matcherGlobal */
     private final ExampleMatcher matcherGlobal = ExampleMatcher.matchingAny()
             .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
@@ -53,13 +56,15 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
      */
     @Builder
     public AutocompleteRechercheService(UtilisateurRepository utilisateurRepository, ProduitRepository produitRepository, ExploitationRepository exploitationRepository,
-                                        ProfilRepository profilRepository, SiteRepository siteRepository, VehiculeRepository vehiculeRepository) {
+                                        ProfilRepository profilRepository, SiteRepository siteRepository, VehiculeRepository vehiculeRepository,
+                                        ChargementRepository chargementRepository) {
         this.profilRepository=profilRepository;
         this.utilisateurRepository=utilisateurRepository;
         this.produitRepository=produitRepository;
         this.siteRepository=siteRepository;
         this.exploitationRepository=exploitationRepository;
         this.vehiculeRepository=vehiculeRepository;
+        this.chargementRepository=chargementRepository;
 
     }
     @Transactional(readOnly = true)
@@ -192,6 +197,29 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
                             .immatriculation(capture)
                             .build())
                     .map(vehicules -> this.vehiculeRepository.findAll(Example.of(vehicules, matcherGlobal)))
+                    .getOrElse(ArrayList::new);
+
+            if(!list.isEmpty()){
+                return  list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList());
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    /**
+     * getChargementAutocompleteRecherche
+     *
+     * @param capture capture
+     * @return la liste
+     */
+    @Override
+    public List<AutocompleteRecherche> getChargementAutocompleteRecherche(String capture) {
+        // si null or empty, on lève une 404
+        if (!Strings.isNullOrEmpty(capture)) {
+            List<ChargementEntity> list = Try.of(() -> ChargementEntity.builder()
+                            .destination(capture)
+                            .build())
+                    .map(chargement -> this.chargementRepository.findAll(Example.of(chargement, matcherGlobal)))
                     .getOrElse(ArrayList::new);
 
             if(!list.isEmpty()){

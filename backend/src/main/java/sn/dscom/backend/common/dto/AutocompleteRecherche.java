@@ -103,6 +103,20 @@ public class AutocompleteRecherche <T> implements Serializable {
         this.origine = this.typeClass.getSimpleName();
     }
 
+    /**
+     * AutocompleteRecherche
+     * @param chargement chargement
+     */
+    public AutocompleteRecherche(ChargementEntity chargement) {
+        this.id = chargement.getId().toString();
+        this.libelle = new StringBuilder().
+                append("[CHARGEMENT] ")
+                .append(chargement.getDestination())
+                .toString();
+        this.typeClass = VehiculeEntity.class;
+        this.origine = this.typeClass.getSimpleName();
+    }
+
     public void setId(String id) {
         this.id = id;
     }

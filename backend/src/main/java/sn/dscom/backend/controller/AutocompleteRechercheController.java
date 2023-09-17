@@ -1,5 +1,6 @@
 package sn.dscom.backend.controller;
 
+import com.google.common.collect.Streams;
 import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +89,42 @@ public class AutocompleteRechercheController {
                         .onFailure(Throwable::getStackTrace)
                         .get()
         );
+    }
+
+    /**
+     * getVoituresAutocompleteRecherche
+     * @param capture capture
+     * @return la liste
+     */
+    @GetMapping("/chargement/{capture}")
+    public ResponseEntity<List<AutocompleteRecherche>> getChargementAutocompleteRecherche(@PathVariable String capture) {
+
+        //Produit
+        List<AutocompleteRecherche> listRechercheProduit = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getProduitsAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
+
+        //Site Exploitation
+        List<AutocompleteRecherche> listRechercheExploitation = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getSitesExploitationAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
+
+        //Site de pessage
+        List<AutocompleteRecherche> listRechercheSite = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getSitesPessageAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
+
+        //Chargement
+        List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getChargementAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
+
+        return ResponseEntity.ok(Streams.concat(listRechercheProduit.stream(), listRechercheExploitation.stream(),
+                listRechercheSite.stream(), listRechercheByOrigine.stream()).toList());
     }
 
     @GetMapping("/utilisateur/{capture}")

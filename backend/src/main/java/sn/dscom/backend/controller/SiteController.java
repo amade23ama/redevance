@@ -118,7 +118,6 @@ public class SiteController {
      * @return la list
      */
     @PostMapping (value = "/rechercheBy")
-
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<SiteDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
         return ResponseEntity.ok(this.siteService.rechargementParCritere(critereRecherche));

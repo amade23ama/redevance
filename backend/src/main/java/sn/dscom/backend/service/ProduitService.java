@@ -160,6 +160,22 @@ public class ProduitService implements IProduitService {
     @Override
     public List<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
 
+        //S'il n'y a pas de critère on remonte tout
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            try {
+                ProduitService.logger.info("Recherche des produits");
+                List<ProduitEntity> listProduitsFind = this.produitRepository.findAll();
+
+                return listProduitsFind.stream()
+                        .map(this.produitConverteur::reverse)
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList());
+            }catch (Exception e){
+                ProduitService.logger.error(String.format("Erreur leur de la recherche de produit : %s ",e.getMessage()));
+                throw new CommonMetierException(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErreurEnum.ERR_INATTENDUE);
+            }
+        }
+
         List<Long> idsProduit = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                                                 .filter(item -> item instanceof AutocompleteRecherche)
                                                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ProduitEntity.class)

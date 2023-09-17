@@ -168,6 +168,18 @@ public class SiteService implements ISiteService {
      */
     @Override
     public List<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            // On charge l'ensemble des site
+            List<SiteEntity> listSitesFind = this.siteRepository.findAll();
+
+            //retourne la liste
+            return listSitesFind.stream()
+                    .map(this.siteConverteur::reverse)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)

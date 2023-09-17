@@ -139,6 +139,17 @@ public class VehiculeService implements IVoitureService{
      */
     @Override
     public List<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+
+        //S'il n'y a pas de critère on remonte tout
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            /** find all de tous les véhicule*/
+            List<VehiculeEntity> list = this.vehiculeRepository.findAll();
+
+            return list.stream()
+                    .map(vehiculeEntity ->  vehiculeConverter.reverse(vehiculeEntity))
+                    .collect(Collectors.toList());
+        }
+
         List<Long> idsVehicule = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == VehiculeEntity.class)

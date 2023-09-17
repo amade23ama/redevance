@@ -100,20 +100,23 @@
   <!-- BLOC GRAPHE -->
   <div class="mt-02 graphe" fxLayout fxLayout="row" fxLayout.lt-md="column"
       fxLayoutAlign="space-around" fxLayoutGap="2">
-    <div fxFlex="40" fxFlex.lt-md="100">
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch"  fxFlex="40" fxFlex.lt-md="100" >
       <app-dcsom-graphe-bar
       [homeCard]="campagnesProduits$">
       </app-dcsom-graphe-bar>
+      <div class="titre-graphe">{{appConfig.getLabel("titre.graphe.produit")}}</div>
     </div>
-    <div fxFlex="30" fxFlex.lt-md="100">
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch"  fxFlex="30" fxFlex.lt-md="100" >
       <app-dcsom-graphe-cercle
         [homeCard]="campagnesRegions$">
       </app-dcsom-graphe-cercle>
+      <div class="titre-graphe">{{appConfig.getLabel("titre.graphe.region")}}</div>
     </div>
-    <div fxFlex="30" fxFlex.lt-md="100">
+    <div fxLayout="column" fxLayoutAlign="space-evenly stretch" fxFlex="30" fxFlex.lt-md="100">
       <app-dcsom-graphe-bar-simple
         [homeCard]="compagneAnnee$">
       </app-dcsom-graphe-bar-simple>
+      <div class="titre-graphe">{{appConfig.getLabel("titre.graphe.annuel")}}</div>
     </div>
   </div>
 </div>

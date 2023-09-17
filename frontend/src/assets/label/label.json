@@ -128,7 +128,10 @@
     "bilan.import.error.produit.inconnue": "Rejetées car produit inconnue",
 
     "modal.annulation.title":"Attention {0} en cours !",
-    "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?"
+    "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?",
+    "titre.graphe.produit": "Exploitation minière par type de produit",
+    "titre.graphe.region":"Exploitation minière par région",
+    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière"
   }
 }
 

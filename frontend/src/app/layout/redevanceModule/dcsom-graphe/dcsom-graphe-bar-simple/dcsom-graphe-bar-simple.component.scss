@@ -1,5 +1,12 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
 .graphe-annee{
   min-height: 50vh!important;
  // max-height: 15vh!important;
   //border: 1px solid red;
+}
+ngx-charts-bar-vertical{
+  color: $orange-700!important;
+  font-size: 14px;
+  font-style: normal;
 }

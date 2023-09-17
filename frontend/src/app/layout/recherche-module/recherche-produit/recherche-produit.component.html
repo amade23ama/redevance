@@ -18,7 +18,7 @@
             <!-- COLONNE : PRENOM -->
             <ng-container matColumnDef="Nom SRC">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Nom SRC</div>
+                  <div class="d-flex">Nom</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element?.nomSRC}}</div>
@@ -26,6 +26,7 @@
             </ng-container>
 
             <!-- COLONNE : NOM -->
+          <!--
             <ng-container matColumnDef="Nom NORM">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Nom NORM</div>
@@ -34,11 +35,11 @@
                   <div class="d-flex">{{element?.nomNORM}}</div>
                 </td>
             </ng-container>
+          -->
 
-            <!-- COLONNE : TELEPHONE-->
             <ng-container matColumnDef="Densité GCM">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Densité GRM</div>
+                  <div class="d-flex">Densité (gr/cm3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element?.densiteGRM}}</div>
@@ -48,7 +49,7 @@
             <!-- COLONNE : EMAIL-->
             <ng-container matColumnDef="Densité KGM">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Densité KGM</div>
+                  <div class="d-flex">Densité (kg/m3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element?.densiteKGM}}</div>
@@ -56,7 +57,7 @@
             </ng-container>
           <ng-container matColumnDef="dateCreation">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">Date Création</div>
+              <div class="d-flex">Date de création</div>
             </th>
             <td mat-cell *matCellDef="let element">
               <div class="d-flex">{{formatDate(element?.dateCreation)}}</div>
@@ -65,7 +66,7 @@
 
           <ng-container matColumnDef="actions">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">actions</div>
+              <div class="d-flex">Action</div>
             </th>
             <td mat-cell *matCellDef="let element">
               <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">

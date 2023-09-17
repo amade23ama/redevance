@@ -34,7 +34,7 @@ export class RechercheProduitComponent implements OnInit {
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['Nom SRC', 'Nom NORM', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
+  displayedColumns: string[] = ['Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
   produits$=this.produitService.produits$;
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesProduit$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesProduit$

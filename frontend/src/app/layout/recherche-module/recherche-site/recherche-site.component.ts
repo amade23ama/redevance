@@ -14,6 +14,7 @@ import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbs
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
+import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 
 @Component({
   selector: 'recherche-site',
@@ -44,7 +45,8 @@ export class RechercheSiteComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.siteService.getAllSites().subscribe();
+   // this.siteService.getAllSites().subscribe();
+    this.rechargementSite()
     this.siteService.getCompteurSites().subscribe();
     this.siteService.sites$.subscribe((sites) => {
       console.log("les sites: ", sites);
@@ -90,5 +92,20 @@ export class RechercheSiteComponent implements OnInit {
   }
   annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.removeAutocompleteRechercheSite(autocompleteRecherche)
+  }
+
+  rechargementSite(){
+    this.critereRecherches$.subscribe((res)=>{
+      if(res) {
+        const critereRecherche   = {
+          autocompleteRecherches:res,
+          page :1,
+          size :20,
+          dateDebut :new Date(),
+          dateFin :new Date(),
+        } as CritereRecherche
+        this.siteService.chargementSiteParCritere(critereRecherche).subscribe()
+      }
+    })
   }
 }

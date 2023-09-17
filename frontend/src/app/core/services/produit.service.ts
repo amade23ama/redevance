@@ -109,7 +109,7 @@ export class ProduitService {
     return this.produitCourant;
   }
   chargementProduitParCritere(critereRecherche:CritereRecherche ) {
-    return this.httpClient.post<Produit[]>(this.url+"/recherche",critereRecherche)
+    return this.httpClient.post<Produit[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Produit[]) => {
           this.setProduits(res);

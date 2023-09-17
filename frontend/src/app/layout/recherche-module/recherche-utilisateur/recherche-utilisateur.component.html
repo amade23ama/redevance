@@ -6,6 +6,7 @@
   [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
                       [tooltip]="appConfig.getLabel('header.btn.utilisateur.creer.tooltip')"
                       [search]="search"
+                      [visibleBtnCreation]="true"
                       (btnAjouter)="ouvreNouveauUtilisateur()"
                       (btnAjouterFiltre)="ajouterFiltre($event)"
                       (btnAnnulerFiltre)="annulerFiltre($event)"

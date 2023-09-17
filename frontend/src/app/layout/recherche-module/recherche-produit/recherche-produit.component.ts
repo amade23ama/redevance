@@ -13,6 +13,7 @@ import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbs
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
+import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -44,7 +45,7 @@ export class RechercheProduitComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.produitService.rechercherProduits().subscribe((data) => {
+    this.produitService.produits$.subscribe((data) => {
       //alimentation du tableau
     this.listProduit = new MatTableDataSource<Produit>(data);
     this.listProduit.paginator=this.paginator;
@@ -57,6 +58,7 @@ export class RechercheProduitComponent implements OnInit {
         return this.autocompleteRechercheService.autocompleteProduit(capture);
       })
     ).subscribe();
+    this.rechargementProduit()
   }
 
   redirect(produit: Produit) {
@@ -80,5 +82,19 @@ export class RechercheProduitComponent implements OnInit {
   }
   annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.removeAutocompleteRechercheProduit(autocompleteRecherche)
+  }
+  rechargementProduit(){
+    this.critereRecherches$.subscribe((res)=>{
+      if(res) {
+        const critereRecherche   = {
+          autocompleteRecherches:res,
+          page :1,
+          size :20,
+          dateDebut :new Date(),
+          dateFin :new Date(),
+        } as CritereRecherche
+        this.produitService.chargementProduitParCritere(critereRecherche).subscribe()
+      }
+    })
   }
 }

@@ -44,7 +44,7 @@ export class ChargementService{
     return this._chargements$.asObservable();
   }
   chargementChargementParCritere(critereRecherche:CritereRecherche ) {
-    return this.http.post<Chargement[]>(this.url+"/recherche",critereRecherche)
+    return this.http.post<Chargement[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Chargement[]) => {
           this.setChargements(res);

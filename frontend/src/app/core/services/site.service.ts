@@ -162,7 +162,7 @@ export class SiteService {
     return this.siteCourant;
   }
   chargementSiteParCritere(critereRecherche:CritereRecherche ) {
-    return this.httpClient.post<Site[]>(this.url+"/recherche",critereRecherche)
+    return this.httpClient.post<Site[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Site[]) => {
           this.setSites(res);

@@ -11,6 +11,8 @@ import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonA
 import { AppConfigService } from "../../../core/services/app-config.service";
 import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -41,14 +43,21 @@ export class RechercheVehiculeComponent implements OnInit{
 
 
   ngOnInit(): void {
-
+    this.rechargementVehicule()
     /** appel du service rechercherVehicules pour recupérer toutes les véhicules en base */
-    this.vehiculeService.rechercherVehicules().subscribe((data) =>{
+    this.vehiculeService.vehicules$.subscribe((data) =>{
     //alimentation du tableau
     this.listVehicule = new MatTableDataSource<Vehicule>(data);
     this.listVehicule.paginator=this.paginator;
     this.listVehicule.sort=this.sort;
     });
+    this.search.valueChanges?.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((capture) => {
+        return this.autocompleteRechercheService.autocompleteVehicule(capture);
+      })
+    ).subscribe();
 
   }
 
@@ -76,5 +85,19 @@ export class RechercheVehiculeComponent implements OnInit{
   }
   annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.removeAutocompleteRechercheVehicule(autocompleteRecherche)
+  }
+  rechargementVehicule(){
+    this.critereRecherches$.subscribe((res)=>{
+      if(res) {
+        const critereRecherche   = {
+          autocompleteRecherches:res,
+          page :1,
+          size :20,
+          dateDebut :new Date(),
+          dateFin :new Date(),
+        } as CritereRecherche
+        this.vehiculeService.chargementVehiculeParCritere(critereRecherche).subscribe()
+      }
+    })
   }
 }

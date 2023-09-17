@@ -116,7 +116,7 @@ export class VehiculeService {
     return this.vehiculeCourant ;
   }
   chargementVehiculeParCritere(critereRecherche:CritereRecherche ) {
-    return this.httpClient.post<Vehicule[]>(this.url+"/recherche",critereRecherche)
+    return this.httpClient.post<Vehicule[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Vehicule[]) => {
           this.setVehicules(res);

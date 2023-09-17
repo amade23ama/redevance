@@ -105,7 +105,7 @@ export class AutocompleteRechercheService{
       this.setAutoCompleteRecherchesExploitation([])
       return of();
     }
-    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/exploitation/${capture}`)
+    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/sitesExploitation/${capture}`)
       .pipe(
         tap((res)=> {
           this.setAutoCompleteRecherchesExploitation(res!=null ?res:[])
@@ -123,7 +123,7 @@ export class AutocompleteRechercheService{
       this.setAutoCompleteRecherchesSite([])
       return of();
     }
-    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/site/${capture}`)
+    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/sitesPessage/${capture}`)
       .pipe(
         tap((res)=> {
           this.setAutoCompleteRecherchesSite(res!=null ?res:[])
@@ -159,7 +159,7 @@ export class AutocompleteRechercheService{
       this.setAutoCompleteRecherchesVehicule([])
       return of();
     }
-    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/vehicule/${capture}`)
+    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/voitures/${capture}`)
       .pipe(
         tap((res)=> {
           this.setAutoCompleteRecherchesVehicule(res!=null ?res:[])

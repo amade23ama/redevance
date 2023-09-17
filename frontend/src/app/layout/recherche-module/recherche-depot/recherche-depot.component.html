@@ -5,6 +5,7 @@
                             [plurier]="appConfig.getLabel('recherche.depot.pluriel.label')"
                             [tooltip]="appConfig.getLabel('label.tooltip.depot')"
                             [search]="search"
+                            [visibleBtnCreation]="true"
                             (btnAjouter)="ouvreNouveauDepot()"
                             (btnAjouterFiltre)="ajouterFiltre($event)"
                             (btnAnnulerFiltre)="annulerFiltre($event)"

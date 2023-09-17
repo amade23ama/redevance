@@ -26,7 +26,8 @@ export class ActionsCritereBtnsComponent implements OnInit{
   @Output() btnExport= new EventEmitter();
   @Input() critereDate:string
   @Input() visibleDate:boolean
-  @Input() visibleExport:boolean
+  @Input() visibleBtnExport:boolean
+  @Input() visibleBtnCreation:boolean
   selectable: boolean = true;
   removable: boolean = true;
   constructor() {

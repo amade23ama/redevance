@@ -24,7 +24,7 @@
         <mat-option value="2021">2021</mat-option>
       </mat-select>
     </mat-form-field>
-    <div *ngIf="visibleExport">
+    <div *ngIf="visibleBtnExport">
     <button
       mat-raised-button type="button" class="btn-export"
     (click)="export()">
@@ -32,7 +32,7 @@
     </button>
      </div>
     <!--</div>-->
-    <div fxShow="false" fxHide.gt-xs="false" >
+    <div fxShow="false" fxHide.gt-xs="false" *ngIf="visibleBtnCreation">
       <button mat-mini-fab
               matTooltipPosition="left"
               matTooltip="{{tooltip}}"

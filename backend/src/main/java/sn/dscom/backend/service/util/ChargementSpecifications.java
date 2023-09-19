@@ -24,8 +24,8 @@ public class ChargementSpecifications {
             }
             if (produitIds != null && !produitIds.isEmpty()) {
                 query.distinct(true);
-                root.join("entityProduit");
-                Predicate conditionProduit = criteriaBuilder.in(root.get("entityProduit").get("id")).value(produitIds);
+                root.join("produitEntity");
+                Predicate conditionProduit = criteriaBuilder.in(root.get("produitEntity").get("id")).value(produitIds);
                 predicates.add(conditionProduit);
             }
             if (siteExploitIds != null && !siteExploitIds.isEmpty()) {

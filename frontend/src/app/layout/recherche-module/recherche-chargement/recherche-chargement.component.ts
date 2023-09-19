@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
 import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
 import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
+import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -44,10 +45,10 @@ export  class RechercheChargementComponent implements  OnInit{
   }
   ngOnInit() {
 
-   this.chargementService.getAllChargements().subscribe()
+   //this.chargementService.getAllChargements().subscribe()
 
     this.chargementService.chargements$.subscribe((chargements) => {
-      if(chargements.length!==null){
+      if(chargements!==null){
         console.log("les chargement: ", chargements);
         //alimentation du tableau
         this.rechercheChargements=chargements
@@ -63,6 +64,7 @@ export  class RechercheChargementComponent implements  OnInit{
         return this.autocompleteRechercheService.autocompleteChargement(capture);
       })
     ).subscribe();
+    this.rechargementChargement();
   }
 
   ouvreNouveauChargement(){
@@ -102,5 +104,20 @@ export  class RechercheChargementComponent implements  OnInit{
   }
   annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.removeAutocompleteRechercheChargement(autocompleteRecherche)
+  }
+  rechargementChargement(){
+    this.critereRecherches$.subscribe((res)=>{
+      if(res) {
+        const critereRecherche   = {
+          autocompleteRecherches:res,
+          page :1,
+          size :20,
+          dateDebut :new Date(),
+          dateFin :new Date(),
+        } as CritereRecherche
+        this.chargementService.chargementChargementParCritere(critereRecherche).subscribe()
+      }
+
+    })
   }
 }

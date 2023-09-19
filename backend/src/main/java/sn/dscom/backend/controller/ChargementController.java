@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import sn.dscom.backend.common.dto.ChargementDTO;
-import sn.dscom.backend.common.dto.ChargementDscom;
-import sn.dscom.backend.common.dto.ExploitationDTO;
-import sn.dscom.backend.common.dto.SiteDTO;
+import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IExploitationService;
 import sn.dscom.backend.service.interfaces.ISiteService;
@@ -150,5 +147,12 @@ public class ChargementController {
                 .get()
                 .stream()
                 .collect(MoreCollectors.onlyElement());
+    }
+
+    @PostMapping(path = "/rechercheBy")
+    //@PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<List<ChargementDTO>> rechercherChargements(@RequestBody CritereRecherche<?> critereRecherche) {
+        ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
+        return ResponseEntity.ok(chargementService.rechargementParCritere(critereRecherche));
     }
 }

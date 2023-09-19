@@ -47,7 +47,7 @@ export class ChargementService{
     return this.http.post<Chargement[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Chargement[]) => {
-          this.setChargements(res);
+          this.setChargements(res!==null?res:[]);
         }),
         catchError((err) => {
           this.notification.error(" erreurr de recuperation Chargement ")

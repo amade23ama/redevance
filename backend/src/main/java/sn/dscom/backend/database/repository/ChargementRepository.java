@@ -1,5 +1,6 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -100,4 +101,11 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
      */
     @Query(value = "select count(c) from ChargementEntity c where c.datePassage>:dateDebut and c.datePassage<:dateFin")
     Integer countChargementAnnuel(@Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
+
+    /**
+     *
+     * @param spec
+     * @return
+     */
+    List<ChargementEntity> findAll(Specification<ChargementEntity> spec);
 }

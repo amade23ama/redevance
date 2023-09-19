@@ -78,4 +78,5 @@ public interface IChargementService {
      * @return liste
      */
     Integer getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
+    public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

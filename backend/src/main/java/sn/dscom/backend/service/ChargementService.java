@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.ChargementUtils;
@@ -17,10 +18,11 @@ import sn.dscom.backend.database.repository.ChargementRepository;
 import sn.dscom.backend.service.converter.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
+import sn.dscom.backend.service.util.ChargementSpecifications;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
+
 import java.util.stream.Collectors;
 
 /**
@@ -534,4 +536,42 @@ public class ChargementService implements IChargementService {
                 .onFailure(e -> ChargementService.log.error(String.format(" Erreur lors de l'enregistrer du Transporteur: %s", e.getMessage())))
                 .get().get();
     }
+
+
+    @Override
+    public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            log.info(String.format("Rechercher Chargement"));
+            List<ChargementEntity> listSitesFind = this.chargementRepository.findAll();
+            return listSitesFind.stream()
+                    .map(this.chargementConverter::reverse)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+        }
+        List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsProduit = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ProduitEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsSiteExploitation = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ExploitationEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        Specification<ChargementEntity> spec = Specification
+                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation));
+
+        List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
+        return listSitesFind.stream()
+                .map(this.chargementConverter::reverse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+    }
+
 }

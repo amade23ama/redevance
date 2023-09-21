@@ -12,7 +12,8 @@ public class ChargementSpecifications {
 
     public static Specification<ChargementEntity> withSiteIdsAndProduitIds(List<Long> siteIds,
                                                                            List<Long> produitIds,
-                                                                           List<Long> siteExploitIds) {
+                                                                           List<Long> siteExploitIds,
+                                                                           List<Long> vehiculeIds) {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
@@ -33,6 +34,12 @@ public class ChargementSpecifications {
                 root.join("exploitationEntity");
                 Predicate conditionExploitation = criteriaBuilder.in(root.get("exploitationEntity").get("id")).value(siteExploitIds);
                 predicates.add(conditionExploitation);
+            }
+            if (vehiculeIds != null && !vehiculeIds.isEmpty()) {
+                query.distinct(true);
+                root.join("vehiculeEntity");
+                Predicate conditionVehicule = criteriaBuilder.in(root.get("vehiculeEntity").get("id")).value(vehiculeIds);
+                predicates.add(conditionVehicule);
             }
             if (!predicates.isEmpty()) {
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

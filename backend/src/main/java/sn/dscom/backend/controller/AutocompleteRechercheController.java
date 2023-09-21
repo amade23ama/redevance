@@ -116,6 +116,11 @@ public class AutocompleteRechercheController {
                 .mapTry(this.autocompleteRechercheService::getSitesPessageAutocompleteRecherche)
                 .onFailure(Throwable::getStackTrace)
                 .get();
+        //Site de pessage
+        List<AutocompleteRecherche> listRechercheVehicule = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getVoitureAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
 
         //Chargement
         List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
@@ -123,8 +128,10 @@ public class AutocompleteRechercheController {
                 .onFailure(Throwable::getStackTrace)
                 .get();
 
+
         return ResponseEntity.ok(Streams.concat(listRechercheProduit.stream(), listRechercheExploitation.stream(),
-                listRechercheSite.stream(), listRechercheByOrigine.stream()).toList());
+                listRechercheSite.stream(), listRechercheByOrigine.stream(),
+                listRechercheVehicule.stream()).toList());
     }
 
     @GetMapping("/utilisateur/{capture}")

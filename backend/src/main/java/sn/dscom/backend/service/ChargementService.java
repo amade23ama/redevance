@@ -563,9 +563,14 @@ public class ChargementService implements IChargementService {
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ExploitationEntity.class)
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
+        List<Long> idsVehicules = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == VehiculeEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
 
         Specification<ChargementEntity> spec = Specification
-                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation));
+                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules));
 
         List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
         return listSitesFind.stream()

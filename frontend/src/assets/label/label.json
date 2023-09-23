@@ -131,7 +131,11 @@
     "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?",
     "titre.graphe.produit": "Exploitation minière par type de produit",
     "titre.graphe.region":"Exploitation minière par région",
-    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière"
+    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière",
+
+    "user.bouton.enregistrer.title":"Créer un nouvel utilisateur",
+    "user.bouton.annuler.title":"Annuler",
+    "user.bouton.modifier.title":"Modifier l'utilisateur"
   }
 }
 

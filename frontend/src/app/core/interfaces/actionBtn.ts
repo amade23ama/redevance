@@ -1,4 +1,4 @@
-import {Actions} from "../enum/actions";
+import { Actions } from "../enum/actions";
 
 /**
  * Classe action bouton.
@@ -26,6 +26,9 @@ export class ActionBtn {
   /** Icône. */
   icon?: string;
 
+  /** title. */
+  title: string;
+
   /**
    * Constructeur.
    * @param label label.
@@ -37,7 +40,7 @@ export class ActionBtn {
    * @param icon icône.
    */
   constructor(label: string, id: Actions, display: boolean, disabled: boolean, pink: boolean,
-              rightside?: boolean, icon?: string) {
+              rightside?: boolean, icon?: string, title?: string) {
     this.label = label;
     this.id = id;
     this.display = display;
@@ -45,5 +48,6 @@ export class ActionBtn {
     this.pink = pink;
     this.rightside = rightside;
     this.icon = icon;
+    this.title = title;
   }
 }

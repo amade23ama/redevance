@@ -6,6 +6,7 @@ import io.vavr.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,12 @@ public class UtilisateurService implements IUtilisateurService {
     /** mailService */
     @Autowired
     private IMailService mailService;
+
+    /**
+     * environment
+     */
+    @Autowired
+    private Environment environment;
 
     /**
      * sauvegarderUtilisateur
@@ -89,10 +96,11 @@ public class UtilisateurService implements IUtilisateurService {
 
             //Envoi du mail
             if (!Strings.isNullOrEmpty(user.getLogin())) {
-                String msgBody = """
-                            Bonjour,
-                            Voici votre mot de passe: 
-                            """ + mdp + " et votre login: " + login;
+                String message = environment.getProperty("creation.utilisateur.mail");
+                String role = user.getProfils().get(0).getCode();
+
+                String msgBody = String.format(message, role, login, mdp);
+
 
                     // Envoi du méssage
                 this.mailService.envoiMail(EmailDetails.builder()

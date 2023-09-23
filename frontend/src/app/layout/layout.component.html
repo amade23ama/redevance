@@ -17,8 +17,8 @@
         <a mat-button routerLink="/recherche/produit" routerLinkActive="router-link-active">Produits</a>
         <a mat-button  routerLink="/recherche/site" routerLinkActive="router-link-active">Sites de pesage</a>
         <a mat-button routerLink="/recherche/exploitation" routerLinkActive="router-link-active">Sites d'exploitation</a>
-        <a mat-button routerLink="/recherche/depots" routerLinkActive="router-link-active">Importations</a>
-        <a mat-button  routerLink="/recherche/user" routerLinkActive="router-link-active">Utilisateurs</a>
+        <a mat-button *appAutorisation="['ADMIN','EDIT']" routerLink="/recherche/depots" routerLinkActive="router-link-active">Importations</a>
+        <a mat-button *appAutorisation="['ADMIN']" routerLink="/recherche/user" routerLinkActive="router-link-active">Utilisateurs</a>
       </div>
       <div class="toolbar-item-spacer" fxShow fxHide.gt-sm [fxFlex]="70"></div>
       <button mat-icon-button fxShow fxHide.gt-sm (click)="logout()" href="#">

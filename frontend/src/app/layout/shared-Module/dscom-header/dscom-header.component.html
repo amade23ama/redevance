@@ -33,18 +33,18 @@
   </div>
   <mat-menu class="mat-menu" #menu="matMenu" >
     <button mat-menu-item>
-      <mat-icon class="mat-menu-icon">account_circle</mat-icon>
-      <span class="up-case">{{utilisateurConnecte.label}}</span>
+      <mat-icon *ngIf="false" class="mat-menu-icon">account_circle</mat-icon>
+      <span class="up-case">Profil : {{getProfil()}}</span>
     </button>
     <button mat-menu-item  (click)="changerPW(utilisateurConnecte)">
       <mat-icon class="mat-menu-icon">lock</mat-icon>
       <span>Changer de mot de passe </span>
     </button>
-    <button mat-menu-item>
+    <button *ngIf="false" mat-menu-item>
       <mat-icon class="mat-menu-icon"></mat-icon>
       <span>Administrateur </span>
     </button>
-    <button mat-menu-item>
+    <button *ngIf="false" mat-menu-item>
       <mat-icon class="mat-menu-icon">mail</mat-icon>
       <span>{{utilisateurConnecte.email}}</span>
     </button>

@@ -1,19 +1,21 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from "@angular/router";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
 import { Produit } from 'src/app/core/interfaces/produit';
+import { ModalService } from "src/app/core/services/modal.service";
 import { ProduitService } from 'src/app/core/services/produit.service';
-import {Router} from "@angular/router";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {FormControl} from "@angular/forms";
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
-import {DatePipe} from "@angular/common";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import { SuppressionComponent } from "../../shared-Module/dialog/suppression/suppression.component";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -39,8 +41,8 @@ export class RechercheProduitComponent implements OnInit {
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesProduit$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesProduit$
   /** constructor */
-  constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router,
-              private autocompleteRechercheService:AutocompleteRechercheService){
+  constructor(public appConfig: AppConfigService,private produitService: ProduitService,private router:Router, public dialog: MatDialog,
+              private autocompleteRechercheService:AutocompleteRechercheService, private modalService: ModalService){
   }
 
   ngOnInit(): void {
@@ -96,5 +98,27 @@ export class RechercheProduitComponent implements OnInit {
         this.produitService.chargementProduitParCritere(critereRecherche).subscribe()
       }
     })
+  }
+
+  /**
+   * supprimerProduit
+   * @param produit 
+   */
+  supprimerProduit(produit: Produit){
+    
+    const dialogRef = this.dialog.open(SuppressionComponent, {
+      data: {name: produit.nomSRC, id: produit.id},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+        if (result >= 0) {
+          this.produitService.supprimerProduits(produit.id).subscribe((idDelete) => {
+            if (idDelete) {
+              this.rechargementProduit();
+              this.modalService.ouvrirModalConfirmation("Produit supprimé")
+            }
+          });
+        }
+    });
   }
 }

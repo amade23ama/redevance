@@ -1,13 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, catchError, Observable, share, tap, throwError} from 'rxjs';
+import { BehaviorSubject, Observable, catchError, share, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { CritereRecherche } from "../interfaces/critere.recherche";
 import { Produit } from '../interfaces/produit';
-import {Utilisateur} from "../interfaces/utilisateur";
-import {NotificationService} from "./notification.service";
-import {Profil} from "../interfaces/profil";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Exploitation} from "../interfaces/exploitation";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +72,22 @@ export class ProduitService {
       catchError((err) => {
         this.notification.error(" erreurr de recuperation Produit ")
         return throwError(() => err) // RXJS 7+
+      })
+    )
+  }
+
+  /**
+   * supprimerProduits
+   * @param idProduit idProduit
+   * @returns 
+   */
+  supprimerProduits(idProduit: number): Observable<Produit> {
+    return this.httpClient.delete<Produit>(this.url + '/supprimer/'+ idProduit) .pipe(
+      tap(() => { }
+      ),
+      catchError((err) => {
+        this.notification.error(" Suppression impossible. Le produit est associé à un chargement ")
+        return throwError(() => err)
       })
     )
   }

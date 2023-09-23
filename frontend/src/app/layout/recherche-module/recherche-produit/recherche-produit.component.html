@@ -69,8 +69,13 @@
               <div class="d-flex">Action</div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-                <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon" (click)="chargerProduit(element)">create</mat-icon>
+              <div *appAutorisation="['ADMIN','EDIT']" fxLayout="row">
+                <div   class=" d-flex pb-1" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+                  <mat-icon class="blue-label-icon" (click)="chargerProduit(element)">create</mat-icon>
+                </div>
+                <div   class=" d-flex" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+                  <mat-icon class="blue-label-icon" (click)="supprimerProduit(element)">delete</mat-icon>
+                </div>
               </div>
             </td>
           </ng-container>

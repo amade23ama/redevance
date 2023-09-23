@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from 'src/app/layout/shared-Module/dialog/confirmation-dialog/confirmation-dialog.component';
+import { SuppressionComponent } from 'src/app/layout/shared-Module/dialog/suppression/suppression.component';
 import { AnnulationModaleComponent } from '../modals/annulation-modale/annulation-modale.component';
 
 @Injectable({
@@ -41,4 +42,16 @@ export class ModalService {
       },
     });
   }
+
+  
+  ouvrirSuppressionModal(name: String, id: number){
+    const dialogRef = this.dialog.open(SuppressionComponent, {
+      data: {name: name, id: id},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed', result);
+    });
+  }
+  
 }

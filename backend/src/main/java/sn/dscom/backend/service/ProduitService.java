@@ -190,4 +190,26 @@ public class ProduitService implements IProduitService {
                 .map(this.produitConverteur::reverse)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * supprimerProduit
+     *
+     * @param id id
+     * @return produit
+     */
+    @Override
+    public Boolean supprimerProduit(Long id) {
+        Optional<ProduitEntity> produit = this.produitRepository.findById(id);
+
+        if (produit.isPresent()){
+            try{
+                this.produitRepository.delete(produit.get());
+                return true;
+            }catch (Exception e){
+                ProduitService.logger.error(String.format("Erreur leur de la suppression de produit : %s ",e.getMessage()));
+                throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
+            }
+        }
+        return false;
+    }
 }

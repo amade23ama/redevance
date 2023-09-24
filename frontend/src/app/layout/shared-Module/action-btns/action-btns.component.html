@@ -2,7 +2,7 @@
   <div *ngFor="let btn of btns">
     <div *ngIf="btn.display" class="btn-container-action" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
       <button 
-              [title]="btn.title === undefined ? '' : btn.title"
+              [matTooltip]="btn.tooltip === undefined ? '' : btn.tooltip"
               mat-raised-button
               (click)="onClick(btn.id)"
               [disabled]="btn.disabled"

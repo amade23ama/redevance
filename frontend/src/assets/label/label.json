@@ -114,6 +114,9 @@
     "label.tooltip.exploitation":"Nouveau",
     "label.tooltip.voiture":"Nouveau",
     "label.tooltip.depot": "Importer",
+    "label.tooltip.user.bouton.enregistrer":"Créer un nouvel utilisateur",
+    "label.tooltip.user.bouton.annuler":"Annuler",
+    "label.tooltip.user.bouton.modifier":"Modifier l'utilisateur",
     "label.info.mail": "Nous avons envoyé le login et mot de passe à l'adresse:",
     "footer.donnee.perso": "Données personelles",
     "footer.contact": "Contact",
@@ -131,11 +134,7 @@
     "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?",
     "titre.graphe.produit": "Exploitation minière par type de produit",
     "titre.graphe.region":"Exploitation minière par région",
-    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière",
-
-    "user.bouton.enregistrer.title":"Créer un nouvel utilisateur",
-    "user.bouton.annuler.title":"Annuler",
-    "user.bouton.modifier.title":"Modifier l'utilisateur"
+    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière"
   }
 }
 

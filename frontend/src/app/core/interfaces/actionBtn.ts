@@ -26,8 +26,8 @@ export class ActionBtn {
   /** Icône. */
   icon?: string;
 
-  /** title. */
-  title: string;
+  /** tooltip. */
+  tooltip: string;
 
   /**
    * Constructeur.
@@ -38,9 +38,10 @@ export class ActionBtn {
    * @param pink bouton rose ou non.
    * @param rightside à droite ou à gauche.
    * @param icon icône.
+   * @param tooltip tooltip.
    */
   constructor(label: string, id: Actions, display: boolean, disabled: boolean, pink: boolean,
-              rightside?: boolean, icon?: string, title?: string) {
+              rightside?: boolean, icon?: string, tooltip?: string) {
     this.label = label;
     this.id = id;
     this.display = display;
@@ -48,6 +49,6 @@ export class ActionBtn {
     this.pink = pink;
     this.rightside = rightside;
     this.icon = icon;
-    this.title = title;
+    this.tooltip = tooltip;
   }
 }

@@ -5,10 +5,11 @@
                             [plurier]="appConfig.getLabel('recherche.depot.pluriel.label')"
                             [tooltip]="appConfig.getLabel('label.tooltip.depot')"
                             [search]="search"
+                            [searchDate]="searchDate"
                             (btnAjouter)="ouvreNouveauChargement()"
                             [visibleDate]="true"
                             [visibleBtnExport]=true
-                            (btnExport)="export()"
+                            (btnExport)="export($event)"
                             (btnAjouterFiltre)="ajouterFiltre($event)"
                             (btnAnnulerFiltre)="annulerFiltre($event)"
                             [critereRecherches]="critereRecherches$"

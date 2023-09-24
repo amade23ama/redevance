@@ -7,6 +7,7 @@ export class CritereRecherche extends BuilderDtoJsonAbstract{
   dateFin:Date;
   page: number;
   size: number;
+  annee:number
   static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
     const result: any = BuilderDtoJsonAbstract.fromJson(json, CritereRecherche);
     return result;

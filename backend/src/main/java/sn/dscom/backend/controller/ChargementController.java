@@ -155,4 +155,15 @@ public class ChargementController {
         ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
         return ResponseEntity.ok(chargementService.rechargementParCritere(critereRecherche));
     }
+
+    @PostMapping("/exportDocument")
+    public ResponseEntity<FichierDTO> downloadDocument(@RequestBody CritereRecherche<?> critereRecherche) {
+        String str = "Bonjour";
+        byte[] byteArr = str.getBytes();
+        FichierDTO fichier= FichierDTO.builder().content(byteArr)
+                .nom("lientext.txt").build();
+        return ResponseEntity.ok(fichier);
+
+
+    }
 }

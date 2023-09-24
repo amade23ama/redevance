@@ -1,13 +1,12 @@
-import {Injectable, NgModule} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {Site} from "../interfaces/site";
 import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
-import {Utilisateur} from "../interfaces/utilisateur";
 import {Chargement} from "../interfaces/chargement";
 import {NotificationService} from "./notification.service";
 import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Vehicule} from "../interfaces/vehicule";
+import {saveAs} from "file-saver";
+import {Fichier} from "../interfaces/fichier";
 
 @Injectable({
   providedIn:"root"
@@ -55,4 +54,25 @@ export class ChargementService{
         })
       )
   }
+
+
+  /**
+   * pour exporter les chargement
+   * @param critereRecherche
+   */
+  exportDocumentChargementParCritere(critereRecherche:CritereRecherche ) {
+
+    return this.http.post<Fichier>(this.url+"/exportDocument",critereRecherche)
+      .pipe(
+        tap((res:Fichier) => {
+          const blob = new Blob([atob(res.content)]);
+          saveAs(blob, res.nom);
+        }),
+        catchError((err) => {
+          this.notification.error("erreur de telechargement du fichier ")
+          return throwError(() => err)
+        })
+      )
+  }
 }
+

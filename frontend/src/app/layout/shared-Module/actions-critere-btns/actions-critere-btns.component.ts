@@ -4,6 +4,7 @@ import {Filtre} from "../../../core/interfaces/filtre";
 import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 import {Observable, of} from "rxjs";
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
+import {ReferenceService} from "../../../core/services/reference.service";
 
 @Component({
   selector: 'app-actions-critere-btns',
@@ -28,9 +29,11 @@ export class ActionsCritereBtnsComponent implements OnInit{
   @Input() visibleDate:boolean
   @Input() visibleBtnExport:boolean
   @Input() visibleBtnCreation:boolean
+  @Input() searchDate:FormControl;
   selectable: boolean = true;
   removable: boolean = true;
-  constructor() {
+  annees$=this.referenceService.annees$
+  constructor(public readonly  referenceService:ReferenceService) {
   }
   ngOnInit() {
 
@@ -44,7 +47,7 @@ export class ActionsCritereBtnsComponent implements OnInit{
   change(autocompleteRecherche:AutocompleteRecherche){
     this.btnAjouterFiltre.emit(autocompleteRecherche)
   }
-  export(){
-      this.btnExport.emit(true)
+  export(critereRecherches:Observable<AutocompleteRecherche[]>){
+      this.btnExport.emit(critereRecherches)
   }
 }

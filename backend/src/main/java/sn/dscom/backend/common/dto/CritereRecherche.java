@@ -17,16 +17,18 @@ public class CritereRecherche <T> implements Serializable {
     private Date dateFin;
     private int page;
     private int  size;
+    private int annee;
     @Builder.Default
     private Collection<AutocompleteRecherche<T>> autocompleteRecherches;
 
-        @Override
+    @Override
     public String toString() {
         return "CritereRecherche{" +
                 "dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
                 ", page=" + page +
                 ", size=" + size +
+                ", annee=" + annee +
                 ", autocompleteRecherches=" + autocompleteRecherches +
                 '}';
     }

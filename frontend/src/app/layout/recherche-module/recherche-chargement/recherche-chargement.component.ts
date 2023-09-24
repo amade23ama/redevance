@@ -2,17 +2,15 @@ import {Component, OnInit, ViewChild} from "@angular/core";
 import {ChargementService} from "../../../core/services/chargement.service";
 import {FormControl} from "@angular/forms";
 import {MatTableDataSource} from "@angular/material/table";
-import {Site} from "../../../core/interfaces/site";
 import {MatPaginator} from "@angular/material/paginator";
 import {MatSort} from "@angular/material/sort";
 import {Chargement} from "../../../core/interfaces/chargement";
 import {AppConfigService} from "../../../core/services/app-config.service";
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
 import {DatePipe} from "@angular/common";
 import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
 import {Router} from "@angular/router";
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
+import {debounceTime, distinctUntilChanged, Observable, switchMap} from "rxjs";
 import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
 import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 
@@ -24,6 +22,7 @@ import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
 export  class RechercheChargementComponent implements  OnInit{
   chargements$=this.chargementService.chargements$
   search:FormControl =new FormControl('');
+  searchDate:FormControl =new FormControl('');
   /** la liste des véhicules */
   listChargements: MatTableDataSource<Chargement>;
   // La pagination
@@ -41,7 +40,6 @@ export  class RechercheChargementComponent implements  OnInit{
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesChargement$
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
               private router:Router, private autocompleteRechercheService:AutocompleteRechercheService) {
-   // this.initDisplayColumn();
   }
   ngOnInit() {
 
@@ -70,25 +68,7 @@ export  class RechercheChargementComponent implements  OnInit{
   ouvreNouveauChargement(){
     this.router.navigate(['depot/creer'])
   }
-  initDisplayColumn(){
-   // this.displayedColumns.push('num')
-    this.displayedColumns.push('exploitation')
-    this.displayedColumns.push('destination')
-    this.displayedColumns.push('site')
-    this.displayedColumns.push('produit')
-    //this.displayedColumns.push('transporteur')
-    //this.displayedColumns.push('vehicule')
-    //this.displayedColumns.push('classe')
-    //this.displayedColumns.push('poids')
-    //this.displayedColumns.push('PoidsMax')
-    //this.displayedColumns.push('PoidsEstime')
-    //this.displayedColumns.push('volumeEstime')
 
-
-
-     // ['exploitation', 'destination', 'site','transporteur',
-   // 'vehicule','classe','poids','PoidsMax','PoidsEstime','volumeEstime','ecart']//,'vmMoyen'];
-  }
   formatDate(dateCreation: Date) {
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
@@ -96,8 +76,13 @@ export  class RechercheChargementComponent implements  OnInit{
   chargerChargement(element:Chargement){
 
   }
-  export(){
-
+  export(critereRecherches:Observable<AutocompleteRecherche[]>){
+    const critereRecherche:CritereRecherche=new CritereRecherche()
+    critereRecherches.subscribe((res)=>{
+      critereRecherche.autocompleteRecherches=res;
+    })
+    critereRecherche.annee=this.searchDate.value
+   this.chargementService.exportDocumentChargementParCritere(critereRecherche).subscribe()
   }
   ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.addAutocompleteRechercheChargement(autocompleteRecherche)

@@ -1,4 +1,4 @@
-import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
+import { BuilderDtoJsonAbstract, NoParamConstructor } from "./BuilderDtoJsonAbstract";
 
 /**
  * Produit
@@ -7,7 +7,7 @@ export class Produit extends BuilderDtoJsonAbstract{
 
 
     /** identifiant */
-    public id : Number;
+    public id : number;
 
     /** identifiant */
     public nomSRC: String;

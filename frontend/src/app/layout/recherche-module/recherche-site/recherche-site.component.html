@@ -47,7 +47,7 @@
       </th>
       <td mat-cell *matCellDef="let element">
         <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-          <mat-icon *appAutorisation="['ADMIN']" class="blue-label-icon" (click)="chargerSite(element)">create</mat-icon>
+          <mat-icon *appAutorisation="['ADMIN','EDIT']" class="blue-label-icon" (click)="chargerSite(element)">create</mat-icon>
         </div>
       </td>
     </ng-container>

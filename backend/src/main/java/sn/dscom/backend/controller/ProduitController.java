@@ -65,6 +65,19 @@ public class ProduitController {
     }
 
     /**
+     * Permet de supprimer un Produit en base
+     *
+     * @param id id produit à supprimer
+     * @return l'entité
+     */
+    @DeleteMapping(path = "/supprimer/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    public ResponseEntity<Boolean> supprimerProduit(@PathVariable("id") Long id) {
+        ProduitController.logger.info("supprimer Produits");
+        return ResponseEntity.ok(produitService.supprimerProduit(id));
+    }
+
+    /**
      * Compteur Produits
      *
      * @return le nombre de produit

@@ -1,14 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {UtilisateurService} from "../../../core/services/utilisateur.service";
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
-import {ActivatedRoute} from "@angular/router";
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {Profil} from "../../../core/interfaces/profil";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {AuthService} from "../../../core/services/auth.service";
-import {DroitEnum} from "../../../core/enum/droit-enum";
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { ModalService } from 'src/app/core/services/modal.service';
+import { Actions } from "../../../core/enum/actions";
+import { DroitEnum } from "../../../core/enum/droit-enum";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { Utilisateur } from "../../../core/interfaces/utilisateur";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AuthService } from "../../../core/services/auth.service";
+import { UtilisateurService } from "../../../core/services/utilisateur.service";
 
 @Component({
   selector: 'app-utilisateur',
@@ -37,7 +37,7 @@ export class UtilisateurComponent implements OnInit{
   isUpdate:boolean
   displayEmail=false;
   constructor(public utilisateurService:UtilisateurService,private readonly activatedRoute: ActivatedRoute,
-              public builder:FormBuilder,public appConfig: AppConfigService,
+              public builder:FormBuilder,public appConfig: AppConfigService, public modalService: ModalService,
               private readonly authService: AuthService) {
     this.myform= this.builder.group({
       id:this.id,
@@ -86,11 +86,11 @@ export class UtilisateurComponent implements OnInit{
   }
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
-      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left', this.appConfig.getLabel('user.bouton.annuler.title')));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
-      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
+      Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save', this.appConfig.getLabel('user.bouton.enregistrer.title')));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'),
-      Actions.MODIFIER, this.isModifBtnAffiche(), true, true, true, 'create'));
+      Actions.MODIFIER, this.isModifBtnAffiche(), true, true, true, 'create', this.appConfig.getLabel('user.bouton.modifier.title')));
     return this.btns;
   }
   isEnrgBtnDisplayed(){
@@ -111,8 +111,10 @@ export class UtilisateurComponent implements OnInit{
   utilisateurAction(event: Actions){
     if (event === Actions.ENREGISTRER) {
     const b= this.myform.value;
-      this.utilisateurService.enregistrer(this.myform.value).subscribe(()=>{
+      this.utilisateurService.enregistrer(this.myform.value).subscribe((user)=>{
         this.displayEmail=true;
+        let message = user.prenom + " " + user.nom +' a été habilité avec succès'
+        this.modalService.ouvrirModalConfirmation(message);
       })
     }
     if (event === Actions.MODIFIER) {

@@ -57,4 +57,11 @@ public interface IProduitService {
      * @return liste
      */
      List<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * supprimerProduit
+     * @param id id
+     * @return Boolean
+     */
+    Boolean supprimerProduit(Long id);
 }

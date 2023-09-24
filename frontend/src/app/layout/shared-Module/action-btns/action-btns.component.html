@@ -1,7 +1,8 @@
 <div classe="btns" fxLayout="row" fxLayoutAlign="end center" >
   <div *ngFor="let btn of btns">
     <div *ngIf="btn.display" class="btn-container-action" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
-      <button
+      <button 
+              [title]="btn.title === undefined ? '' : btn.title"
               mat-raised-button
               (click)="onClick(btn.id)"
               [disabled]="btn.disabled"

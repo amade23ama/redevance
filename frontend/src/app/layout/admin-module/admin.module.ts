@@ -15,6 +15,7 @@ import {NgxMatSelectSearchModule} from "ngx-mat-select-search";
 import {ProduitComponent} from "./produit/produit.component";
 import {SharedModule} from "../shared-Module/shared.module";
 import {ExploitationComponent} from "./exploitation/exploitation.component";
+import {ClasseVoitureComponent} from "./classe-voiture/classe-voiture.component";
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {ExploitationComponent} from "./exploitation/exploitation.component";
     VehiculeComponent,
     AdminComponent,
     ProduitComponent,
-    ExploitationComponent
+    ExploitationComponent,
+    ClasseVoitureComponent
   ],
   imports: [
 

@@ -20,6 +20,7 @@ import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
 import sn.dscom.backend.service.util.ChargementSpecifications;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -38,6 +39,9 @@ public class ChargementService implements IChargementService {
 
     /** Logger Factory */
     private static final Logger log = LoggerFactory.getLogger(ChargementService.class);
+
+    /** POINT_VIRGULE_SEPARATEUR */
+    public static final String POINT_VIRGULE_SEPARATEUR = ";";
 
     /**
      * chargement Transformer
@@ -577,6 +581,41 @@ public class ChargementService implements IChargementService {
                 .map(this.chargementConverter::reverse)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * chargementDTOs To Bytes
+     * <p>
+     * chargementDTOsToBytes
+     *
+     * @param datas le liste
+     * @return le fichier en byte
+     */
+    @Override
+    public byte[] chargementDTOsToBytes(List<ChargementDTO> datas) throws UnsupportedEncodingException {
+
+        // Le builder
+        StringBuilder csvBuilder= new StringBuilder();
+        // L'en-tête
+        csvBuilder.append("Date et heure;Site;Produit;Oriogine;Destination;Vehicule;Transporteur;Poids;Poids estime;Volume;Ecart\r\n");
+
+        //on parcours la liste des chargements pour contruire un ligne du fichier
+        datas.forEach(data -> {
+            csvBuilder.append(data.getDateCreation().toString()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getSite().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getProduit().getNomSRC()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getExploitation().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getDestination()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVehicule().getImmatriculation()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVehicule().getTransporteur().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getPoids()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getPoidsSubst()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVolumeSubst()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getEcart())
+                    .append("\r\n");
+        });
+
+        return csvBuilder.toString().getBytes("windows-1252");
     }
 
 }

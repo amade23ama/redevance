@@ -14,10 +14,9 @@ import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IExploitationService;
 import sn.dscom.backend.service.interfaces.ISiteService;
 
-import java.util.Collections;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @apiNote Controller REST des opérations sur la fonctionnalité de chargement
@@ -156,13 +155,23 @@ public class ChargementController {
         return ResponseEntity.ok(chargementService.rechargementParCritere(critereRecherche));
     }
 
+    /**
+     * export Document
+     * @param critereRecherche critereRecherche
+     * @return FichierDTO
+     * @throws UnsupportedEncodingException l'exception
+     */
     @PostMapping("/exportDocument")
-    public ResponseEntity<FichierDTO> downloadDocument(@RequestBody CritereRecherche<?> critereRecherche) {
-        String str = "Bonjour";
-        byte[] byteArr = str.getBytes();
-        FichierDTO fichier= FichierDTO.builder().content(byteArr)
-                .nom("lientext.txt").build();
-        return ResponseEntity.ok(fichier);
+    public ResponseEntity<FichierDTO> downloadDocument(@RequestBody CritereRecherche<?> critereRecherche) throws UnsupportedEncodingException {
+
+        ChargementController.LOGGER.info("downloadDocument: exportDocument");
+        List<ChargementDTO> datas = chargementService.rechargementParCritere(critereRecherche);
+
+        return ResponseEntity.ok(FichierDTO.builder()
+                .content(this.chargementService.chargementDTOsToBytes(datas))
+                .nom("Fichier-chargements.csv")
+                .build()
+        );
 
 
     }

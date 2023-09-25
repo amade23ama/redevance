@@ -3,6 +3,7 @@ package sn.dscom.backend.service.interfaces;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -79,4 +80,13 @@ public interface IChargementService {
      */
     Integer getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
     public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * chargementDTOs To Bytes
+     *
+     * chargementDTOsToBytes
+     * @param datas le liste
+     * @return le fichier en byte
+     */
+    byte[] chargementDTOsToBytes(List<ChargementDTO> datas) throws UnsupportedEncodingException;
 }

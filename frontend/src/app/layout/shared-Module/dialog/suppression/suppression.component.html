@@ -1,6 +1,6 @@
 <div>
-    <h3 class="dcsom-modal-title dcsom-text-info dcsom-modal-text" mat-dialog-title>Suppression</h3>
-    <div class="mt-1 dcsom-text-black" mat-dialog-content >Voulez-vous supprimer le produit {{this.data?.name}}?</div>
+    <h3 class="dcsom-modal-title dcsom-text-info dcsom-modal-text" mat-dialog-title>{{appConfig.getLabel('modal.suppression.title')}}</h3>
+    <div class="mt-1 dcsom-text-black" mat-dialog-content >{{appConfig.getLabel('modal.suppression.body', this.data?.name)}}</div>
     <div class="mt-2" mat-dialog-actions>
         <button mat-button mat-raised-button mat-dialog-close (click)="onNoClick()">Non</button>
         <button mat-button mat-raised-button [mat-dialog-close]="data.id" cdkFocusInitial>Oui</button>

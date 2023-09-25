@@ -107,6 +107,8 @@ export class RechercheProduitComponent implements OnInit {
   supprimerProduit(produit: Produit){
     
     const dialogRef = this.dialog.open(SuppressionComponent, {
+      width: '600px',
+      position: {top:'200px'},
       data: {name: produit.nomSRC, id: produit.id},
     });
 

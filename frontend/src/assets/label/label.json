@@ -132,6 +132,10 @@
 
     "modal.annulation.title":"Attention {0} en cours !",
     "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?",
+
+    "modal.suppression.title":"Attention suppression en cours !",
+    "modal.suppression.body":"Voulez-vous supprimer le produit {0} ?",
+
     "titre.graphe.produit": "Exploitation minière par type de produit",
     "titre.graphe.region":"Exploitation minière par région",
     "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière"

@@ -597,20 +597,23 @@ public class ChargementService implements IChargementService {
         // Le builder
         StringBuilder csvBuilder= new StringBuilder();
         // L'en-tête
-        csvBuilder.append("Date et heure;Site;Produit;Oriogine;Destination;Vehicule;Transporteur;Poids;Poids estime;Volume;Ecart\r\n");
+        csvBuilder.append("DATE DE PESAGE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
 
         //on parcours la liste des chargements pour contruire un ligne du fichier
         datas.forEach(data -> {
             csvBuilder.append(data.getDateCreation().toString()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(data.getSite().getNom()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(data.getProduit().getNomSRC()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getExploitation().getRegion()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getDestination()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(data.getVehicule().getImmatriculation()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getProduit().getNomSRC()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVehicule().getTransporteur().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVehicule().getTransporteur().getTelephone()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVehicule().getImmatriculation()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVehicule().getCategorie().getType()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getPoids()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getPoidsSubst()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVolumeSubst()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getVolumeMoyen()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getEcart())
                     .append("\r\n");
         });

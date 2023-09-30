@@ -7,6 +7,7 @@ import { UpdatePwdComponent } from "./utilisateur/update-pwd/update-pwd.componen
 import { UtilisateurCreateComponent } from "./utilisateur/utilisateur-create/utilisateur-create.component";
 import { UtilisateurComponent } from "./utilisateur/utilisateur.component";
 import { VehiculeComponent } from "./vehicule/vehicule.component";
+import {ClasseVoitureComponent} from "./classe-voiture/classe-voiture.component";
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +24,10 @@ const routes: Routes = [{
           {
             path: 'vehicule',
             component: VehiculeComponent
+          },
+          {
+            path: 'categorie',
+            component: ClasseVoitureComponent
           },
           {
             path: 'utilisateur',

@@ -8,6 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.CategorieDTO;
+import sn.dscom.backend.common.dto.CritereRecherche;
+import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.ICategorieService;
 
@@ -104,4 +107,15 @@ public class CategorieController {
         CategorieController.LOGGER.info("CategorieController: Compter les categories: ");
         return  ResponseEntity.ok(this.categorieService.compterCategorie(LocalDateTime.now()));
     }
+    @PostMapping (value = "/rechercheBy")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<List<CategorieDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
+        return ResponseEntity.ok(this.categorieService.rechargementParCritere(critereRecherche));
+    }
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public CategorieDTO chargerCategorieDTOParId(@PathVariable Long id) {
+        return this.categorieService.chargerCategorieDTOParId(id);
+    }
+
 }

@@ -8,11 +8,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.dto.AutocompleteRecherche;
 import sn.dscom.backend.common.dto.CategorieDTO;
+import sn.dscom.backend.common.dto.CritereRecherche;
+import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.controller.DepotController;
 import sn.dscom.backend.database.entite.CategorieEntity;
+import sn.dscom.backend.database.entite.SiteEntity;
+import sn.dscom.backend.database.entite.VehiculeEntity;
 import sn.dscom.backend.database.repository.CategorieRepository;
 import sn.dscom.backend.service.converter.CategorieConverter;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
@@ -180,5 +185,44 @@ public class CategorieService implements ICategorieService {
     @Override
     public Integer compterCategorie(LocalDateTime dateMiseEnService) {
         return this.categorieRepository.compterSitePardate(dateMiseEnService);
+    }
+
+    @Override
+    public List<CategorieDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+
+        //S'il n'y a pas de critère on remonte tout
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            /** find all de tous les véhicule*/
+            List<CategorieEntity> list = this.categorieRepository.findAll();
+
+            return list.stream()
+                    .map(categorieEntity ->  categorieConverter.reverse(categorieEntity))
+                    .collect(Collectors.toList());
+        }
+
+        List<Long> idscategorie = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == CategorieEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        return Try.of(() -> idscategorie)
+                .filter(Objects::nonNull)
+                .mapTry(this.categorieRepository::findCategorieEntitiesByIdIsIn)
+                .get()
+                .stream()
+                .map(this.categorieConverter::reverse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public CategorieDTO chargerCategorieDTOParId(Long id) {
+            Optional<CategorieEntity> categorie = categorieRepository.findById(id);
+            if (categorie.isPresent()) {
+                return this.categorieConverter.reverse(categorie.get());
+            } else {
+                throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+            }
+
     }
 }

@@ -116,6 +116,15 @@ public class AutocompleteRecherche <T> implements Serializable {
         this.typeClass = VehiculeEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
+    public AutocompleteRecherche(CategorieEntity categorie) {
+        this.id = categorie.getId().toString();
+        this.libelle = new StringBuilder().
+                append("[Categorie] ")
+                .append(categorie.getType())
+                .toString();
+        this.typeClass = CategorieEntity.class;
+        this.origine = this.typeClass.getSimpleName();
+    }
 
     public void setId(String id) {
         this.id = id;

@@ -1,1 +1,34 @@
 
+<form class="mt-1" [formGroup]="myform">
+  <fieldset>
+    <legend class="titre-form">{{titre}}</legend>
+    <div class="mt-05" fxLayout fxLayout="column" fxLayout.lt-md="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
+        <!-- Classe -->
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Classe </mat-label>
+          <input matInput  type="text" [formControl]="type"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('type')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="type.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+        <!-- Volume -->
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Volume </mat-label>
+          <input matInput  type="number" [formControl]="volume"/>
+          <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('volume')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>
+    </div>
+  </fieldset>
+</form>
+<div class="mat-elevation-z0 mt-1">
+  <app-action-btns [btns]="btns"  (btnClick)="categorieAction($event)"></app-action-btns>
+</div>
+

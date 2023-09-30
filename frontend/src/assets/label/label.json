@@ -116,6 +116,7 @@
     "label.tooltip.exploitation":"Nouveau",
     "label.tooltip.voiture":"Nouveau",
     "label.tooltip.depot": "Importer",
+    "label.tooltip.categorie": "Nouveau Class vehicule",
     "label.tooltip.user.bouton.enregistrer":"Créer un nouvel utilisateur",
     "label.tooltip.user.bouton.annuler":"Annuler",
     "label.tooltip.user.bouton.modifier":"Modifier l'utilisateur",

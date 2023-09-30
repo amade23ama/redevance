@@ -43,6 +43,8 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     /** chargement Repository */
     private ChargementRepository chargementRepository;
 
+    private CategorieRepository categorieRepository;
+
     /** matcherGlobal */
     private final ExampleMatcher matcherGlobal = ExampleMatcher.matchingAny()
             .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
@@ -57,7 +59,8 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     @Builder
     public AutocompleteRechercheService(UtilisateurRepository utilisateurRepository, ProduitRepository produitRepository, ExploitationRepository exploitationRepository,
                                         ProfilRepository profilRepository, SiteRepository siteRepository, VehiculeRepository vehiculeRepository,
-                                        ChargementRepository chargementRepository) {
+                                        ChargementRepository chargementRepository,
+                                        CategorieRepository categorieRepository) {
         this.profilRepository=profilRepository;
         this.utilisateurRepository=utilisateurRepository;
         this.produitRepository=produitRepository;
@@ -65,6 +68,7 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
         this.exploitationRepository=exploitationRepository;
         this.vehiculeRepository=vehiculeRepository;
         this.chargementRepository=chargementRepository;
+        this.categorieRepository=categorieRepository;
 
     }
     @Transactional(readOnly = true)
@@ -221,6 +225,29 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
                             .build())
                     .map(chargement -> this.chargementRepository.findAll(Example.of(chargement, matcherGlobal)))
                     .getOrElse(ArrayList::new);
+
+            if(!list.isEmpty()){
+                return  list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList());
+            }
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public List<AutocompleteRecherche> getCategorieAutocompleteRecherche(String capture) {
+
+        CategorieEntity categorie = new CategorieEntity();
+        // si null or empty, on lève une 404
+        if (!Strings.isNullOrEmpty(capture)) {
+            categorie.setType(capture);
+            try {
+                double doubleNum = Double.parseDouble(capture);
+                categorie.setVolume(doubleNum);
+            }catch (Exception e){
+
+            }
+
+            List<CategorieEntity> list = this.categorieRepository.findAll(Example.of(categorie, matcherGlobal));
 
             if(!list.isEmpty()){
                 return  list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList());

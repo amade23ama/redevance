@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import sn.dscom.backend.database.entite.CategorieEntity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Categorie Repository
@@ -39,4 +40,6 @@ public interface CategorieRepository extends JpaRepository<CategorieEntity,Long>
      */
     @Query(value = "select categorie from CategorieEntity categorie where categorie.type =:type")
     CategorieEntity rechercherCategorieByType(@Param("type") String type);
+
+    List<CategorieEntity> findCategorieEntitiesByIdIsIn(@Param("idsCategorie") List<Long> idsCategorie);
 }

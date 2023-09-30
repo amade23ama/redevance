@@ -58,4 +58,11 @@ public interface IAutocompleteRechercheService {
      * @return la liste
      */
     List<AutocompleteRecherche> getChargementAutocompleteRecherche(String capture);
+
+    /**
+     *
+     * @param capture
+     * @return
+     */
+    List<AutocompleteRecherche> getCategorieAutocompleteRecherche(String capture);
 }

@@ -1,0 +1,73 @@
+<div class="mt-05">
+  <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
+                            [numberResult]="2"
+                            [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
+                            [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
+                            [tooltip]="appConfig.getLabel('label.tooltip.categorie')"
+                            [search]="search"
+                            [visibleBtnCreation]="true"
+                            (btnAjouter)="ouvreNouveauCategorie()"
+                            (btnAjouterFiltre)="ajouterFiltre($event)"
+                            (btnAnnulerFiltre)="annulerFiltre($event)"
+                            [critereRecherches]="critereRecherches$"
+                            [resultautocompleteRecherche]=rechercheSuggestions$>
+  </app-actions-critere-btns>
+</div>
+<div>
+
+  <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+    <table mat-table matSort  [dataSource]="listCategorie"  class="mat-elevation-z0 table-parent" matSort>
+      <!-- COLONNE : PRENOM -->
+      <ng-container matColumnDef="type">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Type</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element?.type?element?.type:"-"}}</div>
+        </td>
+      </ng-container>
+      <!-- COLONNE : TELEPHONE-->
+      <ng-container matColumnDef="volume">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Volume(m3)</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element?.volume?element?.volume:"-"}}</div>
+        </td>
+      </ng-container>
+
+      <!-- COLONNE : EMAIL-->
+      <ng-container matColumnDef="dateCreation">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">Date Creation</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">{{element?.dateCreation?formatDate(element?.dateCreation):'-'}}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">actions</div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div   class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+            <mat-icon *appAutorisation="['ADMIN','EDIT']" class="blue-label-icon" (click)="chargerCategorie(element)">create</mat-icon>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+    <!-- container de pagination -->
+    <mat-paginator [pageSize]="pageSize"
+                   [pageSizeOptions]="pageSizeOptions"
+                   showFirstLastButtons>
+    </mat-paginator>
+
+  </div>
+
+
+
+</div>

@@ -1,6 +1,13 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.http.HttpStatus;
+import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.CategorieDTO;
+import sn.dscom.backend.common.dto.CritereRecherche;
+import sn.dscom.backend.common.dto.ProduitDTO;
+import sn.dscom.backend.common.dto.SiteDTO;
+import sn.dscom.backend.common.exception.CommonMetierException;
+import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
 import java.time.LocalDateTime;
@@ -51,4 +58,13 @@ public interface ICategorieService {
      * @return le nombre de site d'Exploitation
      */
     Integer compterCategorie(LocalDateTime dateMiseEnService);
+
+    List<CategorieDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     *
+     * @param id
+     * @return
+     */
+    public CategorieDTO chargerCategorieDTOParId(Long id) ;
 }

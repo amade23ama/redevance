@@ -32,6 +32,10 @@ export class AutocompleteRechercheService{
   private _autoCompleteRecherchesVehicule$: BehaviorSubject<AutocompleteRecherche[]> = new BehaviorSubject<AutocompleteRecherche[]>([]);
   private _critereRecherchesVehicule$: BehaviorSubject<AutocompleteRecherche[]> = new BehaviorSubject<AutocompleteRecherche[]>([]);
 
+
+  private _autoCompleteRecherchesCategorie$: BehaviorSubject<AutocompleteRecherche[]> = new BehaviorSubject<AutocompleteRecherche[]>([]);
+  private _critereRecherchesCategorie$: BehaviorSubject<AutocompleteRecherche[]> = new BehaviorSubject<AutocompleteRecherche[]>([]);
+
   constructor(private readonly httpClient:HttpClient,
               private notification: NotificationService) {
   }
@@ -190,6 +194,24 @@ export class AutocompleteRechercheService{
         })
       )
   }
+  autocompleteCategorie(capture:string){
+    if(capture==''){
+      this.setAutoCompleteRecherchesCategorie([])
+      return of();
+    }
+    return this.httpClient.get<AutocompleteRecherche[]>(this.url + `/categorie/${capture}`)
+      .pipe(
+        tap((res)=> {
+          this.setAutoCompleteRecherchesCategorie(res!=null ?res:[])
+        }),
+        catchError((err) => {
+          this.setAutoCompleteRecherchesCategorie([])
+
+          this.notification.error("erreur de recherche")
+          return throwError(() => err)
+        })
+      )
+  }
   setAutoCompleteRecherchesChargement(autocompleteRecherches:AutocompleteRecherche[]){
     return this._autoCompleteRecherchesChargement$.next(autocompleteRecherches)
   }
@@ -339,5 +361,31 @@ export class AutocompleteRechercheService{
       currentAutoComplete.splice(index,1)
       this._critereRecherchesVehicule$.next(currentAutoComplete);
     }
+  }
+
+  get critereRecherchesCategorie$(){
+    return this._critereRecherchesCategorie$.asObservable()
+  }
+  addAutocompleteRechercheCategorie(autocompleteRecherche:AutocompleteRecherche) {
+    const currentList = this._critereRecherchesCategorie$.getValue();
+    if(!currentList.find((res)=>res.id==autocompleteRecherche.id)){
+      const updatedList = [...currentList, autocompleteRecherche];
+      this._critereRecherchesCategorie$.next(updatedList);
+    }
+  }
+  removeAutocompleteRechercheCategorie(autocompleteRecherche:AutocompleteRecherche) {
+    const currentAutoComplete = this._critereRecherchesCategorie$.getValue();
+    const filtre=currentAutoComplete.find((res)=>res.id==autocompleteRecherche.id)
+    const index=currentAutoComplete.indexOf(filtre)
+    if(index!=-1){
+      currentAutoComplete.splice(index,1)
+      this._critereRecherchesCategorie$.next(currentAutoComplete);
+    }
+  }
+  setAutoCompleteRecherchesCategorie(autocompleteRecherches:AutocompleteRecherche[]){
+    return this._autoCompleteRecherchesCategorie$.next(autocompleteRecherches)
+  }
+  get autoCompleteRecherchesCategorie$(){
+    return this._autoCompleteRecherchesCategorie$.asObservable()
   }
 }

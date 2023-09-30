@@ -5,7 +5,7 @@
     <form  class="stepper--conteneur"[formGroup]="myform" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>Nom source </mat-label>
+          <mat-label>Nom </mat-label>
           <input matInput type="text"
                  [formControl]="nomSRC"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
@@ -18,22 +18,7 @@
         </mat-form-field>
 
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>Nom normalisé </mat-label>
-          <input matInput  type="text"
-                 [formControl]="nomNORM"/>
-          <button  matSuffix mat-icon-button aria-label="Clear"
-                   (click)="reset('nomNORM')">
-            <mat-icon>close</mat-icon>
-          </button>
-          <mat-error *ngIf="nomNORM.errors?.hasOwnProperty('required')">
-            {{appConfig.getLabel('error.champ.obligatoire')}}
-          </mat-error>
-        </mat-form-field>
-      </div>
-
-      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>Densité en gramme </mat-label>
+          <mat-label>Densité (gr/cm3) </mat-label>
           <input matInput  type="number"
                  [formControl]="densiteGRM"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
@@ -45,8 +30,37 @@
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>Densité en kilogramme </mat-label>
+        <!--<mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Nom normalisé </mat-label>
+          <input matInput  type="text"
+                 [formControl]="nomNORM"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('nomNORM')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="nomNORM.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>-->
+
+      </div>
+
+      <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+       <!-- <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+          <mat-label>Densité (gr/cm3) </mat-label>
+          <input matInput  type="number"
+                 [formControl]="densiteGRM"/>
+          <button  matSuffix mat-icon-button aria-label="Clear"
+                   (click)="reset('densiteGRM')">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-error *ngIf="densiteGRM.errors?.hasOwnProperty('required')">
+            {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+        </mat-form-field>-->
+
+        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" floatLabel="always">
+          <mat-label>Densité (kg/m3) </mat-label>
           <input matInput  type="number"
                  [formControl]="densiteKGM"/>
           <button  matSuffix mat-icon-button aria-label="Clear"

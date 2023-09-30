@@ -51,7 +51,7 @@ public class ProduitConverter implements Transformer<ProduitDTO,ProduitEntity> {
         }
         return ProduitEntity.builder()
                 .id(produitDTO.getId())
-                .nomNORM(Strings.isNullOrEmpty(produitDTO.getNomNORM()) ? produitDTO.getNomNORM() : produitDTO.getNomNORM().trim().toUpperCase())
+                .nomNORM(Strings.isNullOrEmpty(produitDTO.getNomSRC()) ? produitDTO.getNomSRC() : produitDTO.getNomSRC().trim().toUpperCase())
                 .nomSRC(Strings.isNullOrEmpty(produitDTO.getNomSRC()) ? produitDTO.getNomSRC() : produitDTO.getNomSRC().trim().toUpperCase())
                 .densiteGRM(produitDTO.getDensiteGRM())
                 .densiteKGM(produitDTO.getDensiteKGM())

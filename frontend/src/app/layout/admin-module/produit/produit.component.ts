@@ -22,7 +22,7 @@ export class ProduitComponent implements OnInit{
   titre="Créer un nouveau  produit"
   id: FormControl = new FormControl()
   nomSRC: FormControl = new FormControl('',[Validators.required])
-  nomNORM: FormControl = new FormControl('',[Validators.required]);
+ // nomNORM: FormControl = new FormControl('',[Validators.required]);
   densiteGRM: FormControl = new FormControl('',[Validators.required]);
   densiteKGM: FormControl = new FormControl('',[Validators.required]);
   dateCreation: FormControl = new FormControl();
@@ -30,7 +30,7 @@ export class ProduitComponent implements OnInit{
   myform: FormGroup = this.builder.group({
     id: this. id,
     nomSRC: this.nomSRC,
-    nomNORM: this.nomNORM,
+   // nomNORM: this.nomNORM,
     densiteGRM:this.densiteGRM,
     densiteKGM:this.densiteKGM,
     dateCreation: this.dateCreation,

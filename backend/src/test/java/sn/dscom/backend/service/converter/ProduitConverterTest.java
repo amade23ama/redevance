@@ -90,7 +90,7 @@ class ProduitConverterTest {
                 () -> Assertions.assertEquals(expected.getId(), actual.getId()),
                 () -> Assertions.assertEquals(expected.getDateCreation(), actual.getDateCreation()),
                 () -> Assertions.assertEquals(expected.getDateModification(), actual.getDateModification()),
-                () -> Assertions.assertEquals(expected.getNomNORM(), actual.getNomNORM()),
+                () -> Assertions.assertEquals(expected.getNomSRC(), actual.getNomNORM()),
                 () -> Assertions.assertEquals(expected.getNomSRC(), actual.getNomSRC()),
                 () -> Assertions.assertEquals(expected.getDensiteGRM(), actual.getDensiteGRM()),
                 () -> Assertions.assertEquals(expected.getDensiteKGM(), actual.getDensiteKGM())

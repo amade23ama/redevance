@@ -104,7 +104,7 @@ export  class AuthService {
           const token = this.authenticateSuccess(res);
         }),
         catchError((err) => {
-          this.notification.error("erreur de connection")
+          this.notification.error("Mot de passe invalide")
           return throwError(() => err)
         })
       )

@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-import {ExtraOptions, provideRouter, RouterModule, Routes} from '@angular/router';
-import {HomeComponent} from "./layout/shared-Module/home/home.component";
-import {DisconnectedHomeComponent} from "./layout/shared-Module/home/disconnected-home/disconnected-home.component";
-import {LoginComponent} from "./login/login.component";
-import {RouteGuard} from "./core/guards/route-guard.service";
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { RouteGuard } from "./core/guards/route-guard.service";
+import { ForgetPasswordComponent } from './login/forget-password/forget-password.component';
+import { LoginComponent } from "./login/login.component";
 
 
 /**
@@ -11,6 +10,7 @@ import {RouteGuard} from "./core/guards/route-guard.service";
  */
 const routesPublic: Routes = [
   {path: 'login', component: LoginComponent},
+  {path: 'forget-password', component: ForgetPasswordComponent},
   {
     path: '',loadChildren: () => import('./layout/layout.module')
       .then(modules => modules.LayoutModule),canActivate:[RouteGuard]

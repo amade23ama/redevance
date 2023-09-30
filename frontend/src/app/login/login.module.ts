@@ -12,12 +12,14 @@ import { DscomInfoComponent } from './dscom-info/dscom-info.component';
 import {MaterialModule} from "../material.module";
 import {BrowserModule} from "@angular/platform-browser";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     DscomLoginComponent,
-    DscomInfoComponent
+    DscomInfoComponent,
+    ForgetPasswordComponent
   ],
   imports: [
     CommonModule,

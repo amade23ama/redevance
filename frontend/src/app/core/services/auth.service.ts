@@ -1,12 +1,12 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {catchError, Observable, tap, throwError} from "rxjs";
-import {Router} from "@angular/router";
-import {environment} from "../../../environments/environment";
-import {UtilisateurService} from "./utilisateur.service";
-import {Globals} from "../../app.constants";
-import {JwtHelperService} from "@auth0/angular-jwt";
-import {NotificationService} from "./notification.service";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { JwtHelperService } from "@auth0/angular-jwt";
+import { catchError, Observable, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { Globals } from "../../app.constants";
+import { NotificationService } from "./notification.service";
+import { UtilisateurService } from "./utilisateur.service";
 
 export interface TokenObject{
   token:string;
@@ -157,6 +157,22 @@ export  class AuthService {
   */
   hasAnyDroits(multipleDroits: string[]){
     return multipleDroits.some(role => this.droits.includes(role));
+  }
+
+  /**
+   * reset pwd
+   * @param data 
+   * @returns  boolean
+   */
+  reset(data: { login: string, email: string }): Observable<boolean> {
+    console.log("data", data);
+    return this.http.post<boolean>(this.url+"/reset", data).pipe(
+      tap((res) => {}),
+      catchError((err) => {
+        this.notification.error("Le compte n'existe pas. Veuillez contacter l'administrateur du site.")
+        return throwError(() => err)
+      })
+    )
   }
 
 }

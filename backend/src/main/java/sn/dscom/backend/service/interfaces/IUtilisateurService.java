@@ -72,4 +72,11 @@ public interface IUtilisateurService {
      boolean checkEmail(String email);
 
     public List<UtilisateurDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * findUserWithEmailAndLogin
+     * @param utilisateurDTO utilisateurDTO
+     * @return UtilisateurDTO
+     */
+    UtilisateurDTO findUserWithEmailAndLogin(UtilisateurDTO utilisateurDTO);
 }

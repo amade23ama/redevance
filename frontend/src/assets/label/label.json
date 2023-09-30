@@ -56,6 +56,8 @@
     "global.sauvegarde": "JE SAUVEGARDE",
     "global.confirmer": "JE CONFIRME",
     "global.sortie": "JE SORS",
+    "global.init": "Réinitialiser",
+    "global.cancel": "Annuler",
 
     "dcsom.actions.annuler": "ANNULER",
     "dcsom.actions.enregistrer": "ENREGISTRER",
@@ -138,7 +140,10 @@
 
     "titre.graphe.produit": "Exploitation minière par type de produit",
     "titre.graphe.region":"Exploitation minière par région",
-    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière"
+    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière",
+
+    "reset.password.title": "Récupération de compte",
+    "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email"
   }
 }
 

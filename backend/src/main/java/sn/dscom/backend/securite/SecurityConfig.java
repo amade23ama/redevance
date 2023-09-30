@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/reset").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/login/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/reporting/getAnnees").permitAll()
                 .requestMatchers("/api/**").authenticated()

@@ -1,14 +1,12 @@
 package sn.dscom.backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.TokenObject;
 import sn.dscom.backend.common.dto.Credentials;
 import sn.dscom.backend.common.dto.UtilisateurConnectedDTO;
+import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
 
 @RestController
@@ -36,5 +34,15 @@ public class AuthController {
     @GetMapping("/login/{login}")
     public boolean login(@PathVariable String login){
         return this.connectedUtilisateurService.checkEmailOrLogin(login);
+    }
+
+    /**
+     * reset
+     * @param utilisateurDTO utilisateurDTO
+     * @return bool
+     */
+    @PostMapping("/reset")
+    public ResponseEntity<Boolean> reset(@RequestBody UtilisateurDTO utilisateurDTO){
+        return ResponseEntity.ok(connectedUtilisateurService.resetPwd(utilisateurDTO));
     }
 }

@@ -1,8 +1,10 @@
 package sn.dscom.backend.securite;
 
+import io.vavr.control.Try;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,18 +13,38 @@ import org.springframework.transaction.annotation.Propagation;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.Credentials;
 import sn.dscom.backend.common.dto.UtilisateurConnectedDTO;
+import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.database.repository.UtilisateurRepository;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
+import sn.dscom.backend.service.interfaces.IUtilisateurService;
+import sn.dscom.backend.service.mail.EmailDetails;
+import sn.dscom.backend.service.mail.IMailService;
 import sn.dscom.backend.service.util.TokenUtils;
+
+import java.util.UUID;
 
 @Service
 @Transactional(value = Transactional.TxType.REQUIRED,rollbackOn = Exception.class)
 public class ConnectedUtilisateurServiceImpl implements ConnectedUtilisateurService {
 
     private final UtilisateurRepository utilisateurRepository;
+
+    /** utilisateur Service */
+    @Autowired
+    private IUtilisateurService utilisateurService;
+
+    /** mailService */
+    @Autowired
+    private IMailService mailService;
+
+    /**
+     * environment
+     */
+    @Autowired
+    private Environment environment;
 
    @Autowired
     public ConnectedUtilisateurServiceImpl(UtilisateurRepository utilisateurRepository){
@@ -100,6 +122,43 @@ public class ConnectedUtilisateurServiceImpl implements ConnectedUtilisateurServ
         Integer nb= utilisateurRepository.checkEmailLoginExists(login);
         return nb>0?true:false;
     }
+
+    /**
+     * resetPwd
+     *
+     * @param utilisateurDTO utilisateurDTO
+     * @return boolean
+     */
+    @Override
+    public boolean resetPwd(UtilisateurDTO utilisateurDTO) {
+        String message = environment.getProperty("recuperation.mdp.mail");
+        UtilisateurDTO user = this.utilisateurService.findUserWithEmailAndLogin(utilisateurDTO);
+
+        if (user == null){
+            return false;
+        }
+        //Création d'un nouveau mot de passe
+        String mdp = UUID.randomUUID().toString().substring(0, 8);
+        user.setPassword(mdp);
+
+        // Enregistrement de l'utilisateur
+        UtilisateurEntity userSaved = Try.of(() -> UtilisateurConverter.toUtilisateurEntity(user))
+                .mapTry(utilisateurRepository::save)
+                .getOrElseGet(ex -> UtilisateurEntity.builder().build());
+
+
+        // Envoi du méssage
+        String msgBody = String.format(message, userSaved.getPassword());
+        this.mailService.envoiMail(EmailDetails.builder()
+                .recipient(userSaved.getEmail())
+                .subject("Récupération de compte")
+                .msgBody(msgBody)
+                .build());
+
+        return true;
+
+    }
+
     private UtilisateurConnectedDTO getUtilisateurByLogin(String login){
         UtilisateurEntity  user=  utilisateurRepository.findUtilisateurEntitiesByLoginExists(login);
         if(user==null){

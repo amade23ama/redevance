@@ -35,8 +35,8 @@
           </mat-error>
         </mat-form-field>
         <div  Layout fxLayout="row" fxLayout.xs="column" fxLayoutGap.xs="20" fxLayoutAlign="space-around center" >
-          <a href="#">{{appConfig.getLabel("login.label.oublier")}}</a>
-          <button  mat-raised-button>{{appConfig.getLabel('header.login')}}</button>
+          <a href="redevance#/forget-password">{{appConfig.getLabel("login.label.oublier")}}</a>
+          <button  mat-raised-button [disabled]="!myform.valid">{{appConfig.getLabel('header.login')}}</button>
         </div>
       </div>
     </form>

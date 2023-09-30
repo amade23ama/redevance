@@ -2,6 +2,7 @@ package sn.dscom.backend.service;
 
 import sn.dscom.backend.common.dto.Credentials;
 import sn.dscom.backend.common.dto.UtilisateurConnectedDTO;
+import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 
 public interface ConnectedUtilisateurService {
@@ -40,4 +41,11 @@ public interface ConnectedUtilisateurService {
     UtilisateurEntity chargerUtilisateur();
     String  genereTokenAuthentificationUtilisateur(Credentials credentials);
     boolean checkEmailOrLogin(String login);
+
+    /**
+     * resetPwd
+     * @param utilisateurDTO utilisateurDTO
+     * @return boolean
+     */
+    boolean resetPwd(UtilisateurDTO utilisateurDTO);
 }

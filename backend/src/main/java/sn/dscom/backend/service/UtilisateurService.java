@@ -247,4 +247,15 @@ public class UtilisateurService implements IUtilisateurService {
                      .collect(Collectors.toList());
 
     }
+
+    /**
+     * findUserWithEmailAndLogin
+     *
+     * @param utilisateurDTO utilisateurDTO
+     * @return UtilisateurDTO
+     */
+    @Override
+    public UtilisateurDTO findUserWithEmailAndLogin(UtilisateurDTO utilisateurDTO) {
+        return utilisateurTransformer.reverse(this.utilisateurRepository.findUtilisateurEntityByLoginAndAndEmail(utilisateurDTO.getLogin(), utilisateurDTO.getEmail()).get());
+    }
 }

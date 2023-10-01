@@ -256,6 +256,6 @@ public class UtilisateurService implements IUtilisateurService {
      */
     @Override
     public UtilisateurDTO findUserWithEmailAndLogin(UtilisateurDTO utilisateurDTO) {
-        return utilisateurTransformer.reverse(this.utilisateurRepository.findUtilisateurEntityByLoginAndAndEmail(utilisateurDTO.getLogin(), utilisateurDTO.getEmail()).get());
+        return utilisateurTransformer.reverse(this.utilisateurRepository.findUtilisateurEntityByEmail(utilisateurDTO.getEmail()).get());
     }
 }

@@ -22,7 +22,12 @@ public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,L
     @Query(value = "select count(u) from UtilisateurEntity u where u.email=:login or  u.login=:login")
     Integer  checkEmailLoginExists(@Param("login") String login);
 
-    Optional<UtilisateurEntity> findUtilisateurEntityByLoginAndAndEmail(@Param("login") String login, @Param("email") String email);
+    /**
+     * findUtilisateurEntityByEmail
+     * @param email email
+     * @return UtilisateurEntity
+     */
+    Optional<UtilisateurEntity> findUtilisateurEntityByEmail(@Param("email") String email);
 
     Optional<UtilisateurEntity> findUtilisateurEntityByTelephoneEquals(@Param("telephone") String telephone);
     /*@Query("SELECT DISTINCT u " +

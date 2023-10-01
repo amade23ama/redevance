@@ -19,13 +19,11 @@ export class ForgetPasswordComponent {
 
  // formulaire groupe de mdp oublié
  forgotPwdForm :FormGroup;
- userLogin: FormControl = new FormControl('', {validators: [Validators.required]});
  userEmail: FormControl = new FormControl('', {validators: [Validators.required, Validators.email, Validators.pattern(RegexConstantes.REGEX_MAIL)]});
 
   constructor(public appConfig: AppConfigService, private router:Router, private modalService: ModalService,
       private formBuilder: FormBuilder, private authService :AuthService,) {
     this.forgotPwdForm = this.formBuilder.group({
-        login: this.userLogin,
         email: this.userEmail
         });
    }
@@ -39,6 +37,7 @@ export class ForgetPasswordComponent {
         if (isOk) {
             this.forgotPwdForm.disable();
             this.modalService.ouvrirModalConfirmation(this.appConfig.getLabel('reset.password.confirmation.message'));
+            this.router.navigate(["/login"]);
         }
     });
   }
@@ -48,8 +47,7 @@ export class ForgetPasswordComponent {
     this.router.navigate(["/login"]);
   }
 
-  // getter d'acces rapide 
-  get loginForm(): AbstractControl { return this.forgotPwdForm?.get("login");}
+  // getter d'acces rapide
   get emailForm(): AbstractControl { return this.forgotPwdForm?.get("email");}
 
 }

@@ -164,8 +164,7 @@ export  class AuthService {
    * @param data 
    * @returns  boolean
    */
-  reset(data: { login: string, email: string }): Observable<boolean> {
-    console.log("data", data);
+  reset(data: {email: string }): Observable<boolean> {
     return this.http.post<boolean>(this.url+"/reset", data).pipe(
       tap((res) => {}),
       catchError((err) => {

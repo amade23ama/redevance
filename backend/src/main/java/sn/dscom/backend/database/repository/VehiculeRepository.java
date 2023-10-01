@@ -1,5 +1,6 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -50,4 +51,8 @@ public interface VehiculeRepository extends JpaRepository<VehiculeEntity,Long> {
      * @return la liste
      */
     List<VehiculeEntity> findVehiculeEntitiesByIdIsIn(@Param("idsVehicule") List<Long> idsVehicule);
+
+
+    List<VehiculeEntity> findAll(Specification<VehiculeEntity> spec);
+
 }

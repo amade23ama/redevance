@@ -81,14 +81,18 @@ public class AutocompleteRechercheController {
      * @return la liste
      */
     @GetMapping("/voitures/{capture}")
-    public ResponseEntity<List<AutocompleteRecherche>> getVoituresAutocompleteRecherche(@PathVariable String capture) {
+    public ResponseEntity<List<AutocompleteRecherche>>  getVoituresAutocompleteRecherche(@PathVariable String capture) {
 
-        return ResponseEntity.ok(
-                Try.of(() -> capture)
-                        .mapTry(this.autocompleteRechercheService::getVoitureAutocompleteRecherche)
-                        .onFailure(Throwable::getStackTrace)
-                        .get()
-        );
+        List<AutocompleteRecherche> listRechercheCategorie =Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getCategorieAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
+        List<AutocompleteRecherche> listRechercheVehicule = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getVoitureAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
+        return ResponseEntity.ok(Streams.concat(listRechercheCategorie.stream(), listRechercheVehicule.stream()).toList());
+
     }
 
     /**

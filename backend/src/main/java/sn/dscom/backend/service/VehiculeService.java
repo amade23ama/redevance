@@ -3,6 +3,7 @@ package sn.dscom.backend.service;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
@@ -11,11 +12,12 @@ import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
-import sn.dscom.backend.database.entite.SiteEntity;
+import sn.dscom.backend.database.entite.CategorieEntity;
 import sn.dscom.backend.database.entite.VehiculeEntity;
 import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.converter.VehiculeConverter;
 import sn.dscom.backend.service.interfaces.IVoitureService;
+import sn.dscom.backend.service.util.VehiculeSpecifications;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -156,12 +158,21 @@ public class VehiculeService implements IVoitureService{
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
 
-        return Try.of(() -> idsVehicule)
-                .filter(Objects::nonNull)
-                .mapTry(this.vehiculeRepository::findVehiculeEntitiesByIdIsIn)
-                .get()
-                .stream()
+        List<Long> idsCategorie = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == CategorieEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+
+        Specification<VehiculeEntity> spec = Specification
+                .where(VehiculeSpecifications.withVehiculeIdsAndCategorieIds(idsVehicule,idsCategorie));
+
+        List<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec);
+        return listVehiculeFind.stream()
                 .map(this.vehiculeConverter::reverse)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
+
     }
 }

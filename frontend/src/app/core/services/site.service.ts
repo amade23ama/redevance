@@ -6,6 +6,7 @@ import { Site } from '../interfaces/site';
 import {NotificationService} from "./notification.service";
 import {Produit} from "../interfaces/produit";
 import {CritereRecherche} from "../interfaces/critere.recherche";
+import {Globals} from "../../app.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,7 @@ export class SiteService {
   /** url de base des webservices site */
   private url = environment.apiUrl + '/v1/site';
   siteCourant: Site = new Site();
-  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
+  constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
   /**
    * appel du service rechercherSites pour rechercher la liste des véhicules
@@ -162,12 +163,15 @@ export class SiteService {
     return this.siteCourant;
   }
   chargementSiteParCritere(critereRecherche:CritereRecherche ) {
+    this.globals.loading = true;
     return this.httpClient.post<Site[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Site[]) => {
           this.setSites(res);
+          this.globals.loading = false;
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err)
         })

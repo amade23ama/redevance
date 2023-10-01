@@ -18,11 +18,12 @@ export class LayoutComponent implements OnInit {
    */
   isLoggedIn = false;
   tempsRestant: number;
+
   constructor(public authService: AuthService,public globals: Globals,
               public router:Router,private readonly activatedRoute: ActivatedRoute,
               private sessionTimerService: SessionTimerService) {
     // Affichage d`un spinner lors du chargement
-    globals.loading = false;
+    globals.loading = true;
     this.isLoggedIn = this.authService.isLoggedIn()
   }
 

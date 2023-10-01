@@ -7,6 +7,7 @@ import {Vehicule} from "../interfaces/vehicule";
 import {Categorie} from "../interfaces/categorie";
 import {Produit} from "../interfaces/produit";
 import {CritereRecherche} from "../interfaces/critere.recherche";
+import {Globals} from "../../app.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +17,18 @@ export class CategorieService{
   private _categories$: BehaviorSubject<Categorie[]> = new BehaviorSubject<Categorie[]>( []);
   categorieCourant: Categorie = new Categorie();
   private _categorie$: BehaviorSubject<Categorie> = new BehaviorSubject<Categorie>(null);
-  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
+  constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
   enregistrerCategorie(produit: Produit): Observable<Categorie> {
+    this.globals.loading = true;
     return this.httpClient.post<Categorie>(this.url + '/enregistrer', produit).pipe(
       tap((res)=>{
           this.notification.success(" enregistrer success ")
           this.setCategorie(Categorie.fromJson(res,Categorie))
+          this.globals.loading = false;
         },
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreur d'enregistrer produit ")
           return throwError(() => err)
         })

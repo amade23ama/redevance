@@ -4,6 +4,7 @@ import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { HomeCard } from "../interfaces/infotuiles/homeCard";
 import { NotificationService } from "./notification.service";
+import {Globals} from "../../app.constants";
 @Injectable({providedIn: 'root'})
 export class TuileService {
   readonly url = environment.apiUrl
@@ -13,7 +14,8 @@ export class TuileService {
   private _campagnesProduits$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesRegion$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesAnnnes$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
-  constructor(private http: HttpClient,private notification: NotificationService) {
+  constructor(private http: HttpClient,private notification: NotificationService,
+              private globals: Globals) {
   }
 
   /**
@@ -68,60 +70,39 @@ export class TuileService {
       .pipe(
         tap((res)=>{
             this.setCampagnesProduits(HomeCard.fromJson(res,HomeCard));
+            this.globals.loading = false;
           },
           catchError((err) => {
             //this.notification.error(" erreur de recuperation config ")
+            this.globals.loading = false;
             return throwError(() => err)
           })
         )
       )
-   /* const produit:HomeCard=HomeCard.fromJson({
-      annee:new Date(),
-      typeTuile: null,
-      valeur:null,
-      details: null,
-      campagnes: this.dataTest,
-      descriptif:"tes",
-      value:123
-    },HomeCard)*/
 
-    //this.setCampagnesProduits(produit)
-
-    //return of();
   }
   getcampagnesRegions(annee:number): Observable<HomeCard> {
-
+    this.globals.loading = true;
     return this.http.get<HomeCard>(this.url + `/v1/reporting/chargementByRegion/${annee}`)
       .pipe(
         tap((res)=>{
             this.setCampagnesRegion(HomeCard.fromJson(res,HomeCard));
+            this.globals.loading = false;
           },
           catchError((err) => {
             this.notification.error(" erreur de recuperation config ")
+            this.globals.loading = false;
             return throwError(() => err)
           })
         )
       )
-    /*const regions:HomeCard=HomeCard.fromJson({
-      annee:new Date(),
-      typeTuile: null,
-      valeur:null,
-      details: null,
-      campagnes: this.dataRegion,
-      descriptif:"production Regionnale",
-      value:123
-    },HomeCard)
-    this.setCampagnesRegion(regions)
- console.error("xxxxxxxxxxxxxxxx")
-    return of();
-    */
   }
 
   getcampagnesAnnnes(annee:number): Observable<HomeCard> {
     return this.http.get<HomeCard>(this.url + `/v1/reporting/recouvrementAnnuel`)
       .pipe(
-        tap((res)=>{
-            this.setCampagnesAnnnes(HomeCard.fromJson(res,HomeCard));
+        tap((res) => {
+            this.setCampagnesAnnnes(HomeCard.fromJson(res, HomeCard));
           },
           catchError((err) => {
             this.notification.error(" erreur de recuperation config ")
@@ -129,50 +110,6 @@ export class TuileService {
           })
         )
       )
-   /* const produit:HomeCard=HomeCard.fromJson({
-      annee:new Date(),
-      typeTuile: null,
-      valeur:null,
-      details: null,
-      campagnes: this.dataAnnee,
-      descriptif:"tes",
-      value:123
-    },HomeCard)
-    this.setCampagnesAnnnes(produit)
-
-    return of();
-    */
   }
-  dataTest = [
-    { name: "ATTAPULGITE", value: 105000 },
-    { name: "BASALTE", value: 55000 },
-    { name: "ARGILE", value: 15000 },
-    { name: "COQUILLAGE", value: 150000 },
-    { name: "GRES", value: 20000 },
-    { name: "LATERITE", value: 105000 },
-    { name: "MANGANESE", value: 55000 },
-    { name: "PHOSPHATE", value: 15000 },
-    { name: "QUARTZITE", value: 150000 },
-    { name: "SABLE", value: 20000 },
-    { name: "SILEX", value: 105000 },
-    { name: "ZIRCON", value: 55000 }
-  ]
-  dataRegion = [
-    { name: "DAKAR", value: 105000 },
-    { name: "TAMBACOUNDA", value: 55000 },
-    { name: "THIES", value: 15000 },
-    { name: "KOLDA", value: 150000 },
-    { name: "ZIGUINCHOR", value: 20000 },
-    { name: "KEDOUGOU", value: 105000 },
-    { name: "SAINT-LOUIS", value: 55000 },
-    { name: "LOUGA", value: 15000 },
-    { name: "DIOURBEL", value: 150000 },
-  ]
-  dataAnnee = [
-    { name: "2020", value: 105 },
-    { name: "2021", value: 550 },
-    { name: "2022", value: 150},
-    { name: "2023", value: 150 },
-    { name: "2019", value: 200}
-  ]
+
 }

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CritereRecherche } from "../interfaces/critere.recherche";
 import { Produit } from '../interfaces/produit';
 import { NotificationService } from "./notification.service";
+import {Globals} from "../../app.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class ProduitService {
   private _produits$: BehaviorSubject<Produit[]> = new BehaviorSubject<Produit[]>( []);
   produitCourant: Produit = new Produit();
   /** constructor */
-  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
+  constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
   /**
    * appel du service enregistrerProduit pour définir un véhicule
@@ -79,7 +80,7 @@ export class ProduitService {
   /**
    * supprimerProduits
    * @param idProduit idProduit
-   * @returns 
+   * @returns
    */
   supprimerProduits(idProduit: number): Observable<Produit> {
     return this.httpClient.delete<Produit>(this.url + '/supprimer/'+ idProduit) .pipe(
@@ -122,12 +123,15 @@ export class ProduitService {
     return this.produitCourant;
   }
   chargementProduitParCritere(critereRecherche:CritereRecherche ) {
+    this.globals.loading = true;
     return this.httpClient.post<Produit[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Produit[]) => {
           this.setProduits(res);
+          this.globals.loading = false;
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err)
         })

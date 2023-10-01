@@ -7,6 +7,7 @@ import {NotificationService} from "./notification.service";
 import {CritereRecherche} from "../interfaces/critere.recherche";
 import {saveAs} from "file-saver";
 import {Fichier} from "../interfaces/fichier";
+import {Globals} from "../../app.constants";
 
 @Injectable({
   providedIn:"root"
@@ -18,7 +19,7 @@ export class ChargementService{
 
   chargementCourant: Chargement = new Chargement ();
   chargementOriginal: Chargement  = new Chargement ();
-  constructor(private http:HttpClient,private notification: NotificationService) {
+  constructor(private http:HttpClient,private notification: NotificationService,private globals: Globals) {
   }
 
   /**
@@ -43,12 +44,15 @@ export class ChargementService{
     return this._chargements$.asObservable();
   }
   chargementChargementParCritere(critereRecherche:CritereRecherche ) {
+    this.globals.loading = true;
     return this.http.post<Chargement[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Chargement[]) => {
           this.setChargements(res!==null?res:[]);
+          this.globals.loading = false;
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Chargement ")
           return throwError(() => err)
         })
@@ -61,14 +65,16 @@ export class ChargementService{
    * @param critereRecherche
    */
   exportDocumentChargementParCritere(critereRecherche:CritereRecherche ) {
-
+    this.globals.loading = true;
     return this.http.post<Fichier>(this.url+"/exportDocument",critereRecherche)
       .pipe(
         tap((res:Fichier) => {
           const blob = new Blob([atob(res.content)]);
           saveAs(blob, res.nom);
+          this.globals.loading = false;
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error("erreur de telechargement du fichier ")
           return throwError(() => err)
         })

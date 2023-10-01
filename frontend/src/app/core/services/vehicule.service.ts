@@ -8,6 +8,7 @@ import {NotificationService} from "./notification.service";
 import {Produit} from "../interfaces/produit";
 import {Site} from "../interfaces/site";
 import {CritereRecherche} from "../interfaces/critere.recherche";
+import {Globals} from "../../app.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,7 @@ export class VehiculeService {
   vehiculeCourant: Vehicule = new Vehicule();
   private _vehicule$: BehaviorSubject<Vehicule> = new BehaviorSubject<Vehicule>(null);
   /** constructor */
-  constructor(private httpClient: HttpClient,private notification: NotificationService) { }
+  constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
   /**
    * appel du service enregistrerVehicules pour définir un véhicule
@@ -116,12 +117,15 @@ export class VehiculeService {
     return this.vehiculeCourant ;
   }
   chargementVehiculeParCritere(critereRecherche:CritereRecherche ) {
+    this.globals.loading = true;
     return this.httpClient.post<Vehicule[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Vehicule[]) => {
+          this.globals.loading = false;
           this.setVehicules(res);
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de recuperation vehicule ")
           return throwError(() => err)
         })

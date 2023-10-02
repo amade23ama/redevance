@@ -34,7 +34,7 @@
      </div>
     <!--</div>-->
     <div fxShow="false" fxHide.gt-xs="false" *ngIf="visibleBtnCreation">
-      <button mat-mini-fab
+      <button *appAutorisation="['ADMIN','EDIT']" mat-mini-fab
               matTooltipPosition="left"
               matTooltip="{{tooltip}}"
               matTooltipClass="custom-tooltip"

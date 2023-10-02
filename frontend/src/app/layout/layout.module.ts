@@ -1,22 +1,17 @@
-import {CommonModule, NgIf, NgOptimizedImage} from "@angular/common";
-import {layoutRouter} from "./layout.router";
-import {NgModule} from "@angular/core";
+import { NgIf, NgOptimizedImage } from "@angular/common";
+import { NgModule } from "@angular/core";
+import { ReactiveFormsModule } from "@angular/forms";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { RouterModule } from "@angular/router";
+import { SessionTimerService } from "../core/services/Session.timer.service";
+import { MaterialModule } from "../material.module";
 import { LayoutComponent } from './layout.component';
-import {SharedModule} from "./shared-Module/shared.module";
-import {MaterialModule} from "../material.module";
-import {ReactiveFormsModule} from "@angular/forms";
-import {MatSidenavModule} from "@angular/material/sidenav";
-import {RouterModule} from "@angular/router";
-import {MatExpansionModule} from "@angular/material/expansion";
-import {AdminModule} from "./admin-module/admin.module";
-import {AppModule} from "../app.module";
-import {AutorisationDirective} from "../core/directives/autorisation.directive";
-import {SessionTimerService} from "../core/services/Session.timer.service";
+import { layoutRouter } from "./layout.router";
+import { SharedModule } from "./shared-Module/shared.module";
 
 @NgModule({
   declarations: [
-    LayoutComponent,
-    AutorisationDirective
+    LayoutComponent
   ],
     imports: [
         layoutRouter,
@@ -28,7 +23,7 @@ import {SessionTimerService} from "../core/services/Session.timer.service";
         MaterialModule,
         NgIf,
     ],
-  exports: [RouterModule,AutorisationDirective],
+  exports: [RouterModule],
   providers:[SessionTimerService]
 })
 export class LayoutModule {}

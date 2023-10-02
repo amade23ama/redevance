@@ -73,7 +73,7 @@
                 <div   class=" d-flex pb-1" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
                   <mat-icon class="blue-label-icon" (click)="chargerProduit(element)">create</mat-icon>
                 </div>
-                <div   class=" d-flex" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+                <div *appAutorisation="['ADMIN']"  class=" d-flex" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
                   <mat-icon class="blue-label-icon" (click)="supprimerProduit(element)">delete</mat-icon>
                 </div>
               </div>

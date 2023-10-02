@@ -82,7 +82,7 @@ public class ChargementController {
      * @return la liste
      */
     @PostMapping(path = "/rechercherBy")
-    //@PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ChargementDTO>> rechercherChargements(@RequestBody ChargementDscom theChargementAChercher) {
         ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
         Optional<List<ChargementDTO>> list = this.chargementService.rechercherChargements(buildChargementDTOArechercher(theChargementAChercher));
@@ -149,7 +149,7 @@ public class ChargementController {
     }
 
     @PostMapping(path = "/rechercheBy")
-    //@PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<List<ChargementDTO>> rechercherChargements(@RequestBody CritereRecherche<?> critereRecherche) {
         ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
         return ResponseEntity.ok(chargementService.rechargementParCritere(critereRecherche));
@@ -162,6 +162,7 @@ public class ChargementController {
      * @throws UnsupportedEncodingException l'exception
      */
     @PostMapping("/exportDocument")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<FichierDTO> downloadDocument(@RequestBody CritereRecherche<?> critereRecherche) throws UnsupportedEncodingException {
 
         ChargementController.LOGGER.info("downloadDocument: exportDocument");

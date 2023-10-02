@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatLegacyChipsModule } from "@angular/material/legacy-chips";
 import { RouterOutlet } from "@angular/router";
+import { AutorisationDirective } from "src/app/core/directives/autorisation.directive";
 import { MaterialModule } from "../../material.module";
 import { RedevanceModule } from "../redevanceModule/redevance.module";
 import { ActionBtnsComponent } from './action-btns/action-btns.component';
@@ -32,7 +33,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
     ActionsCritereBtnsComponent,
-    DscomExtensibleComponent
+    DscomExtensibleComponent,
+    AutorisationDirective
   ],
   imports: [
     CommonModule,
@@ -51,7 +53,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ActionBtnsComponent,
     FormulaireUtilisateurComponent,
     ActionsCritereBtnsComponent,
-    DscomExtensibleComponent
+    DscomExtensibleComponent,
+    AutorisationDirective
   ],
   providers: [],
 })

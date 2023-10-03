@@ -5,6 +5,9 @@ import lombok.*;
 import sn.dscom.backend.database.entite.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -124,6 +127,20 @@ public class AutocompleteRecherche <T> implements Serializable {
                 .toString();
         this.typeClass = CategorieEntity.class;
         this.origine = this.typeClass.getSimpleName();
+    }
+
+    public AutocompleteRecherche(String id, String type, String libelle, String origine) {
+        this.id = id;
+        this.libelle = new StringBuilder()
+                .append("[")
+                .append(type.toUpperCase())
+                .append("] ")
+                .append(libelle)
+                .toString();
+        this.typeClass = String.class;
+        this.origine = Arrays.asList(origine.split(" ")).stream().map(element -> {
+            return element.substring(0, 1).toUpperCase() + element.substring(1).toLowerCase();
+        }).collect(Collectors.joining(""));
     }
 
     public void setId(String id) {

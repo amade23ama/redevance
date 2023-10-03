@@ -206,6 +206,12 @@ public class CategorieService implements ICategorieService {
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
 
+        List<Long> valueVolumes = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
         return Try.of(() -> idscategorie)
                 .filter(Objects::nonNull)
                 .mapTry(this.categorieRepository::findCategorieEntitiesByIdIsIn)

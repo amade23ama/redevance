@@ -235,14 +235,15 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
 
     @Override
     public List<AutocompleteRecherche> getCategorieAutocompleteRecherche(String capture) {
-
+        final List<AutocompleteRecherche> listAutocompleteRecherche = new ArrayList<>();
         CategorieEntity categorie = new CategorieEntity();
         // si null or empty, on lève une 404
         if (!Strings.isNullOrEmpty(capture)) {
             categorie.setType(capture);
             try {
-                double doubleNum = Double.parseDouble(capture);
-                categorie.setVolume(doubleNum);
+                String captureToNumber=capture.replaceAll("\\s", "");
+                double doubleNum = Double.parseDouble(captureToNumber);
+                listAutocompleteRecherche.add(new AutocompleteRecherche(captureToNumber, "VOLUME",captureToNumber, "VOLUME"));
             }catch (Exception e){
 
             }
@@ -250,10 +251,10 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
             List<CategorieEntity> list = this.categorieRepository.findAll(Example.of(categorie, matcherGlobal));
 
             if(!list.isEmpty()){
-                return  list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList());
+                listAutocompleteRecherche.addAll(list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList()));
             }
         }
-        return new ArrayList<>();
+        return listAutocompleteRecherche;
     }
 
 

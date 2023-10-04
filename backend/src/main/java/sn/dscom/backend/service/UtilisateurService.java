@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,13 +18,17 @@ import sn.dscom.backend.common.dto.UtilisateurDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.Utils;
 import sn.dscom.backend.common.util.pojo.Transformer;
+import sn.dscom.backend.database.entite.CategorieEntity;
 import sn.dscom.backend.database.entite.ProfilEntity;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
+import sn.dscom.backend.database.entite.VehiculeEntity;
 import sn.dscom.backend.database.repository.UtilisateurRepository;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.interfaces.IUtilisateurService;
 import sn.dscom.backend.service.mail.EmailDetails;
 import sn.dscom.backend.service.mail.IMailService;
+import sn.dscom.backend.service.util.CategorieSpecifications;
+import sn.dscom.backend.service.util.UtilisateurSpecifications;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -226,6 +231,14 @@ public class UtilisateurService implements IUtilisateurService {
 
     @Override
     public List<UtilisateurDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+
+        //S'il n'y a pas de critère on remonte tout
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            List<UtilisateurEntity> list = this.utilisateurRepository.findAll();
+            return list.stream()
+                    .map(UtilisateurConverter::toUtilisateurDTO)
+                    .collect(Collectors.toList());
+        }
         List<Long> idUtilisateur = new ArrayList<>();
         List<String> idProfils=new ArrayList<>();
              idProfils.addAll(critereRecherche.getAutocompleteRecherches().stream()
@@ -239,10 +252,12 @@ public class UtilisateurService implements IUtilisateurService {
                      .map(item ->  Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                      .collect(Collectors.toList()));
 
-        List<UtilisateurEntity> users = utilisateurRepository
-                     .rechargementParCritere(idUtilisateur.isEmpty()?null:idUtilisateur ,
-                             idProfils.isEmpty()?null:idProfils);
-             return users.stream()
+        Specification<UtilisateurEntity> spec = Specification
+                .where(UtilisateurSpecifications.withUtilisateurIdsAndProfilsIds(idUtilisateur,idProfils));
+
+        List<UtilisateurEntity> listusersFind= this.utilisateurRepository.findAll(spec);
+
+             return listusersFind.stream()
                      .map(UtilisateurConverter::toUtilisateurDTO)
                      .collect(Collectors.toList());
 

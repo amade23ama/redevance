@@ -1,10 +1,12 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import sn.dscom.backend.database.entite.CategorieEntity;
+import sn.dscom.backend.database.entite.VehiculeEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -42,4 +44,5 @@ public interface CategorieRepository extends JpaRepository<CategorieEntity,Long>
     CategorieEntity rechercherCategorieByType(@Param("type") String type);
 
     List<CategorieEntity> findCategorieEntitiesByIdIsIn(@Param("idsCategorie") List<Long> idsCategorie);
+    List<CategorieEntity> findAll(Specification<CategorieEntity> spec);
 }

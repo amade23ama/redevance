@@ -101,13 +101,16 @@ export class CategorieService{
     return this.categorieCourant;
   }
   chargementCategorieParCritere(critereRecherche:CritereRecherche ) {
+    this.globals.loading = true;
     return this.httpClient.post<Categorie[]>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res:Categorie[]) => {
           this.setCategories(res);
+          this.globals.loading = false;
         }),
         catchError((err) => {
           this.notification.error(" erreurr de recuperation Utilisateur ")
+          this.globals.loading = false;
           return throwError(() => err)
         })
       )

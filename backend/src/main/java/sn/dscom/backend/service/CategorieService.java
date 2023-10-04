@@ -5,6 +5,7 @@ import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
@@ -22,6 +23,8 @@ import sn.dscom.backend.database.repository.CategorieRepository;
 import sn.dscom.backend.service.converter.CategorieConverter;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.ICategorieService;
+import sn.dscom.backend.service.util.CategorieSpecifications;
+import sn.dscom.backend.service.util.VehiculeSpecifications;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -200,7 +203,7 @@ public class CategorieService implements ICategorieService {
                     .collect(Collectors.toList());
         }
 
-        List<Long> idscategorie = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+        List<Long> idsCategorie = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == CategorieEntity.class)
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
@@ -209,15 +212,17 @@ public class CategorieService implements ICategorieService {
         List<Long> valueVolumes = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Volume"))
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
 
-        return Try.of(() -> idscategorie)
-                .filter(Objects::nonNull)
-                .mapTry(this.categorieRepository::findCategorieEntitiesByIdIsIn)
-                .get()
-                .stream()
+        Specification<CategorieEntity> spec = Specification
+                .where(CategorieSpecifications.withCategorie(idsCategorie, valueVolumes));
+
+        List<CategorieEntity> listCategorieFind= this.categorieRepository.findAll(spec);
+        return listCategorieFind.stream()
                 .map(this.categorieConverter::reverse)
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }
 

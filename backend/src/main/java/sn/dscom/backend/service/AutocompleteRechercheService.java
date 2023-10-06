@@ -148,7 +148,18 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     @Override
     public List<AutocompleteRecherche> getSitesPessageAutocompleteRecherche(String capture) {
         // si null or empty, on lève une 404
+        String captureToNumber=null;
+        final List<AutocompleteRecherche> listAutocompleteRecherche = new ArrayList<>();
         if (!Strings.isNullOrEmpty(capture)) {
+
+            try {
+                captureToNumber=capture.replaceAll("\\s", "");
+                double doubleNum = Double.parseDouble(captureToNumber);
+
+            }catch (Exception e){
+                listAutocompleteRecherche.add(new AutocompleteRecherche(captureToNumber, "LOCALITE",captureToNumber, "Localite"));
+            }
+
             List<SiteEntity> list = Try.of(() -> SiteEntity.builder()
                             .nom(capture)
                             .localite(capture)
@@ -157,10 +168,10 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
                     .getOrElse(ArrayList::new);
 
             if(!list.isEmpty()){
-                return  list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList());
+              listAutocompleteRecherche.addAll(list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList()));
             }
         }
-        return new ArrayList<>();
+        return  listAutocompleteRecherche;
     }
 
     /**

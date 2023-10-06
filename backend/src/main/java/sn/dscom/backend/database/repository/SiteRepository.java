@@ -1,9 +1,12 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;import sn.dscom.backend.database.entite.ProduitEntity;
+import org.springframework.stereotype.Repository;
+import sn.dscom.backend.database.entite.CategorieEntity;
+import sn.dscom.backend.database.entite.ProduitEntity;
 import sn.dscom.backend.database.entite.SiteEntity;
 
 import java.time.LocalDateTime;
@@ -46,4 +49,6 @@ public interface SiteRepository extends JpaRepository<SiteEntity,Long>{
      * @return la liste
      */
     List<SiteEntity> findSiteEntitiesByIdIsIn(@Param("idsSite") List<Long> idsSite);
+
+    List<SiteEntity> findAll( Specification<SiteEntity>spec);
 }

@@ -4,6 +4,7 @@ import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
@@ -12,11 +13,14 @@ import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.SiteDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
+import sn.dscom.backend.database.entite.ExploitationEntity;
 import sn.dscom.backend.database.entite.ProduitEntity;
 import sn.dscom.backend.database.entite.SiteEntity;
 import sn.dscom.backend.database.repository.SiteRepository;
 import sn.dscom.backend.service.converter.SiteConverter;
 import sn.dscom.backend.service.interfaces.ISiteService;
+import sn.dscom.backend.service.util.ExploitationSpecifications;
+import sn.dscom.backend.service.util.SiteSpecifications;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -186,12 +190,29 @@ public class SiteService implements ISiteService {
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
 
-        return Try.of(() -> idsSite)
+        List<String> valueLocalites = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Localite"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+
+        Specification<SiteEntity> spec = Specification
+                .where(SiteSpecifications.withSite(idsSite, valueLocalites));
+
+        List<SiteEntity> listExploitationFind= this.siteRepository.findAll(spec);
+        return listExploitationFind.stream()
+                .map(this.siteConverteur::reverse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+      /*  return Try.of(() -> idsSite)
                 .filter(Objects::nonNull)
                 .mapTry(this.siteRepository::findSiteEntitiesByIdIsIn)
                 .get()
                 .stream()
                 .map(this.siteConverteur::reverse)
                 .collect(Collectors.toList());
+        */
     }
 }

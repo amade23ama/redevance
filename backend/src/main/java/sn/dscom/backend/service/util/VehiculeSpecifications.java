@@ -16,8 +16,7 @@ public class VehiculeSpecifications {
             List<Predicate> predicates = new ArrayList<>();
             if (vehiculeIds != null && !vehiculeIds.isEmpty()) {
                 query.distinct(true);
-                root.join("vehiculeEntity", JoinType.INNER);
-                Predicate condition = criteriaBuilder.in(root.get("vehiculeEntity").get("id")).value(vehiculeIds);
+                Predicate condition = criteriaBuilder.in(root.get("id")).value(vehiculeIds);
                 predicates.add(condition);
             }
             if (categorieIds != null && !categorieIds.isEmpty()) {

@@ -127,14 +127,15 @@ public class AutocompleteRechercheController {
                 .get();
 
         //Chargement
-        List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
+       /* List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
                 .mapTry(this.autocompleteRechercheService::getChargementAutocompleteRecherche)
                 .onFailure(Throwable::getStackTrace)
                 .get();
-
+                 listRechercheByOrigine.stream(),
+        */
 
         return ResponseEntity.ok(Streams.concat(listRechercheProduit.stream(), listRechercheExploitation.stream(),
-                listRechercheSite.stream(), listRechercheByOrigine.stream(),
+                listRechercheSite.stream(),
                 listRechercheVehicule.stream()).toList());
     }
 

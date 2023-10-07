@@ -7,10 +7,12 @@ import sn.dscom.backend.database.entite.VehiculeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class VehiculeSpecifications {
     public static Specification<VehiculeEntity> withVehiculeIdsAndCategorieIds(List<Long> vehiculeIds,
-                                                                         List<Long> categorieIds) {
+                                                                         List<Long> categorieIds,
+                                                                               List<Long> volumes) {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
@@ -24,6 +26,15 @@ public class VehiculeSpecifications {
                 root.join("categorieEntity");
                 Predicate conditionProduit = criteriaBuilder.in(root.get("categorieEntity").get("id")).value(categorieIds);
                 predicates.add(conditionProduit);
+            }
+            if (volumes != null && !volumes.isEmpty()) {
+                query.distinct(true);
+                List<Predicate> volumePredicates = volumes.stream()
+                        .map(value -> criteriaBuilder.equal(root.get("categorieEntity").get("volume"),  + value ))
+                        .collect(Collectors.toList());
+                if(!volumePredicates.isEmpty()){
+                    predicates.add(criteriaBuilder.or(volumePredicates.toArray(new Predicate[0])));
+                }
             }
 
             if (!predicates.isEmpty()) {

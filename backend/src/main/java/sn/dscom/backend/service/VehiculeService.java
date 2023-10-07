@@ -163,10 +163,16 @@ public class VehiculeService implements IVoitureService{
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == CategorieEntity.class)
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
-
+        List<Long> volumes = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Volume"))
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
 
         Specification<VehiculeEntity> spec = Specification
-                .where(VehiculeSpecifications.withVehiculeIdsAndCategorieIds(idsVehicule,idsCategorie));
+                .where(VehiculeSpecifications.withVehiculeIdsAndCategorieIds(idsVehicule,idsCategorie,
+                        volumes));
 
         List<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec);
         return listVehiculeFind.stream()

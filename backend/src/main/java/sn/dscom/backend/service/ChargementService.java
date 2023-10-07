@@ -572,9 +572,23 @@ public class ChargementService implements IChargementService {
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == VehiculeEntity.class)
                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                 .toList());
+        List<String> regions = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Region"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+
+        List<String> localites = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Localite"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
 
         Specification<ChargementEntity> spec = Specification
-                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules));
+                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules,regions,
+                        localites));
 
         List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
         return listSitesFind.stream()

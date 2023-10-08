@@ -544,14 +544,7 @@ public class ChargementService implements IChargementService {
 
     @Override
     public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        if (critereRecherche.getAutocompleteRecherches().size() == 0){
-            log.info(String.format("Rechercher Chargement"));
-            List<ChargementEntity> listSitesFind = this.chargementRepository.findAll();
-            return listSitesFind.stream()
-                    .map(this.chargementConverter::reverse)
-                    .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
-        }
+
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
@@ -588,7 +581,7 @@ public class ChargementService implements IChargementService {
 
         Specification<ChargementEntity> spec = Specification
                 .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules,regions,
-                        localites));
+                        localites,critereRecherche.getAnnee()));
 
         List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
         return listSitesFind.stream()

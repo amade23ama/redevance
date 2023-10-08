@@ -17,7 +17,7 @@ public class CritereRecherche <T> implements Serializable {
     private Date dateFin;
     private int page;
     private int  size;
-    private int annee;
+    private Integer  annee;
     @Builder.Default
     private Collection<AutocompleteRecherche<T>> autocompleteRecherches;
 

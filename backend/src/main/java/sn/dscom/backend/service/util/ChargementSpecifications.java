@@ -1,8 +1,10 @@
 package sn.dscom.backend.service.util;
 
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
+import sn.dscom.backend.common.util.CommonConstants;
 import sn.dscom.backend.database.entite.ChargementEntity;
 
 import java.util.ArrayList;
@@ -16,7 +18,8 @@ public class ChargementSpecifications {
                                                                            List<Long> siteExploitIds,
                                                                            List<Long> vehiculeIds,
                                                                            List<String> regions,
-                                                                           List<String> localites) {
+                                                                           List<String> localites,
+                                                                           Integer annee) {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
@@ -69,6 +72,27 @@ public class ChargementSpecifications {
                 Predicate conditionVehicule = criteriaBuilder.in(root.get("vehiculeEntity").get("id")).value(vehiculeIds);
                 predicates.add(conditionVehicule);
             }
+
+            if(annee!=null && String.valueOf(annee).length()==4){
+                query.distinct(true);
+                Expression<String> expressionDateCreation = criteriaBuilder.function(
+                        CommonConstants.TO_CHAR,
+                        String.class,
+                        root.get("dateCreation"),
+                        criteriaBuilder.literal(CommonConstants.TO_YEAR)
+                );
+                Expression<String> expressionDateMiseAjour = criteriaBuilder.function(
+                        CommonConstants.TO_CHAR,
+                        String.class,
+                        root.get("dateModification"),
+                        criteriaBuilder.literal(CommonConstants.TO_YEAR)
+                );
+                Predicate conditionDateCreation= criteriaBuilder.equal(expressionDateCreation, annee.toString());
+                Predicate conditionDateMiseAjour= criteriaBuilder.equal(expressionDateMiseAjour, annee.toString());
+                Predicate conditionAnnee =criteriaBuilder.or(conditionDateCreation,conditionDateMiseAjour);
+                predicates.add(conditionAnnee);
+            }
+
             if (!predicates.isEmpty()) {
                 return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
             } else {

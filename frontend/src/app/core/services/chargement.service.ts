@@ -1,13 +1,13 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
-import {Chargement} from "../interfaces/chargement";
-import {NotificationService} from "./notification.service";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {saveAs} from "file-saver";
-import {Fichier} from "../interfaces/fichier";
-import {Globals} from "../../app.constants";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { saveAs } from "file-saver";
+import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { Globals } from "../../app.constants";
+import { Chargement } from "../interfaces/chargement";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Fichier } from "../interfaces/fichier";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn:"root"
@@ -16,6 +16,9 @@ export class ChargementService{
   /** url de base des webservices chargement */
   private url = environment.apiUrl + '/v1/chargement';
   private _chargements$: BehaviorSubject<Chargement[]> = new BehaviorSubject<Chargement[]>( []);
+
+    /** Observable sur chargement. **/
+    private _chargement$: BehaviorSubject<Chargement> = new BehaviorSubject<Chargement>( null);
 
   chargementCourant: Chargement = new Chargement ();
   chargementOriginal: Chargement  = new Chargement ();
@@ -80,5 +83,49 @@ export class ChargementService{
         })
       )
   }
+
+  /**
+   * getChargementParId
+   * @param id id
+   * @returns Chargement
+   */
+  getChargementParId(id: number) {
+    return this.http.get<Chargement>(this.url+`/rechercheById/${id}`)
+      .pipe(
+        tap((res) => {
+          this.setChargement(Chargement.fromJson(res,Chargement))
+          this.setChargementCourant(Chargement.fromJson(res,Chargement))
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Chargement ")
+          return throwError(() => err)
+        })
+      )
+  }
+
+  /**
+   * setChargement
+   * @param res
+   */
+  setChargement(res: Chargement) {
+    this._chargement$.next(res)
+  }
+
+  /**
+   * setChargementCourant
+   * @param chargement
+   */
+  setChargementCourant(chargement: Chargement) {
+    this.chargementCourant = chargement;
+  }
+
+  /**
+   * getChargementCourant
+   * @returns chargementCourant
+   */
+  getChargementCourant() {
+    return this.chargementCourant;
+  }
+
 }
 

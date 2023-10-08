@@ -9,8 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
+import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
+import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.*;
@@ -626,6 +629,29 @@ public class ChargementService implements IChargementService {
         });
 
         return csvBuilder.toString().getBytes("windows-1252");
+    }
+
+    /**
+     * chargerChargementParId
+     *
+     * @param id id
+     * @return ChargementDTO
+     */
+    @Override
+    public ChargementDTO chargerChargementParId(Long id) {
+
+        ChargementService.log.info(String.format("Recherche du chargement : %s", id));
+        Optional<ChargementEntity> chargement = chargementRepository.findById(id);
+        // on retourne le produit trouvé
+        if (chargement.isPresent()) {
+            return Try.of(chargement::get)
+                    .mapTry(this.chargementConverter::reverse)
+                    .onFailure(e -> ChargementService.log.error(String.format("Erreur leur du reverse du chargement %s ",e.getMessage())))
+                    .get();
+        } else {
+            ChargementService.log.info(String.format("Le chargement d'id %s n'est pas trouvé en base ", id));
+            throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+        }
     }
 
 }

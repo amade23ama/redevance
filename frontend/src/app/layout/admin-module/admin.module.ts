@@ -16,6 +16,7 @@ import {ProduitComponent} from "./produit/produit.component";
 import {SharedModule} from "../shared-Module/shared.module";
 import {ExploitationComponent} from "./exploitation/exploitation.component";
 import {ClasseVoitureComponent} from "./classe-voiture/classe-voiture.component";
+import { ChargementComponent } from './chargement/chargement.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import {ClasseVoitureComponent} from "./classe-voiture/classe-voiture.component"
     AdminComponent,
     ProduitComponent,
     ExploitationComponent,
-    ClasseVoitureComponent
+    ClasseVoitureComponent,
+    ChargementComponent
   ],
   imports: [
 

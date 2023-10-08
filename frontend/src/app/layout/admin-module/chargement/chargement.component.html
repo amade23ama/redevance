@@ -1,0 +1,102 @@
+<fieldset class="mt-1 pb-1 dcsom-fieldset-orange">
+    <legend class="titre-form">{{appConfig.getLabel('formulaire.chargement.title')}}</legend>
+    <div class="mt-1">
+        <form  class="stepper--conteneur"[formGroup]="chargementform" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
+
+            <!-- COLONNE 1 -->
+            <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+                <!-- CHAMP 1 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always" aria-readonly="true">
+                    <mat-label>Origine </mat-label>
+                    <input matInput type="text" [formControl]="origine"/>
+                </mat-form-field>
+                <!-- CHAMP 2 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Destination </mat-label>
+                    <input matInput type="text" [formControl]="destination"/>
+                    <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('destination')"> <mat-icon>close</mat-icon></button>
+                    <mat-error *ngIf="destination.errors?.hasOwnProperty('required')">{{appConfig.getLabel('error.champ.obligatoire')}}</mat-error>
+                </mat-form-field>
+                
+            </div>
+
+            <!-- COLONNE 2 -->
+            <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+                <!-- CHAMP 1 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Site de passage </mat-label>
+                    <input matInput type="text" [formControl]="sitePassage"/>
+                </mat-form-field>
+                <!-- CHAMP 2 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Date </mat-label>
+                    <input matInput type="text" [formControl]="date">
+                </mat-form-field>
+
+            </div>
+
+            <!-- COLONNE 3 -->
+            <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+                <!-- CHAMP 1 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Transporteur </mat-label>
+                    <input matInput type="text" [formControl]="nomTransporteur"/>
+                </mat-form-field>
+                <!-- CHAMP 2 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Téléphone </mat-label>
+                    <input matInput type="text" [formControl]="telTransporteur"/>
+                </mat-form-field>
+            </div>
+
+            <!-- COLONNE 4 -->
+            <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+                <!-- CHAMP 1 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Immatriculation </mat-label>
+                    <input matInput type="text" [formControl]="immatriculation"/>
+                </mat-form-field>
+                <!-- CHAMP 2 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Classe </mat-label>
+                    <input matInput type="text" [formControl]="classe"/>
+                </mat-form-field>
+            </div>
+
+            <!-- COLONNE 5 -->
+            <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+                <!-- CHAMP 1 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Produit </mat-label>
+                    <mat-select [formControl]="nomProduit" placeholder="Produit">
+                        <mat-option *ngFor="let prduit of this.listProduit" [value]="prduit.nomSRC">
+                          {{prduit.nomSRC}}
+                        </mat-option>
+                      </mat-select>
+                </mat-form-field>
+                <!-- CHAMP 2 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Poids estimés (tonnes) </mat-label>
+                    <input matInput type="text" [formControl]="poidsSubst"/>
+                </mat-form-field>
+            </div>
+
+            <!-- COLONNE 6 -->
+            <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
+                <!-- CHAMP 1 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Volume (m3) </mat-label>
+                    <input matInput type="text" [formControl]="volumeSubst"/>
+                </mat-form-field>
+                <!-- CHAMP 2 -->
+                <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
+                    <mat-label>Volume moyen (m3) </mat-label>
+                    <input matInput type="text" [formControl]="volumeMoyen"/>
+                </mat-form-field>
+            </div>
+        </form>
+    </div>
+</fieldset>
+<div class="mat-elevation-z0 mt-1">
+    <app-action-btns [btns]="btns"  (btnClick)="chargementAction($event)"></app-action-btns>
+</div>

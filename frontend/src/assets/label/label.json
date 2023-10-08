@@ -152,7 +152,9 @@
     "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière",
 
     "reset.password.title": "Récupération de compte",
-    "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email"
+    "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email",
+
+    "formulaire.chargement.title": "Modification Chargement"
   }
 }
 

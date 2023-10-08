@@ -127,7 +127,7 @@ public class ProduitService implements IProduitService {
     @Override
     public ProduitDTO chargerProduitParId(Long id) {
 
-        ProduitService.logger.info(String.format("Chargement lors du produit: %s", id));
+        ProduitService.logger.info(String.format("Chargement du produit: %s", id));
         Optional<ProduitEntity> produit = produitRepository.findById(id);
         // on retourne le produit trouvé
         if (produit.isPresent()) {

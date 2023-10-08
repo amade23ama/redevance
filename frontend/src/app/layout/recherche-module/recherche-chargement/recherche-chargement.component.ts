@@ -1,18 +1,18 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {ChargementService} from "../../../core/services/chargement.service";
-import {FormControl} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {Chargement} from "../../../core/interfaces/chargement";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {DatePipe} from "@angular/common";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
-import {Router} from "@angular/router";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {debounceTime, distinctUntilChanged, Observable, switchMap} from "rxjs";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { Observable, debounceTime, distinctUntilChanged, switchMap } from "rxjs";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { Chargement } from "../../../core/interfaces/chargement";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import { ChargementService } from "../../../core/services/chargement.service";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -73,9 +73,11 @@ export  class RechercheChargementComponent implements  OnInit{
     return (new DatePipe(BuilderDtoJsonAbstract.JSON_DATE_PIPE_LOCALE))
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
-  chargerChargement(element:Chargement){
 
+  chargerChargement(chargement: Chargement){
+    this.router.navigate(['admin/chargement'], {queryParams: {'contextInfo': chargement.id }});
   }
+
   export(critereRecherches:Observable<AutocompleteRecherche[]>){
     const critereRecherche:CritereRecherche=new CritereRecherche()
     critereRecherches.subscribe((res)=>{

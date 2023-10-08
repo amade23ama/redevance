@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.http.ResponseEntity;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
@@ -89,4 +90,11 @@ public interface IChargementService {
      * @return le fichier en byte
      */
     byte[] chargementDTOsToBytes(List<ChargementDTO> datas) throws UnsupportedEncodingException;
+
+    /**
+     * chargerChargementParId
+     * @param id id
+     * @return ChargementDTO
+     */
+    ChargementDTO chargerChargementParId(Long id);
 }

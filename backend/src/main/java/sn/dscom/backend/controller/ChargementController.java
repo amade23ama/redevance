@@ -176,4 +176,15 @@ public class ChargementController {
 
 
     }
+
+    /**
+     * rechercheById
+     * @param id id
+     * @return ChargementDTO
+     */
+    @GetMapping(value = "/rechercheById/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<ChargementDTO> chargerChargementParId(@PathVariable Long id) {
+        return ResponseEntity.ok(chargementService.chargerChargementParId(id));
+    }
 }

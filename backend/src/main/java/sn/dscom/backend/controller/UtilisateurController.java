@@ -27,7 +27,7 @@ public class UtilisateurController {
      * @return utilisateurDTO
      */
     @PostMapping (value = "/utilisateur/enregistrer")
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT','CONSULT')")
     public UtilisateurDTO enregistrerUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
 
         // check des champs obligatoires
@@ -100,8 +100,13 @@ public class UtilisateurController {
      * @return UtilisateurDTO
      */
     @PutMapping (value = "/utilisateur/enregistrer")
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT','CONSULT')")
     public UtilisateurDTO sauvegarderUtilisateur(@RequestBody UtilisateurDTO utilisateurDTO) {
+        // check des champs obligatoires
+        Preconditions.checkNotNull(utilisateurDTO.getNom(), "Le Nom est obligatoir");
+        Preconditions.checkNotNull(utilisateurDTO.getPrenom(), "Le Prenom est obligatoir");
+        Preconditions.checkNotNull(utilisateurDTO.getEmail(), "Le Prenom est obligatoir");
+        Preconditions.checkNotNull(utilisateurDTO.getTelephone(), "Le Telephone est obligatoir");
         return utilisateurService.sauvegarderUtilisateur(utilisateurDTO);
     }
     @PostMapping (value = "/utilisateur/recherche")

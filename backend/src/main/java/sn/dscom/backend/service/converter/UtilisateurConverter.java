@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.converter;
 
+import com.google.common.base.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.util.CollectionUtils;
@@ -117,7 +118,11 @@ public class UtilisateurConverter implements Transformer<UtilisateurDTO, Utilisa
         utilisateurEntity.setPrenom(utilisateurDTO.getPrenom());
         utilisateurEntity.setEmail(utilisateurDTO.getEmail());
         utilisateurEntity.setTelephone(utilisateurDTO.getTelephone());
-        utilisateurEntity.setPassword(utilisateurDTO.getPassword());
+
+        // On l'aliment seulement en cas de modification de mdp
+        if (!Strings.isNullOrEmpty(utilisateurDTO.getPassword())) {
+            utilisateurEntity.setPassword(utilisateurDTO.getPassword());
+        }
 
         final List<ProfilEntity> listeProfils = new ArrayList<>();
         if (!CollectionUtils.isEmpty(utilisateurDTO.getProfils())) {

@@ -31,6 +31,7 @@ import sn.dscom.backend.service.util.CategorieSpecifications;
 import sn.dscom.backend.service.util.UtilisateurSpecifications;
 
 import java.util.*;
+import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,14 +64,31 @@ public class UtilisateurService implements IUtilisateurService {
      * @return UtilisateurDTO
      */
     public UtilisateurDTO sauvegarderUtilisateur(UtilisateurDTO utilisateurDTO) {
+        // test de changement de Profil
+        BiPredicate<UtilisateurDTO, UtilisateurEntity> isModifProfil = (in, out) -> !in.getProfils().get(0).equals(out.getProfils().get(0).getCode());
 
         //Dans le cas d'une modification
         if(utilisateurDTO.getId()!=null){
             Optional<UtilisateurEntity> user = utilisateurRepository.findById(utilisateurDTO.getId()) ;
             if(user.isPresent()){
                 UtilisateurEntity utilisateurEntity=user.get();
+
+                //indique si le profile à changé
+                boolean isRoleChanged = isModifProfil.test(utilisateurDTO, utilisateurEntity);
+
                 UtilisateurConverter.majUtilisateurDepuisDTO(utilisateurDTO,utilisateurEntity);
                 UtilisateurEntity userSave = utilisateurRepository.save(utilisateurEntity);
+
+                if (isRoleChanged) {
+                    // message et paramètre
+                    String message = environment.getProperty("modification.profile.mail");
+                    String role = userSave.getProfils().get(0).getCode();
+                    String msgBody = String.format(message, role);
+
+
+                    // Envoi du méssage
+                    envoiMail(userSave, msgBody, "Modification de profil");
+                }
                 return UtilisateurConverter.toUtilisateurDTO(userSave);
             }
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
@@ -107,16 +125,26 @@ public class UtilisateurService implements IUtilisateurService {
                 String msgBody = String.format(message, role, login, mdp);
 
 
-                    // Envoi du méssage
-                this.mailService.envoiMail(EmailDetails.builder()
-                            .recipient(user.getEmail())
-                            .subject("Mail de confirmation")
-                            .msgBody(msgBody)
-                            .build());
-                }
+                // Envoi du méssage
+                envoiMail(user, msgBody, "Mail de confirmation");
+            }
             return utilisateurTransformer.reverse(user);
         }
         return null;
+    }
+
+    /**
+     * methode d'envoi de Mail
+     * @param userSave userSave
+     * @param msgBody msgBody
+     * @param subject subject
+     */
+    private void envoiMail(UtilisateurEntity userSave, String msgBody,String subject) {
+        this.mailService.envoiMail(EmailDetails.builder()
+                .recipient(userSave.getEmail())
+                .subject(subject)
+                .msgBody(msgBody)
+                .build());
     }
 
     /**

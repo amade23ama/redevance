@@ -1,22 +1,24 @@
-import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
-import {MatTable, MatTableDataSource} from "@angular/material/table";
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
-import {UtilisateurService} from "../../../core/services/utilisateur.service";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
-import {DatePipe} from "@angular/common";
-import {debounceTime, distinctUntilChanged, Observable, of, switchMap} from "rxjs";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {BreakpointObserver} from "@angular/cdk/layout";
-import {Router} from "@angular/router";
-import {ParamService} from "../../../core/services/param.service";
-import {Profil} from "../../../core/interfaces/profil";
-import {FormControl} from "@angular/forms";
-import {Filtre} from "../../../core/interfaces/filtre";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
+import { ModalService } from "src/app/core/services/modal.service";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
+import { Filtre } from "../../../core/interfaces/filtre";
+import { Profil } from "../../../core/interfaces/profil";
+import { Utilisateur } from "../../../core/interfaces/utilisateur";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import { ParamService } from "../../../core/services/param.service";
+import { UtilisateurService } from "../../../core/services/utilisateur.service";
+import { DialogueComponent } from "../../shared-Module/dialog/dialogue/dialogue.component";
 
 @Component({
   selector: 'app-recherche-utilisateur',
@@ -43,7 +45,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   critereRecherches$=this.autocompleteRechercheService.critereRecherches$
 
   constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
-            private router:Router,private paramService: ParamService,
+            private router:Router,private paramService: ParamService, public dialog: MatDialog, public modalService: ModalService,
             private autocompleteRechercheService:AutocompleteRechercheService) {
 }
   ngOnInit(): void {
@@ -126,5 +128,53 @@ export class RechercheUtilisateurComponent implements OnInit{
       }
 
     })
+  }
+
+  /**
+   * Activation ou désactivation d'un utilisateur
+   * @param utilisteur 
+   */
+  desableUser( utilisteur: Utilisateur){
+    
+    if (utilisteur.active) {
+      const dialogRef = this.dialog.open(DialogueComponent, {
+        width: '600px',
+        position: {top:'200px'},
+        data: {title: this.appConfig.getLabel('modal.dialog.desactivation.title'), 
+        question: this.appConfig.getLabel('modal.dialog.desactivation.question', utilisteur.prenom +' - ' + utilisteur.nom)},
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        
+        if (result) {
+          let user = utilisteur;
+              user.active = false;
+              this.utilisateurService.enregistrer(user).subscribe((user)=>{
+              this.modalService.ouvrirModalConfirmation(this.appConfig.getLabel('modal.confirmation.desactivation', utilisteur.prenom +' - ' + utilisteur.nom));
+            })
+        }
+      });
+
+    }else{
+      const dialogRef = this.dialog.open(DialogueComponent, {
+        width: '600px',
+        position: {top:'200px'},
+        data: {title: this.appConfig.getLabel('modal.dialog.activation.title'),
+        question: this.appConfig.getLabel('modal.dialog.activation.question', utilisteur.prenom +' - ' + utilisteur.nom)},
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        
+        if (result) {
+          let user = utilisteur;
+              user.active = true;
+              this.utilisateurService.enregistrer(user).subscribe((user)=>{
+              this.modalService.ouvrirModalConfirmation(this.appConfig.getLabel('modal.confirmation.activation', utilisteur.prenom +' - ' + utilisteur.nom));
+            })
+        }
+      });
+
+    }
+    
   }
 }

@@ -108,6 +108,7 @@
     "btn.utilisateur.modif.tooltip": "modifier l'utilisateur",
     "header.btn.utilisateur.creer.tooltip": "Nouveau",
     "error.login.or.email.invalid": "Login ou Email est invalide !",
+    "error.user.desabled": "Votre compte est désactivé. Merci de vous rapprocher de votre administrateur",
     "error.unsufisiantDroit": " vous n'avez pas les droits requis",
     "error.password.obligatoire": "Le mot de passe est obligatoire",
     "label.tooltip.utilisateur":"Créer un utilisateur",
@@ -138,6 +139,13 @@
 
     "modal.suppression.title":"Attention suppression en cours !",
     "modal.suppression.body":"Voulez-vous supprimer le produit {0} ?",
+
+    "modal.dialog.activation.title":"Attention activation en cours !",
+    "modal.dialog.desactivation.title":"Attention désactivation en cours !",
+    "modal.dialog.activation.question": "Voulez-vous vraiment activer l'utilisateur {0} ?",
+    "modal.dialog.desactivation.question": "Voulez-vous vraiment désactiver l'utilisateur {0} ?",
+    "modal.confirmation.activation": "L’utilisateur {0} a été activé",
+    "modal.confirmation.desactivation": "L’utilisateur {0} a été désactivé",
 
     "titre.graphe.produit": "Exploitation minière par type de produit",
     "titre.graphe.region":"Exploitation minière par région",

@@ -51,4 +51,11 @@ public interface UtilisateurRepository extends JpaRepository<UtilisateurEntity,L
     List<UtilisateurEntity> rechargementParCritere(@Param("userIds") List<Long> userIds,
                                                    @Param("profileIds") List<String> profileIds);
     List<UtilisateurEntity> findAll(Specification<UtilisateurEntity> spec);
+
+    /**
+     * existsByLoginEquals
+     * @param login login
+     * @return true or false
+     */
+    Optional<UtilisateurEntity> findUtilisateurEntityByLoginEquals(@Param("login") String login);
 }

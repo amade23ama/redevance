@@ -37,6 +37,16 @@ public class AuthController {
     }
 
     /**
+     * isActive
+     * @param login login
+     * @return true or false
+     */
+    @GetMapping("/active/{login}")
+    public boolean isActive(@PathVariable String login){
+        return this.connectedUtilisateurService.checkActive(login);
+    }
+
+    /**
      * reset
      * @param utilisateurDTO utilisateurDTO
      * @return bool

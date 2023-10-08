@@ -1,15 +1,14 @@
-import {Injectable} from "@angular/core";
-import {Globals, SERVER_API_URL} from "../../app.constants";
-import {environment} from "../../../environments/environment";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {BehaviorSubject, catchError, lastValueFrom, tap, throwError} from "rxjs";
-import {Utilisateur} from "../interfaces/utilisateur";
-import {AbstractControl} from "@angular/forms";
-import {NotificationService} from "./notification.service";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { AbstractControl } from "@angular/forms";
+import { Router } from "@angular/router";
 import * as clone from 'lodash';
-import {AutocompleteRecherche} from "../interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../interfaces/critere.recherche";
+import { BehaviorSubject, catchError, lastValueFrom, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { Globals } from "../../app.constants";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Utilisateur } from "../interfaces/utilisateur";
+import { NotificationService } from "./notification.service";
 @Injectable({
   providedIn:'root'
 })
@@ -224,6 +223,13 @@ export class UtilisateurService {
         })
       )
 
+  }
+  
+  /** checkActive */
+  async checkActive(input: AbstractControl){
+    const login=input.value
+    const status = await lastValueFrom(this.http.get<boolean>( this.url+`/active/${login}`))
+    return status ? null : { isActive: true };
   }
 }
 

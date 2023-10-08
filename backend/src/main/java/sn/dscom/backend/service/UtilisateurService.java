@@ -66,6 +66,10 @@ public class UtilisateurService implements IUtilisateurService {
     public UtilisateurDTO sauvegarderUtilisateur(UtilisateurDTO utilisateurDTO) {
         // test de changement de Profil
         BiPredicate<UtilisateurDTO, UtilisateurEntity> isModifProfil = (in, out) -> !in.getProfils().get(0).equals(out.getProfils().get(0).getCode());
+        // test la désactivation de l'utilisateur
+        BiPredicate<UtilisateurDTO, UtilisateurEntity> isDesactivation = (in, out) -> !in.isActive() && out.isActive();
+        // test la désactivation de l'utilisateur
+        BiPredicate<UtilisateurDTO, UtilisateurEntity> isActivation = (in, out) -> in.isActive() && !out.isActive();
 
         //Dans le cas d'une modification
         if(utilisateurDTO.getId()!=null){
@@ -75,6 +79,10 @@ public class UtilisateurService implements IUtilisateurService {
 
                 //indique si le profile à changé
                 boolean isRoleChanged = isModifProfil.test(utilisateurDTO, utilisateurEntity);
+                //indique si l'utilisateur à été desactivé'
+                boolean isDesabled = isDesactivation.test(utilisateurDTO, utilisateurEntity);
+                //indique si l'utilisateur à été activé'
+                boolean isEnabled = isActivation.test(utilisateurDTO, utilisateurEntity);
 
                 UtilisateurConverter.majUtilisateurDepuisDTO(utilisateurDTO,utilisateurEntity);
                 UtilisateurEntity userSave = utilisateurRepository.save(utilisateurEntity);
@@ -84,10 +92,21 @@ public class UtilisateurService implements IUtilisateurService {
                     String message = environment.getProperty("modification.profile.mail");
                     String role = userSave.getProfils().get(0).getCode();
                     String msgBody = String.format(message, role);
-
-
                     // Envoi du méssage
                     envoiMail(userSave, msgBody, "Modification de profil");
+                }
+                if (isDesabled) {
+                    // message et paramètre
+                    String message = environment.getProperty("desactivation.compte.mail");
+                    String msgBody = String.format(message);
+                    // Envoi du méssage
+                    envoiMail(userSave, msgBody, "Activation d'accès");
+                } else if (isEnabled) {
+                    // message et paramètre
+                    String message = environment.getProperty("activation.compte.mail");
+                    String msgBody = String.format(message);
+                    // Envoi du méssage
+                    envoiMail(userSave, msgBody, "Désactivation d'accès");
                 }
                 return UtilisateurConverter.toUtilisateurDTO(userSave);
             }

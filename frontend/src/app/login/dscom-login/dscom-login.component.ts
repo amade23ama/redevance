@@ -1,7 +1,7 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AppConfigService} from "../../core/services/app-config.service";
-import {UtilisateurService} from "../../core/services/utilisateur.service";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { AppConfigService } from "../../core/services/app-config.service";
+import { UtilisateurService } from "../../core/services/utilisateur.service";
 
 @Component({
   selector: 'app-dscom-login',
@@ -13,7 +13,7 @@ export class DscomLoginComponent implements OnInit{
 
   propLogin: FormControl = new FormControl('',  {
     validators: [Validators.required],
-    asyncValidators: [this.checkLogin.bind(this)],
+    asyncValidators: [this.checkLogin.bind(this), this.checkActive.bind(this)],
     updateOn: 'blur'
   })
   propPassword: FormControl = new FormControl('',  {
@@ -38,5 +38,10 @@ export class DscomLoginComponent implements OnInit{
   }
   checkLogin(control:AbstractControl){
     return this.utilisateurService.checkLogin(control)
+  }
+
+  /** checkActive */
+  checkActive(control:AbstractControl){
+    return this.utilisateurService.checkActive(control)
   }
 }

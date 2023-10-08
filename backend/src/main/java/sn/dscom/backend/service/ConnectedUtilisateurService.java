@@ -48,4 +48,11 @@ public interface ConnectedUtilisateurService {
      * @return boolean
      */
     boolean resetPwd(UtilisateurDTO utilisateurDTO);
+
+    /**
+     * checkActive
+     * @param login
+     * @return true or false
+     */
+    boolean checkActive(String login);
 }

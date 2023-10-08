@@ -24,6 +24,7 @@ import sn.dscom.backend.service.mail.EmailDetails;
 import sn.dscom.backend.service.mail.IMailService;
 import sn.dscom.backend.service.util.TokenUtils;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -157,6 +158,19 @@ public class ConnectedUtilisateurServiceImpl implements ConnectedUtilisateurServ
 
         return true;
 
+    }
+
+    /**
+     * checkActive
+     *
+     * @param login login
+     * @return true or false
+     */
+    @Override
+    public boolean checkActive(String login) {
+        Optional<UtilisateurEntity> user =  utilisateurRepository.findUtilisateurEntityByLoginEquals(login);
+
+        return user.map(UtilisateurEntity::isActive).orElse(false);
     }
 
     private UtilisateurConnectedDTO getUtilisateurByLogin(String login){

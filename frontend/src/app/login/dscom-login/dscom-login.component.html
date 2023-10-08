@@ -25,6 +25,9 @@
           <mat-error *ngIf="propLogin.errors?.hasOwnProperty('emailExists')">
             {{appConfig.getLabel('error.login.or.email.invalid')}}
           </mat-error>
+          <mat-error *ngIf="propLogin.errors?.hasOwnProperty('isActive') && !propLogin.errors?.hasOwnProperty('emailExists')">
+            {{appConfig.getLabel('error.user.desabled')}}
+          </mat-error>
         </mat-form-field>
         <mat-form-field  appearance="outline" fxFlex="50" floatLabel="always">
           <mat-label>{{appConfig.getLabel("label.password")}}</mat-label>

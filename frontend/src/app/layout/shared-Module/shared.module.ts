@@ -34,7 +34,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     FormulaireUtilisateurComponent,
     ActionsCritereBtnsComponent,
     DscomExtensibleComponent,
-    AutorisationDirective
+    AutorisationDirective,
   ],
   imports: [
     CommonModule,

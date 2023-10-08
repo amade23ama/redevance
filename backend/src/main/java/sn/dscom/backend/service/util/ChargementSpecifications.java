@@ -87,9 +87,16 @@ public class ChargementSpecifications {
                         root.get("dateModification"),
                         criteriaBuilder.literal(CommonConstants.TO_YEAR)
                 );
+                Expression<String> expressionDatePesage = criteriaBuilder.function(
+                        CommonConstants.TO_CHAR,
+                        String.class,
+                        root.get("datePassage"),
+                        criteriaBuilder.literal(CommonConstants.TO_YEAR)
+                );
                 Predicate conditionDateCreation= criteriaBuilder.equal(expressionDateCreation, annee.toString());
                 Predicate conditionDateMiseAjour= criteriaBuilder.equal(expressionDateMiseAjour, annee.toString());
-                Predicate conditionAnnee =criteriaBuilder.or(conditionDateCreation,conditionDateMiseAjour);
+                Predicate conditionDatePesage= criteriaBuilder.equal(expressionDatePesage, annee.toString());
+                Predicate conditionAnnee =criteriaBuilder.or(conditionDateCreation,conditionDateMiseAjour,conditionDatePesage);
                 predicates.add(conditionAnnee);
             }
 

@@ -31,7 +31,7 @@
         </mat-form-field>
         <mat-form-field  appearance="outline" fxFlex="50" floatLabel="always">
           <mat-label>{{appConfig.getLabel("label.password")}}</mat-label>
-          <input  matInput type="password" placeholder="Mots de passe"
+          <input  matInput type="password" placeholder="Mot de passe"
                   [formControl]="propPassword" required>
           <mat-error *ngIf="propPassword.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.password.obligatoire')}}

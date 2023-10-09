@@ -93,11 +93,11 @@ public class ChargementSpecifications {
                         root.get("datePassage"),
                         criteriaBuilder.literal(CommonConstants.TO_YEAR)
                 );
-                Predicate conditionDateCreation= criteriaBuilder.equal(expressionDateCreation, annee.toString());
-                Predicate conditionDateMiseAjour= criteriaBuilder.equal(expressionDateMiseAjour, annee.toString());
+//                Predicate conditionDateCreation= criteriaBuilder.equal(expressionDateCreation, annee.toString());
+//                Predicate conditionDateMiseAjour= criteriaBuilder.equal(expressionDateMiseAjour, annee.toString());
                 Predicate conditionDatePesage= criteriaBuilder.equal(expressionDatePesage, annee.toString());
-                Predicate conditionAnnee =criteriaBuilder.or(conditionDateCreation,conditionDateMiseAjour,conditionDatePesage);
-                predicates.add(conditionAnnee);
+//                Predicate conditionAnnee =criteriaBuilder.or(conditionDateCreation,conditionDateMiseAjour,conditionDatePesage);
+                predicates.add(conditionDatePesage);
             }
 
             if (!predicates.isEmpty()) {

@@ -100,13 +100,13 @@ public class UtilisateurService implements IUtilisateurService {
                     String message = environment.getProperty("desactivation.compte.mail");
                     String msgBody = String.format(message);
                     // Envoi du méssage
-                    envoiMail(userSave, msgBody, "Activation d'accès");
+                    envoiMail(userSave, msgBody, "Désactivation d'accès");
                 } else if (isEnabled) {
                     // message et paramètre
                     String message = environment.getProperty("activation.compte.mail");
                     String msgBody = String.format(message);
                     // Envoi du méssage
-                    envoiMail(userSave, msgBody, "Désactivation d'accès");
+                    envoiMail(userSave, msgBody, "Activation d'accès");
                 }
                 return UtilisateurConverter.toUtilisateurDTO(userSave);
             }

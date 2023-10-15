@@ -18,7 +18,7 @@
         </mat-autocomplete>
       </mat-form-field>
     <mat-form-field *ngIf="visibleDate" class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
-      <mat-label>annee</mat-label>
+      <mat-label>Année</mat-label>
       <mat-select [formControl]="searchDate">
         <mat-option *ngFor="let annee of annees$|async as annnes" [value]="annee">
           {{ annee}}

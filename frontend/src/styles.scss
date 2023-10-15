@@ -2,7 +2,10 @@
 @import "src/assets/css/DSCOM-variables.scss";
 //@import "@angular/material/prebuilt-themes/indigo-pink.css";
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+body {
+  margin: 0;
+  //font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .btn-container {
   display: flex;
@@ -312,11 +315,14 @@ mat-form-field mat-label {
   background-color:$orange-500!important;
 }
 .header{
-  top:0px;
-  position: sticky;
-  background-color:$orange-300!important;
-  z-index: 1000;
-  padding-bottom: 0.25em;
+  //top:0px;
+  //position: sticky;
+ // background-color:$orange-300!important;
+ // z-index: 1000;
+  padding-bottom: 0.30em;
+  padding-top: 0.30em;
+  background: white;
+  //color: red;
 }
 .btn-global-white {
   margin: 6px !important;
@@ -477,4 +483,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .pb-1 {
   padding-bottom: 0.25rem!important;
 }
-
+.btn-globale {
+  margin: 6px !important;
+  padding: 0px 20px 0px 20px !important;
+  background-color: white !important;
+  color: $pink-main !important;
+}

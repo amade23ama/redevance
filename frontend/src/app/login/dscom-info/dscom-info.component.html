@@ -1,9 +1,16 @@
 <mat-card class="mat-card  flex-container info" fxLayout="column" fxLayoutAlign="space-between stretch">
   <!--fxHide fxShow.gt-xs-->
   <mat-card-content  fxLayout="column" fxLayoutAlign="center center">
-    <div class="direction">
-      <h4>D.C.S.O.M</h4>
-      <strong>{{appConfig.getLabel('label.direction.nom')}}</strong>
+    <div  fxLayout="column" fxLayoutAlign="center center" >
+      <div>
+        <img class="bandeau-medium" src="../../../../assets/img/logo.svg"
+             srcset="../../../../assets/img/logo.svg 60w,  ./assets/img/logomaison.svg 60w" width="70"
+             height="70"
+             sizes="(min-width: 60px) 60px, 50vw" alt="bandeau"/>
+      </div>
+      <div class="direction">
+        <strong>{{appConfig.getLabel('label.direction.nom')}}</strong>
+      </div>
     </div>
   </mat-card-content>
   <mat-card-content>

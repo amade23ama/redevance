@@ -11,12 +11,12 @@ import { UtilisateurService } from "../../core/services/utilisateur.service";
 export class DscomLoginComponent implements OnInit{
   @Output() formLogin = new EventEmitter<FormGroup>();
 
-  propLogin: FormControl = new FormControl('',  {
+  propLogin: FormControl = new FormControl('admin',  {
     validators: [Validators.required],
     asyncValidators: [this.checkLogin.bind(this), this.checkActive.bind(this)],
     updateOn: 'blur'
   })
-  propPassword: FormControl = new FormControl('',  {
+  propPassword: FormControl = new FormControl('admin',  {
     validators: [Validators.required]
   })
   myform: FormGroup

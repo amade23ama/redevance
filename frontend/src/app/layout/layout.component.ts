@@ -24,6 +24,7 @@ export class LayoutComponent implements OnInit {
               private sessionTimerService: SessionTimerService) {
     // Affichage d`un spinner lors du chargement
     globals.loading = true;
+    globals.loading = false;
     this.isLoggedIn = this.authService.isLoggedIn()
   }
 

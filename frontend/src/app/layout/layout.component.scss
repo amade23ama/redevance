@@ -59,16 +59,36 @@
 }
 .mat-sidenav-container{
   flex-grow: 1;
-  background: white;
+ // background: white;
   min-height: 30vh !important;
 }
+mat-toolbar a{
+  /**font-size: 14px !important;
+  font-style: normal !important;
+  justify-content: left !important;
+  font-family: Calibri;
+  color: black;
+  background: white;
+  */
+
+
+}
 .mat-toolbar{
-  padding-left:4.5em;
-  background-color: $orange-500!important;
-  color: white;
-  font-size: 13px;
-  font-family: normal;
-  justify-content: left;
+  padding-left: 2.6em!important;;
+  //background-color: $orange-500!important;
+/*
+  color: $orange-2 !important;
+  padding-left:2.8em!important;;
+  background-color:#FFFFFF !important;
+  */
+  background: white!important;
+
+
+}
+.entete-fixe{
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .mat-sidenav-content{
@@ -77,13 +97,13 @@
   padding-left:4.5em;
   padding-right:4.5em;
 }
-mat-toolbar a{
-  font-size: 13px;
-}
+/*
+
+*/
 @media screen and (max-width: 600px) {
 
   .mat-sidenav-container{
-    background: white;
+    //background: white;
     padding-top: 0em;
     margin-top: 0em;;
     padding-left:0em;
@@ -116,27 +136,39 @@ mat-toolbar a{
 }
 .bandeau--small {
   height:3px;
-  background-color: #95c6ee;
+ // background-color: $jaune-0!important;;
+  background: linear-gradient(90deg, $jaune-0,#ffffff );
 }
+/*
 .menu-toolbar{
   position: sticky;
   top: 0;
   z-index: 100;
+  //border-bottom: Solid 2px $orange-1;
+  //border-top: Solid 2px $orange-2;
+  background: black;
 }
+*/
 ::ng-deep.mat-sidenav{
   background-color:$orange-300!important;
 }
 .mat-sidenav-menu a{
-  font-size: 13px;
+  font-size: 14px;
   color: $white;
   text-transform: capitalize;
 }
-
+.lien a{
+  font-size: 14px;
+  text-decoration-line: none;
+  color:$rouge-0!important;
+}
 .mat-sidenav-menu-but:hover{
-  background-color:$white;
+  /*background-color:$white;
   border: none;
   color: black!important;;
   border-radius: 0px!important;
+  */
+
 }
 ::ng-deep.mat-mdc-standard-chip{
   background:#fbf0e9!important;
@@ -162,11 +194,21 @@ mat-toolbar a{
   padding: 0px!important;
 }
 .router-link-active {
-  background-color: white!important;
-  color: $orange-700!important;
+  //background-color: white!important;
+  /*color: $rouge-0!important;
+  font-family: Calibri !important;;
+  font-style: normal !important;;
+  font-weight: 700 !important;;
+  border-bottom: Solid 2px $rouge-1;
+  */
+  font-weight: bold !important;
+  border-bottom: Solid 3px $orange-2;
+  border-bottom-left-radius: 3px!important;
+  border-bottom-right-radius: 3px!important;
 }
-.acceuil{
-  background-color: #de7f39 !important;
-  color: white!important;
 
+.acceuil{
+  border-bottom:none;
+  color: $orange-0!important;
 }
+

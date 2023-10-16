@@ -25,7 +25,7 @@
   </ng-container>
   <ng-container matColumnDef="prenom"  >
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef fxHide.xs>
-      <div class="d-flex">Prenom</div>
+      <div class="d-flex">Prénom</div>
     </th>
     <td mat-cell *matCellDef="let element" fxHide.xs >
       <div class="d-flex up-case">{{element.prenom}}</div>
@@ -60,7 +60,7 @@
   </ng-container>
   <ng-container matColumnDef="dateCreation">
     <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-      <div class="d-flex">date Creation</div>
+      <div class="d-flex">Date de création</div>
     </th>
     <td mat-cell *matCellDef="let element">
       <div class="d-flex"><span>{{formatDate(element.dateCreation)}}</span></div>

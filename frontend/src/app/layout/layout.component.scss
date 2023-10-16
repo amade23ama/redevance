@@ -153,12 +153,12 @@ mat-toolbar a{
   background-color:$orange-300!important;
 }
 .mat-sidenav-menu a{
-  font-size: 14px;
+  font-size: 13px;
   color: $white;
   text-transform: capitalize;
 }
 .lien a{
-  font-size: 14px;
+  font-size: 13px;
   text-decoration-line: none;
   color:$rouge-0!important;
 }
@@ -201,7 +201,7 @@ mat-toolbar a{
   font-weight: 700 !important;;
   border-bottom: Solid 2px $rouge-1;
   */
-  font-weight: bold !important;
+  //font-weight: bold !important;
   border-bottom: Solid 3px $orange-2;
   border-bottom-left-radius: 3px!important;
   border-bottom-right-radius: 3px!important;

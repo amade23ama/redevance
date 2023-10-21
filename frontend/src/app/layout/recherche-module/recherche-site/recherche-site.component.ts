@@ -1,20 +1,21 @@
+import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from "@angular/router";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
 import { Site } from 'src/app/core/interfaces/site';
+import { ModalService } from "src/app/core/services/modal.service";
 import { SiteService } from 'src/app/core/services/site.service';
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
-import {Router} from "@angular/router";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {FormControl} from "@angular/forms";
-import {Exploitation} from "../../../core/interfaces/exploitation";
-import {DatePipe} from "@angular/common";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import { SuppressionComponent } from "../../shared-Module/dialog/suppression/suppression.component";
 
 @Component({
   selector: 'recherche-site',
@@ -40,8 +41,8 @@ export class RechercheSiteComponent implements OnInit {
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesSite$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesSite$
   /** site Service */
-  constructor(public appConfig: AppConfigService, public siteService: SiteService,private router:Router,
-              private autocompleteRechercheService:AutocompleteRechercheService){}
+  constructor(public appConfig: AppConfigService, public siteService: SiteService,private router:Router, private modalService: ModalService,
+              private dialog: MatDialog, private autocompleteRechercheService:AutocompleteRechercheService){}
 
 
   ngOnInit(): void {
@@ -107,5 +108,30 @@ export class RechercheSiteComponent implements OnInit {
         this.siteService.chargementSiteParCritere(critereRecherche).subscribe()
       }
     })
+  }
+
+  /**
+   * supprimerSite
+   * @param site 
+   */
+  supprimerSite(site: Site){
+
+    const dialogRef = this.dialog.open(SuppressionComponent, {
+      width: '600px',
+      position: {top:'200px'},
+      data: {name: "le site ".concat(site.nom), id: site.id},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result >= 0) {
+        this.siteService.supprimerSite(site.id).subscribe((idDelete) => {
+          if (idDelete) {
+            this.rechargementSite();
+            this.modalService.ouvrirModalConfirmation("Site supprimé")
+          }
+        });
+      }
+  });
+
   }
 }

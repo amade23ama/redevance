@@ -109,7 +109,7 @@ export class RechercheProduitComponent implements OnInit {
     const dialogRef = this.dialog.open(SuppressionComponent, {
       width: '600px',
       position: {top:'200px'},
-      data: {name: produit.nomSRC, id: produit.id},
+      data: {name: "le produit ".concat(produit.nomSRC), id: produit.id},
     });
 
     dialogRef.afterClosed().subscribe(result => {

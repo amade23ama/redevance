@@ -10,10 +10,10 @@ export class Produit extends BuilderDtoJsonAbstract{
     public id : number;
 
     /** identifiant */
-    public nomSRC: String;
+    public nomSRC: string;
 
     /** identifiant */
-    public nomNORM: String;
+    public nomNORM: string;
 
     /** identifiant */
     public densiteGRM: number;

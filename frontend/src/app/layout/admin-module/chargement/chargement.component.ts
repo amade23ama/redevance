@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Actions } from 'src/app/core/enum/actions';
 import { ActionBtn } from 'src/app/core/interfaces/actionBtn';
@@ -140,6 +140,18 @@ export class ChargementComponent implements OnInit {
   chargementAction(event: Actions){
     //Le click sur le bouton ENREGISTRER
     if (event === Actions.MODIFIER) {
+      let chargementAmodifier = this.chargementCourant;
+      //le produit
+      let newProduit = new Produit();
+      newProduit.nomSRC = this.getProduit.value;
+      newProduit.nomNORM = this.getProduit.value;
+      // la destination
+      chargementAmodifier.destination = this.getDestination?.value
+      chargementAmodifier.produit = newProduit;
+      this.chargementService.modifierChargement(chargementAmodifier).subscribe((data) => {
+        this.chargementform.patchValue(data);
+        this.modalService.ouvrirModalConfirmation('Le chargement a été bien modifié.' );
+      });
     }
 
     //Le click sur le bouton Annuler
@@ -182,5 +194,9 @@ export class ChargementComponent implements OnInit {
         }
       });
     }
+  
+  // get data
+  get getDestination(): AbstractControl { return this.chargementform?.get("destination");}
+  get getProduit(): AbstractControl { return this.produit?.get("nomSRC");}
 
 }

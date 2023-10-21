@@ -60,6 +60,18 @@ public class ChargementController {
     }
 
     /**
+     * enregistrer Chargement
+     * @param chargementDTO chargementDTO
+     * @return la liste
+     */
+    @PutMapping (path = "/modifier")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    public ResponseEntity<ChargementDTO> modifierChargement(@RequestBody ChargementDTO chargementDTO) {
+        ChargementController.LOGGER.info("ChargementController: modifierChargement: ");
+        return ResponseEntity.ok(this.chargementService.modifierChargement(chargementDTO));
+    }
+
+    /**
      * rechercher Chargement
      * @return la liste
      */

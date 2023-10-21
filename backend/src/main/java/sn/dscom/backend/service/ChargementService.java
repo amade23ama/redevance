@@ -402,7 +402,7 @@ public class ChargementService implements IChargementService {
                 .poidsSubst(poidsEstime)
                 .destination(destination)
                 //(Volume estimé + Volume classe)/2 = Ecart/2
-                .volumeMoyen(ChargementUtils.getVolumeMoyen(poidsEstime, vehiculeDTO.getCategorie().getVolume()))
+                .volumeMoyen(ChargementUtils.getVolumeMoyen(volumeEstime, vehiculeDTO.getCategorie().getVolume()))
                 //Poids Estimé / la densité du produit
                 .volumeSubst(volumeEstime)
                 .vehicule(vehiculeDTO)
@@ -652,6 +652,46 @@ public class ChargementService implements IChargementService {
             ChargementService.log.info(String.format("Le chargement d'id %s n'est pas trouvé en base ", id));
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
+    }
+
+    /**
+     * modifierChargement
+     *
+     * @param chargementDTO chargementDTO
+     * @return ChargementDTO
+     */
+    @Override
+    public ChargementDTO modifierChargement(ChargementDTO chargementDTO) {
+        ChargementService.log.info(String.format("modification du chargement : %s", chargementDTO.getId()));
+        Optional<ChargementEntity> chargementFind = this.chargementRepository.findById(chargementDTO.getId());
+
+        // si chargement trouvé, on la modifie
+        if(chargementFind.isPresent()){
+            ChargementEntity chargementtoSave = chargementFind.get();
+            chargementtoSave.setDateModification(new Date());
+            chargementtoSave.setDestination(chargementDTO.getDestination().trim());
+
+            // On recupère le produit dans le référentiel
+            ProduitEntity produitToSave = Try.of(() -> this.produitService.rechercherProduit(chargementDTO.getProduit()).get())
+                    .mapTry(this.produitConverteur::transform)
+                    .get();
+
+            //Recalcule des données de chargement
+            Double volumeEstime = ChargementUtils.getVolumeEstime(chargementtoSave.getPoidsSubsitance(), produitToSave.getDensiteKGM());
+            Double volumeVehicule = chargementtoSave.getVehiculeEntity().getCategorieEntity().getVolume();
+            Double ecart = ChargementUtils.getEcart(volumeEstime, volumeVehicule);
+
+            chargementtoSave.setProduitEntity(produitToSave);
+            chargementtoSave.setVolumeSubsitance(volumeEstime);
+            chargementtoSave.setVolumeMoyen(ChargementUtils.getVolumeMoyen(volumeEstime, volumeVehicule));
+            chargementtoSave.setEcart(ecart);
+
+            return Try.of(() -> this.chargementRepository.save(chargementtoSave))
+                    .mapTry(this.chargementConverter::reverse)
+                    .get();
+        }
+        ChargementService.log.info(String.format("Le chargement d'id %s n'est pas trouvé en base ", chargementDTO.getId()));
+        throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
     }
 
 }

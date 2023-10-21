@@ -97,4 +97,11 @@ public interface IChargementService {
      * @return ChargementDTO
      */
     ChargementDTO chargerChargementParId(Long id);
+
+    /**
+     * modifierChargement
+     * @param chargementDTO chargementDTO
+     * @return ChargementDTO
+     */
+    ChargementDTO modifierChargement(ChargementDTO chargementDTO);
 }

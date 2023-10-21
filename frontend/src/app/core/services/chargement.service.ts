@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { saveAs } from "file-saver";
-import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { BehaviorSubject, Observable, catchError, share, tap, throwError } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { Globals } from "../../app.constants";
 import { Chargement } from "../interfaces/chargement";
@@ -82,6 +82,19 @@ export class ChargementService{
           return throwError(() => err)
         })
       )
+  }
+
+  /**
+   * modifier Chargement: on ne peut modifier le Produit et la destination
+   * @param chargementAmodifier 
+   */
+  modifierChargement(chargementAmodifier: Chargement): Observable<Chargement>{
+    return this.http.put<Chargement>(this.url+`/modifier`, chargementAmodifier).pipe(
+      share(),
+        catchError((err) => {
+          this.notification.error(" Erreur lors de la modification de chargement")
+          return throwError(() => err)
+        }))
   }
 
   /**

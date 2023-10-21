@@ -121,6 +121,7 @@
     "label.tooltip.user.bouton.enregistrer":"Créer un nouvel utilisateur",
     "label.tooltip.user.bouton.annuler":"Annuler",
     "label.tooltip.user.bouton.modifier":"Modifier l'utilisateur",
+    "label.tooltip.exporter":"exporter le chargement",
     "label.info.mail": "Nous avons envoyé le login et mot de passe à l'adresse:",
     "footer.donnee.perso": "Données personelles",
     "footer.contact": "Contact",

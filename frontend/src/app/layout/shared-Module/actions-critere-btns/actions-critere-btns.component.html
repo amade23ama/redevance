@@ -1,4 +1,4 @@
-<div class="contenair-filter">
+<div class="contenair-filter" fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="space-between stretch"  class="container-action">
       <mat-form-field [fxFlex.lt-sm]="100" fxFlex="30"
                       class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
@@ -26,8 +26,11 @@
     </mat-form-field>
     <div *ngIf="visibleBtnExport">
     <button
-      mat-raised-button type="button" class="btn-export"
-    (click)="export(critereRecherches)">
+     mat-button class="btn-export"
+    (click)="export(critereRecherches)"
+     matTooltipPosition="left"
+     matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"
+     matTooltipClass="custom-tooltip">
       ExporterCSV
     </button>
      </div>

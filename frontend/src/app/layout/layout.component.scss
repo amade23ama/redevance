@@ -137,19 +137,14 @@ mat-toolbar a{
 .mat-sidenav-menu-but:hover{
 
 }
-/*
+
 ::ng-deep.mat-mdc-standard-chip{
-  background:#fae2df!important;
-  min-height: 22px!important;
+  min-height: 24px!important;
   height: 26px!important;
   padding-top: 0px!important;
 }
-*/
-
-
 ::ng-deep .mat-chip.mat-standard-chip{
   background: $rouge-5 !important;
-  //background:$rouge-4!important;
   min-height: 26px!important;
   color: $rouge-0!important;
   border: 1px solid $rouge-0;
@@ -159,10 +154,6 @@ mat-toolbar a{
 ::ng-deep.mat-chip.mat-mdc-standard-chip {
   --mdc-chip-elevated-container-color: $rouge-5;
   --mdc-chip-label-text-color: $rouge-0;
-  //--mdc-chip-disabled-label-text-color: $rouge-0;
-  //--mdc-chip-with-icon-icon-color: $rouge-0;
-  //--mdc-chip-with-icon-disabled-icon-color: $rouge-0;
-  //--mdc-chip-with-trailing-icon-disabled-trailing-icon-color: $rouge-0;
   --mdc-chip-with-trailing-icon-trailing-icon-color: $rouge-0;
   --mdc-chip-with-icon-selected-icon-color: $rouge-3;
   font-size: 11px!important;

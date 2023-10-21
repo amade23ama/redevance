@@ -1,6 +1,5 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-//@import "@angular/material/prebuilt-themes/indigo-pink.css";
 html, body { height: 100%; }
 body {
   margin: 0;
@@ -14,12 +13,13 @@ body {
 }
 
 .btn-global-pink {
+  color: white !important;
   margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
-  //background-color: $pink-main !important;
-  background-color:$pink-btn-main !important;
-  background-color:$orange-500!important;;
-  color: white !important;
+  background-color:$orange-500!important;
+  border-radius: 4px!important;;
+  border-color: $orange-500!important;
+
 }
 
 .btn-global-white {
@@ -63,11 +63,11 @@ mat-form-field mat-label {
 }
 
 .float-right {
- // float: right;
+  float: right;
 }
 
 .float-left {
-  //float: left;
+  float: left;
 }
 
 .bold {
@@ -80,7 +80,6 @@ mat-form-field mat-label {
   font-weight: bold;
   margin: 0 auto;
   text-align: center !important;
-  //min-width: 100px;
 }
 
 .table-header-left {
@@ -89,7 +88,6 @@ mat-form-field mat-label {
   font-weight: bold;
   margin: 0 auto;
   text-align: left !important;
-  //min-width: 100px;
 }
 
 .table-checkbox-class {
@@ -255,43 +253,10 @@ mat-form-field mat-label {
   }
 }
 
-
-// CHIPS
-
-.form--chip {
-  color: #243262;
-  border: 1px solid #243262;
-  border-radius: 16px;
-  padding: 6px 12px;
-  font-size: 14px;
-
-  &:hover {
-    cursor: pointer;
-    color: #9643b5;
-    border: 1px solid #ad68ca;
-    background-color: #efe1f5;
-  }
-}
-
-.form--chip--active {
-  color: #9643b5;
-  border: 1px solid #ad68ca;
-  background-color: #efe1f5;
-}
-
-.form--chip--disabled {
-  border-radius: 16px;
-  padding: 6px 25px;
-  font-size: 14px;
-  color: #d2d2d2;
-  border: 1px solid #d2d2d2;
-  background-color: #fff;
-}
 .mat-card-title{
   background-color: transparent;
   font-weight: bold;
   font-size: 0.95rem;
-  //font-family: "Arial Black";
   font-weight: 600;
 }
 .separ{
@@ -315,37 +280,30 @@ mat-form-field mat-label {
   background-color:$orange-500!important;
 }
 .header{
-  //top:0px;
-  //position: sticky;
- // background-color:$orange-300!important;
- // z-index: 1000;
   padding-bottom: 0.30em;
   padding-top: 0.30em;
   background: white;
-  //color: red;
 }
+
 .btn-global-white {
   margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
   background-color: white !important;
-  color: $pink-btn-main!important;
+  color: $orange-4!important;
 }
-.detail-chip-lien  {
 
-  &:hover {
-    cursor: pointer;
-    color: $orange-500!important;
-  }
-}
 .btn-container-action {
   display: flex;
   float: right;
   //margin: 0.2em 0.2em 0.5em 0;
 }
+
 .btn-global-pink {
   padding: 0.2em 0.2em 0.2em 0.4em !important;
   color: white !important;
 }
+
+
 .btn-global-white {
   padding: 0.2em 0.2em 0.2em 0.4em !important;
   background-color: white !important;
@@ -483,9 +441,40 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .pb-1 {
   padding-bottom: 0.25rem!important;
 }
-.btn-globale {
-  margin: 6px !important;
-  padding: 0px 20px 0px 20px !important;
-  background-color: white !important;
-  color: $pink-main !important;
+.btn-global-primary{
+  color: $white;
+  background-color: $rouge-1;
+  border: 2px solid  $rouge-1;
+  &:hover{
+    background-color: $rouge-0;
+    border: 2px solid  $rouge-0;
+  }
+}
+.btn-global-secondary{
+  color: $rouge-1;
+  background: $white;
+  border: 2px solid  $rouge-1;
+  &:hover{
+            background-color: $white;
+          border: 2px solid  $rouge-0;
+    }
+}
+.btn-global{
+    vertical-align: middle;
+    border-radius: 4px ;
+    display: inline-flex;
+    padding: 0px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    &:disabled{
+       border: none;
+       background: red;
+       color: red;
+       cursor: not-allowed;
+   }
+  .mat-icon{
+  }
+
+
 }

@@ -1,13 +1,12 @@
 <div classe="btns" fxLayout="row" fxLayoutAlign="end center" >
   <div *ngFor="let btn of btns">
     <div *ngIf="btn.display" class="btn-container-action" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
-      <button 
+      <button
               [matTooltip]="btn.tooltip === undefined ? '' : btn.tooltip"
-              mat-raised-button
+              mat-stroked-button
               (click)="onClick(btn.id)"
               [disabled]="btn.disabled"
-              [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']"
-              type="button">
+              [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']">
         <mat-icon *ngIf="btn.icon" fxShow="false" fxHide.gt-sm="false"
                   [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']">
           {{btn.icon}}

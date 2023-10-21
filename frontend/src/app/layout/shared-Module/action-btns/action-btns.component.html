@@ -1,4 +1,4 @@
-<div classe="btns" fxLayout="row" fxLayoutAlign="end center" >
+<div classe="btns" fxLayout="row" fxLayoutAlign="end center"  fxLayoutGap="8px">
   <div *ngFor="let btn of btns">
     <div *ngIf="btn.display" class="btn-container-action" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
       <button
@@ -15,6 +15,3 @@
     </div>
   </div>
 </div>
-<!--
-[ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink-': 'btn-global-white']"
--->

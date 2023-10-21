@@ -1,4 +1,4 @@
-<div class="mt-05" *ngIf="chargements$|async as char">
+<div class="mt-05" >
   <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
                             [numberResult]="2"
                             [singulier]="appConfig.getLabel('recherche.depot.singulier.label') "
@@ -16,7 +16,7 @@
                             [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
 
-  <div  fxShow="false" fxHide.gt-xs="false" class="table-container" *ngIf="chargements$|async as char">
+  <div   fxShow="false" fxHide.gt-xs="false" class="table-container" *ngIf="chargements$|async as char">
     <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort>
 
      <ng-container matColumnDef="datePesage">

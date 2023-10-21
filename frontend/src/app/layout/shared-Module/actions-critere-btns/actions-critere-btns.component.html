@@ -1,4 +1,4 @@
-<div class="contenair-filter" fxLayout="column">
+<div class="contenair-filter" fxLayout="column" fxLayoutGap="4px">
   <div fxLayout="row" fxLayoutAlign="space-between stretch"  class="container-action">
       <mat-form-field [fxFlex.lt-sm]="100" fxFlex="30"
                       class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
@@ -26,7 +26,7 @@
     </mat-form-field>
     <div *ngIf="visibleBtnExport">
     <button   mat-raised-button
-              class="btn-global-white"
+              class="btn-global-white export"
               (click)="export(critereRecherches)"
               matTooltipPosition="left"
               matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"

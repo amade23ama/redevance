@@ -14,18 +14,28 @@ body {
 
 .btn-global-pink {
   color: white !important;
-  margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
   background-color:$orange-500!important;
   border-radius: 4px!important;;
   border-color: $orange-500!important;
 
 }
+.btn-global-white {
+  padding: 0px 20px 0px 20px !important;
+  background-color: white !important;
+  color: $orange-500!important;
+  border: solid 1px $orange-500!important;
+  &:hover{
+    background-color: $white!important;
+    border: 2px solid  $orange-2!important;
+    color: $orange-2!important;
+  }
+}
 
 
 .btn-global-disabled {
-  margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
+  cursor: not-allowed;
 }
 
 .btn-clear-input {
@@ -279,18 +289,7 @@ mat-form-field mat-label {
   background: white;
 }
 
-.btn-global-white {
-  margin: 6px !important;
-  padding: 0px 20px 0px 20px !important;
-  background-color: white !important;
-  color: $orange-500!important;
-  border: solid 1px $orange-500!important;
-  &:hover{
-    background-color: $white!important;
-    border: 2px solid  $orange-2!important;
-    color: $orange-2!important;
-  }
-}
+
 
 .btn-container-action {
   display: flex;

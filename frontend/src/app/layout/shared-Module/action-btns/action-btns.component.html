@@ -3,12 +3,11 @@
     <div *ngIf="btn.display" class="btn-container-action" [ngClass]="btn.rightside ? 'float-right' : 'float-left'">
       <button
               [matTooltip]="btn.tooltip === undefined ? '' : btn.tooltip"
-              mat-stroked-button
+              mat-raised-button
               (click)="onClick(btn.id)"
               [disabled]="btn.disabled"
               [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']">
-        <mat-icon *ngIf="btn.icon" fxShow="false" fxHide.gt-sm="false"
-                  [ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink': 'btn-global-white']">
+        <mat-icon *ngIf="btn.icon" fxShow="false" fxHide.gt-sm="false">
           {{btn.icon}}
         </mat-icon>
         {{btn.label}}
@@ -16,3 +15,6 @@
     </div>
   </div>
 </div>
+<!--
+[ngClass]="[btn.disabled ? 'btn-global-disabled': btn.pink ? 'btn-global-pink-': 'btn-global-white']"
+-->

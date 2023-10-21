@@ -69,7 +69,7 @@ export class ProduitComponent implements OnInit{
   }
 
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
       this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.creer'), Actions.CREER, !this.isModeModification, true, true, true, 'save'));
       this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, this.isModeModification, true, true, true, 'create'));
     return this.btns;
@@ -127,7 +127,7 @@ export class ProduitComponent implements OnInit{
     })
 
   }
-  
+
     /** ouvrir Modale Annulation */
     majBtnState(a: Actions, disabled: boolean, display: boolean) {
       this.btns.forEach(b => {

@@ -67,7 +67,7 @@ export class VehiculeComponent implements OnInit {
               public vehiculeService:VehiculeService, private readonly activatedRoute: ActivatedRoute,
               public modalService: ModalService, public urlService: UrlService) {
   }
-  
+
   ngOnInit(): void {
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
@@ -104,7 +104,7 @@ export class VehiculeComponent implements OnInit {
   }
 
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.creer'), Actions.CREER, !this.isModeModification, true, true, true, 'save'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, this.isModeModification, true, true, true, 'create'));
     return this.btns;
@@ -129,7 +129,7 @@ export class VehiculeComponent implements OnInit {
       this.modalService.ouvrirModaleAnnulation(this.urlService.getPreviousUrl(), this.isModeModification ? 'modification de véhicule' : 'création de véhicule'); //Ouverture de la modale d'annulation
     }
   }
-  
+
 // Activation et désactivation des boutons en fonction des actions de l'utilisateur
 majBtnActive(){
   // Formulaire non valid

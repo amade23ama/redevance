@@ -25,14 +25,14 @@
       </mat-select>
     </mat-form-field>
     <div *ngIf="visibleBtnExport">
-    <button
-     mat-button class="btn-export"
-    (click)="export(critereRecherches)"
-     matTooltipPosition="left"
-     matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"
-     matTooltipClass="custom-tooltip">
-      ExporterCSV
-    </button>
+    <button   mat-raised-button
+              class="btn-global-white"
+              (click)="export(critereRecherches)"
+              matTooltipPosition="left"
+              matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"
+              matTooltipClass="custom-tooltip">
+        ExporterCSV
+      </button>
      </div>
     <div fxShow="false" fxHide.gt-xs="false" *ngIf="visibleBtnCreation">
       <button *appAutorisation="['ADMIN','EDIT']" mat-mini-fab

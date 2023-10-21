@@ -22,12 +22,6 @@ body {
 
 }
 
-.btn-global-white {
-  margin: 6px !important;
-  padding: 0px 20px 0px 20px !important;
-  background-color: white !important;
-  color: $pink-main !important;
-}
 
 .btn-global-disabled {
   margin: 6px !important;
@@ -289,26 +283,21 @@ mat-form-field mat-label {
   margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
   background-color: white !important;
-  color: $orange-4!important;
+  color: $orange-500!important;
+  border: solid 1px $orange-500!important;
+  &:hover{
+    background-color: $white!important;
+    border: 2px solid  $orange-2!important;
+    color: $orange-2!important;
+  }
 }
 
 .btn-container-action {
   display: flex;
   float: right;
-  //margin: 0.2em 0.2em 0.5em 0;
-}
-
-.btn-global-pink {
-  padding: 0.2em 0.2em 0.2em 0.4em !important;
-  color: white !important;
 }
 
 
-.btn-global-white {
-  padding: 0.2em 0.2em 0.2em 0.4em !important;
-  background-color: white !important;
-  color: $orange-500!important;
-}
 html, body { height: 100%;
   background: #ffffff !important;
 }

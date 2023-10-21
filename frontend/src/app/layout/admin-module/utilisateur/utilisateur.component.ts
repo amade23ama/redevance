@@ -86,7 +86,7 @@ export class UtilisateurComponent implements OnInit{
   }
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
-      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left', this.appConfig.getLabel('label.tooltip.user.bouton.annuler')));
+      Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left', this.appConfig.getLabel('label.tooltip.user.bouton.annuler')));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save', this.appConfig.getLabel('label.tooltip.user.bouton.enregistrer')));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'),

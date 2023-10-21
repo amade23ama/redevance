@@ -35,17 +35,6 @@
   position: relative;
   height: 0px;
 }
-.btn-export{
-  color: $orange-500!important;
-  background: $white!important;
-  border: 2px solid  $orange-500!important;
-  border-radius: 4px!important;
-  &:hover{
-    background-color: $white!important;
-    border: 2px solid  $orange-2!important;
-    color: $orange-2!important;
-  }
-}
 .container-action{
   padding-bottom: 0.01em!important;
 }

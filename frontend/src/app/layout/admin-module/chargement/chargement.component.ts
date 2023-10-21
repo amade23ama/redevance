@@ -60,12 +60,12 @@ export class ChargementComponent implements OnInit {
     nom: this.nomTransporteur,
     telephone: this.telTransporteur,
   })
-  
+
   /** vehicule form */
   categorie: FormGroup = this.fb.group({
     type: this.classe,
   })
-  
+
   /** vehicule form */
   produit: FormGroup = this.fb.group({
     nomSRC: this.nomProduit,
@@ -120,7 +120,7 @@ export class ChargementComponent implements OnInit {
           this.chargementform.patchValue(this.chargementCourant);
           this.majBtnActive();
         })
-      } 
+      }
     });
     //maj bouton
     this.majBtnActive()
@@ -131,7 +131,7 @@ export class ChargementComponent implements OnInit {
 
   /** initListbtns */
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, true, true, true, true, 'create'));
     return this.btns;
   }
@@ -150,7 +150,7 @@ export class ChargementComponent implements OnInit {
 
   /**
    * reset
-   * @param formToReset 
+   * @param formToReset
    */
   reset(formToReset:any){
     this.chargementform.controls[formToReset]?.setValue('');
@@ -162,7 +162,7 @@ export class ChargementComponent implements OnInit {
     this.chargementform?.valueChanges.subscribe((res)=>{
       if(this.chargementform.invalid){
             this.majBtnState(Actions.MODIFIER, true, true);
-          
+
       }
 
       // Formulaire valid
@@ -172,7 +172,7 @@ export class ChargementComponent implements OnInit {
     })
 
   }
-  
+
     /** ouvrir Modale Annulation */
     majBtnState(a: Actions, disabled: boolean, display: boolean) {
       this.btns.forEach(b => {

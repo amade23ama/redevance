@@ -5,14 +5,14 @@
     [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
     [tooltip]="appConfig.getLabel('label.tooltip.voiture')"
     [search]="search"
-     [visibleBtnCreation]="true"
+     [visibleBtnCreation]="false"
     (btnAjouter)="ouvreNouveauVehicule()"
      (btnAjouterFiltre)="ajouterFiltre($event)"
      (btnAnnulerFiltre)="annulerFiltre($event)"
      [critereRecherches]="critereRecherches$"
      [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
-    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+    <div fxShow="false" fxHide.gt-xs="false" class="table-container mt-1" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
         <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
           <ng-container matColumnDef="NomRS">
@@ -52,7 +52,7 @@
                 </td>
             </ng-container>
 
-            <!-- COLONNE : EMAIL-->
+            <!-- COLONNE : EMAIL
             <ng-container matColumnDef="Email">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Email</div>
@@ -60,7 +60,7 @@
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element?.transporteur.email}}</div>
                 </td>
-            </ng-container>
+            </ng-container>-->
 
             <!-- COLONNE : Immatriculation -->
             <ng-container matColumnDef="Immatriculation">
@@ -104,7 +104,7 @@
               <div class="d-flex">actions</div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+              <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="2px">
                 <mat-icon class="blue-label-icon" (click)="chargerVoiture(element)">create</mat-icon>
               </div>
             </td>
@@ -125,7 +125,7 @@
 
 
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="vehicules$|async as vehicules">
-    <div>
+    <!--<div>
       <button mat-fab
               matTooltipPosition="left"
               matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
@@ -135,7 +135,7 @@
 
         <mat-icon>add</mat-icon>
       </button>
-    </div>
+    </div>-->
     <div *ngFor="let voiture of vehicules" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
       <div fxLayout="row" fxLayoutAlign="start none"  >
         <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">

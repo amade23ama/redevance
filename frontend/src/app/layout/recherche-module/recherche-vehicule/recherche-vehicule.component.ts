@@ -5,14 +5,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from "@angular/router";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
 import { Vehicule } from 'src/app/core/interfaces/vehicule';
 import { VehiculeService } from 'src/app/core/services/vehicule.service';
 import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
 import { AppConfigService } from "../../../core/services/app-config.service";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {debounceTime, distinctUntilChanged, switchMap} from "rxjs";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -33,7 +33,7 @@ export class RechercheVehiculeComponent implements OnInit{
   pageSize = 5; // nb ligne par page par défaut
 
   // les noms des colones
-  displayedColumns: string[] = ['NomRS', 'Téléphone', 'Email', 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
+  displayedColumns: string[] = ['NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesVehicule$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesVehicule$

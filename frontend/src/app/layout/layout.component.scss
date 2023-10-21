@@ -59,28 +59,12 @@
 }
 .mat-sidenav-container{
   flex-grow: 1;
- // background: white;
   min-height: 30vh !important;
 }
 mat-toolbar a{
-  /**font-size: 14px !important;
-  font-style: normal !important;
-  justify-content: left !important;
-  font-family: Calibri;
-  color: black;
-  background: white;
-  */
-
-
 }
 .mat-toolbar{
   padding-left: 2.6em!important;;
-  //background-color: $orange-500!important;
-/*
-  color: $orange-2 !important;
-  padding-left:2.8em!important;;
-  background-color:#FFFFFF !important;
-  */
   background: white!important;
 
 
@@ -103,7 +87,6 @@ mat-toolbar a{
 @media screen and (max-width: 600px) {
 
   .mat-sidenav-container{
-    //background: white;
     padding-top: 0em;
     margin-top: 0em;;
     padding-left:0em;
@@ -117,7 +100,6 @@ mat-toolbar a{
 
   }
 }
-/* Appliquer une mise en page de type grille pour les écrans de taille moyenne */
 @media screen and (min-width: 600px) and (max-width: 959px) {
   .mat-sidenav-container{
     padding-top: 0em;
@@ -136,19 +118,9 @@ mat-toolbar a{
 }
 .bandeau--small {
   height:3px;
- // background-color: $jaune-0!important;;
-  background: linear-gradient(90deg, $jaune-0,#ffffff );
+  background: linear-gradient(90deg, $jaune-0, $rouge-3);
 }
-/*
-.menu-toolbar{
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  //border-bottom: Solid 2px $orange-1;
-  //border-top: Solid 2px $orange-2;
-  background: black;
-}
-*/
+
 ::ng-deep.mat-sidenav{
   background-color:$orange-300!important;
 }
@@ -163,45 +135,40 @@ mat-toolbar a{
   color:$rouge-0!important;
 }
 .mat-sidenav-menu-but:hover{
-  /*background-color:$white;
-  border: none;
-  color: black!important;;
-  border-radius: 0px!important;
-  */
 
 }
+/*
 ::ng-deep.mat-mdc-standard-chip{
-  background:#fbf0e9!important;
+  background:#fae2df!important;
   min-height: 22px!important;
   height: 26px!important;
   padding-top: 0px!important;
 }
-::ng-deep .mat-chip.mat-standard-chip{
-  background:#fbf0e9!important;
-  min-height: 26px!important;
+*/
 
+
+::ng-deep .mat-chip.mat-standard-chip{
+  background: $rouge-5 !important;
+  //background:$rouge-4!important;
+  min-height: 26px!important;
+  color: $rouge-0!important;
+  border: 1px solid $rouge-0;
 }
+
+
 ::ng-deep.mat-chip.mat-mdc-standard-chip {
-  --mdc-chip-elevated-container-color: #fbf0e9;
-  --mdc-chip-label-text-color: #f36704;
-  --mdc-chip-disabled-label-text-color: #fff;
-  --mdc-chip-with-icon-icon-color: #e3844d;
-  --mdc-chip-with-icon-disabled-icon-color: #e3844d;;
-  --mdc-chip-with-trailing-icon-disabled-trailing-icon-color: #e3844d;
-  --mdc-chip-with-trailing-icon-trailing-icon-color: #e15005;
-  --mdc-chip-with-icon-selected-icon-color: #e3844d;;
+  --mdc-chip-elevated-container-color: $rouge-5;
+  --mdc-chip-label-text-color: $rouge-0;
+  //--mdc-chip-disabled-label-text-color: $rouge-0;
+  //--mdc-chip-with-icon-icon-color: $rouge-0;
+  //--mdc-chip-with-icon-disabled-icon-color: $rouge-0;
+  //--mdc-chip-with-trailing-icon-disabled-trailing-icon-color: $rouge-0;
+  --mdc-chip-with-trailing-icon-trailing-icon-color: $rouge-0;
+  --mdc-chip-with-icon-selected-icon-color: $rouge-3;
   font-size: 11px!important;
   padding: 0px!important;
 }
 .router-link-active {
-  //background-color: white!important;
-  /*color: $rouge-0!important;
-  font-family: Calibri !important;;
-  font-style: normal !important;;
-  font-weight: 700 !important;;
-  border-bottom: Solid 2px $rouge-1;
-  */
-  //font-weight: bold !important;
   border-bottom: Solid 3px $orange-2;
   border-bottom-left-radius: 3px!important;
   border-bottom-right-radius: 3px!important;

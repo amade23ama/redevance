@@ -1,11 +1,11 @@
-import {Component, Inject, OnInit} from "@angular/core";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {DepotService} from "../../../core/services/depot.service";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {FileInfo} from "../../../core/interfaces/file.info";
+import { Component, Inject, OnInit } from "@angular/core";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { Router } from "@angular/router";
+import { Actions } from "../../../core/enum/actions";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { DepotService } from "../../../core/services/depot.service";
 
 @Component({
   selector: 'app-depot-validation-column-popup',
@@ -19,6 +19,7 @@ export class DepotValidationColumnPopupComponent implements OnInit{
   dbColonnes: string[] = [];
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public appConfig: AppConfigService,
+              private router: Router,
               public dialogRef: MatDialogRef<DepotValidationColumnPopupComponent>,
               public depotService: DepotService,
               private builder: FormBuilder,) {
@@ -47,6 +48,8 @@ export class DepotValidationColumnPopupComponent implements OnInit{
       this.data.file.append('mapEntete',JSON.stringify(Object.fromEntries(this.formGroupToMap())));
       this.depotService.deposerFichier(this.data.file).subscribe(()=>{})
       this.dialogRef.close();
+      //On affiche le tableau des importations lorsque le chargement est envoyé en base de données.
+      this.router.navigate(['recherche/depots']);
     }
   }
   initierdbColonnes(){

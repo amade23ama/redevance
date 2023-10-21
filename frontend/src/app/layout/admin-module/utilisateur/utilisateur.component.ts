@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { ModalService } from 'src/app/core/services/modal.service';
+import { UrlService } from 'src/app/core/services/url.service';
 import { Actions } from "../../../core/enum/actions";
 import { DroitEnum } from "../../../core/enum/droit-enum";
 import { ActionBtn } from "../../../core/interfaces/actionBtn";
@@ -36,9 +37,13 @@ export class UtilisateurComponent implements OnInit{
   myform :FormGroup
   isUpdate:boolean
   displayEmail=false;
+
+  // indique si on est en modification
+  isModeModification = false;
+
   constructor(public utilisateurService:UtilisateurService,private readonly activatedRoute: ActivatedRoute,
               public builder:FormBuilder,public appConfig: AppConfigService, public modalService: ModalService,
-              private readonly authService: AuthService) {
+              private readonly authService: AuthService, private urlService: UrlService) {
     this.myform= this.builder.group({
       id:this.id,
       prenom:this.prenom,
@@ -55,6 +60,7 @@ export class UtilisateurComponent implements OnInit{
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
         this.titre="Modification d'utilisateur"
+        this.isModeModification = true;
         this.utilisateurService.getUtilisateurParId(params['contextInfo']).subscribe(()=>{
           this.utilisateurCourant=this.utilisateurService.getUtilisateurCourant();
           this.myform.patchValue(this.utilisateurCourant)
@@ -65,6 +71,7 @@ export class UtilisateurComponent implements OnInit{
         })
       } else {
         this.titre="Création d'un utilisateur."
+        this.isModeModification = false;
         this.initListbtns();
         this.isUpdate=false
         this.majBtnActive()
@@ -121,6 +128,12 @@ export class UtilisateurComponent implements OnInit{
       const b= this.myform.value;
       this.utilisateurService.enregistrer(this.myform.value).subscribe()
     }
+
+    //Le click sur le bouton Annuler
+    if (event === Actions.ANNULER) {
+      this.modalService.ouvrirModaleAnnulation(this.urlService.getPreviousUrl(), this.isModeModification ? "modification de l'utilisateur" : "création de l'utilisateur"); //Ouverture de la modale d'annulation
+    }
+
   }
   checkEmail(control:AbstractControl){
     return this.utilisateurService.emailCheck(control,this.utilisateurCourant?.id)

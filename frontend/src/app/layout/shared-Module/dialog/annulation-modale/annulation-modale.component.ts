@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { AppConfigService } from '../../services/app-config.service';
+import { AppConfigService } from '../../../../core/services/app-config.service';
 
 // Données propres à la modale
 export interface Donnees {
@@ -18,7 +18,7 @@ export interface Donnees {
   standalone: true,
   imports: [MatButtonModule, MatDialogModule],
 })
- 
+
 /**
  * AnnulationModaleComponent
  */

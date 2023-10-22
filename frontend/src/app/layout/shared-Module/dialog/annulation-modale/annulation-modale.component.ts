@@ -3,6 +3,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { AppConfigService } from '../../../../core/services/app-config.service';
+import {UpperCasePipe} from "@angular/common";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
+import {FlexModule} from "@angular/flex-layout";
 
 // Données propres à la modale
 export interface Donnees {
@@ -16,7 +20,7 @@ export interface Donnees {
   templateUrl: './annulation-modale.component.html',
   styleUrls: ['./annulation-modale.component.scss'],
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule],
+  imports: [MatButtonModule, MatDialogModule, UpperCasePipe, MatFormFieldModule, MatIconModule, FlexModule],
 })
 
 /**

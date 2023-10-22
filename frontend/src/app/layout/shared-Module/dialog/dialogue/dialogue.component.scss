@@ -1,0 +1,53 @@
+@charset "UTF-8";
+@import "src/assets/css/DSCOM-variables.scss";
+
+.titre-dialogue{
+
+}
+.buttons{
+  padding: 0.5em !important;
+  border-top: solid 1px $orange-500!important;
+}
+
+.btn-global-valider {
+  color: white !important;
+  padding: 0px 20px 0px 20px !important;
+  background-color:$orange-500!important;
+  border-radius: 4px!important;;
+  border-color: $orange-500!important;
+  cursor:pointer;
+}
+.btn-global-annuler {
+  cursor:pointer;
+  padding: 0px 20px 0px 20px !important;
+  background-color: white !important;
+  color: $orange-500!important;
+  border: solid 1px $orange-500!important;
+  &:hover{
+    background-color: $white!important;
+    border: 2px solid  $orange-2!important;
+    color: $orange-2!important;
+  }
+}
+
+.mat-mdc-dialog-actions {
+  justify-content: end;
+  cursor: pointer;
+}
+.body-alert{
+  font-size: 14px!important;
+  font-family: normal;
+  font-style: normal !important;
+  line-height: 24px!important;
+  color: $black;
+}
+
+.titre-alert{
+  font-size: 16px!important;
+  font-family: normal;
+  font-style: normal !important;
+  line-height: 24px!important;
+  font-weight: bold;
+  color: $orange-2;
+  border-bottom: solid 2px $orange-500!important;
+}

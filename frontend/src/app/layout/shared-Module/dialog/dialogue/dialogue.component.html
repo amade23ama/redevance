@@ -1,8 +1,20 @@
 <div>
-    <h3 class="dcsom-modal-title dcsom-text-info dcsom-modal-text" mat-dialog-title>{{this.data?.title}}</h3>
-    <div class="mt-1 dcsom-text-black" mat-dialog-content >{{this.data?.question}}</div>
-    <div class="mt-2" mat-dialog-actions>
-        <button mat-button mat-raised-button mat-dialog-close (click)="onNoClick()">Nonwwwwwwwww</button>
-        <button mat-button mat-raised-button [mat-dialog-close]="true" cdkFocusInitial>Ouiouiiiiiiiii</button>
-    </div>
+  <div mat-dialog-title class="titre-alert">
+    {{this.data?.title}}
+  </div>
+  <mat-dialog-content class="mt-1">
+    <p class="body-alert">
+      {{this.data?.question}}
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions class="mt-2" class="buttons" fxLayout="row" fxLayoutAlign="end center"  fxLayoutGap="8px">
+    <button mat-raised-button [mat-dialog-close]="false" class="btn-global-annuler" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+      {{appConfig.getLabel('global.non') | uppercase}}
+    </button>
+    <button mat-raised-button [mat-dialog-close]="true" class="btn-global-valider">
+      <mat-icon>check</mat-icon>
+      {{appConfig.getLabel('global.oui') | uppercase}}
+    </button>
+  </mat-dialog-actions>
 </div>

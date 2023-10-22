@@ -1,9 +1,10 @@
-import { NgIf } from '@angular/common';
+import {NgIf, UpperCasePipe} from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { AppConfigService } from 'src/app/core/services/app-config.service';
+import {FlexModule} from "@angular/flex-layout";
 
 export interface DialogData {
   title: string;
@@ -15,7 +16,7 @@ export interface DialogData {
   templateUrl: './dialogue.component.html',
   styleUrls: ['./dialogue.component.scss'],
   standalone: true,
-  imports: [MatButtonModule, MatDialogModule, NgIf, MatIconModule],
+  imports: [MatButtonModule, MatDialogModule, NgIf, MatIconModule, FlexModule, UpperCasePipe],
 })
 export class DialogueComponent {
 

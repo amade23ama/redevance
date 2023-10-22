@@ -1,18 +1,21 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {Router} from "@angular/router";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {Categorie} from "../../../core/interfaces/categorie";
-import {CategorieService} from "../../../core/services/categorie.service";
-import {FormControl} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {DatePipe} from "@angular/common";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
-import {debounceTime, distinctUntilChanged, Observable, switchMap} from "rxjs";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
+import { ModalService } from "src/app/core/services/modal.service";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { Categorie } from "../../../core/interfaces/categorie";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import { CategorieService } from "../../../core/services/categorie.service";
+import { SuppressionComponent } from "../../shared-Module/dialog/suppression/suppression.component";
 
 
 @Component({
@@ -38,6 +41,7 @@ export class RechercheCategorieComponent implements  OnInit{
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesCategorie$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesCategorie$
   constructor(public appConfig: AppConfigService, public categorieService: CategorieService,
+              private dialog: MatDialog, private modalService: ModalService,
               private router:Router,private autocompleteRechercheService:AutocompleteRechercheService) {
   }
   ngOnInit(): void {
@@ -91,5 +95,29 @@ export class RechercheCategorieComponent implements  OnInit{
 
     })
   }
+
+  /**
+   * supprimerCategorie
+   * @param site 
+   */
+  supprimerCategorie(categorie: Categorie){
+
+    const dialogRef = this.dialog.open(SuppressionComponent, {
+      width: '600px',
+      position: {top:'200px'},
+      data: {name: "la classe ".concat(categorie.type.toString()), id: categorie.id},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result >= 0) {
+        this.categorieService.supprimerCategories(categorie.id).subscribe((idDelete) => {
+          if (idDelete) {
+            this.rechargementCategorie();
+            this.modalService.ouvrirModalConfirmation("La classe a été supprimé")
+          }
+        });
+      }
+  });
+}
 
 }

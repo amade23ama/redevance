@@ -104,7 +104,7 @@ export class DepotCreationComponent implements  OnInit{
       formData.append('nom', JSON.stringify(this.myform.value.nom));
       formData.append('file', file);
       this.depotService.creerDepot(formData).subscribe((res)=>{
-        this.depotService.ouvreValidationColumnPopUpDepot("valider la correspondant");
+        this.depotService.ouvreValidationColumnPopUpDepot(this.appConfig.getLabel('depot.valide.correspondant'));
       })
     }
 

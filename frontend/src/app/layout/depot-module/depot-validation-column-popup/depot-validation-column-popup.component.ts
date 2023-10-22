@@ -34,7 +34,7 @@ export class DepotValidationColumnPopupComponent implements OnInit{
   }
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
-      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+      Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('depot.actions.valider'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'done_outline'));
     return this.btns;

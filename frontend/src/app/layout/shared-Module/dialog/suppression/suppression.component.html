@@ -1,8 +1,20 @@
 <div>
-    <h3 class="dcsom-modal-title dcsom-text-info dcsom-modal-text" mat-dialog-title>{{appConfig.getLabel('modal.suppression.title')}}</h3>
-    <div class="mt-1 dcsom-text-black" mat-dialog-content >{{appConfig.getLabel('modal.suppression.body', this.data?.name)}}</div>
-    <div class="mt-2" mat-dialog-actions>
-        <button mat-button mat-raised-button mat-dialog-close (click)="onNoClick()">Non</button>
-        <button mat-button mat-raised-button [mat-dialog-close]="data.id" cdkFocusInitial>Oui</button>
-    </div>
+  <div mat-dialog-title class="titre-alert">
+    {{appConfig.getLabel('modal.suppression.title')}}
+  </div>
+  <mat-dialog-content class="mt-1">
+    <p class="body-alert">
+      {{appConfig.getLabel('modal.suppression.body', this.data?.name)}}
+    </p>
+  </mat-dialog-content>
+  <mat-dialog-actions class="mt-2" class="buttons" fxLayout="row" fxLayoutAlign="end center"  fxLayoutGap="8px">
+    <button mat-raised-button [mat-dialog-close]="true" class="btn-global-annuler" (click)="onNoClick()">
+      <mat-icon>close</mat-icon>
+      {{appConfig.getLabel('global.non') | uppercase}}
+    </button>
+    <button mat-raised-button [mat-dialog-close]="data.id" class="btn-global-valider">
+      <mat-icon>check</mat-icon>
+      {{appConfig.getLabel('global.oui') | uppercase}}
+    </button>
+  </mat-dialog-actions>
 </div>

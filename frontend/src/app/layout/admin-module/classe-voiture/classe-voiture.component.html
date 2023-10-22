@@ -24,6 +24,9 @@
           <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
           </mat-error>
+          <mat-error *ngIf="volume.errors?.hasOwnProperty('isNotPositive')">
+            {{appConfig.getLabel('error.champ.nombre.positive')}}
+          </mat-error>
         </mat-form-field>
     </div>
   </fieldset>

@@ -98,6 +98,7 @@
 
     "error.email.exist":"Email déjà existant !",
     "error.champ.obligatoire": "Le champ est obligatoire",
+    "error.champ.nombre.positive": "Renseigner un nombre positif",
     "error.email.invalid": "Email invalide !",
     "error.caractere.invalid": "Caractères non autorisés",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",

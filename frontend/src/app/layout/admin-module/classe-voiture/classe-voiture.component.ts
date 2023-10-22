@@ -1,13 +1,13 @@
-import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Categorie} from "../../../core/interfaces/categorie";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {ActivatedRoute} from "@angular/router";
-import {ModalService} from "../../../core/services/modal.service";
-import {UrlService} from "../../../core/services/url.service";
-import {CategorieService} from "../../../core/services/categorie.service";
+import { Component, OnInit } from "@angular/core";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { Actions } from "../../../core/enum/actions";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { Categorie } from "../../../core/interfaces/categorie";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { CategorieService } from "../../../core/services/categorie.service";
+import { ModalService } from "../../../core/services/modal.service";
+import { UrlService } from "../../../core/services/url.service";
 
 @Component({
   selector: 'app-classe-voiture',
@@ -19,7 +19,7 @@ export class ClasseVoitureComponent implements OnInit{
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl();
   nom: FormControl = new FormControl('',[Validators.required]);
-  volume: FormControl = new FormControl();
+  volume: FormControl = new FormControl('',[Validators.required, this.isPositiveNumber.bind(this)]);
   categorieId: FormControl = new FormControl();
   type: FormControl = new FormControl('',[Validators.required]);
   myform:FormGroup = this.builder.group({
@@ -124,5 +124,14 @@ export class ClasseVoitureComponent implements OnInit{
         b.display = display;
       }
     });
+  }
+
+  /**
+   * isPositiveNumber
+   * @param control isPositiveNumber
+   * @returns isNotPositive
+   */
+  isPositiveNumber(control: AbstractControl){
+    return this.volume?.value >= 0 ? null: { isNotPositive: true }
   }
 }

@@ -1,7 +1,7 @@
+import { BuilderDtoJsonAbstract, NoParamConstructor } from "./BuilderDtoJsonAbstract";
+import { Categorie } from "./categorie";
+import { Profil } from "./profil";
 import { Transporteur } from "./transporteur";
-import {Categorie} from "./categorie";
-import {BuilderDtoJsonAbstract, NoParamConstructor} from "./BuilderDtoJsonAbstract";
-import {Profil} from "./profil";
 
 export class Vehicule extends BuilderDtoJsonAbstract{
   id:number;
@@ -10,6 +10,7 @@ export class Vehicule extends BuilderDtoJsonAbstract{
   categorie:Categorie
   dateCreation:Date ;
   dateModification:Date ;
+  poidsVide: number;
 
   static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
     const vehicule: any = BuilderDtoJsonAbstract.fromJson(json, Vehicule);

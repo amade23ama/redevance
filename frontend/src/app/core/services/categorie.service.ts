@@ -1,13 +1,11 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {NotificationService} from "./notification.service";
-import {environment} from "../../../environments/environment";
-import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
-import {Vehicule} from "../interfaces/vehicule";
-import {Categorie} from "../interfaces/categorie";
-import {Produit} from "../interfaces/produit";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Globals} from "../../app.constants";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { Globals } from "../../app.constants";
+import { Categorie } from "../interfaces/categorie";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +17,17 @@ export class CategorieService{
   private _categorie$: BehaviorSubject<Categorie> = new BehaviorSubject<Categorie>(null);
   constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
-  enregistrerCategorie(produit: Produit): Observable<Categorie> {
+  enregistrerCategorie(categorie: Categorie): Observable<Categorie> {
     this.globals.loading = true;
-    return this.httpClient.post<Categorie>(this.url + '/enregistrer', produit).pipe(
+    return this.httpClient.post<Categorie>(this.url + '/enregistrer', categorie).pipe(
       tap((res)=>{
-          this.notification.success(" enregistrer success ")
+          this.notification.success(" La classe a été enregistrée avec succès ")
           this.setCategorie(Categorie.fromJson(res,Categorie))
           this.globals.loading = false;
         },
         catchError((err) => {
           this.globals.loading = false;
-          this.notification.error(" erreur d'enregistrer produit ")
+          this.notification.error(" Erreur lors l'enregistrement de la classe ")
           return throwError(() => err)
         })
       )

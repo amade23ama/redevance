@@ -14,8 +14,10 @@ import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
 import sn.dscom.backend.database.entite.VehiculeEntity;
+import sn.dscom.backend.database.repository.TransporteurRepository;
 import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.converter.VehiculeConverter;
+import sn.dscom.backend.service.interfaces.ITransporteurService;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 import sn.dscom.backend.service.util.VehiculeSpecifications;
 
@@ -30,20 +32,24 @@ import java.util.stream.Collectors;
 public class VehiculeService implements IVoitureService{
 
     /** Repo vehiculeRepository */
-    private VehiculeRepository vehiculeRepository;
+    private final VehiculeRepository vehiculeRepository;
 
     /**
      * vehicule Converter
      */
-    private Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+    private final Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+
+    /** transporteur Repository */
+    private ITransporteurService transporteurService;
 
     /**
      * VehiculeService
      * @param vehiculeRepository vehiculeRepository
      */
     @Builder
-    public VehiculeService(VehiculeRepository vehiculeRepository) {
+    public VehiculeService(VehiculeRepository vehiculeRepository, ITransporteurService transporteurService) {
         this.vehiculeRepository = vehiculeRepository;
+        this.transporteurService = transporteurService;
     }
 
     /**
@@ -90,18 +96,28 @@ public class VehiculeService implements IVoitureService{
      * @param vehiculeDTO le véhicule à modifier
      * @return le véhicule modifié
      */
-    //TODO: completer un retour (nouvelle recherche avec l'id et retourner le resulta)
     @Override
     public Optional<VehiculeDTO> modifierVehicule(VehiculeDTO vehiculeDTO) {
 
-        try {
-            // Date du jour pour la date de modification;
-            this.vehiculeRepository.miseAjourImmatParId(vehiculeDTO.getImmatriculation(), vehiculeDTO.getId(), new Date());
+        // On récupère le véhicule à modifier
+        Optional<VehiculeEntity> vehiculeFind = this.vehiculeRepository.findById(vehiculeDTO.getId());
 
-        }catch (Exception e){
-            log.error("exception sur la modification de l'entité avec id: {} ",vehiculeDTO.getId(), e);
+        // s'il existe, on l'a modifie
+        if (vehiculeFind.isPresent()){
+
+
+//            VehiculeDTO vehicule = this.vehiculeConverter.reverse(Try.of(() -> this.vehiculeConverter.transform(vehiculeDTO))
+//                    .mapTry(this.vehiculeRepository::save).get());
+
+            Try.of(vehiculeDTO::getTransporteur)
+                    .mapTry(this.transporteurService::enregistrerTransporteur)
+                    .get();
+
+            return Optional.of(this.vehiculeConverter.reverse(Try.of(() -> this.vehiculeConverter.transform(vehiculeDTO))
+                    .mapTry(this.vehiculeRepository::save).get()));
         }
-        return Optional.of(VehiculeDTO.builder().build());
+
+        throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
     }
 
     /**

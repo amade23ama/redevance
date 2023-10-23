@@ -1,14 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, catchError, Observable, share, tap, throwError} from 'rxjs';
+import { BehaviorSubject, catchError, Observable, share, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Globals } from "../../app.constants";
+import { CritereRecherche } from "../interfaces/critere.recherche";
 import { Vehicule } from '../interfaces/vehicule';
-import {Exploitation} from "../interfaces/exploitation";
-import {NotificationService} from "./notification.service";
-import {Produit} from "../interfaces/produit";
-import {Site} from "../interfaces/site";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Globals} from "../../app.constants";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -36,11 +33,10 @@ export class VehiculeService {
     return this.httpClient.post<Vehicule>(this.url + '/enregistrer', vehicule)
       .pipe(
         tap((res:Vehicule)=> {
-          console.log("l'exploitation est enregistré ", res);
-          this.notification.success("le site d'exploitation est enregistré avec sucess")
+          this.notification.success("Le véhicule est enregistré avec sucess")
         }),
         catchError((err) => {
-          this.notification.error("erreur enregistrement du  site d'exploitation")
+          this.notification.error("erreur enregistrement du véhicule")
           return throwError(() => err) // RXJS 7+
         })
       );
@@ -68,7 +64,16 @@ export class VehiculeService {
    * @returns véhicule modifier
    */
   modifierVehicule(vehicule: Vehicule): Observable<Vehicule> {
-    return this.httpClient.post<Vehicule>(this.url + '/modifier', vehicule).pipe(share());
+    return this.httpClient.put<Vehicule>(this.url + '/modifier', vehicule)
+      .pipe(
+        tap((res:Vehicule)=> {
+          this.notification.success("Le véhicule a été modifié avec succés")
+        }),
+        catchError((err) => {
+          this.notification.error("Erreur lors de la modification du véhicule")
+          return throwError(() => err) // RXJS 7+
+        })
+      );
   }
 
   /**

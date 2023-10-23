@@ -67,8 +67,15 @@ export class ClasseVoitureComponent implements OnInit{
   }
   categorieAction(event: Actions){
     //Le click sur le bouton Enregistrer
-    if (event === Actions.CREER || event === Actions.MODIFIER) {
+    if (event === Actions.CREER) {
       this.categorieService.enregistrerCategorie(this.myform.value).subscribe()
+    }
+
+    if (event === Actions.MODIFIER) {
+      let classAmodifie = this.categorieCourant;
+      classAmodifie.type = this.getType?.value;
+      classAmodifie.volume = this.getVolume?.value;
+      this.categorieService.enregistrerCategorie(classAmodifie).subscribe()
     }
 
     //Le click sur le bouton Annuler
@@ -134,4 +141,8 @@ export class ClasseVoitureComponent implements OnInit{
   isPositiveNumber(control: AbstractControl){
     return this.volume?.value >= 0 ? null: { isNotPositive: true }
   }
+
+    // get data
+    get getType(): AbstractControl { return this.myform?.get("type");}
+    get getVolume(): AbstractControl { return this.myform?.get("volume");}
 }

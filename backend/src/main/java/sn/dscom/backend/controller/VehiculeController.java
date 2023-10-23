@@ -47,7 +47,7 @@ public class VehiculeController {
      * @param vehiculeDTO vehiculeDTO
      * @return le véhicule modifié
      */
-    @PostMapping(path = "/modifier", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/modifier", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<VehiculeDTO> modifierVehicule(@RequestBody VehiculeDTO vehiculeDTO) {

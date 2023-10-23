@@ -2,7 +2,6 @@ package sn.dscom.backend.database.entite;
 
 import lombok.*;
 
-//import javax.persistence.*;
 import jakarta.persistence.*;
 import java.util.Date;
 

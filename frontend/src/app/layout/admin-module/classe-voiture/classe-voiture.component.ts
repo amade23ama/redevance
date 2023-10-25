@@ -15,7 +15,7 @@ import { UrlService } from "../../../core/services/url.service";
   styleUrls: ['./classe-voiture.component.scss']
 })
 export class ClasseVoitureComponent implements OnInit{
-  titre="Classe Vehicule";
+  titre="Classe";
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl();
   nom: FormControl = new FormControl('',[Validators.required]);

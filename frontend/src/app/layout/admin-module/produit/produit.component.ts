@@ -50,7 +50,7 @@ export class ProduitComponent implements OnInit{
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
         this.isModeModification = true;
-        this.titre="Modification Produit"
+        this.titre="Produit"
         this.produitService.getProduitParId(params['contextInfo']).subscribe(()=>{
           this.produitCourant=this.produitService.getProduitCourant()
           this.myform.patchValue(this.produitCourant)

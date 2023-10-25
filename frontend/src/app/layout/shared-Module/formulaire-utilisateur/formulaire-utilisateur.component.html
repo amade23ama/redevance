@@ -2,7 +2,7 @@
     <form    class="stepper--conteneur"[formGroup]="userForm" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-          <mat-label>Prenom </mat-label>
+          <mat-label>Prénom </mat-label>
           <input matInput  type="text"
                  [formControl]="prenom"/>
           <button  matSuffix mat-icon-button aria-label="Clear"
@@ -49,7 +49,7 @@
          </mat-error>
        </mat-form-field>
        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-         <mat-label>Telephone</mat-label>
+         <mat-label>Téléphone</mat-label>
          <input matInput  type="text"
                 [formControl]="telephone"/>
          <button  matSuffix mat-icon-button aria-label="Clear"
@@ -81,7 +81,7 @@
         -->
 
         <div fxLayout fxLayoutAlign="center center" fxLayoutGap="2px" style="height: 30px">
-          <span>Desactive</span>
+          <span>Désactive</span>
           <mat-slide-toggle color="primary" [formControl]="active"></mat-slide-toggle>
           <span>Active</span>
         </div>

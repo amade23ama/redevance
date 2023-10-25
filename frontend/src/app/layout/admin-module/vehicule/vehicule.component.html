@@ -1,7 +1,7 @@
 
 <form class="mt-1" [formGroup]="myform">
   <fieldset>
-    <legend class="titre-form">Formulaire véhicule</legend>
+    <legend class="titre-form">Transporteur</legend>
     <fieldset>
       <legend class="titre-form">{{titre}}</legend>
       <div class="mt-05" fxLayout fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
@@ -42,7 +42,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <!-- Volume 
+          <!-- Volume
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
             <mat-label>Volume </mat-label>
             <input matInput  type="number" [formControl]="volume" readonly/>
@@ -60,7 +60,7 @@
       <legend class="titre-form">{{titreTransport}}</legend>
       <div formGroupName="transporteur" class="mt-05">
         <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-          <!-- Type transporteur 
+          <!-- Type transporteur
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
             <mat-label>Type transporteur </mat-label>
             <mat-select [formControl]="transType"  [value]="transType" placeholder="selectionner le type de transporteur">
@@ -75,7 +75,7 @@
               {{appConfig.getLabel('error.champ.obligatoire')}}
             </mat-error>
           </mat-form-field>-->
-          <!-- Adresse 
+          <!-- Adresse
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" fxFlex.lt-md="100" floatLabel="always">
             <mat-label>Adresse</mat-label>
             <input matInput [formControl]="transAdresse"/>
@@ -118,7 +118,7 @@
           </mat-form-field>-->
         </div>
         <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-          <!-- E-mail 
+          <!-- E-mail
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
             <mat-label>Mail </mat-label>
             <input matInput  type="email" [formControl]="transEmail"/>
@@ -127,7 +127,7 @@
             </button>
             <mat-error *ngIf="transporteur.get('email').hasError('pattern') || transporteur.get('email').hasError('email')">{{appConfig?.getLabel('error.email.invalid')}}</mat-error>
           </mat-form-field>-->
-          <!-- Téléphone 
+          <!-- Téléphone
           <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" floatLabel="always">
             <mat-label>Téléphone</mat-label>
             <input matInput  type="tel" [formControl]="transTelephone"/>

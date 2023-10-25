@@ -21,7 +21,7 @@ export class VehiculeComponent implements OnInit {
   types=[{code:'S',libelle:'sociéte'},{code:'P',libelle:'particulier'}]
   btns: ActionBtn[] = [];
   titre="Véhicule"
-  titreTransport="Transporteur(s)"
+  titreTransport="Conducteur(s)"
   id: FormControl = new FormControl();
   immatriculation: FormControl = new FormControl('',[Validators.required]);
   poidsVide: FormControl = new FormControl('',[Validators.required, this.isPositiveNumber.bind(this)]);
@@ -81,7 +81,7 @@ export class VehiculeComponent implements OnInit {
     this.categorieService.categories$.subscribe((data) => {
       this.listCategories = data;
     });
-    
+
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
         //this.titre="Modification Site"

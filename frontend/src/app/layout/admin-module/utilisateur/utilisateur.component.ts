@@ -59,7 +59,7 @@ export class UtilisateurComponent implements OnInit{
 
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
-        this.titre="Modification d'utilisateur"
+        this.titre="Utilisateur"
         this.isModeModification = true;
         this.utilisateurService.getUtilisateurParId(params['contextInfo']).subscribe(()=>{
           this.utilisateurCourant=this.utilisateurService.getUtilisateurCourant();
@@ -70,7 +70,7 @@ export class UtilisateurComponent implements OnInit{
           this.droit()
         })
       } else {
-        this.titre="Création d'un utilisateur."
+        this.titre="Nouvel utilisateur"
         this.isModeModification = false;
         this.initListbtns();
         this.isUpdate=false

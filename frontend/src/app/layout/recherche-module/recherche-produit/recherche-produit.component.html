@@ -14,6 +14,7 @@
   </app-actions-critere-btns>
   <div fxShow="false" fxHide.gt-xs="false"
     class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+    <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
         <table mat-table matSort  [dataSource]="listProduit"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
             <ng-container matColumnDef="Nom SRC">
@@ -79,10 +80,11 @@
               </div>
             </td>
           </ng-container>
-            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-table"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 
         </table>
+    </cdk-virtual-scroll-viewport>
         <!-- container de pagination -->
         <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"

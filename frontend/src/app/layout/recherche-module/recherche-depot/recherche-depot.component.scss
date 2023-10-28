@@ -1,15 +1,10 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 .table-container {
-
+  height: 55vh!important;
+  overflow: auto!important;
 }
 
-.table-content-wrapper{
-  background-color: red!important;
-  min-height: 10vh!important;
-  max-height: 20vh!important;
-  overflow: auto;
-}
 
 
 .nb-pastille {
@@ -18,7 +13,6 @@
 }
 
 .nb-label {
-// margin: 12px;
   font-size: 13px;
 }
 .mat-header-utilisateur{
@@ -100,6 +94,7 @@ tr{
 .contenaire-info{
   margin-left: 0.5em!important;
 }
+
 .new--contract--button-mobil{
   position: absolute;
   left: 76%;
@@ -112,6 +107,7 @@ background-color: $orange-500!important;
 width: 50px!important;
 height: 50px!important;
 }
+
 .titre-profil{
   text-transform: capitalize;
   color: #5d5a5a;

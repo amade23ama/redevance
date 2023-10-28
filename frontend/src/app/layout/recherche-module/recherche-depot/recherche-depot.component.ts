@@ -33,8 +33,8 @@ export class RechercheDepotComponent implements OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 5; // nb ligne par page par défaut
+  pageSizeOptions: number[] = [10, 20, 30];
+  pageSize = 10; // nb ligne par page par défaut
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesDepot$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesDepot$
   constructor(public appConfig: AppConfigService,private router:Router,public depotService:DepotService,

@@ -1,15 +1,10 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 .table-container {
-
+  height: 55vh!important;
+  overflow: auto!important;
 }
 
-.table-content-wrapper{
-  background-color: red!important;
-  min-height: 10vh!important;
-  max-height: 20vh!important;
-  overflow: auto;
-}
 
 
 .nb-pastille {
@@ -18,7 +13,6 @@
 }
 
 .nb-label {
-  // margin: 12px;
   font-size: 13px;
 }
 .mat-header-utilisateur{
@@ -60,6 +54,7 @@ mat-card{
 
 .mat-table {
   border-collapse: collapse;
+  width: 100% !important;
 }
 
 td {

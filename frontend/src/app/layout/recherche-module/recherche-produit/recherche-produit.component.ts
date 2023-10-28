@@ -32,8 +32,8 @@ export class RechercheProduitComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 5; // nb ligne par page par défaut
+  pageSizeOptions: number[] = [10, 20, 30];
+  pageSize = 10; // nb ligne par page par défaut
 
   // les noms des colones
   displayedColumns: string[] = ['Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
@@ -102,10 +102,10 @@ export class RechercheProduitComponent implements OnInit {
 
   /**
    * supprimerProduit
-   * @param produit 
+   * @param produit
    */
   supprimerProduit(produit: Produit){
-    
+
     const dialogRef = this.dialog.open(SuppressionComponent, {
       width: '600px',
       position: {top:'200px'},

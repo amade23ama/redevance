@@ -1,5 +1,6 @@
 {
   "properties": {
+    "nom.application": "DBDCSOM",
     "label.info.application": "Bienvenue sur l'application de REDEVANCE",
      "label.direction.nom": "Direction du Contr\u00f4le et de la Surveillance des Opérations Minières",
     "label.direction.cycle": "D.C.S.O.M",

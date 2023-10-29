@@ -54,7 +54,7 @@ public abstract class ChargementUtils {
      * @return l'ecart
      */
     public static Double getEcart(final Double volumeEstime, final Double volumeClasse){
-        return precisionDouble(volumeEstime - volumeClasse);
+        return precisionDouble( volumeClasse - volumeEstime);
     }
 
     /**

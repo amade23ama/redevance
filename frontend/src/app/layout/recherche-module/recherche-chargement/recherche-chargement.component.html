@@ -16,8 +16,9 @@
                             [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
 
-  <div   fxShow="false" fxHide.gt-xs="false" class="table-container" *ngIf="chargements$|async as char">
-    <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort>
+  <div  fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" >
+    <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+    <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort *ngIf="chargements$|async as char">
 
      <ng-container matColumnDef="datePesage">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
@@ -124,10 +125,14 @@
           </div>
         </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-table"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
 
     </table>
+    </cdk-virtual-scroll-viewport>
+    <!--
+    <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+    </cdk-virtual-scroll-viewport>-->
     <mat-paginator [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions"
                    showFirstLastButtons>

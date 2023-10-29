@@ -32,8 +32,8 @@ export class RechercheSiteComponent implements OnInit {
    @ViewChild(MatSort) sort: MatSort;
 
    // nombre de ligne par page
-   pageSizeOptions: number[] = [5, 10, 20];
-   pageSize = 5; // nb ligne par page par défaut
+   pageSizeOptions: number[] = [10, 20, 30];
+   pageSize = 10; // nb ligne par page par défaut
 
    // les noms des colones  'Date Modification',
    displayedColumns: string[] = ['nom','localite','dateCreation','actions'];
@@ -112,7 +112,7 @@ export class RechercheSiteComponent implements OnInit {
 
   /**
    * supprimerSite
-   * @param site 
+   * @param site
    */
   supprimerSite(site: Site){
 

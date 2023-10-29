@@ -30,7 +30,7 @@ export class RechercheVehiculeComponent implements OnInit{
 
   // nombre de ligne par page
   pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 5; // nb ligne par page par défaut
+  pageSize = 2; // nb ligne par page par défaut
 
   // les noms des colones
   displayedColumns: string[] = ['NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];

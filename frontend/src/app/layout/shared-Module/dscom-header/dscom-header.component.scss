@@ -1,21 +1,7 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-/*.ministere{
-  color: $white;
-  font-size: 12px;
-  font-family:normal;
-  font-weight: 700;
-  color: $black;
-}
-*/
-/*
-.devise{
-  color: $black;
-  font-size: 10px;
-  font-family:"Brush Script MT";
-  font-style: italic;
-}
-*/
+
+
 .flex-container-header {
   font-size: 12px;
   padding-left: 5em;
@@ -26,36 +12,13 @@
   top: 0;
   z-index: 2;
 }
-/*.titre{
-  color: $white;
-  font-family: "Arial Black";
-  font-size: 16px;
-  font-style: italic;
 
-}
-*/
 
 .deconnexion-action {
-  //color: $orange-400!important;
- /* color: $rouge-0;
-  color: $jaune-0;
-  color:$orange-1;
-  */
   color:$rouge-0!important;
 }
-/*.login-name{
-  color: $white;
-  font-size: 14px;
-  font-family:normal;
-  text-transform: capitalize;
-}
-*/
+
 .disabled--icon{
-  /*color: $rouge-0;
-  color: $orange-2;
-  color: $jaune-0;
-  color:$orange-1;
-  */
   color:$rouge-0!important;
 }
 .disabled--icon:hover {
@@ -64,11 +27,6 @@
   color: #ffffff;
 }
 .mat-menu-icon{
-  /*color: $orange-400!important;*/
-  /*color: $rouge-0;
-  color: $jaune-0;
-  color:$orange-1;
-  */
   color:$rouge-0!important;
 
 }
@@ -77,49 +35,22 @@
   font-weight: 900;
   font-size: 12px;
   color: $black;
-  //font-family: Calibri;
- /* font-size: 12px;
-  font-family: Calibri;
-  font-style: normal;
-  font-weight: 700;
-  font-family: 'pOpenSans', 'Arial', 'MS Trebuchet', sans-serif;
-  */
-  //color: $black;
 }
 .libelle-direction{
   font-weight: normal;
   font-size: 12px;
   color: $black;
-  /*font-size: 14px;
-  font-family: Calibri;
-  font-style: normal;
-  font-weight: 700;
-  color: $orange-2;
-  */
-
 }
 
 .libelle-ministere{
   font-weight: bold;
   font-size: 12px;
   color: $black;
-  /*font-size: 12px;
-  font-family: 'Arial';
-  font-style: normal;
-  font-weight: 700;
-  */
-  //color: $black;
 }
 .user-info{
   font-weight: normal;
   font-size: 12px;
   color: $black;
- /* font-size: 14px;
-  font-family: Calibri;
-  font-style: normal;
-  */
-
-  //color: $black;
 }
 .libelle-device{
   font-size: 11px;
@@ -129,4 +60,11 @@
   color:$rouge-0!important;
   font-weight: normal;
   font-size: 14px;
+}
+.nom-application{
+  font-weight: 900!important;
+  font-size: 16px!important;
+  font-style: italic!important;
+  font-family: "Times New Roman", Times, serif;
+  color:$rouge-0!important;
 }

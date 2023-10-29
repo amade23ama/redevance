@@ -30,10 +30,10 @@ export class RechercheUtilisateurComponent implements OnInit{
   label="Ajouter un Utilisateur";
   dataSource: MatTableDataSource<Utilisateur>;
   prenom="prenom"
-  pageSizeOptions: number[] = [5, 10, 20];
+  pageSizeOptions: number[] = [10, 20, 30];
   rechercheUtilisateurListe: Utilisateur[] = [];
   displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil','dateCreation',"actions"];
-  pageSize = 5;
+  pageSize = 10;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   users$=this.utilisateurService.utilisateurs$
@@ -132,20 +132,20 @@ export class RechercheUtilisateurComponent implements OnInit{
 
   /**
    * Activation ou désactivation d'un utilisateur
-   * @param utilisteur 
+   * @param utilisteur
    */
   desableUser( utilisteur: Utilisateur){
-    
+
     if (utilisteur.active) {
       const dialogRef = this.dialog.open(DialogueComponent, {
         width: '600px',
         position: {top:'200px'},
-        data: {title: this.appConfig.getLabel('modal.dialog.desactivation.title'), 
+        data: {title: this.appConfig.getLabel('modal.dialog.desactivation.title'),
         question: this.appConfig.getLabel('modal.dialog.desactivation.question', utilisteur.prenom +' - ' + utilisteur.nom)},
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        
+
         if (result) {
           let user = utilisteur;
               user.active = false;
@@ -164,7 +164,7 @@ export class RechercheUtilisateurComponent implements OnInit{
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        
+
         if (result) {
           let user = utilisteur;
               user.active = true;
@@ -175,6 +175,6 @@ export class RechercheUtilisateurComponent implements OnInit{
       });
 
     }
-    
+
   }
 }

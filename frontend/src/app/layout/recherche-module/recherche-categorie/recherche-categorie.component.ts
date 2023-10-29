@@ -34,8 +34,8 @@ export class RechercheCategorieComponent implements  OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 5; // nb ligne par page par défaut
+  pageSizeOptions: number[] = [10, 20, 30];
+  pageSize = 10; // nb ligne par page par défaut
   rechercheCategogies: Categorie[] = [];
   displayedColumns: string[] =['type', 'volume','dateCreation','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesCategorie$
@@ -98,7 +98,7 @@ export class RechercheCategorieComponent implements  OnInit{
 
   /**
    * supprimerCategorie
-   * @param site 
+   * @param site
    */
   supprimerCategorie(categorie: Categorie){
 

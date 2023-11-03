@@ -23,7 +23,7 @@ export class VehiculeComponent implements OnInit {
   titre="Véhicule"
   titreTransport="Conducteur(s)"
   id: FormControl = new FormControl();
-  immatriculation: FormControl = new FormControl('',[Validators.required]);
+  immatriculation: FormControl = new FormControl('',[Validators.required, this.isImmatValid.bind(this)]);
   poidsVide: FormControl = new FormControl('',[Validators.required, this.isPositiveNumber.bind(this)]);
   nom: FormControl = new FormControl();
  // volume: FormControl = new FormControl();
@@ -194,6 +194,21 @@ majBtnActive(){
    */
   isPositiveNumber(control: AbstractControl){
     return this.poidsVide?.value >= 0 ? null: { isNotPositive: true }
+  }
+
+  /**
+   * is Immat Valid
+   * @param control 
+   * @returns isImmatValid
+   */
+  isImmatValid(control: AbstractControl){
+
+    const nameRegexp: RegExp = /[!@#$%^&*()_+ \-=\[\]{};':"\\|,.<>\/?]/;
+        if (control.value && nameRegexp.test(control.value)) {
+           return { isImmatValid: true };
+        }
+
+        return null;
   }
 
   // get data véhicule

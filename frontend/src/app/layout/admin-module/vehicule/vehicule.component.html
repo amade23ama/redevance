@@ -8,12 +8,15 @@
         <!-- Immatriculation -->
         <mat-form-field class="champ--operateur"  appearance="outline" fxFlex="50" floatLabel="always">
           <mat-label>Immatriculation</mat-label>
-          <input matInput  type="text" [formControl]="immatriculation"/>
+          <input matInput  type="text" [formControl]="immatriculation" oninput="this.value = this.value.toUpperCase().trim()"/>
           <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('immatriculation')">
             <mat-icon>close</mat-icon>
           </button>
           <mat-error *ngIf="immatriculation.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+          <mat-error *ngIf="immatriculation.errors?.hasOwnProperty('isImmatValid')">
+            {{appConfig.getLabel('error.caractere.invalid')}}
           </mat-error>
         </mat-form-field>
         <!-- Poids Vide -->

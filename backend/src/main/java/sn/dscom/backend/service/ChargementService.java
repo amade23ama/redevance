@@ -492,7 +492,7 @@ public class ChargementService implements IChargementService {
                                 .dateCreation(new Date())
                                 .transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
                                 .categorie(categorieDTO)
-                                .immatriculation(immatriculation.toUpperCase())
+                                .immatriculation(ChargementUtils.replaceAllSpecialCarater(immatriculation.toUpperCase()))
                                 .build())
                 .mapTry(this.voitureService::enregistrerVehicule)
                 .onFailure(e -> ChargementService.log.error(String.format(" Erreur lors de la rechercher de la Vehicule: %s", e.getMessage())))

@@ -16,6 +16,9 @@ public abstract class ChargementUtils {
     // 25 %
     public static final double POIDS_25 = 0.25;
 
+    /** REGEX_ALPHA_NUM */
+    public static final String REGEX_ALPHA_NUM = "[^a-zA-Z0-9]";
+
     /**
      * get Nom Or RaisonSociale
      * @param theParam theParam
@@ -129,5 +132,15 @@ public abstract class ChargementUtils {
             exception.getStackTrace();
         }
         return new Date();
+    }
+
+    /**
+     * replaceAllSpecialCarater
+     * @param myString myString
+     * @return string
+     */
+    public static String replaceAllSpecialCarater(String myString){
+
+        return myString.replaceAll(REGEX_ALPHA_NUM, "");
     }
 }

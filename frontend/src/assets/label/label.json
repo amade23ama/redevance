@@ -101,6 +101,7 @@
     "error.champ.obligatoire": "Le champ est obligatoire",
     "error.champ.nombre.positive": "Renseigner un nombre positif",
     "error.email.invalid": "Email invalide !",
+    "error.format.invalid": "Le format est invalide !",
     "error.caractere.invalid": "Caractères non autorisés",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",

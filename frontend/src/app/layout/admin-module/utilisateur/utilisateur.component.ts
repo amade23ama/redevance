@@ -29,7 +29,7 @@ export class UtilisateurComponent implements OnInit{
     asyncValidators: [this.checkEmail.bind(this)],
     updateOn: 'blur'
   });
-  telephone: FormControl = new FormControl( '',{validators:[this.phoneNumberValidator.bind(this)]});
+  telephone: FormControl = new FormControl( '',{validators:[Validators.required, this.phoneNumberValidator.bind(this)]});
   active: FormControl = new FormControl();
   profils: FormControl = new FormControl('',{validators:[Validators.required]})
   titre:string
@@ -139,14 +139,33 @@ export class UtilisateurComponent implements OnInit{
     return this.utilisateurService.emailCheck(control,this.utilisateurCourant?.id)
   }
 
- majBtnActive() {
-   this.myform?.valueChanges.subscribe((res) => {
-     if (this.myform.valid) {
-       this.majBtnState(Actions.ENREGISTRER, false)
-       this.majBtnState(Actions.MODIFIER, false)
-     }
-   })
- }
+  // Activation et désactivation des boutons en fonction des actions de l'utilisateur
+  majBtnActive() {
+    // Formulaire non valid
+    this.myform?.valueChanges.subscribe((res) => {
+      if (this.myform.invalid) {
+        if (this.isModeModification) {
+          this.majBtnState(Actions.ENREGISTRER, true, false);
+          this.majBtnState(Actions.MODIFIER, true, true);
+        } else {
+          this.majBtnState(Actions.ENREGISTRER, true, true);
+          this.majBtnState(Actions.MODIFIER, true, false);
+        }
+      }
+
+      // Formulaire valid
+      if (!this.myform.invalid) {
+        if (this.isModeModification) {
+          this.majBtnState(Actions.ENREGISTRER, true, false);
+          this.majBtnState(Actions.MODIFIER, false, true);
+        } else {
+          this.majBtnState(Actions.ENREGISTRER, false, true);
+          this.majBtnState(Actions.MODIFIER, true, false);
+        }
+      }
+    })
+
+  }
 
     droit(){
       if(this.authService.hasDroits(DroitEnum.CONSULT)){
@@ -164,14 +183,17 @@ chiffreCaractValidator(control: AbstractControl) {
     return status ? { exclus: true } : null
   }
   phoneNumberValidator(control: AbstractControl){
-    const phoneNumberPattern = /^[0-9]{10}$/; // Exemple : Format de numéro de téléphone à 10 chiffres
+    const phoneNumberPattern = /^[0-9]{9}$/; // Exemple : Format de numéro de téléphone à 9 chiffres: exemple 77 123 45 67
     const status  = phoneNumberPattern.test(control.value);
-    return status ? null: { exclus: true }
+    return status ? null: { isPhoneNumberValid: true }
   }
-  majBtnState(a: Actions, disabled: boolean) {
+  
+  /** ouvrir Modale Annulation */
+  majBtnState(a: Actions, disabled: boolean, display: boolean) {
     this.btns.forEach(b => {
       if (b.id === a) {
         b.disabled = disabled;
+        b.display = display;
       }
     });
   }

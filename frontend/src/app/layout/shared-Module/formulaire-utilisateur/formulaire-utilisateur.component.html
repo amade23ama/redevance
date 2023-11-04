@@ -59,6 +59,9 @@
          <mat-error *ngIf="telephone.errors?.hasOwnProperty('required')">
            {{appConfig.getLabel('error.champ.obligatoire')}}
          </mat-error>
+         <mat-error *ngIf="telephone.errors?.hasOwnProperty('isPhoneNumberValid')">
+          {{appConfig.getLabel('error.format.invalid')}}
+        </mat-error>
        </mat-form-field>
       </div>
       <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="row" >

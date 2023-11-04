@@ -17,7 +17,7 @@
                     <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('destination')"> <mat-icon>close</mat-icon></button>
                     <mat-error *ngIf="destination.errors?.hasOwnProperty('required')">{{appConfig.getLabel('error.champ.obligatoire')}}</mat-error>
                 </mat-form-field>
-                
+
             </div>
 
             <!-- COLONNE 2 -->
@@ -76,7 +76,7 @@
                 </mat-form-field>
                 <!-- CHAMP 2 -->
                 <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-                    <mat-label>Poids estimés (tonnes) </mat-label>
+                    <mat-label>Poids estimé (tonnes) </mat-label>
                     <input matInput type="text" [formControl]="poidsSubst"/>
                 </mat-form-field>
             </div>

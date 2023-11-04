@@ -26,11 +26,13 @@ export  class RechercheChargementComponent implements  OnInit{
   searchDate:FormControl =new FormControl('');
   /** la liste des véhicules */
   listChargements: MatTableDataSource<Chargement>;
+  listChargementsSelect:Chargement[]=[]
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel<Chargement>(true, []);
   disableBtnSupprimer:boolean=true;
+  isSelectAll:boolean=false;
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
@@ -128,5 +130,21 @@ export  class RechercheChargementComponent implements  OnInit{
   }
   handleHeaderCheckboxToggle(event: any) {
     this.disableBtnSupprimer=event.checked?false:true;
+    this.isSelectAll=event.checked
+    if(!event.checked){
+      this.listChargementsSelect=[];
+    }
+  }
+  checkboxToggle(event: any,chargement:Chargement) {
+    if(event.checked) {
+      this.listChargementsSelect.push(chargement)
+    }else{
+      const filtre=this.listChargementsSelect.find((res)=>res.id==chargement.id)
+      const index=this.listChargementsSelect.indexOf(filtre)
+      if(index!=-1){
+        this.listChargementsSelect.splice(index,1)
+      }
+    }
+    this.disableBtnSupprimer=this.listChargementsSelect.length>0?false:true;
   }
   }

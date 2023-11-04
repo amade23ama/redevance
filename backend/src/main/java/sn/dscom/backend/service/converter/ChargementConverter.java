@@ -92,6 +92,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
         }
 
         return ChargementEntity.builder()
+                .id(chargementDTO.getId() == null ? null : chargementDTO.getId())
                 .dateCreation(chargementDTO.getId() == null ? new Date() :chargementDTO.getDateCreation())
                 .dateModification(chargementDTO.getId() == null ? null : new Date())
                 .datePassage(chargementDTO.getDatePesage())

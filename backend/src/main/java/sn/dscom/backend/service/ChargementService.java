@@ -225,21 +225,20 @@ public class ChargementService implements IChargementService {
                     chargementDTO.getDestination(), chargementDTO.getPoids(),
                     chargementDTO.getPoidsMax());
 
-            //List<ChargementDTO> lisCharge = depotCreat.getChargementDTOList();
+            List<ChargementDTO> lisCharge = depotCreat.getChargementDTOList();
             if (chargementEntity.isPresent()) {
                 chargementDTO.setDateModif(new Date());
                 Integer nb = depotCreat.getNbChargementReDeposes() + 1;
                 depot.setNbChargementReDeposes(nb);
-                Optional<ChargementDTO> chargementEffectue = this.enregistrerChargement(chargementDTO);
-                //lisCharge.add(this.chargementConverter.reverse(chargementEntity.get()));
+                this.enregistrerChargement(chargementDTO);
             }else {
                 Integer nb = depotCreat.getNbChargementDeposes() + 1;
                 depot.setNbChargementDeposes(nb);
                 Optional<ChargementDTO> chargementEffectue = this.enregistrerChargement(chargementDTO);
-                //lisCharge.add(chargementEffectue.get());
+                lisCharge.add(chargementEffectue.get());
             }
             depot.setSite(siteDTO);
-            //depotCreat.setChargementDTOList(lisCharge);
+            depot.setChargementDTOList(lisCharge.stream().distinct().toList());
             this.depotService.enregistrerDepot(depot);
 
         }else {

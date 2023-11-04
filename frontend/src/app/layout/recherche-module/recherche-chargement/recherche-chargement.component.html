@@ -9,6 +9,7 @@
                             (btnAjouter)="ouvreNouveauChargement()"
                             [visibleDate]="true"
                             [visibleBtnExport]=true
+                            [visibleBtnSupprimer]="true"
                             (btnExport)="export($event)"
                             (btnAjouterFiltre)="ajouterFiltre($event)"
                             (btnAnnulerFiltre)="annulerFiltre($event)"
@@ -20,6 +21,16 @@
     <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
     <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort *ngIf="chargements$|async as char">
 
+      <ng-container matColumnDef="numImport">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex"><mat-checkbox color="primary"></mat-checkbox><div fxLayoutAlign="start center">N°Import</div></div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">
+            <mat-checkbox  color="primary" [value]=element!?.id>1234</mat-checkbox>
+          </div>
+        </td>
+      </ng-container>
      <ng-container matColumnDef="datePesage">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
           <div class="d-flex">Date</div>
@@ -89,7 +100,7 @@
 
       <ng-container matColumnDef="poidsSubst">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">Poids estimé (tonnes)</div>
+          <div class="d-flex">Poids estimé(T)</div>
         </th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">{{element.poidsSubst}}</div>
@@ -100,7 +111,7 @@
 
       <ng-container matColumnDef="volumeSubst">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">Volume (m3)</div>
+          <div class="d-flex">Volume(m3)</div>
         </th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">{{element.volumeSubst}}</div>

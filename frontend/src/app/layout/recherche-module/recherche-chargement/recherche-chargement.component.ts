@@ -34,7 +34,7 @@ export  class RechercheChargementComponent implements  OnInit{
   pageSize = 10; // nb ligne par page par défaut
   rechercheChargements: Chargement[] = [];
   // les noms des colones  'Date Modification',,'categorie'
-  displayedColumns: string[] =['datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
+  displayedColumns: string[] =['numImport' ,'datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
   ,'poids','poidsSubst','volumeSubst','ecart','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesChargement$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesChargement$

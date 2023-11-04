@@ -126,6 +126,7 @@
     "label.tooltip.user.bouton.annuler":"Annuler",
     "label.tooltip.user.bouton.modifier":"Modifier l'utilisateur",
     "label.tooltip.exporter":"exporter le chargement",
+    "label.tooltip.supprimer":"supprimer la selection",
     "label.info.mail": "Nous avons envoyé le login et mot de passe à l'adresse:",
     "footer.donnee.perso": "Données personelles",
     "footer.contact": "Contact",

@@ -24,6 +24,17 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div *ngIf="visibleBtnSupprimer">
+      <button   mat-raised-button
+                class="btn-global-white export"
+                (click)="export(critereRecherches)"
+                matTooltipPosition="left"
+                matTooltip="{{appConfig.getLabel('label.tooltip.supprimer')}}"
+                matTooltipClass="custom-tooltip">
+        {{appConfig.getLabel('depot.actions.supprimer')}}
+        <mat-icon matSuffix>close</mat-icon>
+      </button>
+    </div>
     <div *ngIf="visibleBtnExport">
     <button   mat-raised-button
               class="btn-global-white export"
@@ -32,6 +43,7 @@
               matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"
               matTooltipClass="custom-tooltip">
         ExporterCSV
+      <mat-icon>description</mat-icon>
       </button>
      </div>
     <div fxShow="false" fxHide.gt-xs="false" *ngIf="visibleBtnCreation">

@@ -238,7 +238,7 @@ public class ChargementService implements IChargementService {
                 lisCharge.add(chargementEffectue.get());
             }
             depot.setSite(siteDTO);
-            depot.setChargementDTOList(lisCharge.stream().distinct().toList());
+            depot.setChargementDTOList(lisCharge);
             this.depotService.enregistrerDepot(depot);
 
         }else {

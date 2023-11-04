@@ -13,6 +13,7 @@ import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
 import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { ChargementService } from "../../../core/services/chargement.service";
+import {SelectionModel} from "@angular/cdk/collections";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -28,7 +29,8 @@ export  class RechercheChargementComponent implements  OnInit{
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  selection = new SelectionModel<Chargement>(true, []);
+  disableBtnSupprimer:boolean=true;
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
@@ -112,4 +114,19 @@ export  class RechercheChargementComponent implements  OnInit{
 
     })
   }
-}
+  selectAll(){
+
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.listChargements.data.forEach(row => this.selection.select(row));
+  }
+  isAllSelected() {
+    console.log(" valeur ")
+    const numSelected = this.selection.selected.length;
+    const numRows = this.listChargements.data.length;
+    return numSelected === numRows;
+  }
+  handleHeaderCheckboxToggle(event: any) {
+    this.disableBtnSupprimer=event.checked?false:true;
+  }
+  }

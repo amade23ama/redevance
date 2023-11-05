@@ -26,13 +26,11 @@ export  class RechercheChargementComponent implements  OnInit{
   searchDate:FormControl =new FormControl('');
   /** la liste des véhicules */
   listChargements: MatTableDataSource<Chargement>;
-  listChargementsSelect:Chargement[]=[]
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel<Chargement>(true, []);
   disableBtnSupprimer:boolean=true;
-  isSelectAll:boolean=false;
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
@@ -116,35 +114,41 @@ export  class RechercheChargementComponent implements  OnInit{
 
     })
   }
-  selectAll(){
 
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.listChargements.data.forEach(row => this.selection.select(row));
-  }
   isAllSelected() {
-    console.log(" valeur ")
     const numSelected = this.selection.selected.length;
     const numRows = this.listChargements.data.length;
     return numSelected === numRows;
   }
   handleHeaderCheckboxToggle(event: any) {
-    this.disableBtnSupprimer=event.checked?false:true;
-    this.isSelectAll=event.checked
-    if(!event.checked){
-      this.listChargementsSelect=[];
+    if(event.checked){
+      this.listChargements.data.forEach(row => this.selection.select(row));
+      this.disableBtnSupprimer=false;
+    }else {
+      this.selection.clear()
+      this.disableBtnSupprimer=true;
     }
+
   }
   checkboxToggle(event: any,chargement:Chargement) {
     if(event.checked) {
-      this.listChargementsSelect.push(chargement)
-    }else{
-      const filtre=this.listChargementsSelect.find((res)=>res.id==chargement.id)
-      const index=this.listChargementsSelect.indexOf(filtre)
-      if(index!=-1){
-        this.listChargementsSelect.splice(index,1)
-      }
+      this.selection.select(chargement);
+    }else {
+      this.selection.deselect(chargement)
     }
-    this.disableBtnSupprimer=this.listChargementsSelect.length>0?false:true;
+    this.disableBtnSupprimer=this.selection.selected.length>0?false:true;
+    this.isAllSelected()
+  }
+  supprimer(critereRecherches:Observable<AutocompleteRecherche[]>){
+    const critereRecherche:CritereRecherche=new CritereRecherche()
+    critereRecherches.subscribe((res)=>{
+      critereRecherche.autocompleteRecherches=res;
+    })
+    critereRecherche.annee=this.searchDate.value
+    if(this.isAllSelected()){
+
+    }else {
+
+    }
   }
   }

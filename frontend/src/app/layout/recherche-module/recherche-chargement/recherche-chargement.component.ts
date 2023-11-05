@@ -14,6 +14,7 @@ import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { ChargementService } from "../../../core/services/chargement.service";
 import {SelectionModel} from "@angular/cdk/collections";
+import {ReferenceService} from "../../../core/services/reference.service";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -41,16 +42,15 @@ export  class RechercheChargementComponent implements  OnInit{
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesChargement$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesChargement$
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
-              private router:Router, private autocompleteRechercheService:AutocompleteRechercheService) {
+              private router:Router, private autocompleteRechercheService:AutocompleteRechercheService,
+              public readonly  referenceService:ReferenceService) {
   }
   ngOnInit() {
-
-   //this.chargementService.getAllChargements().subscribe()
+    this.referenceService.getAnneeMax()
+    this.searchDate.setValue(this.referenceService.getAnneeMax())
 
     this.chargementService.chargements$.subscribe((chargements) => {
       if(chargements!==null){
-        console.log("les chargement: ", chargements);
-        //alimentation du tableau
         this.rechercheChargements=chargements
         this.listChargements = new MatTableDataSource<Chargement>(this.rechercheChargements);
         this.listChargements.paginator=this.paginator;
@@ -146,9 +146,9 @@ export  class RechercheChargementComponent implements  OnInit{
     })
     critereRecherche.annee=this.searchDate.value
     if(this.isAllSelected()){
-
+    this.chargementService.supprimer(critereRecherche).subscribe();
     }else {
-
+     this.chargementService.supprimerById(this.selection.selected).subscribe();
     }
   }
   }

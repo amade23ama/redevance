@@ -199,4 +199,14 @@ public class ChargementController {
     public ResponseEntity<ChargementDTO> chargerChargementParId(@PathVariable Long id) {
         return ResponseEntity.ok(chargementService.chargerChargementParId(id));
     }
+    @DeleteMapping(value = "/supprimerBycritere")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<Boolean> supprimerChargement(@RequestBody CritereRecherche critereRecherche) {
+        return ResponseEntity.ok(true);
+    }
+    @DeleteMapping(value = "/supprimerById")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<Boolean> supprimerChargementParId(@RequestBody List<ChargementDTO> chargementDTO) {
+        return ResponseEntity.ok(true);
+    }
 }

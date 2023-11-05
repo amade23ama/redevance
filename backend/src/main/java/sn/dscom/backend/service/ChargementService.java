@@ -1,5 +1,6 @@
 package sn.dscom.backend.service;
 
+import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import io.vavr.control.Try;
@@ -227,10 +228,13 @@ public class ChargementService implements IChargementService {
 
             List<ChargementDTO> lisCharge = depotCreat.getChargementDTOList();
             if (chargementEntity.isPresent()) {
-                chargementDTO.setDateModif(new Date());
+                chargementEntity.get().setDateModification(new Date());
                 Integer nb = depotCreat.getNbChargementReDeposes() + 1;
                 depot.setNbChargementReDeposes(nb);
-                this.enregistrerChargement(chargementDTO);
+                if (lisCharge.stream().noneMatch( x-> Objects.equals(x.getId(), chargementEntity.get().getId()))){
+                    lisCharge.add(chargementConverter.reverse(chargementEntity.get()));
+                }
+                //this.enregistrerChargement(chargementDTO);
             }else {
                 Integer nb = depotCreat.getNbChargementDeposes() + 1;
                 depot.setNbChargementDeposes(nb);

@@ -2,14 +2,29 @@ import { BuilderDtoJsonAbstract, NoParamConstructor } from "./BuilderDtoJsonAbst
 import { Categorie } from "./categorie";
 import { Profil } from "./profil";
 import { Transporteur } from "./transporteur";
-
+/**
+ * Vehicule model de donnée
+ */
 export class Vehicule extends BuilderDtoJsonAbstract{
+  /** identifiant technique */
   id:number;
+
+  /** immatriculation du véhicule */
   immatriculation:string;
+
+  /** le transporteur transporteur */
   transporteur:Transporteur;
-  categorie:Categorie
-  dateCreation:Date ;
-  dateModification:Date ;
+
+  /** categorie du véhicule */
+  categorie:Categorie;
+
+  /** date Creation */
+  dateCreation: Date ;
+
+  /** date Modification */
+  dateModification: Date ;
+
+  /** poids Vide */
   poidsVide: number;
 
   static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {

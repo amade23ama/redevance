@@ -302,9 +302,15 @@ html, body { height: 100%;
 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  min-height: 30px;
+  padding-top: 10px!important;
+  padding-bottom: 10px!important;
+  min-height: 20px!important;
+}
+
+.recherche-mat-form-field .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 6px!important;
+  padding-bottom: 6px!important;
+  min-height: 10px!important;
 }
 .mat-mdc-form-field-infix {
   flex: auto;

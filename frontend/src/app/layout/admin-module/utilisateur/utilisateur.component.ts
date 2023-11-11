@@ -30,7 +30,7 @@ export class UtilisateurComponent implements OnInit{
     updateOn: 'blur'
   });
   telephone: FormControl = new FormControl( '',{validators:[Validators.required, this.phoneNumberValidator.bind(this)]});
-  active: FormControl = new FormControl(false);
+  active: FormControl = new FormControl(true);
   profils: FormControl = new FormControl('',{validators:[Validators.required]})
   titre:string
   btns: ActionBtn[] = [];

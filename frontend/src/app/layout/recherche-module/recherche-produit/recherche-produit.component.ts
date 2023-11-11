@@ -16,6 +16,7 @@ import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
 import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { SuppressionComponent } from "../../shared-Module/dialog/suppression/suppression.component";
+import {dateTimestampProvider} from "rxjs/internal/scheduler/dateTimestampProvider";
 
 @Component({
   selector: 'app-recherche-produit',
@@ -34,7 +35,7 @@ export class RechercheProduitComponent implements OnInit {
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
-
+  itemSize:number=0;
   // les noms des colones
   displayedColumns: string[] = ['Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
   produits$=this.produitService.produits$;
@@ -52,6 +53,7 @@ export class RechercheProduitComponent implements OnInit {
     this.listProduit = new MatTableDataSource<Produit>(data);
     this.listProduit.paginator=this.paginator;
     this.listProduit.sort=this.sort;
+    this.itemSize=data.length
     });
     this.search.valueChanges?.pipe(
       debounceTime(300),

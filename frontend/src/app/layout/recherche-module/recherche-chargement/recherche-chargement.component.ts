@@ -35,6 +35,7 @@ export  class RechercheChargementComponent implements  OnInit{
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
+  itemSize:number=0;
   rechercheChargements: Chargement[] = [];
   // les noms des colones  'Date Modification',,'categorie'
   displayedColumns: string[] =['numImport' ,'datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
@@ -55,6 +56,7 @@ export  class RechercheChargementComponent implements  OnInit{
         this.listChargements = new MatTableDataSource<Chargement>(this.rechercheChargements);
         this.listChargements.paginator=this.paginator;
         this.listChargements.sort=this.sort;
+        this.itemSize=chargements.length
       }
       })
     this.search.valueChanges?.pipe(
@@ -146,11 +148,13 @@ export  class RechercheChargementComponent implements  OnInit{
     })
     critereRecherche.annee=this.searchDate.value
     if(this.isAllSelected()){
-    this.chargementService.supprimer(critereRecherche).subscribe();
+    this.chargementService.supprimer(critereRecherche).subscribe(()=>{
+      this.rechargementChargement();
+    });
     }else {
-     this.chargementService.supprimerById(this.selection.selected).subscribe();
+     this.chargementService.supprimerById(this.selection.selected).subscribe(()=>{
+       this.rechargementChargement();
+     });
     }
-    //On recharge la page
-    this.rechargementChargement();
   }
   }

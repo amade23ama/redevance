@@ -64,11 +64,12 @@
 
         </table>
       </cdk-virtual-scroll-viewport>
+      <div class="parging">
         <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"
                  showFirstLastButtons>
         </mat-paginator>
-
+      </div>
     </div>
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="sites$|async as sites">
     <div>

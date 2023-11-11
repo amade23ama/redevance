@@ -36,6 +36,7 @@ export class RechercheCategorieComponent implements  OnInit{
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
+  itemSize:number=0
   rechercheCategogies: Categorie[] = [];
   displayedColumns: string[] =['type', 'volume','dateCreation','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesCategorie$
@@ -52,6 +53,7 @@ export class RechercheCategorieComponent implements  OnInit{
       this.listCategorie = new MatTableDataSource<Categorie>(data);
       this.listCategorie.paginator=this.paginator;
       this.listCategorie.sort=this.sort;
+      this.itemSize=data.length
     });
     this.search.valueChanges?.pipe(
       debounceTime(500),

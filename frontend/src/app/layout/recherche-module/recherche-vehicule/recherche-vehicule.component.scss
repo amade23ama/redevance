@@ -1,8 +1,7 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 :host::ng-deep.table-container {
-  min-height:20vh!important;
-  max-height: 55vh!important;
+  height: 55vh!important;
   overflow: auto!important;
 }
 

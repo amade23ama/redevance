@@ -27,7 +27,6 @@ export class UtilisateurService {
     return this.http.get<Utilisateur>(this.url+"/updateConnected")
       .pipe(
       tap((res:Utilisateur) => {
-        console.log(" deconnexion 2")
         this.setUtilisateurConnecte(Utilisateur.fromJson(res, Utilisateur));
       }),
       catchError((err) => {

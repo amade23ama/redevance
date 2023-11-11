@@ -86,7 +86,7 @@ export class ChargementService{
 
   /**
    * modifier Chargement: on ne peut modifier le Produit et la destination
-   * @param chargementAmodifier 
+   * @param chargementAmodifier
    */
   modifierChargement(chargementAmodifier: Chargement): Observable<Chargement>{
     return this.http.put<Chargement>(this.url+`/modifier`, chargementAmodifier).pipe(
@@ -140,5 +140,35 @@ export class ChargementService{
     return this.chargementCourant;
   }
 
+  supprimer(critereRecherche:CritereRecherche ){
+    this.globals.loading = true;
+    return this.http.delete<boolean>(this.url+"/supprimerBycritere",{body:critereRecherche })
+      .pipe(
+        tap((res) => {
+          this.globals.loading = false;
+          this.notification.success("suppresion avec sucess ")
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Chargement ")
+          this.globals.loading = false;
+          return throwError(() => err)
+        })
+     )
+  }
+  supprimerById(chargements: Chargement[]){
+    this.globals.loading = true;
+    return this.http.delete<boolean>(this.url+"/supprimerById",{body:chargements })
+      .pipe(
+        tap((res) => {
+          this.globals.loading = false;
+          this.notification.success("suppresion avec sucess ")
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation Chargement ")
+          this.globals.loading = false;
+          return throwError(() => err)
+        })
+      )
+  }
 }
 

@@ -40,12 +40,19 @@ public abstract class ChargementUtils {
     /**
      * Le poids estimé est la difference entre poids mesure et le poids de la voiture vide
      *
+     * A la modification du poids vide, le système recalcule le poids estimé avec la formule suivante
+     * Poids estimé (calculé) = Poids mesuré- Poids vide si poids vide supérieur à 0
+     * Sinon, Poids estimé (calculé) = Poids mesuré - (poids max * 0,25).
+     *
      * @param poidsMesure le poids mesuré par la plateforme
      * @param poidsMax le poids maximum par la plateforme
+     * @param poidsVehiculVide le poids du véhicule à vide
      * @return le poids Estimé
      */
-    public static Double getPoidsEstime(final Double poidsMesure, final Double poidsMax, final Double poidsVehicul){
-
+    public static Double getPoidsEstime(final Double poidsMesure, final Double poidsMax, final Double poidsVehiculVide){
+            if (null != poidsVehiculVide && poidsVehiculVide > 0) {
+                return precisionDouble(poidsMesure - poidsVehiculVide);
+            }
             return precisionDouble(poidsMesure - POIDS_25 * poidsMax);
     }
 

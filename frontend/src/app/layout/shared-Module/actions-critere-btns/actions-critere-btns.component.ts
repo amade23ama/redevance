@@ -26,6 +26,7 @@ export class ActionsCritereBtnsComponent implements OnInit{
   @Output() btnAnnulerFiltre= new EventEmitter();
   @Input() critereRecherches:Observable<AutocompleteRecherche[]>
   @Output() btnExport= new EventEmitter();
+  @Output() btnSupprimer= new EventEmitter();
   @Input() critereDate:string
   @Input() visibleDate:boolean
   @Input() visibleBtnExport:boolean
@@ -52,5 +53,8 @@ export class ActionsCritereBtnsComponent implements OnInit{
   }
   export(critereRecherches:Observable<AutocompleteRecherche[]>){
       this.btnExport.emit(critereRecherches)
+  }
+  supprimer(critereRecherches:Observable<AutocompleteRecherche[]>){
+    this.btnSupprimer.emit(critereRecherches)
   }
 }

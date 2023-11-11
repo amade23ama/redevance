@@ -68,7 +68,7 @@ public class UtilisateurConverter implements Transformer<UtilisateurDTO, Utilisa
                 .prenom(utilisateurDTO.getPrenom())
                 .nom(utilisateurDTO.getNom())
                 .telephone(utilisateurDTO.getTelephone())
-                .active(utilisateurDTO.getId()==null?true:utilisateurDTO.isActive())
+                .active(utilisateurDTO.isActive())
                 .dateCreation(utilisateurDTO.getId() == null ? new Date() :utilisateurDTO.getDateCreation())
                 .dateModification(utilisateurDTO.getId() == null? null :utilisateurDTO.getDateModification())
                 .build();

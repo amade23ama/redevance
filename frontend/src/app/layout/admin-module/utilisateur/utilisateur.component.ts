@@ -30,7 +30,7 @@ export class UtilisateurComponent implements OnInit{
     updateOn: 'blur'
   });
   telephone: FormControl = new FormControl( '',{validators:[Validators.required, this.phoneNumberValidator.bind(this)]});
-  active: FormControl = new FormControl();
+  active: FormControl = new FormControl(false);
   profils: FormControl = new FormControl('',{validators:[Validators.required]})
   titre:string
   btns: ActionBtn[] = [];
@@ -56,7 +56,6 @@ export class UtilisateurComponent implements OnInit{
   }
 
   ngOnInit(): void {
-
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
         this.titre="Utilisateur"
@@ -70,7 +69,6 @@ export class UtilisateurComponent implements OnInit{
           this.droit()
         })
       } else {
-        this.titre="Nouvel utilisateur"
         this.isModeModification = false;
         this.initListbtns();
         this.isUpdate=false
@@ -82,11 +80,6 @@ export class UtilisateurComponent implements OnInit{
   }
   sauvegarder() {
     const  val = this.myform.value
-    console.log(" valeur ")
-    /*this.utilisateurService.sauvegarder(this.myform.value).subscribe(()=>{
-      this.router.navigateByUrl("recherche/user")
-    })
-    */
   }
   reset(formToReset:any){
     this.myform.controls[formToReset]?.setValue('');
@@ -117,7 +110,6 @@ export class UtilisateurComponent implements OnInit{
 
   utilisateurAction(event: Actions){
     if (event === Actions.ENREGISTRER) {
-    const b= this.myform.value;
       this.utilisateurService.enregistrer(this.myform.value).subscribe((user)=>{
         this.displayEmail=true;
         let message = user.prenom + " " + user.nom +' a été habilité avec succès'

@@ -52,7 +52,7 @@ public class ChargementDTO {
     private PlateformeDTO plateforme;
 
     /** le depot*/
-    private DepotDTO depot;
+    private Long idDepot;
 
     /** le site*/
     private SiteDTO site;

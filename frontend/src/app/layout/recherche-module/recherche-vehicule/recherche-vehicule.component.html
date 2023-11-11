@@ -102,10 +102,10 @@
           </ng-container>
           <ng-container matColumnDef="actions">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">actions</div>
+              <div class="d-flex" fxLayoutAlign="space-evenly center">actions</div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="start stretch" fxLayoutGap="2px">
+              <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="2px">
                 <mat-icon class="blue-label-icon" (click)="chargerVoiture(element)">create</mat-icon>
               </div>
             </td>

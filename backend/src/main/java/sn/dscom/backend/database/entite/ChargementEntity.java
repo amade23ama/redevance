@@ -3,6 +3,8 @@ package sn.dscom.backend.database.entite;
 import lombok.*;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -33,6 +35,11 @@ public class ChargementEntity {
     /*@ManyToOne
     @JoinColumn(name = "ID_DEPOT", nullable = false)
     private DepotEntity depotEntity;*/
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "DEPOT_CHARGEMENT",
+            joinColumns = @JoinColumn(name = "ID_CHARGEMENT"),
+            inverseJoinColumns = @JoinColumn(name = "ID_DEPOT"))
+    private List<DepotEntity> depots;
 
     @ManyToOne
     @JoinColumn(name = "ID_SITE_EXPLOITATION", nullable = false)

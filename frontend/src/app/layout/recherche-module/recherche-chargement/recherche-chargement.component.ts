@@ -1,3 +1,4 @@
+import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
@@ -13,8 +14,7 @@ import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
 import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { ChargementService } from "../../../core/services/chargement.service";
-import {SelectionModel} from "@angular/cdk/collections";
-import {ReferenceService} from "../../../core/services/reference.service";
+import { ReferenceService } from "../../../core/services/reference.service";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -150,5 +150,7 @@ export  class RechercheChargementComponent implements  OnInit{
     }else {
      this.chargementService.supprimerById(this.selection.selected).subscribe();
     }
+    //On recharge la page
+    this.rechargementChargement();
   }
   }

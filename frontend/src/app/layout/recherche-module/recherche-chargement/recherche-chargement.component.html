@@ -36,7 +36,7 @@
           <div class="d-flex">
             <mat-checkbox  color="primary" [value]=element!?.id
                            (change)="checkboxToggle($event,element)"
-                           [checked]="selection.isSelected(element)">1234</mat-checkbox>
+                           [checked]="selection.isSelected(element)">{{element.idDepot}}</mat-checkbox>
           </div>
         </td>
       </ng-container>

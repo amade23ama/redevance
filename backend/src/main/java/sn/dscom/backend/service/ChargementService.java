@@ -1,8 +1,8 @@
 package sn.dscom.backend.service;
 
-import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
@@ -146,8 +146,9 @@ public class ChargementService implements IChargementService {
 
         //retourne la liste
         return Optional.of(listChargementFind.stream()
-                .map(this.chargementConverter::reverse)
                 .filter(Objects::nonNull)
+                .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
+                .map(this.chargementConverter::reverse)
                 .collect(Collectors.toList()));
     }
 
@@ -293,6 +294,7 @@ public class ChargementService implements IChargementService {
                 Try.of(listChargement::get).get()
                         .stream()
                         .filter(Objects::nonNull)
+                        .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
                         .map(this.chargementConverter::reverse)
                         .collect(Collectors.toList()));
     }
@@ -591,8 +593,9 @@ public class ChargementService implements IChargementService {
 
         List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
         return listSitesFind.stream()
-                .map(this.chargementConverter::reverse)
                 .filter(Objects::nonNull)
+                .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
+                .map(this.chargementConverter::reverse)
                 .collect(Collectors.toList());
     }
 
@@ -648,6 +651,8 @@ public class ChargementService implements IChargementService {
         // on retourne le produit trouvé
         if (chargement.isPresent()) {
             return Try.of(chargement::get)
+                    .filter(Objects::nonNull)
+                    .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
                     .mapTry(this.chargementConverter::reverse)
                     .onFailure(e -> ChargementService.log.error(String.format("Erreur leur du reverse du chargement %s ",e.getMessage())))
                     .get();
@@ -695,6 +700,52 @@ public class ChargementService implements IChargementService {
         }
         ChargementService.log.info(String.format("Le chargement d'id %s n'est pas trouvé en base ", chargementDTO.getId()));
         throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+    }
+
+    /**
+     * supprimerChargement Par Id
+     *
+     * @param listChargementDTO chargementDTO
+     * @return true or false
+     */
+    @Override
+    public Boolean supprimerChargementParId(List<ChargementDTO> listChargementDTO) {
+        return listChargementDTO.stream().allMatch(this::supprimerChargement);
+    }
+
+    /**
+     * supprimerChargementBycritere
+     *
+     * @param critereRecherche critereRecherche
+     * @return true or false
+     */
+    @Override
+    public Boolean supprimerChargementBycritere(CritereRecherche critereRecherche) {
+        List<ChargementDTO> listChrgmentToDelete = this.rechargementParCritere(critereRecherche);
+        return listChrgmentToDelete.stream().allMatch(this::supprimerChargement);
+    }
+
+    /**
+     * supprimerChargement
+     * @param chargementDTO chargementDTO
+     * @return true or false
+     */
+    private boolean supprimerChargement(ChargementDTO chargementDTO) {
+        // Find the chargement
+        Optional<ChargementEntity> chargementEntityFind = this.chargementRepository.findById(chargementDTO.getId());
+        if (chargementEntityFind.isPresent()) {
+            ChargementEntity chargementEntity = chargementEntityFind.get();
+            if (chargementEntity.getDepots().size() == 1 || chargementEntity.getDepots().size() == 0) {
+                chargementEntity.setDepots(null);
+            } else {
+                var list = chargementEntity.getDepots().subList(1, chargementEntity.getDepots().size());
+                chargementEntity.setDepots(list);
+           }
+            this.chargementRepository.save(chargementEntity);
+            this.chargementRepository.deleteById(chargementEntity.getId());
+           return true;
+        }
+        return  false;
     }
 
 }

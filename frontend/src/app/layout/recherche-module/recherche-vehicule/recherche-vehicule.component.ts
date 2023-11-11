@@ -29,8 +29,8 @@ export class RechercheVehiculeComponent implements OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 2; // nb ligne par page par défaut
+  pageSizeOptions: number[] = [10, 20, 30];
+  pageSize = 10; // nb ligne par page par défaut
 
   // les noms des colones
   displayedColumns: string[] = ['NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];

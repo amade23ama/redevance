@@ -153,7 +153,6 @@ export  class RechercheChargementComponent implements  OnInit{
     });
     }else {
      this.chargementService.supprimerById(this.selection.selected).subscribe(()=>{
-       this.rechargementChargement();
      });
     }
   }

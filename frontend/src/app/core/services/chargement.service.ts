@@ -8,6 +8,7 @@ import { Chargement } from "../interfaces/chargement";
 import { CritereRecherche } from "../interfaces/critere.recherche";
 import { Fichier } from "../interfaces/fichier";
 import { NotificationService } from "./notification.service";
+import {AutocompleteRecherche} from "../interfaces/autocomplete.recherche";
 
 @Injectable({
   providedIn:"root"
@@ -160,6 +161,9 @@ export class ChargementService{
     return this.http.delete<boolean>(this.url+"/supprimerById",{body:chargements })
       .pipe(
         tap((res) => {
+          chargements.forEach((chargement)=>{
+           this.removeChargement(chargement)
+          });
           this.globals.loading = false;
           this.notification.success("suppresion avec sucess ")
         }),
@@ -169,6 +173,15 @@ export class ChargementService{
           return throwError(() => err)
         })
       )
+  }
+  removeChargement(chargement: Chargement) {
+    const currentChargements = this._chargements$.getValue();
+    const filtre=currentChargements.find((res)=>res.id==chargement.id)
+    const index=currentChargements.indexOf(filtre)
+    if(index!=-1){
+      currentChargements.splice(index,1)
+      this._chargements$.next(currentChargements);
+    }
   }
 }
 

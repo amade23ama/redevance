@@ -2,9 +2,9 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
 import { environment } from "../../../environments/environment";
+import { Globals } from "../../app.constants";
 import { HomeCard } from "../interfaces/infotuiles/homeCard";
 import { NotificationService } from "./notification.service";
-import {Globals} from "../../app.constants";
 @Injectable({providedIn: 'root'})
 export class TuileService {
   readonly url = environment.apiUrl
@@ -14,6 +14,7 @@ export class TuileService {
   private _campagnesProduits$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesRegion$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   private _campagnesAnnnes$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
+  private _quantiteChargementAnnee$: BehaviorSubject<HomeCard> = new BehaviorSubject<HomeCard>(null);
   constructor(private http: HttpClient,private notification: NotificationService,
               private globals: Globals) {
   }
@@ -110,6 +111,33 @@ export class TuileService {
           })
         )
       )
+  }
+
+  /**
+   * get Chargement Annuel
+   * @param annee année séléctionnée
+   * @returns quantité
+   */
+  getQuantiteChargementAnnees(annee:number): Observable<HomeCard> {
+    return this.http.get<HomeCard>(this.url + `/v1/reporting/getChargementsAnnuel/${annee}`)
+      .pipe(
+        tap((res) => {
+            this.setQuantiteChargementAnnees(HomeCard.fromJson(res, HomeCard));
+          },
+          catchError((err) => {
+            this.notification.error(" erreur de recuperation config ")
+            return throwError(() => err)
+          })
+        )
+      )
+  }
+
+  get quantiteChargementAnnees$(): Observable<HomeCard> {
+    return this._quantiteChargementAnnee$.asObservable()
+  }
+
+  setQuantiteChargementAnnees(res: HomeCard) {
+    this._quantiteChargementAnnee$.next(res)
   }
 
 }

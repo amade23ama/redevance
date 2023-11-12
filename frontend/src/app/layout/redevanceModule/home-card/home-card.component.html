@@ -90,10 +90,12 @@
     </div>
     <!-- BLOC CHARGEMENT -->
     <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true" fxFlex.gt-md="50">
-      <div fxLayout="column" fxLayoutAlign="start stretch">
-        <div class="result-titre">Chargement</div>
-        <div class="result-continue">52000</div>
-      </div>
+      <ng-container *ngIf="quantiteChargementAnnee$ | async as cardChargement">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <div class="result-titre">Chargement</div>
+          <div class="result-continue">{{cardChargement.campagnes[0].value}}</div>
+        </div>
+      </ng-container>
     </div>
   </div>
 

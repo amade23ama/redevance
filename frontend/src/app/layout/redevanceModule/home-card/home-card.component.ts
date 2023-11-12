@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {Router} from "@angular/router";
-import {AuthService} from "../../../core/services/auth.service";
-import {TypeInfoTuile} from "../../../core/enum/TypeInfoTuile";
-import {TuileService} from "../../../core/services/tuile.service";
-import {FormControl} from "@angular/forms";
-import {startWith} from "rxjs";
-import {ReferenceService} from "../../../core/services/reference.service";
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from "@angular/forms";
+import { Router } from "@angular/router";
+import { startWith } from "rxjs";
+import { TypeInfoTuile } from "../../../core/enum/TypeInfoTuile";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AuthService } from "../../../core/services/auth.service";
+import { ReferenceService } from "../../../core/services/reference.service";
+import { TuileService } from "../../../core/services/tuile.service";
 
 @Component({
   selector: 'app-home-card',
@@ -20,6 +20,7 @@ export class HomeCardComponent implements  OnInit {
   campagnesProduits$=this.tuileService.campagnesProduits$
   campagnesRegions$=this.tuileService.campagnesRegions$
   compagneAnnee$=this.tuileService.campagnesAnnnes$
+  quantiteChargementAnnee$=this.tuileService.quantiteChargementAnnees$
   annees$=this.referenceService.annees$
   anneeMax:number;
   constructor(public appConfig:AppConfigService,public router: Router,public auth:AuthService,
@@ -36,6 +37,7 @@ export class HomeCardComponent implements  OnInit {
           this.tuileService.getcampagnesProduits(value).subscribe()
           this.tuileService.getcampagnesRegions(value).subscribe()
           this.tuileService.getcampagnesAnnnes(value).subscribe()
+          this.tuileService.getQuantiteChargementAnnees(value).subscribe()
         }
 
 

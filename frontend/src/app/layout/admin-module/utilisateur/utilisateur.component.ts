@@ -69,6 +69,7 @@ export class UtilisateurComponent implements OnInit{
           this.droit()
         })
       } else {
+        this.titre="Nouveau"
         this.isModeModification = false;
         this.initListbtns();
         this.isUpdate=false

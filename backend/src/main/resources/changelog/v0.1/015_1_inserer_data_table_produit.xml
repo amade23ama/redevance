@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+
+    <changeSet id="015_1_inserer_data_table_produit" author="waly">
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="ARGILE" />
+            <column name="NOM_NORM" value="ARGILE" />
+            <column name="DENSITE_GRM" value="1.5" />
+            <column name="DENSITE_KGM" value="1500" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="ATTAPULGITE" />
+            <column name="NOM_NORM" value="ATTAPULGITE" />
+            <column name="DENSITE_GRM" value="2.2" />
+            <column name="DENSITE_KGM" value="2200" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="BASALTE" />
+            <column name="NOM_NORM" value="BASALTE" />
+            <column name="DENSITE_GRM" value="3.05" />
+            <column name="DENSITE_KGM" value="3050" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="CALCAIRE" />
+            <column name="NOM_NORM" value="CALCAIRE" />
+            <column name="DENSITE_GRM" value="3.35" />
+            <column name="DENSITE_KGM" value="3350" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="COQUILLAGE" />
+            <column name="NOM_NORM" value="COQUILLAGE" />
+            <column name="DENSITE_GRM" value="2.3" />
+            <column name="DENSITE_KGM" value="2350" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="GRES" />
+            <column name="NOM_NORM" value="GRES" />
+            <column name="DENSITE_GRM" value="2.3" />
+            <column name="DENSITE_KGM" value="2300" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="LATERITE" />
+            <column name="NOM_NORM" value="LATERITE" />
+            <column name="DENSITE_GRM" value="1.8" />
+            <column name="DENSITE_KGM" value="1800" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="MANGANESE" />
+            <column name="NOM_NORM" value="MANGANESE" />
+            <column name="DENSITE_GRM" value="7.43" />
+            <column name="DENSITE_KGM" value="7430" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="PHOSPHATE" />
+            <column name="NOM_NORM" value="PHOSPHATE" />
+            <column name="DENSITE_GRM" value="1.83" />
+            <column name="DENSITE_KGM" value="1830" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="QUARTZITE" />
+            <column name="NOM_NORM" value="QUARTZITE" />
+            <column name="DENSITE_GRM" value="2.65" />
+            <column name="DENSITE_KGM" value="2650" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="SABLE" />
+            <column name="NOM_NORM" value="SABLE" />
+            <column name="DENSITE_GRM" value="1.8" />
+            <column name="DENSITE_KGM" value="1800" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="SILEX" />
+            <column name="NOM_NORM" value="SILEX" />
+            <column name="DENSITE_GRM" value="2.62" />
+            <column name="DENSITE_KGM" value="2620" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="ZIRCON" />
+            <column name="NOM_NORM" value="ZIRCON" />
+            <column name="DENSITE_GRM" value="4.7" />
+            <column name="DENSITE_KGM" value="4700" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
+

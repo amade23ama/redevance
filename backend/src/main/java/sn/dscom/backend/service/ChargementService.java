@@ -737,8 +737,8 @@ public class ChargementService implements IChargementService {
             ChargementEntity chargementEntity = chargementEntityFind.get();
             if (chargementEntity.getDepots().size() == 1 || chargementEntity.getDepots().size() == 0) {
                 chargementEntity.setDepots(null);
-                this.chargementRepository.save(chargementEntity);
-                this.chargementRepository.deleteById(chargementEntity.getId());
+                ChargementEntity chargementToDelete = this.chargementRepository.save(chargementEntity);
+                this.chargementRepository.deleteById(chargementToDelete.getId());
             } else {
                 var list = chargementEntity.getDepots().subList(1, chargementEntity.getDepots().size());
                 chargementEntity.setDepots(list);

@@ -38,11 +38,12 @@
     </div>
     <div *ngIf="visibleBtnExport">
     <button   mat-raised-button
-              class="btn-global-white export"
+             [disabled]="disableBtnExport"
               (click)="export(critereRecherches)"
               matTooltipPosition="left"
               matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"
-              matTooltipClass="custom-tooltip">
+              matTooltipClass="custom-tooltip"
+              [ngClass]="[disableBtnSupprimer? 'btn-global-disabled export':'btn-global-white export']">
         ExporterCSV
       <mat-icon>description</mat-icon>
       </button>

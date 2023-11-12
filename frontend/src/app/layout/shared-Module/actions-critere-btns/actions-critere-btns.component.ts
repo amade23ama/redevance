@@ -34,6 +34,7 @@ export class ActionsCritereBtnsComponent implements OnInit{
   @Input() searchDate:FormControl;
   @Input() visibleBtnSupprimer:boolean
   @Input() disableBtnSupprimer:boolean
+  @Input() disableBtnExport:boolean
   selectable: boolean = true;
   removable: boolean = true;
   annees$=this.referenceService.annees$

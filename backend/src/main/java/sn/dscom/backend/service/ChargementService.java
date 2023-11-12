@@ -719,6 +719,7 @@ public class ChargementService implements IChargementService {
      * @param critereRecherche critereRecherche
      * @return true or false
      */
+    @Transactional
     @Override
     public Boolean supprimerChargementBycritere(CritereRecherche critereRecherche) {
         List<ChargementDTO> listChrgmentToDelete = this.rechargementParCritere(critereRecherche);
@@ -738,7 +739,7 @@ public class ChargementService implements IChargementService {
             if (chargementEntity.getDepots().size() == 1 || chargementEntity.getDepots().size() == 0) {
                 chargementEntity.setDepots(null);
                 ChargementEntity chargementToDelete = this.chargementRepository.save(chargementEntity);
-                this.chargementRepository.deleteById(chargementToDelete.getId());
+                this.chargementRepository.deleteChargement(chargementToDelete.getId());
             } else {
                 var list = chargementEntity.getDepots().subList(1, chargementEntity.getDepots().size());
                 chargementEntity.setDepots(list);

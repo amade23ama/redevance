@@ -31,7 +31,7 @@ export class RechercheVehiculeComponent implements OnInit{
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
-
+  itemSize:number=0;
   // les noms des colones
   displayedColumns: string[] = ['NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
@@ -50,6 +50,7 @@ export class RechercheVehiculeComponent implements OnInit{
     this.listVehicule = new MatTableDataSource<Vehicule>(data);
     this.listVehicule.paginator=this.paginator;
     this.listVehicule.sort=this.sort;
+    this.itemSize=data.length
     });
     this.search.valueChanges?.pipe(
       debounceTime(300),

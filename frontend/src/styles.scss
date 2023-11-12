@@ -489,7 +489,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 .cdk-virtual-scroll-viewport::-webkit-scrollbar {
-  width: 1px!important;
+  width: 4px!important;
 }
 .cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
   background: $orange-40!important;

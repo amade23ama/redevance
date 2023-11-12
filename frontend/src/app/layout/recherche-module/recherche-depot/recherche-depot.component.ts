@@ -31,7 +31,7 @@ export class RechercheDepotComponent implements OnInit{
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  itemSize:number=0;
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
@@ -47,11 +47,11 @@ export class RechercheDepotComponent implements OnInit{
   ngOnInit(): void {
     this.depotService.getAllDepots().subscribe()
     this.depotService.depots$.subscribe((depots) => {
-      console.log("les sites: ", depots);
       //alimentation du tableau
       this.listDepots = new MatTableDataSource<Depot>(depots);
       this.listDepots.paginator=this.paginator;
       this.listDepots.sort=this.sort;
+      this.itemSize=depots.length
     })
     this.search.valueChanges?.pipe(
       debounceTime(300),

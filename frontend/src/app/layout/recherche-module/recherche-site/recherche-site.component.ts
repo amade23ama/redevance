@@ -34,7 +34,7 @@ export class RechercheSiteComponent implements OnInit {
    // nombre de ligne par page
    pageSizeOptions: number[] = [10, 20, 30];
    pageSize = 10; // nb ligne par page par défaut
-
+  itemSize:number=0;
    // les noms des colones  'Date Modification',
    displayedColumns: string[] = ['nom','localite','dateCreation','actions'];
  sites$=this.siteService.sites$
@@ -50,11 +50,11 @@ export class RechercheSiteComponent implements OnInit {
     this.rechargementSite()
     this.siteService.getCompteurSites().subscribe();
     this.siteService.sites$.subscribe((sites) => {
-      console.log("les sites: ", sites);
       //alimentation du tableau
     this.listSites = new MatTableDataSource<Site>(sites);
     this.listSites.paginator=this.paginator;
     this.listSites.sort=this.sort;
+    this.itemSize=sites.length;
     })
 
     this.siteService.nbSites$.subscribe((nb) => {

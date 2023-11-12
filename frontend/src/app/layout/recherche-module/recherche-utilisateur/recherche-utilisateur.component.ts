@@ -33,7 +33,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   pageSizeOptions: number[] = [10, 20, 30];
   rechercheUtilisateurListe: Utilisateur[] = [];
   displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil','dateCreation',"actions"];
-  pageSize = 10;
+  pageSize = 5;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   users$=this.utilisateurService.utilisateurs$
@@ -43,7 +43,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   recherche: AutocompleteRecherche[] = [];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherches$
   critereRecherches$=this.autocompleteRechercheService.critereRecherches$
-
+  itemSize=0;
   constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
             private router:Router,private paramService: ParamService, public dialog: MatDialog, public modalService: ModalService,
             private autocompleteRechercheService:AutocompleteRechercheService) {
@@ -57,6 +57,7 @@ export class RechercheUtilisateurComponent implements OnInit{
         this.dataSource= new MatTableDataSource<Utilisateur>(this.rechercheUtilisateurListe);
         this.dataSource.paginator=this.paginator
         this.dataSource.sort=this.sort
+        this.itemSize=res.length
       }
     })
 
@@ -177,4 +178,6 @@ export class RechercheUtilisateurComponent implements OnInit{
     }
 
   }
+
+  protected readonly length = length;
 }

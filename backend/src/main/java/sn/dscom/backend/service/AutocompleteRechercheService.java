@@ -245,23 +245,20 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     public List<AutocompleteRecherche> getChargementAutocompleteRecherche(String capture) {
         // si null or empty, on lève une 404
         final List<AutocompleteRecherche> listAutocompleteRecherche = new ArrayList<>();
-       /* if (!Strings.isNullOrEmpty(capture)) {
+        if (!Strings.isNullOrEmpty(capture)) {
             try {
                 String captureToNumber=capture.replaceAll("\\s", "");
                 double doubleNum = Double.parseDouble(captureToNumber);
-                if(String.valueOf(doubleNum).length()==4){
-                    listAutocompleteRecherche.add(new AutocompleteRecherche(captureToNumber, "Annee",captureToNumber, "ANNEE"));
-                }
-
+                listAutocompleteRecherche.add(new AutocompleteRecherche(captureToNumber, "N° Import",captureToNumber, "Import"));
             }catch (Exception e){
 
             }
         }
 
         return  listAutocompleteRecherche;
-          */
 
-        if (!Strings.isNullOrEmpty(capture)) {
+
+        /*if (!Strings.isNullOrEmpty(capture)) {
             List<ChargementEntity> list = Try.of(() -> ChargementEntity.builder()
                             .destination(capture)
                             .build())
@@ -273,6 +270,7 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
             }
         }
         return new ArrayList<>();
+        */
     }
 
     @Override

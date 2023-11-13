@@ -1,11 +1,13 @@
 package sn.dscom.backend.service.util;
 
 import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import sn.dscom.backend.common.util.CommonConstants;
 import sn.dscom.backend.database.entite.ChargementEntity;
+import sn.dscom.backend.database.entite.DepotEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +21,17 @@ public class ChargementSpecifications {
                                                                            List<Long> vehiculeIds,
                                                                            List<String> regions,
                                                                            List<String> localites,
-                                                                           Integer annee) {
+                                                                           Integer annee,
+                                                                            List<Long> idDepots) {
         return (root, query, criteriaBuilder) -> {
 
             List<Predicate> predicates = new ArrayList<>();
+            if (idDepots != null && !idDepots.isEmpty()) {
+                query.distinct(true);
+                Join<ChargementEntity, DepotEntity> depotsJoin = root.join("depots", JoinType.INNER);
+                Predicate condition = depotsJoin.get("id").in(idDepots);
+                predicates.add(condition);
+            }
             if (siteIds != null && !siteIds.isEmpty()) {
                 query.distinct(true);
                 root.join("siteEntity", JoinType.INNER);

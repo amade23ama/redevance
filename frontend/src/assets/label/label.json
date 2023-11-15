@@ -161,7 +161,8 @@
     "reset.password.title": "Récupération de compte",
     "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email",
 
-    "formulaire.chargement.title": "Modification Chargement"
+    "formulaire.chargement.title": "Modification Chargement",
+    "nombre.element": "le nombre d'élément(s) trouvé(s)"
   }
 }
 

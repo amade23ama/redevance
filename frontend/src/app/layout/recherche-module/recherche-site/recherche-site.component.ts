@@ -32,12 +32,20 @@ export class RechercheSiteComponent implements OnInit {
    @ViewChild(MatSort) sort: MatSort;
 
    // nombre de ligne par page
-   pageSizeOptions: number[] = [10, 20, 30];
+   //pageSizeOptions: number[] = [10, 20, 30];
    pageSize = 10; // nb ligne par page par défaut
-  itemSize:number=0;
+   itemSize:number=0;
+   totalItems = 10;
+   page = 0;
+   size = 10;
+   itemsPerPage = 10;
+   newPage=0
+   croll:boolean=false;
+   private lastScrollIndex = 0;
    // les noms des colones  'Date Modification',
    displayedColumns: string[] = ['nom','localite','dateCreation','actions'];
- sites$=this.siteService.sites$
+ sites$=this.siteService.sites$;
+ nb$=this.siteService.nbSites$;
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesSite$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesSite$
   /** site Service */
@@ -46,15 +54,15 @@ export class RechercheSiteComponent implements OnInit {
 
 
   ngOnInit(): void {
-   // this.siteService.getAllSites().subscribe();
-    this.rechargementSite()
-    this.siteService.getCompteurSites().subscribe();
+    this.siteService.setSites([]);
+    this.rechargementSite();
     this.siteService.sites$.subscribe((sites) => {
       //alimentation du tableau
     this.listSites = new MatTableDataSource<Site>(sites);
-    this.listSites.paginator=this.paginator;
+    //this.listSites.paginator=this.paginator;
     this.listSites.sort=this.sort;
     this.itemSize=sites.length;
+    this.totalItems = 100;
     })
 
     this.siteService.nbSites$.subscribe((nb) => {
@@ -65,6 +73,9 @@ export class RechercheSiteComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((capture) => {
+        this.page=0
+        this.newPage=0;
+        this.croll=false;
         return this.autocompleteRechercheService.autocompleteSite(capture);
       })
     ).subscribe();
@@ -100,12 +111,12 @@ export class RechercheSiteComponent implements OnInit {
       if(res) {
         const critereRecherche   = {
           autocompleteRecherches:res,
-          page :1,
-          size :20,
+          page :this.newPage,
+          size :this.size,
           dateDebut :new Date(),
           dateFin :new Date(),
         } as CritereRecherche
-        this.siteService.chargementSiteParCritere(critereRecherche).subscribe()
+        this.siteService.chargementSiteParCritere(critereRecherche, this.croll).subscribe()
       }
     })
   }
@@ -133,5 +144,22 @@ export class RechercheSiteComponent implements OnInit {
       }
   });
 
+  }
+
+  onScrollEnd(index: number) {
+    const isScrollingDown = index > this.lastScrollIndex;
+    this.lastScrollIndex = index;
+    if (isScrollingDown) {
+      this.page++
+      const totalLoadedItems = this.page * this.itemsPerPage;
+      const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
+      this.newPage=newIndex;
+      this.croll=true
+      this.rechargementSite();
+    }
+  }
+
+  getItemSize() {
+    return 50;
   }
 }

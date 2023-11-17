@@ -1,5 +1,7 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -51,4 +53,12 @@ public interface SiteRepository extends JpaRepository<SiteEntity,Long>{
     List<SiteEntity> findSiteEntitiesByIdIsIn(@Param("idsSite") List<Long> idsSite);
 
     List<SiteEntity> findAll( Specification<SiteEntity>spec);
+
+    /**
+     * findAll
+     * @param spec spec
+     * @param pageable pageable
+     * @return Page<SiteEntity>
+     */
+    Page<SiteEntity> findAll(Specification<SiteEntity> spec, Pageable pageable);
 }

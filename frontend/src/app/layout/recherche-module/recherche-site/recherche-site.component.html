@@ -12,17 +12,23 @@
      [critereRecherches]="critereRecherches$"
      [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
+    <div fxLayout fxLayout="row" >
+      <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+    </div>
     <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-      <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+      <cdk-virtual-scroll-viewport
+      [itemSize]="getItemSize()"
+      (scrolledIndexChange)="onScrollEnd($event)"
+       class="cdk-virtual-scroll-viewport">
       <table mat-table matSort  [dataSource]="listSites"  class="mat-elevation-z0 table-parent" matSort>
-            <ng-container matColumnDef="nom">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Nom du site</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div class="d-flex">{{element?.nom}}</div>
-                </td>
-            </ng-container>
+          <ng-container matColumnDef="nom">
+            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+              <div class="d-flex">Nom du site</div>
+            </th>
+            <td mat-cell *matCellDef="let element">
+              <div class="d-flex">{{element?.nom}}</div>
+            </td>
+          </ng-container>
           <ng-container matColumnDef="localite">
           <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
             <div class="d-flex">Localité</div>
@@ -64,12 +70,14 @@
 
         </table>
       </cdk-virtual-scroll-viewport>
+      <!--
       <div class="parging">
         <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"
                  showFirstLastButtons>
         </mat-paginator>
       </div>
+      -->
     </div>
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="sites$|async as sites">
     <div>

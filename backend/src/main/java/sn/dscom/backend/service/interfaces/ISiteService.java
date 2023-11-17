@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.data.domain.Page;
 import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.SiteDTO;
 
@@ -56,5 +57,5 @@ public interface ISiteService {
      * @param critereRecherche critereRecherche
      * @return liste
      */
-     List<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+    Page<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Globals } from "../../app.constants";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Page } from '../interfaces/page';
 import { Site } from '../interfaces/site';
-import {NotificationService} from "./notification.service";
-import {Produit} from "../interfaces/produit";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Globals} from "../../app.constants";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -117,12 +117,17 @@ export class SiteService {
    * @returns la liste des Site
    */
   supprimerSite(id: number){
+    this.globals.loading=true
     return this.httpClient.get<boolean>(this.url + `/supprimer/${id}`)
     .pipe(
       tap((res:boolean)=> {
         console.log("suppression du site d'id: ", id);
+        this.removeSite(id)
+        this.globals.loading=false
       }),
       catchError((err) => {
+        this.globals.loading=false
+        this.notification.error("Erreur lors de la suppression du site");
         return throwError(() => err)
       })
     )
@@ -162,19 +167,39 @@ export class SiteService {
   getSiteCourant() {
     return this.siteCourant;
   }
-  chargementSiteParCritere(critereRecherche:CritereRecherche ) {
-    this.globals.loading = true;
-    return this.httpClient.post<Site[]>(this.url+"/rechercheBy",critereRecherche)
+
+  chargementSiteParCritere(critereRecherche: CritereRecherche, scroll?: boolean) {
+    this.globals.loading=true
+    return this.httpClient.post<Page<Site>>(this.url + "/rechercheBy", critereRecherche)
       .pipe(
-        tap((res:Site[]) => {
-          this.setSites(res);
-          this.globals.loading = false;
+        tap((res: Page<Site>) => {
+          this.setNbSites(res.totalElements);
+          if(res.totalElements==0){
+            this.setSites([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._sites.getValue(), ...res.content]));
+            this.setSites(result);
+          } else {
+            this.setSites([...res.content]);
+          }
+          this.globals.loading=false
         }),
         catchError((err) => {
-          this.globals.loading = false;
+          this.globals.loading=false
           this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err)
         })
       )
+  }
+
+  removeSite(id: number) {
+    const currents = this._sites.getValue();
+    const filtre=currents.find((res)=>res.id==id)
+    const index=currents.indexOf(filtre)
+    if(index!=-1){
+      currents.splice(index,1)
+      this._sites.next(currents);
+    }
   }
 }

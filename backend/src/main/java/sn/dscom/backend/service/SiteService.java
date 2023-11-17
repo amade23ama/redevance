@@ -4,6 +4,9 @@ import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -171,17 +174,20 @@ public class SiteService implements ISiteService {
      * @return liste
      */
     @Override
-    public List<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+    public Page<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
 
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             // On charge l'ensemble des site
-            List<SiteEntity> listSitesFind = this.siteRepository.findAll();
+            Page<SiteEntity> listSitesFind = this.siteRepository.findAll(pageRequest);
 
             //retourne la liste
-            return listSitesFind.stream()
+            List<SiteDTO> listSite = listSitesFind.getContent().stream()
                     .map(this.siteConverteur::reverse)
                     .filter(Objects::nonNull)
-                    .collect(Collectors.toList());
+                    .toList();
+
+            return new PageImpl<>(listSite, pageRequest, listSitesFind.getTotalElements());
         }
 
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
@@ -200,19 +206,11 @@ public class SiteService implements ISiteService {
         Specification<SiteEntity> spec = Specification
                 .where(SiteSpecifications.withSite(idsSite, valueLocalites));
 
-        List<SiteEntity> listExploitationFind= this.siteRepository.findAll(spec);
-        return listExploitationFind.stream()
+        Page<SiteEntity> listSitesFind = this.siteRepository.findAll(spec, pageRequest);
+        List<SiteDTO> listSite =  listSitesFind.stream()
                 .map(this.siteConverteur::reverse)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
-      /*  return Try.of(() -> idsSite)
-                .filter(Objects::nonNull)
-                .mapTry(this.siteRepository::findSiteEntitiesByIdIsIn)
-                .get()
-                .stream()
-                .map(this.siteConverteur::reverse)
-                .collect(Collectors.toList());
-        */
+                .toList();
+        return new PageImpl<>(listSite, pageRequest, listSitesFind.getTotalElements());
     }
 }

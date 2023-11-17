@@ -1,5 +1,7 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -44,5 +46,5 @@ public interface CategorieRepository extends JpaRepository<CategorieEntity,Long>
     CategorieEntity rechercherCategorieByType(@Param("type") String type);
 
     List<CategorieEntity> findCategorieEntitiesByIdIsIn(@Param("idsCategorie") List<Long> idsCategorie);
-    List<CategorieEntity> findAll(Specification<CategorieEntity> spec);
+    Page<CategorieEntity> findAll(Specification<CategorieEntity> spec, Pageable pageable);
 }

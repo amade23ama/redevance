@@ -34,9 +34,16 @@ export class RechercheCategorieComponent implements  OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [10, 20, 30];
+  //pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
-  itemSize:number=0
+  itemSize: number = 0;
+  totalItems = 10;
+  page = 0;
+  size = 10;
+  itemsPerPage = 10;
+  newPage = 0
+  croll: boolean = false;
+  private lastScrollIndex = 0;
   rechercheCategogies: Categorie[] = [];
   displayedColumns: string[] =['type', 'volume','dateCreation','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesCategorie$
@@ -46,19 +53,24 @@ export class RechercheCategorieComponent implements  OnInit{
               private router:Router,private autocompleteRechercheService:AutocompleteRechercheService) {
   }
   ngOnInit(): void {
+    this.categorieService.setCategories([]);
     this.rechargementCategorie()
     /** appel du service rechercherVehicules pour recupérer toutes les véhicules en base */
     this.categorieService.categories$.subscribe((data) =>{
       //alimentation du tableau
       this.listCategorie = new MatTableDataSource<Categorie>(data);
-      this.listCategorie.paginator=this.paginator;
+      //this.listCategorie.paginator=this.paginator;
       this.listCategorie.sort=this.sort;
       this.itemSize=data.length
+      this.totalItems = 100;
     });
     this.search.valueChanges?.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((capture) => {
+        this.page=0
+        this.newPage=0;
+        this.croll=false;
         return this.autocompleteRechercheService.autocompleteCategorie(capture);
       })
     ).subscribe();
@@ -87,12 +99,12 @@ export class RechercheCategorieComponent implements  OnInit{
       if(res) {
         const critereRecherche   = {
           autocompleteRecherches:res,
-          page :1,
-          size :20,
+          page :this.newPage,
+          size :this.size,
           dateDebut :new Date(),
           dateFin :new Date(),
         } as CritereRecherche
-        this.categorieService.chargementCategorieParCritere(critereRecherche).subscribe()
+        this.categorieService.chargementCategorieParCritere(critereRecherche, this.croll).subscribe()
       }
 
     })
@@ -120,6 +132,24 @@ export class RechercheCategorieComponent implements  OnInit{
         });
       }
   });
+}
+
+
+onScrollEnd(index: number) {
+  const isScrollingDown = index > this.lastScrollIndex;
+  this.lastScrollIndex = index;
+  if (isScrollingDown) {
+    this.page++
+    const totalLoadedItems = this.page * this.itemsPerPage;
+    const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
+    this.newPage=newIndex;
+    this.croll=true
+    this.rechargementCategorie();
+  }
+}
+
+getItemSize() {
+  return 50;
 }
 
 }

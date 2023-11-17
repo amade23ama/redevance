@@ -5,6 +5,7 @@ import { environment } from "../../../environments/environment";
 import { Globals } from "../../app.constants";
 import { Categorie } from "../interfaces/categorie";
 import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Page } from "../interfaces/page";
 import { NotificationService } from "./notification.service";
 
 @Injectable({
@@ -67,10 +68,16 @@ export class CategorieService{
    * @returns
    */
   supprimerCategories(id: number) {
+    this.globals.loading=true
     return this.httpClient.delete<Categorie>(this.url + '/supprimer/'+ id) .pipe(
-      tap(() => { }
+      tap(() => { 
+        console.log("suppression de la Categorie d'id: ", id);
+        this.removeCategorie(id)
+        this.globals.loading=false
+      }
       ),
       catchError((err) => {
+        this.globals.loading=false
         this.notification.error(" Suppression impossible ")
         return throwError(() => err)
       })
@@ -98,13 +105,22 @@ export class CategorieService{
   getCategorieCourant() {
     return this.categorieCourant;
   }
-  chargementCategorieParCritere(critereRecherche:CritereRecherche ) {
+  chargementCategorieParCritere(critereRecherche:CritereRecherche, scroll?: boolean) {
     this.globals.loading = true;
-    return this.httpClient.post<Categorie[]>(this.url+"/rechercheBy",critereRecherche)
+    return this.httpClient.post<Page<Categorie>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
-        tap((res:Categorie[]) => {
-          this.setCategories(res);
-          this.globals.loading = false;
+        tap((res: Page<Categorie>) => {
+          //this.setNbSites(res.totalElements);
+          if(res.totalElements==0){
+            this.setCategories([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._categories$.getValue(), ...res.content]));
+            this.setCategories(result);
+          } else {
+            this.setCategories([...res.content]);
+          }
+          this.globals.loading=false
         }),
         catchError((err) => {
           this.notification.error(" erreurr de recuperation Utilisateur ")
@@ -112,5 +128,15 @@ export class CategorieService{
           return throwError(() => err)
         })
       )
+  }
+
+  removeCategorie(id: number) {
+    const currents = this._categories$.getValue();
+    const filtre=currents.find((res)=>res.id==id)
+    const index=currents.indexOf(filtre)
+    if(index!=-1){
+      currents.splice(index,1)
+      this._categories$.next(currents);
+    }
   }
 }

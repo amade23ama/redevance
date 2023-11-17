@@ -1,5 +1,8 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -42,4 +45,12 @@ public interface ProduitRepository extends JpaRepository<ProduitEntity,Long>{
      * @return la liste
      */
     List<ProduitEntity> findProduitEntitiesByIdIsIn(@Param("produitIds") List<Long> produitIds);
+
+    /**
+     * findAll
+     * @param spec spec
+     * @param pageable pageable
+     * @return Page<ProduitEntity>
+     */
+    Page<ProduitEntity> findAll(Specification<ProduitEntity> spec, Pageable pageable);
 }

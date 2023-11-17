@@ -4,6 +4,7 @@ import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -102,7 +103,7 @@ public class ProduitController {
      */
     @PostMapping (value = "/rechercheBy")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ProduitDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
+    public ResponseEntity<Page<ProduitDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
         return ResponseEntity.ok(produitService.rechargementParCritere(critereRecherche));
     }
 }

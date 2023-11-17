@@ -1,4 +1,5 @@
 package sn.dscom.backend.service.interfaces;
+import org.springframework.data.domain.Page;
 import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.ProduitDTO;
 
@@ -56,7 +57,7 @@ public interface IProduitService {
      * @param critereRecherche critereRecherche
      * @return liste
      */
-     List<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+    Page<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 
     /**
      * supprimerProduit

@@ -29,9 +29,16 @@ export class RechercheVehiculeComponent implements OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [10, 20, 30];
+  //pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
   itemSize:number=0;
+  totalItems = 10;
+  page = 0;
+  size = 10;
+  itemsPerPage = 10;
+  newPage=0
+  croll:boolean=false;
+  private lastScrollIndex = 0;
   // les noms des colones
   displayedColumns: string[] = ['NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
@@ -43,19 +50,24 @@ export class RechercheVehiculeComponent implements OnInit{
 
 
   ngOnInit(): void {
+    this.vehiculeService.setVehicules([]);
     this.rechargementVehicule()
     /** appel du service rechercherVehicules pour recupérer toutes les véhicules en base */
     this.vehiculeService.vehicules$.subscribe((data) =>{
     //alimentation du tableau
     this.listVehicule = new MatTableDataSource<Vehicule>(data);
-    this.listVehicule.paginator=this.paginator;
+    //this.listVehicule.paginator=this.paginator;
     this.listVehicule.sort=this.sort;
     this.itemSize=data.length
+    this.totalItems = 100;
     });
     this.search.valueChanges?.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((capture) => {
+        this.page=0
+        this.newPage=0;
+        this.croll=false;
         return this.autocompleteRechercheService.autocompleteVehicule(capture);
       })
     ).subscribe();
@@ -92,13 +104,30 @@ export class RechercheVehiculeComponent implements OnInit{
       if(res) {
         const critereRecherche   = {
           autocompleteRecherches:res,
-          page :1,
-          size :20,
+          page :this.newPage,
+          size :this.size,
           dateDebut :new Date(),
           dateFin :new Date(),
         } as CritereRecherche
-        this.vehiculeService.chargementVehiculeParCritere(critereRecherche).subscribe()
+        this.vehiculeService.chargementVehiculeParCritere(critereRecherche, this.croll).subscribe()
       }
     })
+  }
+
+  onScrollEnd(index: number) {
+    const isScrollingDown = index > this.lastScrollIndex;
+    this.lastScrollIndex = index;
+    if (isScrollingDown) {
+      this.page++
+      const totalLoadedItems = this.page * this.itemsPerPage;
+      const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
+      this.newPage=newIndex;
+      this.croll=true
+      this.rechargementVehicule();
+    }
+  }
+
+  getItemSize() {
+    return 50;
   }
 }

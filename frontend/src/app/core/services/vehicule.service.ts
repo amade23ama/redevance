@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, Observable, share, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Globals } from "../../app.constants";
 import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Page } from '../interfaces/page';
 import { Vehicule } from '../interfaces/vehicule';
 import { NotificationService } from "./notification.service";
 
@@ -83,7 +84,18 @@ export class VehiculeService {
    */
   supprimerVehicule(vehicule: Vehicule): Observable<boolean> {
     //const param = new HttpParams().set('id',id);
-    return this.httpClient.post<boolean>(this.url + '/supprimer', vehicule).pipe(share());
+    return this.httpClient.post<boolean>(this.url + '/supprimer', vehicule).pipe(
+      tap((res:boolean)=> {
+        console.log("suppression du Vehicule d'id: ", vehicule.id);
+        this.removeVehicule(vehicule.id)
+        this.globals.loading=false
+      }),
+      catchError((err) => {
+        this.globals.loading=false
+        this.notification.error("Erreur lors de la suppression du Vehicule");
+        return throwError(() => err)
+      }
+    ));
   }
   get vehicules$(): Observable<Vehicule[]> { // getter ou selector
     return this._vehicules$.asObservable()
@@ -121,13 +133,22 @@ export class VehiculeService {
   getVehiculeCourant() {
     return this.vehiculeCourant ;
   }
-  chargementVehiculeParCritere(critereRecherche:CritereRecherche ) {
+  chargementVehiculeParCritere(critereRecherche:CritereRecherche, scroll?: boolean) {
     this.globals.loading = true;
-    return this.httpClient.post<Vehicule[]>(this.url+"/rechercheBy",critereRecherche)
+    return this.httpClient.post<Page<Vehicule>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
-        tap((res:Vehicule[]) => {
-          this.globals.loading = false;
-          this.setVehicules(res);
+        tap((res: Page<Vehicule>) => {
+          //this.setNbSites(res.totalElements);
+          if(res.totalElements==0){
+            this.setVehicules([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._vehicules$.getValue(), ...res.content]));
+            this.setVehicules(result);
+          } else {
+            this.setVehicules([...res.content]);
+          }
+          this.globals.loading=false
         }),
         catchError((err) => {
           this.globals.loading = false;
@@ -135,5 +156,15 @@ export class VehiculeService {
           return throwError(() => err)
         })
       )
+  }
+
+  removeVehicule(id: number) {
+    const currents = this._vehicules$.getValue();
+    const filtre=currents.find((res)=>res.id==id)
+    const index=currents.indexOf(filtre)
+    if(index!=-1){
+      currents.splice(index,1)
+      this._vehicules$.next(currents);
+    }
   }
 }

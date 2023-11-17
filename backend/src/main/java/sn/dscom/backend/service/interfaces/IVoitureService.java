@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.data.domain.Page;
 import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 
@@ -48,5 +49,5 @@ public interface IVoitureService {
      * @param critereRecherche critereRecherche
      * @return liste
      */
-     List<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+    Page<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

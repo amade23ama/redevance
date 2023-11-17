@@ -13,7 +13,10 @@
      [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
     <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-      <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+      <cdk-virtual-scroll-viewport
+      [itemSize]="getItemSize()"
+      (scrolledIndexChange)="onScrollEnd($event)"
+       class="cdk-virtual-scroll-viewport">
       <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
           <ng-container matColumnDef="NomRS">
@@ -116,13 +119,13 @@
 
         </table>
       </cdk-virtual-scroll-viewport>
-      <div>
+       <!-- <div>
         <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"
                  showFirstLastButtons>
         </mat-paginator>
       </div>
-    </div>
+    </div> -->
 
 
 

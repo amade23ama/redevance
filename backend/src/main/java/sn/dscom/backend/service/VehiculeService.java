@@ -3,6 +3,9 @@ package sn.dscom.backend.service;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -166,16 +169,16 @@ public class VehiculeService implements IVoitureService{
      * @return liste
      */
     @Override
-    public List<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-
+    public Page<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
         //S'il n'y a pas de critère on remonte tout
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
-            /** find all de tous les véhicule*/
-            List<VehiculeEntity> list = this.vehiculeRepository.findAll();
+            Page<VehiculeEntity> list = this.vehiculeRepository.findAll(pageRequest);
 
-            return list.stream()
-                    .map(vehiculeEntity ->  vehiculeConverter.reverse(vehiculeEntity))
-                    .collect(Collectors.toList());
+            List<VehiculeDTO> listVehicule = list.getContent().stream()
+                    .map(vehiculeConverter::reverse)
+                    .toList();
+            return new PageImpl<>(listVehicule, pageRequest, list.getTotalElements());
         }
 
         List<Long> idsVehicule = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
@@ -200,11 +203,12 @@ public class VehiculeService implements IVoitureService{
                 .where(VehiculeSpecifications.withVehiculeIdsAndCategorieIds(idsVehicule,idsCategorie,
                         volumes));
 
-        List<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec);
-        return listVehiculeFind.stream()
+        Page<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec, pageRequest);
+        List<VehiculeDTO> listVehicule = listVehiculeFind.getContent().stream()
                 .map(this.vehiculeConverter::reverse)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
+        return new PageImpl<>(listVehicule, pageRequest, listVehiculeFind.getTotalElements());
     }
 }

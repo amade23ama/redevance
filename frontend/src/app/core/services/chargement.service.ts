@@ -7,8 +7,8 @@ import { Globals } from "../../app.constants";
 import { Chargement } from "../interfaces/chargement";
 import { CritereRecherche } from "../interfaces/critere.recherche";
 import { Fichier } from "../interfaces/fichier";
+import { Page } from "../interfaces/page";
 import { NotificationService } from "./notification.service";
-import {AutocompleteRecherche} from "../interfaces/autocomplete.recherche";
 
 @Injectable({
   providedIn:"root"
@@ -47,14 +47,24 @@ export class ChargementService{
   get chargements$(){
     return this._chargements$.asObservable();
   }
-  chargementChargementParCritere(critereRecherche:CritereRecherche ) {
+  chargementChargementParCritere(critereRecherche:CritereRecherche, scroll?: boolean) {
     this.globals.loading = true;
-    return this.http.post<Chargement[]>(this.url+"/rechercheBy",critereRecherche)
+    return this.http.post<Page<Chargement>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
-        tap((res:Chargement[]) => {
-          this.setChargements(res!==null?res:[]);
-          this.globals.loading = false;
+        tap((res: Page<Chargement>) => {
+          //this.setNbSites(res.totalElements);
+          if(res.totalElements==0){
+            this.setChargements([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._chargements$.getValue(), ...res.content]));
+            this.setChargements(result);
+          } else {
+            this.setChargements([...res.content]);
+          }
+          this.globals.loading=false
         }),
+
         catchError((err) => {
           this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Chargement ")

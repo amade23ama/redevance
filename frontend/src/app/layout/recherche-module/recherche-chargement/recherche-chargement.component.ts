@@ -33,9 +33,16 @@ export  class RechercheChargementComponent implements  OnInit{
   selection = new SelectionModel<Chargement>(true, []);
   disableBtnSupprimer:boolean=true;
   // nombre de ligne par page
-  pageSizeOptions: number[] = [10, 20, 30];
+  //pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
   itemSize:number=0;
+  totalItems = 10;
+  page = 0;
+  size = 10;
+  itemsPerPage = 10;
+  newPage=0
+  croll:boolean=false;
+  private lastScrollIndex = 0;
   rechercheChargements: Chargement[] = [];
   // les noms des colones  'Date Modification',,'categorie'
   displayedColumns: string[] =['numImport' ,'datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
@@ -47,6 +54,8 @@ export  class RechercheChargementComponent implements  OnInit{
               public readonly  referenceService:ReferenceService) {
   }
   ngOnInit() {
+    this.chargementService.setChargements([]);
+    this.rechargementChargement();
     this.referenceService.getAnneeMax()
     this.searchDate.setValue(this.referenceService.getAnneeMax())
 
@@ -54,19 +63,23 @@ export  class RechercheChargementComponent implements  OnInit{
       if(chargements!==null){
         this.rechercheChargements=chargements
         this.listChargements = new MatTableDataSource<Chargement>(this.rechercheChargements);
-        this.listChargements.paginator=this.paginator;
+        //this.listChargements.paginator=this.paginator;
         this.listChargements.sort=this.sort;
         this.itemSize=chargements.length
+        this.totalItems = 100;
       }
       })
     this.search.valueChanges?.pipe(
       debounceTime(300),
       distinctUntilChanged(),
       switchMap((capture) => {
+        this.page=0
+        this.newPage=0;
+        this.croll=false;
         return this.autocompleteRechercheService.autocompleteChargement(capture);
       })
     ).subscribe();
-    this.rechargementChargement();
+    //this.rechargementChargement();
   }
 
   ouvreNouveauChargement(){
@@ -101,17 +114,17 @@ export  class RechercheChargementComponent implements  OnInit{
       if(res) {
         const critereRecherche   = {
           autocompleteRecherches:res,
-          page :1,
-          size :20,
+          page :this.newPage,
+          size :this.size,
           dateDebut :new Date(),
           dateFin :new Date(),
         } as CritereRecherche
         this.searchDate.valueChanges.subscribe((value)=>{
           critereRecherche.annee=this.searchDate.value;
-          this.chargementService.chargementChargementParCritere(critereRecherche).subscribe()
+          this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
         })
         critereRecherche.annee=this.searchDate.value;
-        this.chargementService.chargementChargementParCritere(critereRecherche).subscribe()
+        this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
       }
 
     })
@@ -132,28 +145,46 @@ export  class RechercheChargementComponent implements  OnInit{
     }
 
   }
-  checkboxToggle(event: any,chargement:Chargement) {
-    if(event.checked) {
-      this.selection.select(chargement);
-    }else {
-      this.selection.deselect(chargement)
+    checkboxToggle(event: any, chargement: Chargement) {
+      if (event.checked) {
+        this.selection.select(chargement);
+      } else {
+        this.selection.deselect(chargement)
+      }
+      this.disableBtnSupprimer = this.selection.selected.length > 0 ? false : true;
+      this.isAllSelected()
     }
-    this.disableBtnSupprimer=this.selection.selected.length>0?false:true;
-    this.isAllSelected()
-  }
-  supprimer(critereRecherches:Observable<AutocompleteRecherche[]>){
-    const critereRecherche:CritereRecherche=new CritereRecherche()
-    critereRecherches.subscribe((res)=>{
-      critereRecherche.autocompleteRecherches=res;
-    })
-    critereRecherche.annee=this.searchDate.value
-    if(this.isAllSelected()){
-    this.chargementService.supprimer(critereRecherche).subscribe(()=>{
+    supprimer(critereRecherches: Observable<AutocompleteRecherche[]>) {
+      const critereRecherche: CritereRecherche = new CritereRecherche()
+      critereRecherches.subscribe((res) => {
+        critereRecherche.autocompleteRecherches = res;
+      })
+      critereRecherche.annee = this.searchDate.value
+      if (this.isAllSelected()) {
+        this.chargementService.supprimer(critereRecherche).subscribe(() => {
+          this.rechargementChargement();
+        });
+      } else {
+        this.chargementService.supprimerById(this.selection.selected).subscribe(() => {
+        });
+      }
+    }
+
+
+  onScrollEnd(index: number) {
+    const isScrollingDown = index > this.lastScrollIndex;
+    this.lastScrollIndex = index;
+    if (isScrollingDown) {
+      this.page++
+      const totalLoadedItems = this.page * this.itemsPerPage;
+      const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
+      this.newPage = newIndex;
+      this.croll = true
       this.rechargementChargement();
-    });
-    }else {
-     this.chargementService.supprimerById(this.selection.selected).subscribe(()=>{
-     });
     }
   }
+
+  getItemSize() {
+    return 50;
   }
+}

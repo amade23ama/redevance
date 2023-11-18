@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.data.domain.Page;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
@@ -79,7 +80,20 @@ public interface IChargementService {
      * @return liste
      */
     Integer getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
-    public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return Page<ChargementDTO>
+     */
+    Page<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return Page<ChargementDTO>
+     */
+    List<ChargementDTO> rechercherChargementParCritere(CritereRecherche<?> critereRecherche);
 
     /**
      * chargementDTOs To Bytes

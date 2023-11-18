@@ -21,7 +21,10 @@
   </app-actions-critere-btns>
 
   <div  fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" >
-    <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+    <cdk-virtual-scroll-viewport
+    [itemSize]="getItemSize()"
+    (scrolledIndexChange)="onScrollEnd($event)"
+     class="cdk-virtual-scroll-viewport">
     <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort *ngIf="chargements$|async as char">
 
       <ng-container matColumnDef="numImport">
@@ -151,12 +154,12 @@
 
     </table>
     </cdk-virtual-scroll-viewport>
-    <div class="parging">
+    <!--<div class="parging">
     <mat-paginator [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions"
                    showFirstLastButtons>
     </mat-paginator>
-    </div>
+    </div>-->
 
   </div>
 </div>

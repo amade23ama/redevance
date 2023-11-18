@@ -12,7 +12,7 @@
      [critereRecherches]="critereRecherches$"
      [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
-    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
       <cdk-virtual-scroll-viewport
       [itemSize]="getItemSize()"
       (scrolledIndexChange)="onScrollEnd($event)"
@@ -21,7 +21,7 @@
             <!-- COLONNE : PRENOM -->
           <ng-container matColumnDef="NomRS">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">Prenom-Nom/RS</div>
+              <div class="d-flex">Nom complet / RS</div>
             </th>
             <td mat-cell *matCellDef="let element">
               <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom :element?.transporteur.nom}}</div>
@@ -161,4 +161,4 @@
     </div>
   </div>
 </div>
-
+</div>

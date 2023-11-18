@@ -9,7 +9,7 @@
     "label.ministere.geologie":"et de la Géologie",
     "label.devise":"Un Peuple – Un But – Une Foi",
     "label.republique":"REPUBLIQUE DU SENEGAL",
-    "label.email.geosen": "geosen.waly.senghor@gmail.com",
+    "label.email.geosen": "Ministère des Mines et de la Géologie",
     "label.republique.senegal":"Des Mines",
     "label.xx": "Ministere des Mines et de la Geologie",
     "authentification": "Connexion",
@@ -162,7 +162,7 @@
     "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email",
 
     "formulaire.chargement.title": "Modification Chargement",
-    "nombre.element": "le nombre d'élément(s) trouvé(s)"
+    "nombre.element": "Nombre d'enregistrement(s) trouvé(s)"
   }
 }
 

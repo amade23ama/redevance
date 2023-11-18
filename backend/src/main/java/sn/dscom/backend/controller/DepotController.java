@@ -23,11 +23,14 @@ import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.constants.Enum.StatutEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
+import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.service.ChargementService;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
+import sn.dscom.backend.service.mail.EmailDetails;
+import sn.dscom.backend.service.mail.IMailService;
 
 import java.io.*;
 import java.util.*;
@@ -79,6 +82,10 @@ public class DepotController {
      */
     @Autowired
     private ISiteService siteService;
+
+    /** mailService */
+    @Autowired
+    private IMailService mailService;
 
     /**
      * get header
@@ -141,8 +148,6 @@ public class DepotController {
         List<ProduitDTO> produitDTOS = this.produitService.rechercherProduits().get();
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
-        // la liste des chargements à effectuer
-       // List<ChargementDTO> listChargementAEffectuer = new ArrayList<>();
         // Le Depot
         DepotDTO depot = new DepotDTO();
         String nom;
@@ -207,6 +212,8 @@ public class DepotController {
                 depot.setNbChargementErreur(depotCreat.getNbChargementErreur());
                 this.depotService.enregistrerDepot(depot);
                 log.info(" entete du fichier "+header);
+                //Envoie du mail
+                this.envoiMail(utilisateurDTO);
             }catch (IOException | CsvValidationException e) {
                 e.printStackTrace();
                 // mise à jour du dépot
@@ -289,12 +296,6 @@ public class DepotController {
         catch (IOException | CsvValidationException e) {
             e.printStackTrace();
         }
-
-        //2) enregistrer le depot
-
-        //3) faire le traitement sur le fichier
-
-
         //enregistrer ou modifier Depot
         return  ResponseEntity.ok(depot);
     }
@@ -391,6 +392,18 @@ public class DepotController {
                 .mapTry(this.siteService::rechercherSite)
                 .onFailure(e -> DepotController.log.error(String.format("Erreur lors de la recherche du Site : %s",e.getMessage())))
                 .get().get());
+    }
+
+    /**
+     * methode d'envoi de Mail
+     */
+    private void envoiMail(UtilisateurDTO utilisateurDTO) {
+
+        this.mailService.envoiMail(EmailDetails.builder()
+                .recipient(utilisateurDTO.getEmail())
+                .subject("Fin de chargement")
+                .msgBody("Votre chargement est terminé.")
+                .build());
     }
 
 }

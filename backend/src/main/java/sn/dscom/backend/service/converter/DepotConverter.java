@@ -90,7 +90,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .statut(depotDTO.getStatut())
                 .nom(Strings.isNullOrEmpty(depotDTO.getNom()) ? depotDTO.getNom() : depotDTO.getNom().trim().toUpperCase())
                 .dateHeureDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
-                .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
+                .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureFinDepot())
                 .deposeur(this.utilisateurTransformer.transform(depotDTO.getDeposeur()))
                 .nbChargementDeposes(depotDTO.getNbChargementDeposes())
                 .nbChargementErreur(depotDTO.getNbChargementErreur())

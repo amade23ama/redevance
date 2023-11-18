@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -551,8 +554,8 @@ public class ChargementService implements IChargementService {
 
 
     @Override
-    public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-
+    public Page<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
@@ -597,6 +600,71 @@ public class ChargementService implements IChargementService {
                 .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules,regions,
                         localites,critereRecherche.getAnnee()
                 ,idsDepot));
+
+        Page<ChargementEntity> listChargementFind= chargementRepository.findAll(spec, pageRequest);
+
+        List<ChargementDTO> dtoList = listChargementFind.getContent().stream()
+                .filter(Objects::nonNull)
+                .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
+                .map(this.chargementConverter::reverse)
+                .toList();
+
+        return new PageImpl<>(dtoList, pageRequest, listChargementFind.getTotalElements());
+    }
+
+    /**
+     * rechargementParCritere
+     *
+     * @param critereRecherche critereRecherche
+     * @return Page<ChargementDTO>
+     */
+    @Override
+    public List<ChargementDTO> rechercherChargementParCritere(CritereRecherche<?> critereRecherche) {
+
+        List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsProduit = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ProduitEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsSiteExploitation = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ExploitationEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsVehicules = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == VehiculeEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<String> regions = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Region"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+
+        List<String> localites = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Localite"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+        List<Long> idsDepot = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Import"))
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        Specification<ChargementEntity> spec = Specification
+                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules,regions,
+                        localites,critereRecherche.getAnnee()
+                        ,idsDepot));
 
         List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
         return listSitesFind.stream()
@@ -729,7 +797,7 @@ public class ChargementService implements IChargementService {
     @Transactional
     @Override
     public Boolean supprimerChargementBycritere(CritereRecherche critereRecherche) {
-        List<ChargementDTO> listChrgmentToDelete = this.rechargementParCritere(critereRecherche);
+        List<ChargementDTO> listChrgmentToDelete = this.rechercherChargementParCritere(critereRecherche);
         return listChrgmentToDelete.stream().allMatch(this::supprimerChargement);
     }
 

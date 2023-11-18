@@ -1,5 +1,7 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -103,10 +105,12 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
     Integer countChargementAnnuel(@Param("dateDebut") Date dateDebut, @Param("dateFin") Date dateFin);
 
     /**
-     *
-     * @param spec
-     * @return
+     *findAll
+     * @param spec spec
+     * @return Page<ChargementEntity>
      */
+    Page<ChargementEntity> findAll(Specification<ChargementEntity> spec, Pageable pageable);
+
     List<ChargementEntity> findAll(Specification<ChargementEntity> spec);
 
     /**

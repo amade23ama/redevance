@@ -6,6 +6,7 @@ import cyclops.control.Try;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -162,7 +163,7 @@ public class ChargementController {
 
     @PostMapping(path = "/rechercheBy")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
-    public ResponseEntity<List<ChargementDTO>> rechercherChargements(@RequestBody CritereRecherche<?> critereRecherche) {
+    public ResponseEntity<Page<ChargementDTO>> rechercherChargements(@RequestBody CritereRecherche<?> critereRecherche) {
         ChargementController.LOGGER.info("ChargementController: rechercherChargements: ");
         return ResponseEntity.ok(chargementService.rechargementParCritere(critereRecherche));
     }
@@ -178,7 +179,7 @@ public class ChargementController {
     public ResponseEntity<FichierDTO> downloadDocument(@RequestBody CritereRecherche<?> critereRecherche) throws UnsupportedEncodingException {
 
         ChargementController.LOGGER.info("downloadDocument: exportDocument");
-        List<ChargementDTO> datas = chargementService.rechargementParCritere(critereRecherche);
+        List<ChargementDTO> datas = chargementService.rechercherChargementParCritere(critereRecherche);
 
         return ResponseEntity.ok(FichierDTO.builder()
                 .content(this.chargementService.chargementDTOsToBytes(datas))

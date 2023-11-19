@@ -111,7 +111,7 @@ export class CategorieService{
     return this.httpClient.post<Page<Categorie>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res: Page<Categorie>) => {
-          //this.setNbSites(res.totalElements);
+          this.setNbCategories(res.totalElements);
           if(res.totalElements==0){
             this.setCategories([])
           }

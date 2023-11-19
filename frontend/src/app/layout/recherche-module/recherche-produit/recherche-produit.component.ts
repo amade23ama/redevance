@@ -42,6 +42,7 @@ export class RechercheProduitComponent implements OnInit {
   newPage=0
   croll:boolean=false;
   private lastScrollIndex = 0;
+  nb$=this.produitService.nbProduit$;
   // les noms des colones
   displayedColumns: string[] = ['id','Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
   produits$=this.produitService.produits$;

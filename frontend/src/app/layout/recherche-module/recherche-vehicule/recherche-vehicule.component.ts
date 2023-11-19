@@ -27,7 +27,7 @@ export class RechercheVehiculeComponent implements OnInit{
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  nb$=this.vehiculeService.nbVehicules$;
   // nombre de ligne par page
   //pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut

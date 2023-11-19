@@ -19,7 +19,7 @@ export class ProduitService {
 
   /** url de base des webservices produit */
   private url = environment.apiUrl + '/v1/produit';
-
+  private _nbProduits: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   /** Observable sur l'utilisateur connecté. **/
   private _produit$: BehaviorSubject<Produit> = new BehaviorSubject<Produit>( null);
   private _produits$: BehaviorSubject<Produit[]> = new BehaviorSubject<Produit[]>( []);
@@ -86,7 +86,7 @@ export class ProduitService {
   supprimerProduits(idProduit: number): Observable<Produit> {
     this.globals.loading=true
     return this.httpClient.delete<Produit>(this.url + '/supprimer/'+ idProduit) .pipe(
-      tap(() => { 
+      tap(() => {
         this.removeSite(idProduit)
         this.globals.loading=false
       }
@@ -134,7 +134,7 @@ export class ProduitService {
       .pipe(
 
         tap((res: Page<Produit>) => {
-          //this.setNbSites(res.totalElements);
+          this.setNbProduits(res.totalElements);
           if(res.totalElements==0){
             this.setProduits([])
           }
@@ -163,5 +163,14 @@ export class ProduitService {
       currents.splice(index,1)
       this._produits$.next(currents);
     }
+  }
+  /** la liste des exploitations de dépot */
+  get nbProduit$(){
+    return this._nbProduits.asObservable()
+  }
+
+  /** setExploitations */
+  setNbProduits(nombre: number ){
+    return this._nbProduits.next(nombre)
   }
 }

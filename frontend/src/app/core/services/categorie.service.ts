@@ -13,6 +13,7 @@ import { NotificationService } from "./notification.service";
 })
 export class CategorieService{
   private url = environment.apiUrl + '/v1/categorie';
+  private _nbCategories: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   private _categories$: BehaviorSubject<Categorie[]> = new BehaviorSubject<Categorie[]>( []);
   categorieCourant: Categorie = new Categorie();
   private _categorie$: BehaviorSubject<Categorie> = new BehaviorSubject<Categorie>(null);
@@ -70,7 +71,7 @@ export class CategorieService{
   supprimerCategories(id: number) {
     this.globals.loading=true
     return this.httpClient.delete<Categorie>(this.url + '/supprimer/'+ id) .pipe(
-      tap(() => { 
+      tap(() => {
         console.log("suppression de la Categorie d'id: ", id);
         this.removeCategorie(id)
         this.globals.loading=false
@@ -138,5 +139,14 @@ export class CategorieService{
       currents.splice(index,1)
       this._categories$.next(currents);
     }
+  }
+
+  get nbCategories$(){
+    return this._nbCategories.asObservable()
+  }
+
+  /** setExploitations */
+  setNbCategories(nombre: number ){
+    return this._nbCategories.next(nombre)
   }
 }

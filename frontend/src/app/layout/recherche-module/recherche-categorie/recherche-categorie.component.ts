@@ -45,6 +45,7 @@ export class RechercheCategorieComponent implements  OnInit{
   croll: boolean = false;
   private lastScrollIndex = 0;
   rechercheCategogies: Categorie[] = [];
+  nb$=this.categorieService.nbCategories$
   displayedColumns: string[] =['id','type', 'volume','dateCreation','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesCategorie$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesCategorie$

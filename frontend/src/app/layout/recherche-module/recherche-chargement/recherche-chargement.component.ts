@@ -25,6 +25,7 @@ export  class RechercheChargementComponent implements  OnInit{
   chargements$=this.chargementService.chargements$
   search:FormControl =new FormControl('');
   searchDate:FormControl =new FormControl('');
+
   /** la liste des véhicules */
   listChargements: MatTableDataSource<Chargement>;
   // La pagination
@@ -44,6 +45,7 @@ export  class RechercheChargementComponent implements  OnInit{
   croll:boolean=false;
   private lastScrollIndex = 0;
   rechercheChargements: Chargement[] = [];
+  nb$=this.chargementService.nbChargements$
   // les noms des colones  'Date Modification',,'categorie'
   displayedColumns: string[] =['numImport' ,'datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
   ,'poids','poidsSubst','volumeSubst','ecart','actions'];

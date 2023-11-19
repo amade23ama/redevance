@@ -96,7 +96,7 @@ export class RechercheCategorieComponent implements  OnInit{
   }
   rechargementCategorie(){
     this.critereRecherches$.subscribe((res)=>{
-      if(res.length>0) {
+      if(res) {
         const critereRecherche   = {
           autocompleteRecherches:res,
           page :this.newPage,

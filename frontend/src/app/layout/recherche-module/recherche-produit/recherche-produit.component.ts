@@ -42,8 +42,9 @@ export class RechercheProduitComponent implements OnInit {
   newPage=0
   croll:boolean=false;
   private lastScrollIndex = 0;
+  nb$=this.produitService.nbProduit$;
   // les noms des colones
-  displayedColumns: string[] = ['Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
+  displayedColumns: string[] = ['id','Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
   produits$=this.produitService.produits$;
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesProduit$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesProduit$
@@ -73,7 +74,7 @@ export class RechercheProduitComponent implements OnInit {
         return this.autocompleteRechercheService.autocompleteProduit(capture);
       })
     ).subscribe();
-    
+
   }
 
   redirect(produit: Produit) {

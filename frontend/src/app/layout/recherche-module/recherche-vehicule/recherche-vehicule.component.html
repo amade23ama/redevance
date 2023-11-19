@@ -12,6 +12,10 @@
      [critereRecherches]="critereRecherches$"
      [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
+  <div fxLayout fxLayout="row" >
+    <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+  </div>
+    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
     <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
       <cdk-virtual-scroll-viewport
       [itemSize]="getItemSize()"
@@ -19,6 +23,14 @@
        class="cdk-virtual-scroll-viewport">
       <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
+        <ng-container matColumnDef="id">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">N°</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">{{element?.id}}</div>
+          </td>
+        </ng-container>
           <ng-container matColumnDef="NomRS">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
               <div class="d-flex">Nom complet / RS</div>

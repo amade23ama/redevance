@@ -43,7 +43,7 @@ export class RechercheSiteComponent implements OnInit {
    croll:boolean=false;
    private lastScrollIndex = 0;
    // les noms des colones  'Date Modification',
-   displayedColumns: string[] = ['nom','localite','dateCreation','actions'];
+   displayedColumns: string[] = ['id','nom','localite','dateCreation','actions'];
  sites$=this.siteService.sites$;
  nb$=this.siteService.nbSites$;
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesSite$

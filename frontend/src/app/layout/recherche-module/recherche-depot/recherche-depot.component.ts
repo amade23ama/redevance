@@ -32,6 +32,7 @@ export class RechercheDepotComponent implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   itemSize:number=0;
+  //nb$=this.depotService.nbChargements$
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
@@ -66,7 +67,6 @@ export class RechercheDepotComponent implements OnInit{
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
   chargerDepot(depot:Depot){
-    console.log("vvv")
     this.router.navigate(['recherche/depotChargement'], {queryParams: {'contextInfo':depot.id }});
   }
 

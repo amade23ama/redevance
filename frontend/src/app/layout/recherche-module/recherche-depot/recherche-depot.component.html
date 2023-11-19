@@ -12,7 +12,11 @@
                             [critereRecherches]="critereRecherches$"
                             [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
-
+  <!--
+  <div fxLayout fxLayout="row" >
+    <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+  </div>
+  -->
   <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
     <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
 

@@ -17,7 +17,7 @@ export class ChargementService{
   /** url de base des webservices chargement */
   private url = environment.apiUrl + '/v1/chargement';
   private _chargements$: BehaviorSubject<Chargement[]> = new BehaviorSubject<Chargement[]>( []);
-
+  private _nbChargements$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
     /** Observable sur chargement. **/
     private _chargement$: BehaviorSubject<Chargement> = new BehaviorSubject<Chargement>( null);
 
@@ -52,7 +52,7 @@ export class ChargementService{
     return this.http.post<Page<Chargement>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res: Page<Chargement>) => {
-          //this.setNbSites(res.totalElements);
+          this.setNbChargements(res.totalElements);
           if(res.totalElements==0){
             this.setChargements([])
           }
@@ -192,6 +192,14 @@ export class ChargementService{
       currentChargements.splice(index,1)
       this._chargements$.next(currentChargements);
     }
+  }
+  get nbChargements$(){
+    return this._nbChargements$.asObservable()
+  }
+
+  /** setExploitations */
+  setNbChargements(nombre: number ){
+    return this._nbChargements$.next(nombre)
   }
 }
 

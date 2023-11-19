@@ -27,7 +27,7 @@ export class RechercheVehiculeComponent implements OnInit{
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  nb$=this.vehiculeService.nbVehicules$;
   // nombre de ligne par page
   //pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
@@ -40,7 +40,7 @@ export class RechercheVehiculeComponent implements OnInit{
   croll:boolean=false;
   private lastScrollIndex = 0;
   // les noms des colones
-  displayedColumns: string[] = ['NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
+  displayedColumns: string[] = ['id','NomRS', 'Téléphone',/* 'Email',*/ 'Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesVehicule$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesVehicule$

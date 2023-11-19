@@ -22,6 +22,7 @@ export class VehiculeService {
   private _vehicules$: BehaviorSubject<Vehicule[]> = new BehaviorSubject<Vehicule[]>( []);
   vehiculeCourant: Vehicule = new Vehicule();
   private _vehicule$: BehaviorSubject<Vehicule> = new BehaviorSubject<Vehicule>(null);
+  private _nbVehicules$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   /** constructor */
   constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
@@ -138,7 +139,7 @@ export class VehiculeService {
     return this.httpClient.post<Page<Vehicule>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
         tap((res: Page<Vehicule>) => {
-          //this.setNbSites(res.totalElements);
+          this.setNbVehicules(res.totalElements);
           if(res.totalElements==0){
             this.setVehicules([])
           }
@@ -166,5 +167,13 @@ export class VehiculeService {
       currents.splice(index,1)
       this._vehicules$.next(currents);
     }
+  }
+  get nbVehicules$(){
+    return this._nbVehicules$.asObservable()
+  }
+
+  /** setSites */
+  setNbVehicules(nombre:number ){
+    return this._nbVehicules$.next(nombre)
   }
 }

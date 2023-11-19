@@ -66,7 +66,6 @@ export class RechercheDepotComponent implements OnInit{
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
   chargerDepot(depot:Depot){
-    console.log("vvv")
     this.router.navigate(['recherche/depotChargement'], {queryParams: {'contextInfo':depot.id }});
   }
 

@@ -100,7 +100,7 @@ export class RechercheProduitComponent implements OnInit {
   }
   rechargementProduit(){
     this.critereRecherches$.subscribe((res)=>{
-      if(res) {
+      if(res.length>0) {
         const critereRecherche   = {
           autocompleteRecherches:res,
           page :this.newPage,

@@ -191,18 +191,19 @@ public class ChargementController {
 
     }
 
+    /**
+     *
+     * @param list list
+     * @return FichierDTO
+     * @throws UnsupportedEncodingException UnsupportedEncodingException
+     */
     @PostMapping("/exportDocumentByIDChargement")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<FichierDTO> downloadDocumentByID(@RequestBody List<ChargementDTO> list) throws UnsupportedEncodingException {
 
-        ChargementController.LOGGER.info("downloadDocument: exportDocument");
-        //List<ChargementDTO> datas = chargementService.rechercherChargementParCritere(critereRecherche);
-        String str = "This is raw text!";
-
-        // string to byte[]
-        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+        ChargementController.LOGGER.info("downloadDocumentByID: exportDocument");
         return ResponseEntity.ok(FichierDTO.builder()
-                .content(bytes)
+                .content(this.chargementService.chargementDTOsToBytes(list))
                 .nom("Fichier-chargements.csv")
                 .build()
         );

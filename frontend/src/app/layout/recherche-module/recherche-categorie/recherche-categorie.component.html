@@ -18,6 +18,8 @@
     <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
   </div>
   <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+
+  <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
     <cdk-virtual-scroll-viewport
     [itemSize]="getItemSize()"
     (scrolledIndexChange)="onScrollEnd($event)"
@@ -33,7 +35,7 @@
       </ng-container>
       <ng-container matColumnDef="type">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">Type</div>
+          <div class="d-flex">Classe</div>
         </th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">{{element?.type?element?.type:"-"}}</div>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="020_inserer_data_table_depot" author="waly">
+        <insert tableName="DEPOT">
+            <column name="ID_DEPOT" valueComputed="NEXTVAL('mydscm.SEQ_DEPOT')"/>
+            <column name="ID_UTILISATEUR" value="1" />
+            <column name="ID_SITE" value="2" />
+            <column name="STATUT" value="SUCCES" />
+        </insert>
+        <insert tableName="DEPOT_CHARGEMENT">
+            <column name="ID_DEPOT" value="1" />
+            <column name="ID_CHARGEMENT" value="1" />
+        </insert>
+        <insert tableName="DEPOT_CHARGEMENT">
+            <column name="ID_DEPOT" value="1" />
+            <column name="ID_CHARGEMENT" value="2" />
+        </insert>
+        <insert tableName="DEPOT_CHARGEMENT">
+            <column name="ID_DEPOT" value="1" />
+            <column name="ID_CHARGEMENT" value="3" />
+        </insert>
+        <insert tableName="DEPOT_CHARGEMENT">
+            <column name="ID_DEPOT" value="1" />
+            <column name="ID_CHARGEMENT" value="4" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

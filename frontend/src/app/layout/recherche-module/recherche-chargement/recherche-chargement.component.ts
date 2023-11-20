@@ -103,7 +103,12 @@ export  class RechercheChargementComponent implements  OnInit{
       critereRecherche.autocompleteRecherches=res;
     })
     critereRecherche.annee=this.searchDate.value
-   this.chargementService.exportDocumentChargementParCritere(critereRecherche).subscribe()
+    if(this.isAllSelected()){
+      this.chargementService.exportDocumentChargementParCritere(critereRecherche).subscribe()
+    }else {
+      this.chargementService.exportDocumentChargementParIdChargment(this.selection.selected).subscribe()
+    }
+
   }
   ajouterFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.addAutocompleteRechercheChargement(autocompleteRecherche)

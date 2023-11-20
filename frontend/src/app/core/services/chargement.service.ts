@@ -94,6 +94,22 @@ export class ChargementService{
         })
       )
   }
+  exportDocumentChargementParIdChargment(chargements: Chargement[]) {
+    this.globals.loading = true;
+    return this.http.post<Fichier>(this.url+"/exportDocumentByIDChargement",chargements)
+      .pipe(
+        tap((res:Fichier) => {
+          const blob = new Blob([atob(res.content)]);
+          saveAs(blob, res.nom);
+          this.globals.loading = false;
+        }),
+        catchError((err) => {
+          this.globals.loading = false;
+          this.notification.error("erreur de telechargement du fichier ")
+          return throwError(() => err)
+        })
+      )
+  }
 
   /**
    * modifier Chargement: on ne peut modifier le Produit et la destination

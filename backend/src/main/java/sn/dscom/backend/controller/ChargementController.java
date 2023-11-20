@@ -16,6 +16,7 @@ import sn.dscom.backend.service.interfaces.IExploitationService;
 import sn.dscom.backend.service.interfaces.ISiteService;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -190,6 +191,24 @@ public class ChargementController {
 
     }
 
+    @PostMapping("/exportDocumentByIDChargement")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<FichierDTO> downloadDocumentByID(@RequestBody List<ChargementDTO> list) throws UnsupportedEncodingException {
+
+        ChargementController.LOGGER.info("downloadDocument: exportDocument");
+        //List<ChargementDTO> datas = chargementService.rechercherChargementParCritere(critereRecherche);
+        String str = "This is raw text!";
+
+        // string to byte[]
+        byte[] bytes = str.getBytes(StandardCharsets.UTF_8);
+        return ResponseEntity.ok(FichierDTO.builder()
+                .content(bytes)
+                .nom("Fichier-chargements.csv")
+                .build()
+        );
+
+
+    }
     /**
      * rechercheById
      * @param id id

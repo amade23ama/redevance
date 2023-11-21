@@ -38,7 +38,6 @@ mat-card{
 }
 
 .blue-label {
-//color: $orange-500!important;
   font-size: 13px !important;
   font-family: Calibri !important;
 }
@@ -71,7 +70,6 @@ tr{
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  /*background-color: $orange-500!important;*/
   background-color: $orange-50!important;
   color: #ffffff;
   border: none;
@@ -129,4 +127,7 @@ height: 50px!important;
 }
 .table-parent{
   border: solid 1px $orange-40 !important;
+}
+.result{
+  font-size: 13px!important;
 }

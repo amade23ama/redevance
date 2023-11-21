@@ -32,7 +32,7 @@ export class RechercheDepotComponent implements OnInit{
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   itemSize:number=0;
-  //nb$=this.depotService.nbChargements$
+  nb$=this.depotService.nbDepots$
   // nombre de ligne par page
   pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut

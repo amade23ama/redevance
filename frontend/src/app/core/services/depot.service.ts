@@ -28,6 +28,7 @@ export class DepotService{
   private _numeroDepot$: BehaviorSubject<number> = new BehaviorSubject(<number>(null));
   private _depots: BehaviorSubject<Depot[]> = new BehaviorSubject<Depot[]>( []);
   private _depot: BehaviorSubject<Depot> = new BehaviorSubject<Depot>( {}as null);
+  private _nbDepots: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   constructor(private http:HttpClient,private notification: NotificationService,
               public dialog: MatDialog,) {
   }
@@ -104,6 +105,7 @@ export class DepotService{
       .pipe(
         tap((res:Depot[])=> {
           //this.setDepots(res.map((result)=>Depot.fromJson(result,Depot)));
+          this.setNbDepots(res.length)
           this.setDepots(res);
         }),
         catchError((err) => {
@@ -134,6 +136,7 @@ export class DepotService{
     return this.http.post<Depot[]>(this.url+"/recherche",critereRecherche)
       .pipe(
         tap((res:Depot[]) => {
+          this.setNbDepots(res.length)
           this.setDepots(res);
         }),
         catchError((err) => {
@@ -141,5 +144,13 @@ export class DepotService{
           return throwError(() => err)
         })
       )
+  }
+  get nbDepots$(){
+    return this._nbDepots.asObservable()
+  }
+
+  /** setExploitations */
+  setNbDepots(nombre: number ){
+    return this._nbDepots.next(nombre)
   }
 }

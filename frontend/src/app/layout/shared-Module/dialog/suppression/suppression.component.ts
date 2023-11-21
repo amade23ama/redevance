@@ -26,7 +26,9 @@ export class SuppressionComponent {
   ) {}
 
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(false);
   }
-
+  supprimer(){
+    this.dialogRef.close(true)
+  }
 }

@@ -15,6 +15,9 @@ import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { ChargementService } from "../../../core/services/chargement.service";
 import { ReferenceService } from "../../../core/services/reference.service";
+import {ModalService} from "../../../core/services/modal.service";
+import {SuppressionComponent} from "../../shared-Module/dialog/suppression/suppression.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -53,7 +56,8 @@ export  class RechercheChargementComponent implements  OnInit{
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesChargement$
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
               private router:Router, private autocompleteRechercheService:AutocompleteRechercheService,
-              public readonly  referenceService:ReferenceService) {
+              public readonly  referenceService:ReferenceService,public modalService: ModalService,
+              private dialog: MatDialog) {
   }
   ngOnInit() {
     this.chargementService.setChargements([]);
@@ -163,22 +167,35 @@ export  class RechercheChargementComponent implements  OnInit{
       this.isAllSelected()
     }
     supprimer(critereRecherches: Observable<AutocompleteRecherche[]>) {
-      const critereRecherche: CritereRecherche = new CritereRecherche()
-      critereRecherches.subscribe((res) => {
-        critereRecherche.autocompleteRecherches = res;
+      const dialogRef = this.dialog.open(SuppressionComponent, {
+        width: '600px',
+        position: {top:'200px'},
+        data: {name: this.appConfig.getLabel("label.chargement.selectionner")}
       })
-      critereRecherche.annee = this.searchDate.value
-      if (this.isAllSelected()) {
-        this.chargementService.supprimer(critereRecherche).subscribe(() => {
-          this.rechargementChargement();
-        });
-      } else {
-        this.chargementService.supprimerById(this.selection.selected).subscribe(() => {
-          this.rechargementChargement();
-        });
-      }
+      dialogRef.afterClosed().subscribe(res => {
+       if(res){
+         this.supprimerchargement(critereRecherches)
+       }
+      })
     }
 
+  supprimerchargement(critereRecherches: Observable<AutocompleteRecherche[]>) {
+    const critereRecherche: CritereRecherche = new CritereRecherche()
+    critereRecherches.subscribe((res) => {
+      critereRecherche.autocompleteRecherches = res;
+    })
+    critereRecherche.annee = this.searchDate.value
+    if (this.isAllSelected()) {
+      this.chargementService.supprimer(critereRecherche).subscribe(() => {
+        this.rechargementChargement();
+      });
+    } else {
+      this.chargementService.supprimerById(this.selection.selected).subscribe(() => {
+        this.rechargementChargement();
+      });
+    }
+
+  }
 
   onScrollEnd(index: number) {
     const isScrollingDown = index > this.lastScrollIndex;

@@ -162,7 +162,8 @@
     "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email",
 
     "formulaire.chargement.title": "Modification Chargement",
-    "nombre.element": "Nombre d'enregistrement(s) trouvé(s)"
+    "nombre.element": "Nombre d'enregistrement(s) trouvé(s)",
+    "label.chargement.selectionner":"les chargements selectionnées"
   }
 }
 

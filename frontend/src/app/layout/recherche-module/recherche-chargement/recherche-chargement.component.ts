@@ -127,6 +127,7 @@ export  class RechercheChargementComponent implements  OnInit{
           dateFin :new Date(),
         } as CritereRecherche
         this.searchDate.valueChanges.subscribe((value)=>{
+          this.croll=false
           critereRecherche.annee=this.searchDate.value;
           this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
         })

@@ -28,16 +28,13 @@ export  class RechercheChargementComponent implements  OnInit{
   chargements$=this.chargementService.chargements$
   search:FormControl =new FormControl('');
   searchDate:FormControl =new FormControl('');
-
+ btnSelectAll:boolean=false;
   /** la liste des véhicules */
   listChargements: MatTableDataSource<Chargement>;
-  // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   selection = new SelectionModel<Chargement>(true, []);
   disableBtnSupprimer:boolean=true;
-  // nombre de ligne par page
-  //pageSizeOptions: number[] = [10, 20, 30];
   pageSize = 10; // nb ligne par page par défaut
   itemSize:number=0;
   totalItems = 10;
@@ -69,7 +66,9 @@ export  class RechercheChargementComponent implements  OnInit{
       if(chargements!==null){
         this.rechercheChargements=chargements
         this.listChargements = new MatTableDataSource<Chargement>(this.rechercheChargements);
-        //this.listChargements.paginator=this.paginator;
+        if(this.btnSelectAll){
+          this.listChargements.data.forEach(row => this.selection.select(row));
+        }
         this.listChargements.sort=this.sort;
         this.itemSize=chargements.length
         this.totalItems = 100;
@@ -85,7 +84,6 @@ export  class RechercheChargementComponent implements  OnInit{
         return this.autocompleteRechercheService.autocompleteChargement(capture);
       })
     ).subscribe();
-    //this.rechargementChargement();
   }
 
   ouvreNouveauChargement(){
@@ -148,6 +146,7 @@ export  class RechercheChargementComponent implements  OnInit{
     return numSelected === numRows;
   }
   handleHeaderCheckboxToggle(event: any) {
+    this.btnSelectAll=event.checked
     if(event.checked){
       this.listChargements.data.forEach(row => this.selection.select(row));
       this.disableBtnSupprimer=false;
@@ -158,6 +157,7 @@ export  class RechercheChargementComponent implements  OnInit{
 
   }
     checkboxToggle(event: any, chargement: Chargement) {
+      this.btnSelectAll=event.checked
       if (event.checked) {
         this.selection.select(chargement);
       } else {

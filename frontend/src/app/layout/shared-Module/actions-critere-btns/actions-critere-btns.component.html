@@ -24,8 +24,8 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <div *ngIf="visibleBtnSupprimer">
-      <button   mat-raised-button
+    <div  *ngIf="visibleBtnSupprimer">
+      <button  *appAutorisation="['ADMIN','EDIT']"  mat-raised-button
                 (click)="supprimer(critereRecherches)"
                 matTooltipPosition="left"
                 matTooltip="{{appConfig.getLabel('label.tooltip.supprimer')}}"

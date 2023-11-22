@@ -3,7 +3,9 @@
     <div class="footer-pic"></div>
   </div>
   <div class="version" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
-    <div class="adressemail"> À propos de </div>
+    <div class="adressemail">
+      <mat-label>À propos de </mat-label>
+    </div>
     <div class="sep"></div>
 
     <div  fxLayout="column" fxLayoutAlign="center center" >
@@ -12,7 +14,10 @@
       <div class="adressemail">{{appConfig.getLabel("label.email.geosen")}}</div>
     </div>
     <div class="sep"></div>
-    <div class="adressemail">Version:V0.0.1   22/11/2023</div>
+    <div class="adressemail">
+      <mat-label>Version:V0.0.1  </mat-label>
+      <mat-label>22/11/2023</mat-label>
+    </div>
 
   </div>
 </div>

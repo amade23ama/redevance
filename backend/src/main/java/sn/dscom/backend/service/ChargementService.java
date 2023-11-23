@@ -197,7 +197,7 @@ public class ChargementService implements IChargementService {
      * @param header header
      */
     @Override
-    public void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depot) throws DscomTechnicalException {
+    public void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depot, ProduitDTO produitDTO) throws DscomTechnicalException {
         ChargementService.log.info(String.format("Chargement de ligne : %s", ligneChargement));
         // rechercher du site d'Exploitation
         ExploitationDTO exploitationDTO = this.rechercherExploitation(ligneChargement, mapCorrespondance, header);
@@ -212,7 +212,7 @@ public class ChargementService implements IChargementService {
             // Enregistrement du véhicule
             VehiculeDTO vehiculeDTO = this.enregistrerVehicule(ligneChargement, mapCorrespondance, header, categorieDTO);
             // rechercher Produit
-            ProduitDTO produitDTO = this.rechercherProduit(ligneChargement, mapCorrespondance, header);
+            //ProduitDTO produitDTO = this.rechercherProduit(ligneChargement, mapCorrespondance, header);
             // Enregistrement du véhicule
             String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.destination"))));
             String poidsMesure = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poids"))));
@@ -472,7 +472,7 @@ public class ChargementService implements IChargementService {
      * @param mapCorrespondance mapCorrespondance
      * @param header header
      * @return ProduitDTO
-     */
+
     private ProduitDTO rechercherProduit(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
 
         // le nom du produit à rechercher
@@ -485,7 +485,7 @@ public class ChargementService implements IChargementService {
                     .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Produit: %s",e.getMessage())))
                     .get().get();
 
-    }
+    }*/
 
     /**
      * save en base

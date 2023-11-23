@@ -131,13 +131,11 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<Long> uploadFile(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("mapEntete") String mapEnteteJson,
-                                                   @RequestParam("nom") String nomDepot)
-            throws IOException {
-
+                                                   @RequestParam("nom") String nomDepot) throws IOException {
         // Utilisateur
         UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
         // La liste des produits en base
-        List<ProduitDTO> produitDTOS = this.produitService.rechercherProduits().get();
+        List<ProduitDTO> referentielProduits = this.produitService.rechercherProduits().get();
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
         // Le Depot
@@ -154,10 +152,8 @@ public class DepotController {
             Map<String, String> mapDatabaseEnteteFile = objectMapper.readValue(mapEnteteJson,new TypeReference<Map<String, String>>() {});
             nom = objectMapper.readValue(nomDepot, new TypeReference<String>() {});
             Map<String, String> mapInverse = new HashMap<>();
-            //TODO: à enlever
-            mapDatabaseEnteteFile.forEach((k, v) -> {
-                mapInverse.put(v,k);
-            });
+            //La map est inversée
+            mapDatabaseEnteteFile.forEach((k, v) -> {mapInverse.put(v,k);});
             // enregister le depot
             depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom, StatutEnum.ENCOURS.getCode())).get();
             List<String> header = null;
@@ -181,12 +177,11 @@ public class DepotController {
                         }
                         // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
                         String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
-                        Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
+                        Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
 
                         if(produitDTO.isPresent()){
                             //Chargement d'une ligne du fichier
-                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
-                            //listChargementAEffectuer.add(chargementDTO);
+                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot, produitDTO.get());
                         }else{
                             DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
                         }

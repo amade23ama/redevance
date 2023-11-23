@@ -1,18 +1,21 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {Router} from "@angular/router";
-import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
-import {Categorie} from "../../../core/interfaces/categorie";
-import {CategorieService} from "../../../core/services/categorie.service";
-import {FormControl} from "@angular/forms";
-import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
-import {MatSort} from "@angular/material/sort";
-import {DatePipe} from "@angular/common";
-import {BuilderDtoJsonAbstract} from "../../../core/interfaces/BuilderDtoJsonAbstract";
-import {debounceTime, distinctUntilChanged, Observable, switchMap} from "rxjs";
-import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../../../core/interfaces/critere.recherche";
+import { DatePipe } from "@angular/common";
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { MatTableDataSource } from "@angular/material/table";
+import { Router } from "@angular/router";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs";
+import { ModalService } from "src/app/core/services/modal.service";
+import { BuilderDtoJsonAbstract } from "../../../core/interfaces/BuilderDtoJsonAbstract";
+import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.recherche";
+import { Categorie } from "../../../core/interfaces/categorie";
+import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import { CategorieService } from "../../../core/services/categorie.service";
+import { SuppressionComponent } from "../../shared-Module/dialog/suppression/suppression.component";
 
 
 @Component({
@@ -31,28 +34,44 @@ export class RechercheCategorieComponent implements  OnInit{
   @ViewChild(MatSort) sort: MatSort;
 
   // nombre de ligne par page
-  pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 5; // nb ligne par page par défaut
+  //pageSizeOptions: number[] = [10, 20, 30];
+  pageSize = 10; // nb ligne par page par défaut
+  itemSize: number = 0;
+  totalItems = 10;
+  page = 0;
+  size = 10;
+  itemsPerPage = 10;
+  newPage = 0
+  croll: boolean = false;
+  private lastScrollIndex = 0;
   rechercheCategogies: Categorie[] = [];
-  displayedColumns: string[] =['type', 'volume','dateCreation','actions'];
+  nb$=this.categorieService.nbCategories$
+  displayedColumns: string[] =['id','type', 'volume','dateCreation','actions'];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesCategorie$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesCategorie$
   constructor(public appConfig: AppConfigService, public categorieService: CategorieService,
+              private dialog: MatDialog, private modalService: ModalService,
               private router:Router,private autocompleteRechercheService:AutocompleteRechercheService) {
   }
   ngOnInit(): void {
+    this.categorieService.setCategories([]);
     this.rechargementCategorie()
     /** appel du service rechercherVehicules pour recupérer toutes les véhicules en base */
     this.categorieService.categories$.subscribe((data) =>{
       //alimentation du tableau
       this.listCategorie = new MatTableDataSource<Categorie>(data);
-      this.listCategorie.paginator=this.paginator;
+      //this.listCategorie.paginator=this.paginator;
       this.listCategorie.sort=this.sort;
+      this.itemSize=data.length
+      this.totalItems = 100;
     });
     this.search.valueChanges?.pipe(
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((capture) => {
+        this.page=0
+        this.newPage=0;
+        this.croll=false;
         return this.autocompleteRechercheService.autocompleteCategorie(capture);
       })
     ).subscribe();
@@ -81,15 +100,57 @@ export class RechercheCategorieComponent implements  OnInit{
       if(res) {
         const critereRecherche   = {
           autocompleteRecherches:res,
-          page :1,
-          size :20,
+          page :this.newPage,
+          size :this.size,
           dateDebut :new Date(),
           dateFin :new Date(),
         } as CritereRecherche
-        this.categorieService.chargementCategorieParCritere(critereRecherche).subscribe()
+        this.categorieService.chargementCategorieParCritere(critereRecherche, this.croll).subscribe()
       }
 
     })
   }
+
+  /**
+   * supprimerCategorie
+   * @param site
+   */
+  supprimerCategorie(categorie: Categorie){
+
+    const dialogRef = this.dialog.open(SuppressionComponent, {
+      width: '600px',
+      position: {top:'200px'},
+      data: {name: "la classe ".concat(categorie.type.toString()), id: categorie.id},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result >= 0) {
+        this.categorieService.supprimerCategories(categorie.id).subscribe((idDelete) => {
+          if (idDelete) {
+            this.rechargementCategorie();
+            this.modalService.ouvrirModalConfirmation("La classe a été supprimé")
+          }
+        });
+      }
+  });
+}
+
+
+onScrollEnd(index: number) {
+  const isScrollingDown = index > this.lastScrollIndex;
+  this.lastScrollIndex = index;
+  if (isScrollingDown) {
+    this.page++
+    const totalLoadedItems = this.page * this.itemsPerPage;
+    const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
+    this.newPage=newIndex;
+    this.croll=true
+    this.rechargementCategorie();
+  }
+}
+
+getItemSize() {
+  return 50;
+}
 
 }

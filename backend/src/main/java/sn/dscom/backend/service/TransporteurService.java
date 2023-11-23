@@ -63,13 +63,10 @@ public class TransporteurService implements ITransporteurService {
             return Optional.of(this.transporteurConverter.reverse(transporteurEntity));
         }
 
-        //C'est la séquence qui génère l'id en cas de création
-        TransporteurEntity transporteurEnregistrer = Try.of(() -> this.transporteurConverter.transform(transporteurDTO))
+        return Optional.of(this.transporteurConverter.reverse(Try.of(() -> this.transporteurConverter.transform(transporteurDTO))
                                                         .mapTry(this.transporteurRepository::save)
                                                         .onFailure(e -> TransporteurService.logger.info(String.format("Erreur de l'nregistrement du Transporteur: %s", e.getMessage())))
-                                                        .get();
-
-        return Optional.of(this.transporteurConverter.reverse(transporteurEnregistrer));
+                                                        .get()));
     }
 
     /**

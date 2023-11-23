@@ -15,6 +15,7 @@
   font-size: 12px;
   background-color: transparent!important;
 }
+
 .devise{
   color:black;
   font-size: 10px;
@@ -48,4 +49,28 @@ a{
   text-align: center;
   color: #888888;
   //margin-bottom: 50px;
+}
+.libelle-direction{
+  color: $black;
+}
+
+.republique-loging{
+  font-weight: 900;
+  font-size: 12px;
+  color: $black;
+}
+.libelle-direction-loging{
+  font-weight: normal;
+  font-size: 12px;
+  color: $black;
+}
+.libelle-device-loging{
+  font-size: 11px;
+  font-style: italic;
+}
+
+.libelle-ministere-loging{
+  font-weight: bold;
+  font-size: 12px;
+  color: $black;
 }

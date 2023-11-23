@@ -1,13 +1,13 @@
-import {Component, OnInit} from "@angular/core";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Categorie} from "../../../core/interfaces/categorie";
-import {ActionBtn} from "../../../core/interfaces/actionBtn";
-import {Actions} from "../../../core/enum/actions";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {ActivatedRoute} from "@angular/router";
-import {ModalService} from "../../../core/services/modal.service";
-import {UrlService} from "../../../core/services/url.service";
-import {CategorieService} from "../../../core/services/categorie.service";
+import { Component, OnInit } from "@angular/core";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { Actions } from "../../../core/enum/actions";
+import { ActionBtn } from "../../../core/interfaces/actionBtn";
+import { Categorie } from "../../../core/interfaces/categorie";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { CategorieService } from "../../../core/services/categorie.service";
+import { ModalService } from "../../../core/services/modal.service";
+import { UrlService } from "../../../core/services/url.service";
 
 @Component({
   selector: 'app-classe-voiture',
@@ -15,11 +15,11 @@ import {CategorieService} from "../../../core/services/categorie.service";
   styleUrls: ['./classe-voiture.component.scss']
 })
 export class ClasseVoitureComponent implements OnInit{
-  titre="Classe Vehicule";
+  titre="Classe";
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl();
   nom: FormControl = new FormControl('',[Validators.required]);
-  volume: FormControl = new FormControl();
+  volume: FormControl = new FormControl('',[Validators.required, this.isPositiveNumber.bind(this)]);
   categorieId: FormControl = new FormControl();
   type: FormControl = new FormControl('',[Validators.required]);
   myform:FormGroup = this.builder.group({
@@ -67,8 +67,15 @@ export class ClasseVoitureComponent implements OnInit{
   }
   categorieAction(event: Actions){
     //Le click sur le bouton Enregistrer
-    if (event === Actions.CREER || event === Actions.MODIFIER) {
+    if (event === Actions.CREER) {
       this.categorieService.enregistrerCategorie(this.myform.value).subscribe()
+    }
+
+    if (event === Actions.MODIFIER) {
+      let classAmodifie = this.categorieCourant;
+      classAmodifie.type = this.getType?.value;
+      classAmodifie.volume = this.getVolume?.value;
+      this.categorieService.enregistrerCategorie(classAmodifie).subscribe()
     }
 
     //Le click sur le bouton Annuler
@@ -77,7 +84,7 @@ export class ClasseVoitureComponent implements OnInit{
     }
   }
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.creer'), Actions.CREER, !this.isModeModification, true, true, true, 'save'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, this.isModeModification, true, true, true, 'create'));
     return this.btns;
@@ -125,4 +132,17 @@ export class ClasseVoitureComponent implements OnInit{
       }
     });
   }
+
+  /**
+   * isPositiveNumber
+   * @param control isPositiveNumber
+   * @returns isNotPositive
+   */
+  isPositiveNumber(control: AbstractControl){
+    return this.volume?.value >= 0 ? null: { isNotPositive: true }
+  }
+
+    // get data
+    get getType(): AbstractControl { return this.myform?.get("type");}
+    get getVolume(): AbstractControl { return this.myform?.get("volume");}
 }

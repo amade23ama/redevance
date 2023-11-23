@@ -46,7 +46,7 @@ export class DepotCreationComponent implements  OnInit{
 
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
-      Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+      Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.enregistrer'),
       Actions.ENREGISTRER, this.isEnrgBtnDisplayed(), true, true, true, 'save'));
     return this.btns;
@@ -104,7 +104,7 @@ export class DepotCreationComponent implements  OnInit{
       formData.append('nom', JSON.stringify(this.myform.value.nom));
       formData.append('file', file);
       this.depotService.creerDepot(formData).subscribe((res)=>{
-        this.depotService.ouvreValidationColumnPopUpDepot("valider la correspondant");
+        this.depotService.ouvreValidationColumnPopUpDepot(this.appConfig.getLabel('depot.valide.correspondant'));
       })
     }
 

@@ -2,12 +2,16 @@ package sn.dscom.backend.service;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Streams;
 import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,8 +149,9 @@ public class ChargementService implements IChargementService {
 
         //retourne la liste
         return Optional.of(listChargementFind.stream()
-                .map(this.chargementConverter::reverse)
                 .filter(Objects::nonNull)
+                .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
+                .map(this.chargementConverter::reverse)
                 .collect(Collectors.toList()));
     }
 
@@ -225,21 +230,23 @@ public class ChargementService implements IChargementService {
                     chargementDTO.getDestination(), chargementDTO.getPoids(),
                     chargementDTO.getPoidsMax());
 
-            //List<ChargementDTO> lisCharge = depotCreat.getChargementDTOList();
+            List<ChargementDTO> lisCharge = depotCreat.getChargementDTOList();
             if (chargementEntity.isPresent()) {
-                chargementDTO.setDateModif(new Date());
+                chargementEntity.get().setDateModification(new Date());
                 Integer nb = depotCreat.getNbChargementReDeposes() + 1;
                 depot.setNbChargementReDeposes(nb);
-                Optional<ChargementDTO> chargementEffectue = this.enregistrerChargement(chargementDTO);
-                //lisCharge.add(this.chargementConverter.reverse(chargementEntity.get()));
+                if (lisCharge.stream().noneMatch( x-> Objects.equals(x.getId(), chargementEntity.get().getId()))){
+                    lisCharge.add(chargementConverter.reverse(chargementEntity.get()));
+                }
+                //this.enregistrerChargement(chargementDTO);
             }else {
                 Integer nb = depotCreat.getNbChargementDeposes() + 1;
                 depot.setNbChargementDeposes(nb);
                 Optional<ChargementDTO> chargementEffectue = this.enregistrerChargement(chargementDTO);
-                //lisCharge.add(chargementEffectue.get());
+                lisCharge.add(chargementEffectue.get());
             }
             depot.setSite(siteDTO);
-            //depotCreat.setChargementDTOList(lisCharge);
+            depot.setChargementDTOList(lisCharge);
             this.depotService.enregistrerDepot(depot);
 
         }else {
@@ -290,6 +297,7 @@ public class ChargementService implements IChargementService {
                 Try.of(listChargement::get).get()
                         .stream()
                         .filter(Objects::nonNull)
+                        .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
                         .map(this.chargementConverter::reverse)
                         .collect(Collectors.toList()));
     }
@@ -385,7 +393,7 @@ public class ChargementService implements IChargementService {
      */
     private static ChargementDTO buildChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax, String date, String heure) {
 
-        Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax), vehiculeDTO.getCategorie().getVolume());
+        Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax), vehiculeDTO.getPoidsVide());
 
         Double volumeEstime = ChargementUtils.getVolumeEstime(poidsEstime, produitDTO.getDensiteKGM());
 
@@ -402,7 +410,7 @@ public class ChargementService implements IChargementService {
                 .poidsSubst(poidsEstime)
                 .destination(destination)
                 //(Volume estimé + Volume classe)/2 = Ecart/2
-                .volumeMoyen(ChargementUtils.getVolumeMoyen(poidsEstime, vehiculeDTO.getCategorie().getVolume()))
+                .volumeMoyen(ChargementUtils.getVolumeMoyen(volumeEstime, vehiculeDTO.getCategorie().getVolume()))
                 //Poids Estimé / la densité du produit
                 .volumeSubst(volumeEstime)
                 .vehicule(vehiculeDTO)
@@ -492,7 +500,7 @@ public class ChargementService implements IChargementService {
                                 .dateCreation(new Date())
                                 .transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
                                 .categorie(categorieDTO)
-                                .immatriculation(immatriculation.toUpperCase())
+                                .immatriculation(ChargementUtils.replaceAllSpecialCarater(immatriculation.toUpperCase()))
                                 .build())
                 .mapTry(this.voitureService::enregistrerVehicule)
                 .onFailure(e -> ChargementService.log.error(String.format(" Erreur lors de la rechercher de la Vehicule: %s", e.getMessage())))
@@ -546,7 +554,72 @@ public class ChargementService implements IChargementService {
 
 
     @Override
-    public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+    public Page<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsProduit = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ProduitEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsSiteExploitation = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == ExploitationEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<Long> idsVehicules = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == VehiculeEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+        List<String> regions = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Region"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+
+        List<String> localites = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Localite"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+        List<Long> idsDepot = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Import"))
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        Specification<ChargementEntity> spec = Specification
+                .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules,regions,
+                        localites,critereRecherche.getAnnee()
+                ,idsDepot));
+
+        Page<ChargementEntity> listChargementFind= chargementRepository.findAll(spec, pageRequest);
+
+        List<ChargementDTO> dtoList = listChargementFind.getContent().stream()
+                .filter(Objects::nonNull)
+                .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
+                .map(this.chargementConverter::reverse)
+                .toList();
+
+        return new PageImpl<>(dtoList, pageRequest, listChargementFind.getTotalElements());
+    }
+
+    /**
+     * rechargementParCritere
+     *
+     * @param critereRecherche critereRecherche
+     * @return Page<ChargementDTO>
+     */
+    @Override
+    public List<ChargementDTO> rechercherChargementParCritere(CritereRecherche<?> critereRecherche) {
 
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
@@ -581,15 +654,23 @@ public class ChargementService implements IChargementService {
                 .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Localite"))
                 .map(item ->((AutocompleteRecherche) item).getId())
                 .toList());
+        List<Long> idsDepot = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Import"))
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
 
         Specification<ChargementEntity> spec = Specification
                 .where(ChargementSpecifications.withSiteIdsAndProduitIds(idsSite,idsProduit,idsSiteExploitation,idsVehicules,regions,
-                        localites,critereRecherche.getAnnee()));
+                        localites,critereRecherche.getAnnee()
+                        ,idsDepot));
 
         List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
         return listSitesFind.stream()
-                .map(this.chargementConverter::reverse)
                 .filter(Objects::nonNull)
+                .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
+                .map(this.chargementConverter::reverse)
                 .collect(Collectors.toList());
     }
 
@@ -645,6 +726,8 @@ public class ChargementService implements IChargementService {
         // on retourne le produit trouvé
         if (chargement.isPresent()) {
             return Try.of(chargement::get)
+                    .filter(Objects::nonNull)
+                    .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
                     .mapTry(this.chargementConverter::reverse)
                     .onFailure(e -> ChargementService.log.error(String.format("Erreur leur du reverse du chargement %s ",e.getMessage())))
                     .get();
@@ -652,6 +735,96 @@ public class ChargementService implements IChargementService {
             ChargementService.log.info(String.format("Le chargement d'id %s n'est pas trouvé en base ", id));
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
+    }
+
+    /**
+     * modifierChargement
+     *
+     * @param chargementDTO chargementDTO
+     * @return ChargementDTO
+     */
+    @Override
+    public ChargementDTO modifierChargement(ChargementDTO chargementDTO) {
+        ChargementService.log.info(String.format("modification du chargement : %s", chargementDTO.getId()));
+        Optional<ChargementEntity> chargementFind = this.chargementRepository.findById(chargementDTO.getId());
+
+        // si chargement trouvé, on la modifie
+        if(chargementFind.isPresent()){
+            ChargementEntity chargementtoSave = chargementFind.get();
+            chargementtoSave.setDateModification(new Date());
+            chargementtoSave.setDestination(chargementDTO.getDestination().trim());
+
+            // On recupère le produit dans le référentiel
+            ProduitEntity produitToSave = Try.of(() -> this.produitService.rechercherProduit(chargementDTO.getProduit()).get())
+                    .mapTry(this.produitConverteur::transform)
+                    .get();
+
+            //Recalcule des données de chargement
+            Double volumeEstime = ChargementUtils.getVolumeEstime(chargementtoSave.getPoidsSubsitance(), produitToSave.getDensiteKGM());
+            Double volumeVehicule = chargementtoSave.getVehiculeEntity().getCategorieEntity().getVolume();
+            Double ecart = ChargementUtils.getEcart(volumeEstime, volumeVehicule);
+
+            chargementtoSave.setProduitEntity(produitToSave);
+            chargementtoSave.setVolumeSubsitance(volumeEstime);
+            chargementtoSave.setVolumeMoyen(ChargementUtils.getVolumeMoyen(volumeEstime, volumeVehicule));
+            chargementtoSave.setEcart(ecart);
+
+            return Try.of(() -> this.chargementRepository.save(chargementtoSave))
+                    .mapTry(this.chargementConverter::reverse)
+                    .get();
+        }
+        ChargementService.log.info(String.format("Le chargement d'id %s n'est pas trouvé en base ", chargementDTO.getId()));
+        throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+    }
+
+    /**
+     * supprimerChargement Par Id
+     *
+     * @param listChargementDTO chargementDTO
+     * @return true or false
+     */
+    @Override
+    public Boolean supprimerChargementParId(List<ChargementDTO> listChargementDTO) {
+        return listChargementDTO.stream().allMatch(this::supprimerChargement);
+    }
+
+    /**
+     * supprimerChargementBycritere
+     *
+     * @param critereRecherche critereRecherche
+     * @return true or false
+     */
+    @Transactional
+    @Override
+    public Boolean supprimerChargementBycritere(CritereRecherche critereRecherche) {
+        List<ChargementDTO> listChrgmentToDelete = this.rechercherChargementParCritere(critereRecherche);
+        return listChrgmentToDelete.stream().allMatch(this::supprimerChargement);
+    }
+
+    /**
+     * supprimerChargement
+     * @param chargementDTO chargementDTO
+     * @return true or false
+     */
+    private boolean supprimerChargement(ChargementDTO chargementDTO) {
+        // Find the chargement
+        Optional<ChargementEntity> chargementEntityFind = this.chargementRepository.findById(chargementDTO.getId());
+        if (chargementEntityFind.isPresent()) {
+            ChargementEntity chargementEntity = chargementEntityFind.get();
+            if (chargementEntity.getDepots().size() == 1 || chargementEntity.getDepots().size() == 0) {
+                chargementEntity.setDepots(null);
+                ChargementEntity chargementToDelete = this.chargementRepository.save(chargementEntity);
+                this.chargementRepository.deleteChargement(chargementToDelete.getId());
+            } else {
+                var list = chargementEntity.getDepots().subList(1, chargementEntity.getDepots().size());
+                chargementEntity.setDepots(list);
+                this.chargementRepository.save(chargementEntity);
+                //this.chargementRepository.deleteById(chargementEntity.getId());
+           }
+
+           return true;
+        }
+        return  false;
     }
 
 }

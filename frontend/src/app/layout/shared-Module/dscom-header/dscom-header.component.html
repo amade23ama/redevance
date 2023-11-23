@@ -1,22 +1,31 @@
-<title>{{appConfig.getLabel('header.title')}}</title>
-
+<!--<title>{{appConfig.getLabel('header.title')}}</title>-->
 <div *ngIf="isLoggedIn && utilisateurConnecte$ | async as utilisateurConnecte"
-     class="flex-container header"  fxLayout="row" fxLayoutAlign="space-between stretch"
+     class="flex-container-header header "  fxLayout="row" fxLayoutAlign="space-between stretch"
      fxHide fxShow.gt-sm >
-  <div  class="logo">
+  <div   fxLayout="column" fxLayoutAlign="center center">
+    <div  class="republique">{{appConfig.getLabel('label.republique')}}</div>
+    <div  fxLayout="row" fxLayoutAlign="center center" >
     <img src="../../../../assets/img/drapeau_senegal.png" height="20" width="30"
          ngSrcset="50w, 100w, 200w, 200w" alt="bandeau"/>
-    <div class="ministere">{{appConfig.getLabel('label.ministere')}}</div>
-   <!-- <div class="ministere">{{appConfig.getLabel('label.ministere.mines')}}</div> -->
-    <div class="ministere">{{appConfig.getLabel('label.ministere.geologie')}}</div>
-    <div class="devise">{{appConfig.getLabel('label.devise')}}</div>
+    </div>
+    <div class="libelle-device" >{{appConfig.getLabel('label.devise')}}</div>
+    <div class="libelle-ministere">{{appConfig.getLabel('label.ministere')}} {{appConfig.getLabel('label.ministere.geologie')}}</div>
+   <div class="libelle-direction">{{appConfig.getLabel('label.direction.nom')}}</div>
+    <!--<div class="libelle-ministere">{{appConfig.getLabel('label.ministere.geologie')}}</div> -->
+
   </div>
-  <div class="titre titre-position" fxLayout="row " fxLayoutAlign="center center" >
-    <img class="bandeau-medium" src="../../../../assets/img/logo.svg"
-         srcset="../../../../assets/img/logo.svg 60w,  ./assets/img/logomaison.svg 60w" width="60"
-         height="50"
-         sizes="(min-width: 60px) 60px, 50vw" alt="bandeau"/>
-    <h2>{{appConfig.getLabel('label.direction.cycle')}}</h2>
+  <div  fxLayout="column" fxLayoutAlign="center center" >
+    <div>
+      <img class="bandeau-medium" src="../../../../assets/img/logo.svg"
+           srcset="../../../../assets/img/logo.svg 60w,  ./assets/img/logomaison.svg 60w" width="70"
+           height="70"
+           sizes="(min-width: 60px) 60px, 50vw" alt="bandeau"/>
+    </div>
+  </div>
+  <div  fxLayout="column" fxLayoutAlign="center center" >
+    <div class="nom-application">
+      {{appConfig.getLabel("nom.application")}}
+    </div>
   </div>
 
   <div fxLayout="row " fxLayoutAlign="center center">
@@ -26,32 +35,28 @@
     <button mat-icon-button>
       <mat-icon class="disabled--icon">help_outline</mat-icon>
     </button>
-    <div class="login-name">{{utilisateurConnecte.prenom}}</div>
+    <div class="user-info">{{utilisateurConnecte.prenom}}</div>
     <button mat-icon-button [matMenuTriggerFor]="menu"  aria-label="Example icon-button with a menu">
       <mat-icon class="disabled--icon">account_circle</mat-icon>
     </button>
   </div>
   <mat-menu class="mat-menu" #menu="matMenu" >
     <button mat-menu-item>
-      <mat-icon *ngIf="false" class="mat-menu-icon">account_circle</mat-icon>
-      <span class="up-case">Profil : {{getProfil()}}</span>
+      <mat-icon  class="mat-menu-icon">account_circle</mat-icon>
+      <span class="user-info">{{getProfil()}}</span>
+    </button>
+    <button  mat-menu-item>
+      <mat-icon class="mat-menu-icon">mail</mat-icon>
+      <span class="user-info">{{utilisateurConnecte.email}}</span>
     </button>
     <button mat-menu-item  (click)="changerPW(utilisateurConnecte)">
       <mat-icon class="mat-menu-icon">lock</mat-icon>
-      <span>Changer de mot de passe </span>
-    </button>
-    <button *ngIf="false" mat-menu-item>
-      <mat-icon class="mat-menu-icon"></mat-icon>
-      <span>Administrateur </span>
-    </button>
-    <button *ngIf="false" mat-menu-item>
-      <mat-icon class="mat-menu-icon">mail</mat-icon>
-      <span>{{utilisateurConnecte.email}}</span>
+      <span class="user-info">Changer de mot de passe </span>
     </button>
     <hr/>
     <button mat-menu-item class="button-login" (click)="logout()" href="#">
       <mat-icon class="deconnexion-action">power_settings_new</mat-icon>
-      <span class="deconnexion-action">se déconnecter</span>
+      <span class="user-info-deconnection">Se déconnecter</span>
     </button>
   </mat-menu>
 </div>

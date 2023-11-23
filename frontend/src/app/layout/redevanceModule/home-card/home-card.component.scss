@@ -109,18 +109,9 @@ mat-card-content{
   padding-right: 2em!important;
   flex-direction: column;
   align-items: flex-start;
-  //gap: 5px;
   border-radius: 8px;
-  //border: 1px solid $orange-600!important;
-  //background: #ecf1ed;
-  //background: #fef2e7;
   align-self: stretch;
-  //color: $orange-600!important;
   font-family: Calibri;
-  //font-size: 13px;
-  //font-style: normal;
-  //font-weight: 700;
-  //line-height: 20px;
 }
 .result-titre{
   color: $orange-700;
@@ -149,10 +140,9 @@ mat-card-content{
   height: 0px;
 }
 .graphe{
- padding: 0.1em!important;
+ //padding: 0.1em!important;
 }
 .global {
-  border: 0.01em solid $orange-600!important;
   padding-bottom: 2em!important;
   border-radius: 6px!important;
 }

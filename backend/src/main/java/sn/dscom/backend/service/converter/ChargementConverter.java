@@ -1,10 +1,14 @@
 package sn.dscom.backend.service.converter;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
+import com.google.common.collect.Iterables;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.*;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,6 +49,9 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
         if (chargementEntity == null) {
             return null;
         }
+        // On récupère le dernier dépot
+        //List<DepotEntity> listDepotEntity = chargementEntity.getDepots().stream().sorted(Comparator.comparing(DepotEntity::getDateHeureDepot)).toList();
+        DepotEntity depotEntity = Iterables.getFirst(MoreObjects.firstNonNull(chargementEntity.getDepots(), Collections.emptyList()), new DepotEntity());
 
         return ChargementDTO.builder()
                 .id(chargementEntity.getId())
@@ -62,6 +69,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .site(this.siteConverteur.reverse(chargementEntity.getSiteEntity()))
                 .exploitation(exploitationConverteur.reverse(chargementEntity.getExploitationEntity()))
                 .produit(this.produitConverter.reverse(chargementEntity.getProduitEntity()))
+                .idDepot(depotEntity.getId())
                 .build();
     }
 
@@ -72,7 +80,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
      */
     private List<VehiculeDTO> getVoitureDTO(List<VehiculeEntity> vehiculeDTOList) {
         return vehiculeDTOList.stream()
-                .map(voit -> this.vehiculeConverter.reverse(voit))
+                .map(this.vehiculeConverter::reverse)
                 .collect(Collectors.toList());
     }
 
@@ -92,6 +100,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
         }
 
         return ChargementEntity.builder()
+                .id(chargementDTO.getId() == null ? null : chargementDTO.getId())
                 .dateCreation(chargementDTO.getId() == null ? new Date() :chargementDTO.getDateCreation())
                 .dateModification(chargementDTO.getId() == null ? null : new Date())
                 .datePassage(chargementDTO.getDatePesage())

@@ -5,64 +5,34 @@
     [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
     [tooltip]="appConfig.getLabel('label.tooltip.voiture')"
     [search]="search"
-     [visibleBtnCreation]="true"
+     [visibleBtnCreation]="false"
     (btnAjouter)="ouvreNouveauVehicule()"
      (btnAjouterFiltre)="ajouterFiltre($event)"
      (btnAnnulerFiltre)="annulerFiltre($event)"
      [critereRecherches]="critereRecherches$"
      [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
+  <div fxLayout fxLayout="row" >
+    <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+  </div>
     <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-        <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
+    <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+      <cdk-virtual-scroll-viewport
+      [itemSize]="getItemSize()"
+      (scrolledIndexChange)="onScrollEnd($event)"
+       class="cdk-virtual-scroll-viewport">
+      <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
-          <ng-container matColumnDef="NomRS">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">Prenom-Nom/RS</div>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom :element?.transporteur.nom}}</div>
-            </td>
-          </ng-container>
-          <!--
-        <ng-container matColumnDef="Prenom">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">Prenom</div>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="d-flex">{{element?.transporteur.prenom}}</div>
-            </td>
+        <ng-container matColumnDef="id">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">N°</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">{{element?.id}}</div>
+          </td>
         </ng-container>
 
-        <ng-container matColumnDef="Nom">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">Nom</div>
-            </th>
-            <td mat-cell *matCellDef="let element">
-              <div class="d-flex">{{element?.transporteur.nom}}</div>
-            </td>
-        </ng-container>
-           ---->
-            <!-- COLONNE : TELEPHONE-->
-            <ng-container matColumnDef="Téléphone">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Téléphone</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div class="d-flex">{{element?.transporteur.telephone}}</div>
-                </td>
-            </ng-container>
 
-            <!-- COLONNE : EMAIL-->
-            <ng-container matColumnDef="Email">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Email</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div class="d-flex">{{element?.transporteur.email}}</div>
-                </td>
-            </ng-container>
-
-            <!-- COLONNE : Immatriculation -->
             <ng-container matColumnDef="Immatriculation">
                 <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Immatriculation</div>
@@ -91,9 +61,26 @@
                   <div class="d-flex">{{element.categorie.volume}}</div>
                 </td>
             </ng-container>
+        <ng-container matColumnDef="NomRS">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">Nom complet / RS</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom :element?.transporteur.nom}}</div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Téléphone">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">Téléphone</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">{{element?.transporteur.telephone}}</div>
+          </td>
+        </ng-container>
           <ng-container matColumnDef="dateCreation">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">date Creation</div>
+              <div class="d-flex">Date de création</div>
             </th>
             <td mat-cell *matCellDef="let element">
               <div class="d-flex">{{formatDate(element.dateCreation)}}</div>
@@ -101,31 +88,32 @@
           </ng-container>
           <ng-container matColumnDef="actions">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-              <div class="d-flex">actions</div>
+              <div class="d-flex" fxLayoutAlign="space-evenly center">actions</div>
             </th>
             <td mat-cell *matCellDef="let element">
-              <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
+              <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="2px">
                 <mat-icon class="blue-label-icon" (click)="chargerVoiture(element)">create</mat-icon>
               </div>
             </td>
           </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-table"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
         </table>
-        <!-- container de pagination -->
+      </cdk-virtual-scroll-viewport>
+       <!-- <div>
         <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"
                  showFirstLastButtons>
         </mat-paginator>
-
-    </div>
+      </div>
+    </div> -->
 
 
 
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="vehicules$|async as vehicules">
-    <div>
+    <!--<div>
       <button mat-fab
               matTooltipPosition="left"
               matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
@@ -135,7 +123,7 @@
 
         <mat-icon>add</mat-icon>
       </button>
-    </div>
+    </div>-->
     <div *ngFor="let voiture of vehicules" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
       <div fxLayout="row" fxLayoutAlign="start none"  >
         <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
@@ -156,4 +144,4 @@
     </div>
   </div>
 </div>
-
+</div>

@@ -6,7 +6,7 @@
         <!-- Classe -->
         <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
           <mat-label>Classe </mat-label>
-          <input matInput  type="text" [formControl]="type"/>
+          <input matInput  type="text" [formControl]="type" oninput="this.value = this.value.toUpperCase()"/>
           <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('type')">
             <mat-icon>close</mat-icon>
           </button>
@@ -23,6 +23,9 @@
           </button>
           <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
             {{appConfig.getLabel('error.champ.obligatoire')}}
+          </mat-error>
+          <mat-error *ngIf="volume.errors?.hasOwnProperty('isNotPositive')">
+            {{appConfig.getLabel('error.champ.nombre.positive')}}
           </mat-error>
         </mat-form-field>
     </div>

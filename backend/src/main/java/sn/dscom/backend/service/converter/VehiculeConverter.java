@@ -41,6 +41,7 @@ public class VehiculeConverter implements Transformer<VehiculeDTO, VehiculeEntit
                 .transporteur(this.transporteurConverter.reverse(vehiculeEntity.getTransporteurEntity()))
                 .dateCreation(vehiculeEntity.getDateCreation())
                 .dateModification(vehiculeEntity.getDateModification())
+                .poidsVide(vehiculeEntity.getPoidsVide())
                 .build();
     }
 
@@ -65,6 +66,7 @@ public class VehiculeConverter implements Transformer<VehiculeDTO, VehiculeEntit
                 .transporteurEntity(this.transporteurConverter.transform(vehiculeDTO.getTransporteur()))
                 .dateCreation(vehiculeDTO.getId() == null ? new Date() : vehiculeDTO.getDateCreation())
                 .dateModification(vehiculeDTO.getId() == null ? null : new Date())
+                .poidsVide(vehiculeDTO.getPoidsVide())
                 .build();
     }
 }

@@ -52,7 +52,7 @@ export class SiteComponent implements OnInit {
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
         this.isModeModification = true;
-        this.titre="Modification Site"
+        this.titre="Site de pesage"
          this.siteService.getSiteById(params['contextInfo']).subscribe(()=>{
          this.siteCourant=this.siteService.getSiteCourant()
           this.myform.patchValue(this.siteCourant)
@@ -60,7 +60,7 @@ export class SiteComponent implements OnInit {
         })
       } else {
         this.isModeModification = false;
-        this.titre="Creation Site";
+        this.titre="Nouveau Site";
         this.majBtnActive()
       }
       this.initListbtns();
@@ -72,7 +72,7 @@ export class SiteComponent implements OnInit {
 
   // Création des boutons: Annuler, Créer, Modifier
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
       this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.creer'), Actions.CREER, !this.isModeModification, true, true, true, 'save'));
       this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, this.isModeModification, true, true, true, 'create'));
     return this.btns;

@@ -1,43 +1,70 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-.ministere{
-  color: $white;
-  font-size: 12px;
-  font-family:normal;
-  font-weight: 700;
-}
-.devise{
-  color: $white;
-  font-size: 10px;
-  font-family:"Brush Script MT";
-  font-style: italic;
-}
-.flex-container{
-  font-size: 12px;
-  padding-left:5em;
-  padding-right:5em;
-}
-.titre{
-  color: $white;
-  font-family: "Arial Black";
-  font-size: 16px;
-  font-style: italic;
 
+
+.flex-container-header {
+  font-size: 12px;
+  padding-left: 5em;
+  padding-right: 5em;
+  background-color: transparent !important;
+  background: linear-gradient(90deg, #ffffff, #f8e9e0);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
+
 
 .deconnexion-action {
-  color: $orange-400!important;
-}
-.login-name{
-  color: $white;
-  font-size: 14px;
-  font-family:normal;
-  text-transform: capitalize;
-}
-.disabled--icon{
-  color: $white;
-}
-.mat-menu-icon{
-  color: $orange-400!important;
+  color:$rouge-0!important;
 }
 
+.disabled--icon{
+  color:$rouge-0!important;
+}
+.disabled--icon:hover {
+  cursor: pointer;
+  background-color: #D60A7FFF;
+  color: #ffffff;
+}
+.mat-menu-icon{
+  color:$rouge-0!important;
+
+}
+
+.republique{
+  font-weight: 900;
+  font-size: 12px;
+  color: $black;
+}
+.libelle-direction{
+  font-weight: normal;
+  font-size: 12px;
+  color: $black;
+}
+
+.libelle-ministere{
+  font-weight: bold;
+  font-size: 12px;
+  color: $black;
+}
+.user-info{
+  font-weight: normal;
+  font-size: 12px;
+  color: $black;
+}
+.libelle-device{
+  font-size: 11px;
+  font-style: italic;
+}
+.user-info-deconnection{
+  color:$rouge-0!important;
+  font-weight: normal;
+  font-size: 14px;
+}
+.nom-application{
+  font-weight: 900!important;
+  font-size: 16px!important;
+  font-style: italic!important;
+  font-family: "Times New Roman", Times, serif;
+  color:$rouge-0!important;
+}

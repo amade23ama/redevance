@@ -1,6 +1,5 @@
-<div class="contenair-filter">
+<div class="contenair-filter" fxLayout="column" fxLayoutGap="2px">
   <div fxLayout="row" fxLayoutAlign="space-between stretch"  class="container-action">
-    <!--<div [fxFlex.lt-sm]="100" fxLayoutGap="10px" fxFlex="70">-->
       <mat-form-field [fxFlex.lt-sm]="100" fxFlex="30"
                       class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
         <mat-label>Recherche</mat-label>
@@ -18,21 +17,37 @@
         </mat-autocomplete>
       </mat-form-field>
     <mat-form-field *ngIf="visibleDate" class="recherche-mat-form-field" appearance="outline"  floatLabel="always">
-      <mat-label>annee</mat-label>
+      <mat-label>Année</mat-label>
       <mat-select [formControl]="searchDate">
         <mat-option *ngFor="let annee of annees$|async as annnes" [value]="annee">
           {{ annee}}
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <div  *ngIf="visibleBtnSupprimer">
+      <button  *appAutorisation="['ADMIN','EDIT']"  mat-raised-button
+                (click)="supprimer(critereRecherches)"
+                matTooltipPosition="left"
+                matTooltip="{{appConfig.getLabel('label.tooltip.supprimer')}}"
+                matTooltipClass="custom-tooltip"
+      [disabled]="disableBtnSupprimer"
+      [ngClass]="[disableBtnSupprimer? 'btn-global-disabled export':'btn-global-white export']">
+        {{appConfig.getLabel('depot.actions.supprimer')}}
+        <mat-icon matSuffix>close</mat-icon>
+      </button>
+    </div>
     <div *ngIf="visibleBtnExport">
-    <button
-      mat-raised-button type="button" class="btn-export"
-    (click)="export(critereRecherches)">
-      ExporterCSV
-    </button>
+    <button   mat-raised-button
+             [disabled]="disableBtnExport"
+              (click)="export(critereRecherches)"
+              matTooltipPosition="left"
+              matTooltip="{{appConfig.getLabel('label.tooltip.exporter')}}"
+              matTooltipClass="custom-tooltip"
+              [ngClass]="[disableBtnSupprimer? 'btn-global-disabled export':'btn-global-white export']">
+        ExporterCSV
+      <mat-icon>description</mat-icon>
+      </button>
      </div>
-    <!--</div>-->
     <div fxShow="false" fxHide.gt-xs="false" *ngIf="visibleBtnCreation">
       <button *appAutorisation="['ADMIN','EDIT']" mat-mini-fab
               matTooltipPosition="left"
@@ -54,63 +69,3 @@
     </mat-chip-list>
   </div>
 </div>
-
-
-
-<!--
-
-<div class="recherche">
-  <div fxLayout="row" fxLayoutAlign="space-between stretch" >
-    <div fxShow="false" fxHide.gt-xs="false" >
-      <button mat-mini-fab
-              matTooltipPosition="left"
-              matTooltip="{{tooltip}}"
-              matTooltipClass="custom-tooltip"
-               (click)="ajouter()"
-              class="new--depot--button">
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>
-    <div fxShow="false" fxHide.gt-xs="false" fxFlex="10">
-      <button>
-        <mat-label>export</mat-label>
-      </button>
-    </div>
-    <div [fxFlex.lt-sm]="100" fxLayoutGap="10px" fxFlex="70">
-      <div class="test" fxFlex="100">
-
-        <mat-chip-list *ngIf="critereRecherches|async as recherche" fxLayout="row" fxLayoutAlign="space-around center">
-          <mat-chip *ngFor="let chip of recherche" [selectable]="selectable" [removable]="removable"
-                    (removed)="removeChip(chip)">
-            {{ chip.libelle }}
-            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-          </mat-chip>
-        </mat-chip-list>
-      </div>
-      <mat-form-field class="recherche-mat-form-field" appearance="outline" fxFlex="20" floatLabel="always">
-        <mat-label>Recherche</mat-label>
-        <input matInput  type="text"
-               placeholder="xxxxxxxx"
-               [formControl]="search"
-               [matAutocomplete]="auto"/>
-        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
-          <div *ngIf="resultautocompleteRecherche | async as res">
-          <mat-option *ngFor="let option of res"
-            (onSelectionChange)="change(option)">
-            {{option.libelle}}
-          </mat-option>
-          </div>
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
-</div>
-</div>
--->
-
-<!--
-<div fxShow="false" fxHide.gt-xs="false" >
-  <mat-chip class="nb-label blue-label">
-    {{numberResult}} {{numberResult===1?singulier:plurier}}
-  </mat-chip>
-</div>
--->

@@ -7,7 +7,10 @@
   background: $orange-500!important;
   color: white!important;
   font-size: 14px;
-  font-family:Arial
+  font-family:Arial;
+}
+.titre-form{
+  //text-transform: capitalize;
 }
 
 .new--contract--button {
@@ -20,13 +23,16 @@
   height: 25px !important;;
 }
 .container-form{
-  //padding :0.4em 0.5em 0em 1em !important;
   padding: 2em!important;
   min-height: 50vh!important;
-  max-height: 60vh!important;
+  max-height: 50vh!important;
   overflow: auto;
-  border-bottom: solid $orange-600 !important;
+  border-bottom: solid $orange-1 !important;
+  margin-bottom: 0.5em!important;
 }
 .contenair-valid{
-  padding-right: 2.5em!important;
+  //padding-right: 2.5em!important;
+  margin:0.5em!important;
+  padding-right: 2em!important;
+
 }

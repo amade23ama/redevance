@@ -133,9 +133,13 @@ public class AutocompleteRechercheController {
                 .get();
                  listRechercheByOrigine.stream(),
 */
+        List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
+                .mapTry(this.autocompleteRechercheService::getChargementAutocompleteRecherche)
+                .onFailure(Throwable::getStackTrace)
+                .get();
 
         return ResponseEntity.ok(Streams.concat(listRechercheProduit.stream(), listRechercheExploitation.stream(),
-                listRechercheSite.stream(),
+                listRechercheSite.stream(),listRechercheByOrigine.stream(),
                 listRechercheVehicule.stream()).toList());
     }
 

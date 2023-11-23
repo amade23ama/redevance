@@ -1,6 +1,6 @@
 package sn.dscom.backend.service.interfaces;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 
@@ -80,11 +80,23 @@ public interface IChargementService {
      * @return liste
      */
     Integer getChargementsAnnuel(Date dateDebutAnnee, Date dateFinAnnee);
-    public List<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return Page<ChargementDTO>
+     */
+    Page<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return Page<ChargementDTO>
+     */
+    List<ChargementDTO> rechercherChargementParCritere(CritereRecherche<?> critereRecherche);
 
     /**
      * chargementDTOs To Bytes
-     *
      * chargementDTOsToBytes
      * @param datas le liste
      * @return le fichier en byte
@@ -97,4 +109,25 @@ public interface IChargementService {
      * @return ChargementDTO
      */
     ChargementDTO chargerChargementParId(Long id);
+
+    /**
+     * modifierChargement
+     * @param chargementDTO chargementDTO
+     * @return ChargementDTO
+     */
+    ChargementDTO modifierChargement(ChargementDTO chargementDTO);
+
+    /**
+     * supprimerChargement Par Id
+     * @param chargementDTO chargementDTO
+     * @return true or false
+     */
+    Boolean supprimerChargementParId(List<ChargementDTO> chargementDTO);
+
+    /**
+     * supprimerChargementBycritere
+     * @param critereRecherche critereRecherche
+     * @return  true or false
+     */
+    Boolean supprimerChargementBycritere(CritereRecherche critereRecherche);
 }

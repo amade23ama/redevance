@@ -1,14 +1,8 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
 .table-container {
-
-}
-
-.table-content-wrapper{
-  background-color: red!important;
-  min-height: 10vh!important;
-  max-height: 20vh!important;
-  overflow: auto;
+  height: 55vh!important;
+  overflow: auto!important;
 }
 
 
@@ -45,7 +39,6 @@ mat-card{
 }
 
 .blue-label {
-  //color: $orange-500!important;
   font-size: 13px !important;
   font-family: Calibri !important;
 }
@@ -60,6 +53,7 @@ mat-card{
 
 .mat-table {
   border-collapse: collapse;
+  width: 100% !important;
 }
 
 td {
@@ -134,4 +128,9 @@ tr{
 }
 .table-parent{
   border: solid 1px $orange-40 !important;
+}
+
+.result{
+  //font-family: normal;
+  font-size: 13px!important;
 }

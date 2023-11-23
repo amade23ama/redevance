@@ -1,5 +1,7 @@
 package sn.dscom.backend.database.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -53,6 +55,6 @@ public interface VehiculeRepository extends JpaRepository<VehiculeEntity,Long> {
     List<VehiculeEntity> findVehiculeEntitiesByIdIsIn(@Param("idsVehicule") List<Long> idsVehicule);
 
 
-    List<VehiculeEntity> findAll(Specification<VehiculeEntity> spec);
+    Page<VehiculeEntity> findAll(Specification<VehiculeEntity> spec, Pageable pageable);
 
 }

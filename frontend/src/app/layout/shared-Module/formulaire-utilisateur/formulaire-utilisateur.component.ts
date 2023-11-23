@@ -1,9 +1,7 @@
-import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AppConfigService} from "../../../core/services/app-config.service";
-import {Utilisateur} from "../../../core/interfaces/utilisateur";
-import {ParamService} from "../../../core/services/param.service";
-import {UtilisateurService} from "../../../core/services/utilisateur.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
+import { AppConfigService } from "../../../core/services/app-config.service";
+import { ParamService } from "../../../core/services/param.service";
 
 @Component({
   selector: 'app-formulaire-utilisateur',

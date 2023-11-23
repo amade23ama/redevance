@@ -38,14 +38,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, .53);
+  //background-color: rgba(0, 0, 0, .53);
 }
-// clear
-/*.clear {
-  clear: both;
-  height:40px;
-}
-*/
 //******************** Fix IE 11 *********************
 *::-ms-backdrop, .ie-fixFlex { // NOSONAR
   display: block !important; // NOSONAR
@@ -59,16 +53,20 @@
 }
 .mat-sidenav-container{
   flex-grow: 1;
-  background: white;
   min-height: 30vh !important;
 }
+mat-toolbar a{
+}
 .mat-toolbar{
-  padding-left:4.5em;
-  background-color: $orange-500!important;
-  color: white;
-  font-size: 13px;
-  font-family: normal;
-  justify-content: left;
+  padding-left: 2.6em!important;;
+  background: white!important;
+
+
+}
+.entete-fixe{
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .mat-sidenav-content{
@@ -76,14 +74,14 @@
 .example-container{
   padding-left:4.5em;
   padding-right:4.5em;
+  //background: white!important;
 }
-mat-toolbar a{
-  font-size: 13px;
-}
+/*
+
+*/
 @media screen and (max-width: 600px) {
 
   .mat-sidenav-container{
-    background: white;
     padding-top: 0em;
     margin-top: 0em;;
     padding-left:0em;
@@ -97,7 +95,6 @@ mat-toolbar a{
 
   }
 }
-/* Appliquer une mise en page de type grille pour les écrans de taille moyenne */
 @media screen and (min-width: 600px) and (max-width: 959px) {
   .mat-sidenav-container{
     padding-top: 0em;
@@ -116,13 +113,9 @@ mat-toolbar a{
 }
 .bandeau--small {
   height:3px;
-  background-color: #95c6ee;
+  background: linear-gradient(90deg, $jaune-0, $rouge-3);
 }
-.menu-toolbar{
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
+
 ::ng-deep.mat-sidenav{
   background-color:$orange-300!important;
 }
@@ -131,42 +124,47 @@ mat-toolbar a{
   color: $white;
   text-transform: capitalize;
 }
-
-.mat-sidenav-menu-but:hover{
-  background-color:$white;
-  border: none;
-  color: black!important;;
-  border-radius: 0px!important;
+.lien a{
+  font-size: 13px;
+  text-decoration-line: none;
+  color:$rouge-0!important;
 }
+.mat-sidenav-menu-but:hover{
+
+}
+
 ::ng-deep.mat-mdc-standard-chip{
-  background:#fbf0e9!important;
-  min-height: 22px!important;
+  min-height: 24px!important;
   height: 26px!important;
   padding-top: 0px!important;
 }
 ::ng-deep .mat-chip.mat-standard-chip{
-  background:#fbf0e9!important;
+  background: $rouge-5 !important;
   min-height: 26px!important;
-
+  color: $rouge-0!important;
+  border: 1px solid $rouge-0;
 }
+
+
 ::ng-deep.mat-chip.mat-mdc-standard-chip {
-  --mdc-chip-elevated-container-color: #fbf0e9;
-  --mdc-chip-label-text-color: #f36704;
-  --mdc-chip-disabled-label-text-color: #fff;
-  --mdc-chip-with-icon-icon-color: #e3844d;
-  --mdc-chip-with-icon-disabled-icon-color: #e3844d;;
-  --mdc-chip-with-trailing-icon-disabled-trailing-icon-color: #e3844d;
-  --mdc-chip-with-trailing-icon-trailing-icon-color: #e15005;
-  --mdc-chip-with-icon-selected-icon-color: #e3844d;;
+  --mdc-chip-elevated-container-color: $rouge-5;
+  --mdc-chip-label-text-color: $rouge-0;
+  --mdc-chip-with-trailing-icon-trailing-icon-color: $rouge-0;
+  --mdc-chip-with-icon-selected-icon-color: $rouge-3;
   font-size: 11px!important;
   padding: 0px!important;
 }
 .router-link-active {
-  background-color: white!important;
-  color: $orange-700!important;
+  border-bottom: Solid 3px $orange-2;
+  border-bottom-left-radius: 3px!important;
+  border-bottom-right-radius: 3px!important;
 }
-.acceuil{
-  background-color: #de7f39 !important;
-  color: white!important;
 
+.acceuil{
+  border-bottom:none;
+  color: $orange-0!important;
+}
+
+.contenaire-body{
+//background: red!important;
 }

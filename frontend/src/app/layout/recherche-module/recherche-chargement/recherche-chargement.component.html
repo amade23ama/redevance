@@ -1,4 +1,4 @@
-<div class="mt-05" *ngIf="chargements$|async as char">
+<div class="mt-05" >
   <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
                             [numberResult]="2"
                             [singulier]="appConfig.getLabel('recherche.depot.singulier.label') "
@@ -9,16 +9,43 @@
                             (btnAjouter)="ouvreNouveauChargement()"
                             [visibleDate]="true"
                             [visibleBtnExport]=true
+                            [disableBtnExport]="disableBtnSupprimer"
+                            [visibleBtnSupprimer]="true"
+                            [disableBtnSupprimer]="disableBtnSupprimer"
+                            (btnSupprimer)="supprimer($event)"
                             (btnExport)="export($event)"
                             (btnAjouterFiltre)="ajouterFiltre($event)"
                             (btnAnnulerFiltre)="annulerFiltre($event)"
                             [critereRecherches]="critereRecherches$"
                             [resultautocompleteRecherche]=rechercheSuggestions$>
   </app-actions-critere-btns>
+  <div fxLayout fxLayout="row" >
+    <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+  </div>
+  <div  fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" >
+    <cdk-virtual-scroll-viewport
+    [itemSize]="getItemSize()"
+    (scrolledIndexChange)="onScrollEnd($event)"
+     class="cdk-virtual-scroll-viewport">
+    <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort *ngIf="chargements$|async as char">
 
-  <div  fxShow="false" fxHide.gt-xs="false" class="table-container" *ngIf="chargements$|async as char">
-    <table mat-table matSort  [dataSource]="listChargements"  class="mat-elevation-z0 table-parent" matSort>
-
+      <ng-container matColumnDef="numImport">
+        <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <div class="d-flex">
+            <mat-checkbox color="primary"
+                          (change)="handleHeaderCheckboxToggle($event)"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"></mat-checkbox>
+            <div fxLayoutAlign="start center">N° Import</div></div>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">
+            <mat-checkbox  color="primary" [value]=element!?.id
+                           (change)="checkboxToggle($event,element)"
+                           [checked]="selection.isSelected(element)">{{element.idDepot}}</mat-checkbox>
+          </div>
+        </td>
+      </ng-container>
      <ng-container matColumnDef="datePesage">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
           <div class="d-flex">Date</div>
@@ -71,7 +98,7 @@
       </ng-container>
       <ng-container matColumnDef="vehicule">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">Vehicule</div>
+          <div class="d-flex">Véhicule</div>
         </th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">{{element.vehicule.immatriculation}}</div>
@@ -88,7 +115,7 @@
 
       <ng-container matColumnDef="poidsSubst">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">Poids estimé (tonnes)</div>
+          <div class="d-flex">Poids estimé(T)</div>
         </th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">{{element.poidsSubst}}</div>
@@ -99,7 +126,7 @@
 
       <ng-container matColumnDef="volumeSubst">
         <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-          <div class="d-flex">Volume (m3)</div>
+          <div class="d-flex">Volume(m3)</div>
         </th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">{{element.volumeSubst}}</div>
@@ -124,14 +151,17 @@
           </div>
         </td>
       </ng-container>
-      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-table"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
 
     </table>
+    </cdk-virtual-scroll-viewport>
+    <!--<div class="parging">
     <mat-paginator [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions"
                    showFirstLastButtons>
     </mat-paginator>
+    </div>-->
 
   </div>
 </div>

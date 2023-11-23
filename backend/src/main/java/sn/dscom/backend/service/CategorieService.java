@@ -5,6 +5,9 @@ import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -191,16 +194,18 @@ public class CategorieService implements ICategorieService {
     }
 
     @Override
-    public List<CategorieDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-
+    public Page<CategorieDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
         //S'il n'y a pas de critère on remonte tout
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             /** find all de tous les véhicule*/
-            List<CategorieEntity> list = this.categorieRepository.findAll();
+            Page<CategorieEntity> listCategorieFind = this.categorieRepository.findAll(pageRequest);
 
-            return list.stream()
-                    .map(categorieEntity ->  categorieConverter.reverse(categorieEntity))
+            List<CategorieDTO> listCategories = listCategorieFind.getContent().stream()
+                    .map(categorieConverter::reverse)
                     .collect(Collectors.toList());
+
+            return new PageImpl<>(listCategories, pageRequest, listCategorieFind.getTotalElements());
         }
 
         List<Long> idsCategorie = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
@@ -219,11 +224,14 @@ public class CategorieService implements ICategorieService {
         Specification<CategorieEntity> spec = Specification
                 .where(CategorieSpecifications.withCategorie(idsCategorie, valueVolumes));
 
-        List<CategorieEntity> listCategorieFind= this.categorieRepository.findAll(spec);
-        return listCategorieFind.stream()
+        Page<CategorieEntity> listCategorieFind= this.categorieRepository.findAll(spec, pageRequest);
+
+        List<CategorieDTO> listCategorie = listCategorieFind.stream()
                 .map(this.categorieConverter::reverse)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
+
+        return new PageImpl<>(listCategorie, pageRequest, listCategorieFind.getTotalElements());
     }
 
     @Override

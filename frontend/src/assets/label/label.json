@@ -1,13 +1,15 @@
 {
   "properties": {
-    "label.info.application": "Bienvenue sur l'application de REDEVANCE",
+    "label.info.application": "Bienvenue sur la BTPM-R",
+    "nom.application": "BTPM-R",
      "label.direction.nom": "Direction du Contr\u00f4le et de la Surveillance des Opérations Minières",
     "label.direction.cycle": "D.C.S.O.M",
     "label.ministere":"Ministère des Mines",
     "label.ministere.mines":"Des Mines",
     "label.ministere.geologie":"et de la Géologie",
-    "label.devise":"Un Peuple-Un But-Une Foi",
-    "label.republique ":"République du Sénégal",
+    "label.devise":"Un Peuple – Un But – Une Foi",
+    "label.republique":"REPUBLIQUE DU SENEGAL",
+    "label.email.geosen": "Ministère des Mines et de la Géologie",
     "label.republique.senegal":"Des Mines",
     "label.xx": "Ministere des Mines et de la Geologie",
     "authentification": "Connexion",
@@ -74,6 +76,7 @@
     "depot.message.supprimer": "succes=Suppression du depot réalisé avec succès.",
     "depot.label.placerholder": "Déposez votre fichier ici ou cliquez pour sélectionner",
     "depot.creer.numero": "Le depot a été creé avec le numero :",
+    "depot.valide.correspondant": "Valider la correspondant fichier et db",
 
     "depot.bloc.donneecharge.label": "Données produits",
     "depot.bloc.donneecharge.produit.enregistrer.succes": "Validation effectu\u00e9e avec succ\u00e8s",
@@ -97,7 +100,9 @@
 
     "error.email.exist":"Email déjà existant !",
     "error.champ.obligatoire": "Le champ est obligatoire",
+    "error.champ.nombre.positive": "Renseigner un nombre positif",
     "error.email.invalid": "Email invalide !",
+    "error.format.invalid": "Le format est invalide !",
     "error.caractere.invalid": "Caractères non autorisés",
     "recherche.utilisateur.pluriel.label": "utilisateurs trouvés",
     "recherche.utilisateur.singulier.label": "utilisateur trouvé",
@@ -121,6 +126,8 @@
     "label.tooltip.user.bouton.enregistrer":"Créer un nouvel utilisateur",
     "label.tooltip.user.bouton.annuler":"Annuler",
     "label.tooltip.user.bouton.modifier":"Modifier l'utilisateur",
+    "label.tooltip.exporter":"exporter le chargement",
+    "label.tooltip.supprimer":"supprimer la selection",
     "label.info.mail": "Nous avons envoyé le login et mot de passe à l'adresse:",
     "footer.donnee.perso": "Données personelles",
     "footer.contact": "Contact",
@@ -138,7 +145,7 @@
     "modal.annulation.body":"Etes-vous sûr de vouloir annuler votre {0} ?",
 
     "modal.suppression.title":"Attention suppression en cours !",
-    "modal.suppression.body":"Voulez-vous supprimer le produit {0} ?",
+    "modal.suppression.body":"Voulez-vous supprimer {0} ?",
 
     "modal.dialog.activation.title":"Attention activation en cours !",
     "modal.dialog.desactivation.title":"Attention désactivation en cours !",
@@ -154,7 +161,9 @@
     "reset.password.title": "Récupération de compte",
     "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email",
 
-    "formulaire.chargement.title": "Modification Chargement"
+    "formulaire.chargement.title": "Modification Chargement",
+    "nombre.element": "Nombre d'enregistrement(s) trouvé(s)",
+    "label.chargement.selectionner":"les chargements selectionnées"
   }
 }
 

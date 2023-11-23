@@ -1,35 +1,35 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {NotificationService} from "./notification.service";
-import {environment} from "../../../environments/environment";
-import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
-import {Vehicule} from "../interfaces/vehicule";
-import {Categorie} from "../interfaces/categorie";
-import {Produit} from "../interfaces/produit";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Globals} from "../../app.constants";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { Globals } from "../../app.constants";
+import { Categorie } from "../interfaces/categorie";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Page } from "../interfaces/page";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategorieService{
   private url = environment.apiUrl + '/v1/categorie';
+  private _nbCategories: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   private _categories$: BehaviorSubject<Categorie[]> = new BehaviorSubject<Categorie[]>( []);
   categorieCourant: Categorie = new Categorie();
   private _categorie$: BehaviorSubject<Categorie> = new BehaviorSubject<Categorie>(null);
   constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
-  enregistrerCategorie(produit: Produit): Observable<Categorie> {
+  enregistrerCategorie(categorie: Categorie): Observable<Categorie> {
     this.globals.loading = true;
-    return this.httpClient.post<Categorie>(this.url + '/enregistrer', produit).pipe(
+    return this.httpClient.post<Categorie>(this.url + '/enregistrer', categorie).pipe(
       tap((res)=>{
-          this.notification.success(" enregistrer success ")
+          this.notification.success(" La classe a été enregistrée avec succès ")
           this.setCategorie(Categorie.fromJson(res,Categorie))
           this.globals.loading = false;
         },
         catchError((err) => {
           this.globals.loading = false;
-          this.notification.error(" erreur d'enregistrer produit ")
+          this.notification.error(" Erreur lors l'enregistrement de la classe ")
           return throwError(() => err)
         })
       )
@@ -69,10 +69,16 @@ export class CategorieService{
    * @returns
    */
   supprimerCategories(id: number) {
+    this.globals.loading=true
     return this.httpClient.delete<Categorie>(this.url + '/supprimer/'+ id) .pipe(
-      tap(() => { }
+      tap(() => {
+        console.log("suppression de la Categorie d'id: ", id);
+        this.removeCategorie(id)
+        this.globals.loading=false
+      }
       ),
       catchError((err) => {
+        this.globals.loading=false
         this.notification.error(" Suppression impossible ")
         return throwError(() => err)
       })
@@ -100,13 +106,22 @@ export class CategorieService{
   getCategorieCourant() {
     return this.categorieCourant;
   }
-  chargementCategorieParCritere(critereRecherche:CritereRecherche ) {
+  chargementCategorieParCritere(critereRecherche:CritereRecherche, scroll?: boolean) {
     this.globals.loading = true;
-    return this.httpClient.post<Categorie[]>(this.url+"/rechercheBy",critereRecherche)
+    return this.httpClient.post<Page<Categorie>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
-        tap((res:Categorie[]) => {
-          this.setCategories(res);
-          this.globals.loading = false;
+        tap((res: Page<Categorie>) => {
+          this.setNbCategories(res.totalElements);
+          if(res.totalElements==0){
+            this.setCategories([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._categories$.getValue(), ...res.content]));
+            this.setCategories(result);
+          } else {
+            this.setCategories([...res.content]);
+          }
+          this.globals.loading=false
         }),
         catchError((err) => {
           this.notification.error(" erreurr de recuperation Utilisateur ")
@@ -114,5 +129,24 @@ export class CategorieService{
           return throwError(() => err)
         })
       )
+  }
+
+  removeCategorie(id: number) {
+    const currents = this._categories$.getValue();
+    const filtre=currents.find((res)=>res.id==id)
+    const index=currents.indexOf(filtre)
+    if(index!=-1){
+      currents.splice(index,1)
+      this._categories$.next(currents);
+    }
+  }
+
+  get nbCategories$(){
+    return this._nbCategories.asObservable()
+  }
+
+  /** setExploitations */
+  setNbCategories(nombre: number ){
+    return this._nbCategories.next(nombre)
   }
 }

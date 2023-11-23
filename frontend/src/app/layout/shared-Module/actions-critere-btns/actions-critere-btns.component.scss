@@ -6,15 +6,10 @@
   margin-bottom: 2em;
 }
 .contenair-filter{
-  margin-bottom: 0.5em;
+  margin-bottom: 0.2em!important;
+  padding-right: 0.5em!important;
+  padding-bottom: 0.05em!important;
 }
-/*
-.recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-  padding-top: 4px;
-  padding-bottom: 4px;
-  min-height: 36px;
-}
-*/
 
 .recherche-mat-form-field::ng-deep.mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
   padding-top: 4px;
@@ -22,44 +17,29 @@
   min-height: 30px;
 }
 
-/*
-.recherche-mat-form-field::ng-deep.mat-mdc-icon-button {
-  position: absolute;
-  top: 50%;
-  height: 48px;
-  left: 90%;
-  width: 50px;
-  transform: translate(-50%, -50%);
-  color: $orange-600!important;
-}
-*/
 .new--depot--button {
-  position: absolute;
-
-  left: 95%;
-  transform: translate(50%, -25%);
+  position: relative;
+  z-index: 9999;
+  transform: translateY(-11px);
   &.mat-button-disabled {
     background-color: gray;
   }
-  background-color: $orange-500!important;
+  background-color: $orange-4!important;
 }
-.recherche-mat-form-field{
-  height: 24px!important;
-}
+/*
 .recherche-mat-form-field ::ng-deep.mat-mdc-form-field-subscript-wrapper {
   box-sizing: border-box;
-  width: 100%;
-  position: relative;
-  height: 0px;
+  width: 100%!important;;
+  position: relative!important;;
+  height: 0px!important;
+  background: black;
 }
-.test{
-  //border: 1px solid red;
-}
-.btn-export{
-  color: white;
-  background-color: $orange-500!important;
-  //height: 24px!important;
-}
+*/
+
 .container-action{
-  padding-bottom: 1em!important;
+  padding: 0.1em!important;
+  height: 38px;
+}
+.export{
+  height: 32px!important;
 }

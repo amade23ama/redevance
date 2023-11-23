@@ -1,29 +1,39 @@
 package sn.dscom.backend.common.dto;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+
 import lombok.*;
-import sn.dscom.backend.database.entite.TransporteurEntity;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
+/**
+ * VehiculeDTO
+ */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class VehiculeDTO {
-    //todo
+public class VehiculeDTO implements Serializable {
+
+    /** identifiant technique */
     private Long id;
+
+    /** immatriculation du véhicule */
     private  String immatriculation;
+
+    /** le transporteur transporteur */
     private TransporteurDTO transporteur;
+
+    /** categorie du véhicule */
     private  CategorieDTO categorie;
-    /*private  String nom;
-    private  Double volume;
-    */
+
+    /** poids Vide */
+    private  Double poidsVide;
+
+    /** date Creation */
     private Date dateCreation;
+
+    /** date Modification */
     private Date dateModification;
 
 }

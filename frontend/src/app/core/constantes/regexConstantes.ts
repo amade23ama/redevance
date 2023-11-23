@@ -7,4 +7,6 @@ export class RegexConstantes {
   static readonly  REGEX_NOM_PRENOM = new RegExp('[A-Za-z]');
   //REGEX_NOM_PRENOM = new RegExp('(?:(?!&|\xAB|\xBB|#|{|\(|\[|\||\_|\\|\)|\]|\+|\=|\}|\*|\;|\!|\/|\$|\xA3|\:|\"|\?|\%|\.|\x47|\µ|\x40).)');
 
+  static readonly REGEX_POSITIVE_INTEGER = '^(\d|,)*\d*$';
+
 }

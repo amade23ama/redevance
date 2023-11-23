@@ -1,0 +1,77 @@
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
+@import "src/assets/css/DSCOM-variables.scss";
+@include mat.core();
+
+$custom-primary: mat.define-palette((
+  50:$orange-500,
+  100: $orange-500,
+  200: $orange-500,
+  300: $orange-500,
+  400:$rouge-4,
+  500: $rouge-2,
+  600: $rouge-1,
+  700: $rouge-0,
+  contrast: (
+    50: rgba(black, 0.87),
+    100: black,
+    200: black,
+    300: white,
+    400: white,
+    500: black,
+    600: black,
+    700: white,
+  )
+));
+
+$custom-accent: mat.define-palette((
+  50: #FFEBEE,
+  100: #FFCDD2,
+  200: #EF9A9A,
+  300: #E57373,
+  400: #EF5350,
+  500: #F44336,
+  600: #E53935,
+  700: #E53935,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: white,
+    400: white,
+    500: black,
+    600: black,
+    700: black,
+  )
+));
+
+$custom-warn: mat.define-palette((
+  50: #FFEBEE,
+  100: #FFCDD2,
+  200: #EF9A9A,
+  300: #E57373,
+  400: #EF5350,
+  500: #F44336,
+  600: #E53935,
+  700: #E53935,
+  contrast: (
+    50: black,
+    100: black,
+    200: black,
+    300: white,
+    400: white,
+    500: black,
+    600: black,
+    700: black,
+  )
+));
+$my-primary: mat.define-palette($custom-primary, 700);
+$custom-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $custom-accent,
+    warn: $custom-warn,
+  )
+));
+
+@include mat.all-component-themes($custom-theme);

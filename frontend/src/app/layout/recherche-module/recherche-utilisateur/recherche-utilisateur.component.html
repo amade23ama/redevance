@@ -1,4 +1,3 @@
-
 <div class="mt-05">
 <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
   [numberResult]="rechercheUtilisateurListe?.length"
@@ -14,79 +13,81 @@
                       [resultautocompleteRecherche]=rechercheSuggestions$>
 </app-actions-critere-btns>
 <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="5px">
-<table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent " matSort>
-  <ng-container matColumnDef="id">
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-      <div class="d-flex">N°</div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <div class="d-flex">{{element.id}}</div>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="prenom"  >
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef fxHide.xs>
-      <div class="d-flex">Prenom</div>
-    </th>
-    <td mat-cell *matCellDef="let element" fxHide.xs >
-      <div class="d-flex up-case">{{element.prenom}}</div>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="nom">
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>
-      <div class="d-flex">Nom</div>
-    </th>
-    <td mat-cell *matCellDef="let element" fxHide.xs>
-      <div class=" d-flex up-case">{{element.nom}}</div>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="email" >
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-      <div class="d-flex">Email</div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <div class="d-flex"><span>{{element.email}}</span></div>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="profil">
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-      <div class="d-flex">Profil</div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <div class=" d-flex up-case" >
-        <div *ngFor="let profil of element.profils">
-        {{ convertToLowercase(profil) }} </div>
-      </div>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="dateCreation">
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-      <div class="d-flex">date Creation</div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <div class="d-flex"><span>{{formatDate(element.dateCreation)}}</span></div>
-    </td>
-  </ng-container>
+  <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+    <table mat-table matSort  [dataSource]="dataSource"  class="mat-elevation-z0 table-parent " matSort>
+        <ng-container matColumnDef="id">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">N°</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">{{element.id}}</div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="prenom"  >
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef fxHide.xs>
+            <div class="d-flex">Prénom</div>
+          </th>
+          <td mat-cell *matCellDef="let element" fxHide.xs >
+            <div class="d-flex up-case">{{element.prenom}}</div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="nom">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>
+            <div class="d-flex">Nom</div>
+          </th>
+          <td mat-cell *matCellDef="let element" fxHide.xs>
+            <div class=" d-flex up-case">{{element.nom}}</div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="email" >
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">Email</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex"><span>{{element.email}}</span></div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="profil">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">Profil</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class=" d-flex up-case" >
+              <div *ngFor="let profil of element.profils">
+              {{ convertToLowercase(profil) }} </div>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="dateCreation">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">Date de création</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex"><span>{{formatDate(element.dateCreation)}}</span></div>
+          </td>
+        </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-      <div class="d-flex">actions</div>
-    </th>
-    <td mat-cell *matCellDef="let element">
-      <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row">
-        <div   class=" d-flex pb-1" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" fxHide.xs>
-          <mat-icon  class="blue-label-icon" (click)="chargerUtilisateur(element)" matTooltip="{{appConfig.getLabel('btn.utilisateur.modif.tooltip')}}">create</mat-icon>
-        </div>
-        <div class=" d-flex pb-1" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" fxHide.xs>
-          <mat-icon *ngIf="element.active" (click)="desableUser(element)" class="blue-label-icon" matTooltipClass="custom-tooltip" matTooltip="{{appConfig.getLabel('btn.utilisateur.bloquer.tooltip')}}">lock_open </mat-icon>
-          <mat-icon *ngIf="!element.active" (click)="desableUser(element)" class="blue-label-icon" matTooltip="{{appConfig.getLabel('btn.utilisateur.debloquer.tooltip')}}">lock</mat-icon>
-        </div>
-      </div>
-    </td>
-  </ng-container>
-  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-utilisateur"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <ng-container matColumnDef="actions">
+          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <div class="d-flex" fxLayoutAlign="space-evenly center">actions</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div *appAutorisation="['ADMIN','EDIT']"  class=" d-flex" fxLayout="row" fxLayoutAlign="space-evenly center">
+              <div   class=" d-flex pb-1" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" fxHide.xs>
+                <mat-icon  class="blue-label-icon" (click)="chargerUtilisateur(element)" matTooltip="{{appConfig.getLabel('btn.utilisateur.modif.tooltip')}}">create</mat-icon>
+              </div>
+              <div class=" d-flex pb-1" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px" fxHide.xs>
+                <mat-icon *ngIf="element.active" (click)="desableUser(element)" class="blue-label-icon" matTooltipClass="custom-tooltip" matTooltip="{{appConfig.getLabel('btn.utilisateur.bloquer.tooltip')}}">lock_open </mat-icon>
+                <mat-icon *ngIf="!element.active" (click)="desableUser(element)" class="blue-label-icon" matTooltip="{{appConfig.getLabel('btn.utilisateur.debloquer.tooltip')}}">lock</mat-icon>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns" class="mat-header-table"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-</table>
+  </table>
+  </cdk-virtual-scroll-viewport>
   <div class="parging">
   <mat-paginator [pageSize]="pageSize"
                  [pageSizeOptions]="pageSizeOptions"

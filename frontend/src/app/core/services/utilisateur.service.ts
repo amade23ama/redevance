@@ -27,7 +27,6 @@ export class UtilisateurService {
     return this.http.get<Utilisateur>(this.url+"/updateConnected")
       .pipe(
       tap((res:Utilisateur) => {
-        console.log(" deconnexion 2")
         this.setUtilisateurConnecte(Utilisateur.fromJson(res, Utilisateur));
       }),
       catchError((err) => {
@@ -58,13 +57,16 @@ export class UtilisateurService {
     return input.value == user?.email ? { emailExists: true } : null
   }
   sauvegarder(utilsateur:Utilisateur){
+    this.globals.loading = true;
     return this.http.post<Utilisateur>(this.url+"/utilisateur/enregistrer",utilsateur)
       .pipe(
         tap((res:Utilisateur) => {
           this.notification.success(" Utilisateur créé ")
+          this.globals.loading = false;
           //this.setUtilisateurConnecte(Utilisateur.fromJson(res, Utilisateur));
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de creation Utilisateur ")
           return throwError(() => err)
         })
@@ -83,12 +85,15 @@ export class UtilisateurService {
       )
   }
   getUtilisateurParId(id: number) {
+    this.globals.loading = true;
     return this.http.get<Utilisateur>(this.url+`/utilisateur/get/${id}`)
       .pipe(
         tap((utilisteur:Utilisateur) => {
           this.setUtilisateurOriginal(utilisteur)
+          this.globals.loading = false;
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err) // RXJS 7+
         })
@@ -192,14 +197,17 @@ export class UtilisateurService {
     return status ? { emailExists: true } : null
   }
   enregistrer(utilsateur:Utilisateur){
+    this.globals.loading = true;
     return this.http.put<Utilisateur>(this.url+"/utilisateur/enregistrer",utilsateur)
       .pipe(
         tap((res:Utilisateur) => {
           this.notification.success(" enregistrer success ")
           this.setUtilisateurOriginal(Utilisateur.fromJson(res,Utilisateur))
+          this.globals.loading = false;
           return Utilisateur.fromJson(res,Utilisateur)
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreur d'enregistrer Utilisateur ")
           return throwError(() => err)
         })
@@ -212,19 +220,22 @@ export class UtilisateurService {
     return status ? null:{ emailExists: true }
   }
   chargementUtilisateurParCritere(critereRecherche:CritereRecherche ) {
+    this.globals.loading = true;
     return this.http.post<Utilisateur[]>(this.url+"/utilisateur/recherche",critereRecherche)
       .pipe(
         tap((res:Utilisateur[]) => {
           this.setUtilisateurs(res);
+          this.globals.loading = false;
         }),
         catchError((err) => {
+          this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err)
         })
       )
 
   }
-  
+
   /** checkActive */
   async checkActive(input: AbstractControl){
     const login=input.value

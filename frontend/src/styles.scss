@@ -1,8 +1,10 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-//@import "@angular/material/prebuilt-themes/indigo-pink.css";
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
+body {
+  margin: 0;
+  //font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .btn-container {
   display: flex;
@@ -11,24 +13,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;}
 }
 
 .btn-global-pink {
-  margin: 6px !important;
-  padding: 0px 20px 0px 20px !important;
-  //background-color: $pink-main !important;
-  background-color:$pink-btn-main !important;
-  background-color:$orange-500!important;;
   color: white !important;
-}
+  padding: 0px 20px 0px 20px !important;
+  background-color:$orange-500!important;
+  border-radius: 4px!important;;
+  border-color: $orange-500!important;
 
+}
 .btn-global-white {
-  margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
   background-color: white !important;
-  color: $pink-main !important;
+  color: $orange-500!important;
+  border: solid 1px $orange-500!important;
+  &:hover{
+    background-color: $white!important;
+    border: 2px solid  $orange-2!important;
+    color: $orange-2!important;
+  }
 }
 
+
 .btn-global-disabled {
-  margin: 6px !important;
   padding: 0px 20px 0px 20px !important;
+  cursor: not-allowed;
 }
 
 .btn-clear-input {
@@ -60,11 +67,11 @@ mat-form-field mat-label {
 }
 
 .float-right {
- // float: right;
+  float: right;
 }
 
 .float-left {
-  //float: left;
+  float: left;
 }
 
 .bold {
@@ -77,7 +84,6 @@ mat-form-field mat-label {
   font-weight: bold;
   margin: 0 auto;
   text-align: center !important;
-  //min-width: 100px;
 }
 
 .table-header-left {
@@ -86,7 +92,6 @@ mat-form-field mat-label {
   font-weight: bold;
   margin: 0 auto;
   text-align: left !important;
-  //min-width: 100px;
 }
 
 .table-checkbox-class {
@@ -252,43 +257,10 @@ mat-form-field mat-label {
   }
 }
 
-
-// CHIPS
-
-.form--chip {
-  color: #243262;
-  border: 1px solid #243262;
-  border-radius: 16px;
-  padding: 6px 12px;
-  font-size: 14px;
-
-  &:hover {
-    cursor: pointer;
-    color: #9643b5;
-    border: 1px solid #ad68ca;
-    background-color: #efe1f5;
-  }
-}
-
-.form--chip--active {
-  color: #9643b5;
-  border: 1px solid #ad68ca;
-  background-color: #efe1f5;
-}
-
-.form--chip--disabled {
-  border-radius: 16px;
-  padding: 6px 25px;
-  font-size: 14px;
-  color: #d2d2d2;
-  border: 1px solid #d2d2d2;
-  background-color: #fff;
-}
 .mat-card-title{
   background-color: transparent;
   font-weight: bold;
   font-size: 0.95rem;
-  //font-family: "Arial Black";
   font-weight: 600;
 }
 .separ{
@@ -312,47 +284,33 @@ mat-form-field mat-label {
   background-color:$orange-500!important;
 }
 .header{
-  top:0px;
-  position: sticky;
-  background-color:$orange-300!important;
-  z-index: 1000;
-  padding-bottom: 0.25em;
+  padding-bottom: 0.30em;
+  padding-top: 0.30em;
+  background: white;
 }
-.btn-global-white {
-  margin: 6px !important;
-  padding: 0px 20px 0px 20px !important;
-  background-color: white !important;
-  color: $pink-btn-main!important;
-}
-.detail-chip-lien  {
 
-  &:hover {
-    cursor: pointer;
-    color: $orange-500!important;
-  }
-}
+
+
 .btn-container-action {
   display: flex;
   float: right;
-  //margin: 0.2em 0.2em 0.5em 0;
 }
-.btn-global-pink {
-  padding: 0.2em 0.2em 0.2em 0.4em !important;
-  color: white !important;
-}
-.btn-global-white {
-  padding: 0.2em 0.2em 0.2em 0.4em !important;
-  background-color: white !important;
-  color: $orange-500!important;
-}
+
+
 html, body { height: 100%;
   background: #ffffff !important;
 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  min-height: 30px;
+  padding-top: 10px!important;
+  padding-bottom: 10px!important;
+  min-height: 20px!important;
+}
+
+.recherche-mat-form-field .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 6px!important;
+  padding-bottom: 6px!important;
+  min-height: 10px!important;
 }
 .mat-mdc-form-field-infix {
   flex: auto;
@@ -442,7 +400,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .dcsom-text-info {
   color: #2469ff !important;
-  
+
 }
 
 .dcsom-text-sucess {
@@ -457,11 +415,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   color: $dark !important;
 }
 
-/*##################################################
-#
-# FIN CSS MODAL
-#
- ##################################################*/
 
 .dcsom-fieldset-orange {
   font-family: sans-serif;
@@ -482,4 +435,70 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .pb-1 {
   padding-bottom: 0.25rem!important;
 }
+.btn-global-primary{
+  color: $white;
+  background-color: $rouge-1;
+  border: 2px solid  $rouge-1;
+  &:hover{
+    background-color: $rouge-0;
+    border: 2px solid  $rouge-0;
+  }
+}
+.btn-global-secondary{
+  color: $rouge-1;
+  background: $white;
+  border: 2px solid  $rouge-1;
+  &:hover{
+            background-color: $white;
+          border: 2px solid  $rouge-0;
+    }
+}
+.btn-global{
+    vertical-align: middle;
+    border-radius: 4px ;
+    display: inline-flex;
+    padding: 0px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    &:disabled{
+       border: none;
+       background: red;
+       color: red;
+       cursor: not-allowed;
+   }
+  .mat-icon{
+  }
 
+
+}
+.cdk-virtual-scroll-viewport{
+  height: 100vh!important;
+  overflow: auto!important;
+  border: solid 1px $orange-40 !important;
+}
+.mat-header-table{
+  position: sticky!important;
+  top: 0!important;
+  background: red!important;
+  z-index: 1!important;
+}
+
+.cdk-virtual-scroll-viewport {
+  scrollbar-width: thin;
+}
+
+.cdk-virtual-scroll-viewport::-webkit-scrollbar {
+  width: 4px!important;
+}
+.cdk-virtual-scroll-viewport::-webkit-scrollbar-track {
+  background: $orange-40!important;
+}
+
+.cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb {
+  background: $rouge-0!important;
+}
+
+.cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb:hover {
+  background:$black;
+}

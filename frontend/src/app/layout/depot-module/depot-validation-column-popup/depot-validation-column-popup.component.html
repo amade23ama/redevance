@@ -1,30 +1,32 @@
 
 <div class="header-container"  fxLayout fxLayout="row" fxLayoutAlign="space-between stretch" >
-  <div>
+  <div class="titre-form">
     {{data.contextValidation}}
   </div>
   <button mat-mini-fab mat-dialog-close class="close new--contract--button" color="warn">
     <mat-icon>close</mat-icon>
   </button>
+
 </div>
-  <div class="container-form">
-    <form [formGroup]="mappingForm" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="5px">
-      <div fxLayout fxLayoutGap="10px"  *ngFor="let colonne of fichierColonnes" >
-        <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" fxFlex.lt-md="90" floatLabel="always">
-          <mat-label>{{colonne}}</mat-label>
-          <mat-select formControlName="{{colonne}}">
-            <mat-option *ngFor="let dbColonne of dbColonnes" [value]="dbColonne">
-              {{ dbColonne }}
-            </mat-option>
-          </mat-select>
-          <mat-error *ngIf="mappingForm.get(colonne)?.invalid && mappingForm.get(colonne)?.touched">
-            Choisissez une colonne dans la liste.
-          </mat-error>
-        </mat-form-field>
-      </div>
-    </form>
-  </div>
-  <div class="mat-elevation-z0  contenair-valid">
+ <div class="container-form ">
+   <form [formGroup]="mappingForm" fxLayout fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="5px">
+     <div fxLayout fxLayoutGap="10px"  *ngFor="let colonne of fichierColonnes" >
+       <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" fxFlex.lt-md="90" floatLabel="always">
+         <mat-label>{{colonne}}</mat-label>
+         <mat-select formControlName="{{colonne}}">
+           <mat-option *ngFor="let dbColonne of dbColonnes" [value]="dbColonne">
+             {{ dbColonne }}
+           </mat-option>
+         </mat-select>
+         <mat-error *ngIf="mappingForm.get(colonne)?.invalid && mappingForm.get(colonne)?.touched">
+           Choisissez une colonne dans la liste.
+         </mat-error>
+       </mat-form-field>
+     </div>
+   </form>
+ </div>
+
+  <div class="contenair-valid">
     <app-action-btns [btns]="btns"  (btnClick)="validerAction($event)"></app-action-btns>
   </div>
 

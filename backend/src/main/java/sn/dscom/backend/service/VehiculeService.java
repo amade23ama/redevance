@@ -3,19 +3,26 @@ package sn.dscom.backend.service;
 import io.vavr.control.Try;
 import lombok.Builder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.AutocompleteRecherche;
 import sn.dscom.backend.common.dto.CritereRecherche;
+import sn.dscom.backend.common.dto.TransporteurDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
+import sn.dscom.backend.database.entite.TransporteurEntity;
 import sn.dscom.backend.database.entite.VehiculeEntity;
+import sn.dscom.backend.database.repository.TransporteurRepository;
 import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.converter.VehiculeConverter;
+import sn.dscom.backend.service.interfaces.ITransporteurService;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 import sn.dscom.backend.service.util.VehiculeSpecifications;
 
@@ -30,20 +37,24 @@ import java.util.stream.Collectors;
 public class VehiculeService implements IVoitureService{
 
     /** Repo vehiculeRepository */
-    private VehiculeRepository vehiculeRepository;
+    private final VehiculeRepository vehiculeRepository;
 
     /**
      * vehicule Converter
      */
-    private Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+    private final Transformer<VehiculeDTO, VehiculeEntity> vehiculeConverter = new VehiculeConverter();
+
+    /** transporteur Repository */
+    private final TransporteurRepository transporteurRepository;
 
     /**
      * VehiculeService
      * @param vehiculeRepository vehiculeRepository
      */
     @Builder
-    public VehiculeService(VehiculeRepository vehiculeRepository) {
+    public VehiculeService(VehiculeRepository vehiculeRepository, TransporteurRepository transporteurRepository) {
         this.vehiculeRepository = vehiculeRepository;
+        this.transporteurRepository = transporteurRepository;
     }
 
     /**
@@ -90,18 +101,36 @@ public class VehiculeService implements IVoitureService{
      * @param vehiculeDTO le véhicule à modifier
      * @return le véhicule modifié
      */
-    //TODO: completer un retour (nouvelle recherche avec l'id et retourner le resulta)
     @Override
     public Optional<VehiculeDTO> modifierVehicule(VehiculeDTO vehiculeDTO) {
 
-        try {
-            // Date du jour pour la date de modification;
-            this.vehiculeRepository.miseAjourImmatParId(vehiculeDTO.getImmatriculation(), vehiculeDTO.getId(), new Date());
+        // On récupère le véhicule à modifier
+        Optional<VehiculeEntity> vehiculeFind = this.vehiculeRepository.findById(vehiculeDTO.getId());
 
-        }catch (Exception e){
-            log.error("exception sur la modification de l'entité avec id: {} ",vehiculeDTO.getId(), e);
+        // s'il existe, on l'a modifie
+        if (vehiculeFind.isPresent()){
+            // on modifie le transpoteur lié au véhicule
+            TransporteurDTO transporteurDTO = vehiculeDTO.getTransporteur();
+
+            Optional<TransporteurEntity> transporteurEntityOptional = transporteurRepository.findById(transporteurDTO.getId());
+            if (transporteurEntityOptional.isPresent()) {
+                TransporteurEntity transporteurEntityToSave = transporteurEntityOptional.get();
+                transporteurEntityToSave.setVehiculeEntityListes(null);
+                transporteurEntityToSave.setNom(transporteurDTO.getNom());
+                transporteurEntityToSave.setTelephone(transporteurDTO.getTelephone());
+                transporteurEntityToSave.setDateModification( new Date());
+
+                Try.of(() -> transporteurEntityToSave)
+                        .mapTry(this.transporteurRepository::save)
+                        .onFailure(e -> TransporteurService.logger.info(String.format("Erreur de l'nregistrement du Transporteur: %s", e.getMessage())))
+                        .get();
+            }
+
+            return Optional.of(this.vehiculeConverter.reverse(Try.of(() -> this.vehiculeConverter.transform(vehiculeDTO))
+                    .mapTry(this.vehiculeRepository::save).get()));
         }
-        return Optional.of(VehiculeDTO.builder().build());
+
+        throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
     }
 
     /**
@@ -140,16 +169,16 @@ public class VehiculeService implements IVoitureService{
      * @return liste
      */
     @Override
-    public List<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-
+    public Page<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
         //S'il n'y a pas de critère on remonte tout
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
-            /** find all de tous les véhicule*/
-            List<VehiculeEntity> list = this.vehiculeRepository.findAll();
+            Page<VehiculeEntity> list = this.vehiculeRepository.findAll(pageRequest);
 
-            return list.stream()
-                    .map(vehiculeEntity ->  vehiculeConverter.reverse(vehiculeEntity))
-                    .collect(Collectors.toList());
+            List<VehiculeDTO> listVehicule = list.getContent().stream()
+                    .map(vehiculeConverter::reverse)
+                    .toList();
+            return new PageImpl<>(listVehicule, pageRequest, list.getTotalElements());
         }
 
         List<Long> idsVehicule = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
@@ -174,11 +203,12 @@ public class VehiculeService implements IVoitureService{
                 .where(VehiculeSpecifications.withVehiculeIdsAndCategorieIds(idsVehicule,idsCategorie,
                         volumes));
 
-        List<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec);
-        return listVehiculeFind.stream()
+        Page<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec, pageRequest);
+        List<VehiculeDTO> listVehicule = listVehiculeFind.getContent().stream()
                 .map(this.vehiculeConverter::reverse)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toList());
+                .toList();
 
+        return new PageImpl<>(listVehicule, pageRequest, listVehiculeFind.getTotalElements());
     }
 }

@@ -30,7 +30,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   label="Ajouter un Utilisateur";
   dataSource: MatTableDataSource<Utilisateur>;
   prenom="prenom"
-  pageSizeOptions: number[] = [5, 10, 20];
+  pageSizeOptions: number[] = [10, 20, 30];
   rechercheUtilisateurListe: Utilisateur[] = [];
   displayedColumns: string[] = ['id','prenom', 'nom', 'email','profil','dateCreation',"actions"];
   pageSize = 5;
@@ -43,7 +43,7 @@ export class RechercheUtilisateurComponent implements OnInit{
   recherche: AutocompleteRecherche[] = [];
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherches$
   critereRecherches$=this.autocompleteRechercheService.critereRecherches$
-
+  itemSize=0;
   constructor(public appConfig: AppConfigService,private readonly utilisateurService: UtilisateurService,
             private router:Router,private paramService: ParamService, public dialog: MatDialog, public modalService: ModalService,
             private autocompleteRechercheService:AutocompleteRechercheService) {
@@ -57,6 +57,7 @@ export class RechercheUtilisateurComponent implements OnInit{
         this.dataSource= new MatTableDataSource<Utilisateur>(this.rechercheUtilisateurListe);
         this.dataSource.paginator=this.paginator
         this.dataSource.sort=this.sort
+        this.itemSize=res.length
       }
     })
 
@@ -132,20 +133,20 @@ export class RechercheUtilisateurComponent implements OnInit{
 
   /**
    * Activation ou désactivation d'un utilisateur
-   * @param utilisteur 
+   * @param utilisteur
    */
   desableUser( utilisteur: Utilisateur){
-    
+
     if (utilisteur.active) {
       const dialogRef = this.dialog.open(DialogueComponent, {
         width: '600px',
         position: {top:'200px'},
-        data: {title: this.appConfig.getLabel('modal.dialog.desactivation.title'), 
+        data: {title: this.appConfig.getLabel('modal.dialog.desactivation.title'),
         question: this.appConfig.getLabel('modal.dialog.desactivation.question', utilisteur.prenom +' - ' + utilisteur.nom)},
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        
+
         if (result) {
           let user = utilisteur;
               user.active = false;
@@ -164,7 +165,7 @@ export class RechercheUtilisateurComponent implements OnInit{
       });
 
       dialogRef.afterClosed().subscribe(result => {
-        
+
         if (result) {
           let user = utilisteur;
               user.active = true;
@@ -175,6 +176,8 @@ export class RechercheUtilisateurComponent implements OnInit{
       });
 
     }
-    
+
   }
+
+  protected readonly length = length;
 }

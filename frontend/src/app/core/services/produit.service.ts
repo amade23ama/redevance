@@ -2,10 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, catchError, share, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Globals } from "../../app.constants";
 import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Page } from '../interfaces/page';
 import { Produit } from '../interfaces/produit';
 import { NotificationService } from "./notification.service";
-import {Globals} from "../../app.constants";
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class ProduitService {
 
   /** url de base des webservices produit */
   private url = environment.apiUrl + '/v1/produit';
-
+  private _nbProduits: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   /** Observable sur l'utilisateur connecté. **/
   private _produit$: BehaviorSubject<Produit> = new BehaviorSubject<Produit>( null);
   private _produits$: BehaviorSubject<Produit[]> = new BehaviorSubject<Produit[]>( []);
@@ -83,10 +84,15 @@ export class ProduitService {
    * @returns
    */
   supprimerProduits(idProduit: number): Observable<Produit> {
+    this.globals.loading=true
     return this.httpClient.delete<Produit>(this.url + '/supprimer/'+ idProduit) .pipe(
-      tap(() => { }
+      tap(() => {
+        this.removeSite(idProduit)
+        this.globals.loading=false
+      }
       ),
       catchError((err) => {
+        this.globals.loading=false
         this.notification.error(" Suppression impossible. Le produit est associé à un chargement ")
         return throwError(() => err)
       })
@@ -122,19 +128,49 @@ export class ProduitService {
   getProduitCourant() {
     return this.produitCourant;
   }
-  chargementProduitParCritere(critereRecherche:CritereRecherche ) {
+  chargementProduitParCritere(critereRecherche:CritereRecherche, scroll?: boolean) {
     this.globals.loading = true;
-    return this.httpClient.post<Produit[]>(this.url+"/rechercheBy",critereRecherche)
+    return this.httpClient.post<Page<Produit>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
-        tap((res:Produit[]) => {
-          this.setProduits(res);
-          this.globals.loading = false;
+
+        tap((res: Page<Produit>) => {
+          this.setNbProduits(res.totalElements);
+          if(res.totalElements==0){
+            this.setProduits([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._produits$.getValue(), ...res.content]));
+            this.setProduits(result);
+          } else {
+            this.setProduits([...res.content]);
+          }
+          this.globals.loading=false
         }),
+
         catchError((err) => {
           this.globals.loading = false;
           this.notification.error(" erreurr de recuperation Utilisateur ")
           return throwError(() => err)
         })
       )
+  }
+
+  removeSite(id: number) {
+    const currents = this._produits$.getValue();
+    const filtre=currents.find((res)=>res.id==id)
+    const index=currents.indexOf(filtre)
+    if(index!=-1){
+      currents.splice(index,1)
+      this._produits$.next(currents);
+    }
+  }
+  /** la liste des exploitations de dépot */
+  get nbProduit$(){
+    return this._nbProduits.asObservable()
+  }
+
+  /** setExploitations */
+  setNbProduits(nombre: number ){
+    return this._nbProduits.next(nombre)
   }
 }

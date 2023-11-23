@@ -1,11 +1,11 @@
-import {BuilderDtoJsonAbstract} from "./BuilderDtoJsonAbstract";
-import {Depot} from "./depot";
-import {Site} from "./site";
-import {Vehicule} from "./vehicule";
-import {Exploitation} from "./exploitation";
-import {Produit} from "./produit";
-import {Plateforme} from "./plateforme";
-import {Subtance} from "./subtance";
+import { BuilderDtoJsonAbstract } from "./BuilderDtoJsonAbstract";
+import { Depot } from "./depot";
+import { Exploitation } from "./exploitation";
+import { Plateforme } from "./plateforme";
+import { Produit } from "./produit";
+import { Site } from "./site";
+import { Subtance } from "./subtance";
+import { Vehicule } from "./vehicule";
 
 export class Chargement extends BuilderDtoJsonAbstract{
   /** l'id */
@@ -55,4 +55,7 @@ export class Chargement extends BuilderDtoJsonAbstract{
    exploitation:Exploitation;
   /**  d'produit */
   produit:Produit;
+
+  /**  id du dernier dépot */
+  idDepot: number;
 }

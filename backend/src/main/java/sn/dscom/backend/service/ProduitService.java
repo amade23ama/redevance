@@ -4,6 +4,10 @@ import io.vavr.control.Try;
 import lombok.Builder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
@@ -19,6 +23,7 @@ import sn.dscom.backend.database.repository.ProduitRepository;
 import sn.dscom.backend.service.converter.ProduitConverter;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.interfaces.IProduitService;
+import sn.dscom.backend.service.util.ProduitSpecifications;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -158,18 +163,20 @@ public class ProduitService implements IProduitService {
      * @return liste
      */
     @Override
-    public List<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-
+    public Page<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
         //S'il n'y a pas de critère on remonte tout
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             try {
                 ProduitService.logger.info("Recherche des produits");
-                List<ProduitEntity> listProduitsFind = this.produitRepository.findAll();
+                Page<ProduitEntity> listProduitsFind = this.produitRepository.findAll(pageRequest);
 
-                return listProduitsFind.stream()
+                List<ProduitDTO> listProduitDTO = listProduitsFind.getContent().stream()
                         .map(this.produitConverteur::reverse)
                         .filter(Objects::nonNull)
-                        .collect(Collectors.toList());
+                        .toList();
+
+                return new PageImpl<>(listProduitDTO, pageRequest, listProduitsFind.getTotalElements());
             }catch (Exception e){
                 ProduitService.logger.error(String.format("Erreur leur de la recherche de produit : %s ",e.getMessage()));
                 throw new CommonMetierException(HttpStatus.INTERNAL_SERVER_ERROR.value(), ErreurEnum.ERR_INATTENDUE);
@@ -182,13 +189,16 @@ public class ProduitService implements IProduitService {
                                                 .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
                                                 .toList());
 
-        return Try.of(() -> idsProduit)
-                .filter(Objects::nonNull)
-                .mapTry(this.produitRepository::findProduitEntitiesByIdIsIn)
-                .get()
-                .stream()
+        Specification<ProduitEntity> spec = Specification
+                .where(ProduitSpecifications.withProduit(idsProduit));
+
+        Page<ProduitEntity> listProduitsFind = this.produitRepository.findAll(spec, pageRequest);
+
+        List<ProduitDTO> listProduits = listProduitsFind.getContent().stream()
                 .map(this.produitConverteur::reverse)
                 .collect(Collectors.toList());
+
+        return new PageImpl<>(listProduits, pageRequest, listProduitsFind.getTotalElements());
     }
 
     /**

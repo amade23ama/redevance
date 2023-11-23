@@ -75,11 +75,11 @@
 </div>-->
 <div class="mt-02 global">
   <div class="entete-acceuil" fxLayout="row" fxLayout fxLayoutAlign="space-between center"
-       fxLayoutAlign.lt-md="space-between center" fxLayoutGap="5px" fxLayoutGap.lt-md="1px">
+       fxLayoutAlign.lt-md="space-between center" fxLayoutGap.gt-md="50px" fxLayoutGap.lt-md="20px">
        <!-- ANNEE-->
     <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
-        <mat-form-field class="champ--operateur" appearance="outline"
-                        fxFlex="20" floatLabel="always" *ngIf="annees$ |async as annees">
+        <mat-form-field *ngIf="annees$ |async as annees" class="recherche-mat-form-field" appearance="outline"
+                        fxFlex="20" floatLabel="always" >
           <mat-label>Année</mat-label>
           <mat-select [formControl]="reach" >
             <mat-option *ngFor="let annee of annees" [value]="annee">
@@ -89,11 +89,13 @@
         </mat-form-field>
     </div>
     <!-- BLOC CHARGEMENT -->
-    <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true">
-      <div fxLayout="column" fxLayoutAlign="start stretch">
-        <div class="result-titre">Chargement</div>
-        <div class="result-continue">52000</div>
-      </div>
+    <div class="mt-02" fxLayout="column" fxLayoutAlign="start stretch" fxShow="true" fxHide.lt-sm="true" fxFlex.gt-md="50">
+      <ng-container *ngIf="quantiteChargementAnnee$ | async as cardChargement">
+        <div fxLayout="column" fxLayoutAlign="start stretch">
+          <div class="result-titre">Chargement</div>
+          <div class="result-continue">{{cardChargement.campagnes[0].value}}</div>
+        </div>
+      </ng-container>
     </div>
   </div>
 

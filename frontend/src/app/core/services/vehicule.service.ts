@@ -1,14 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, catchError, Observable, share, tap, throwError} from 'rxjs';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { Globals } from "../../app.constants";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Page } from '../interfaces/page';
 import { Vehicule } from '../interfaces/vehicule';
-import {Exploitation} from "../interfaces/exploitation";
-import {NotificationService} from "./notification.service";
-import {Produit} from "../interfaces/produit";
-import {Site} from "../interfaces/site";
-import {CritereRecherche} from "../interfaces/critere.recherche";
-import {Globals} from "../../app.constants";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +22,7 @@ export class VehiculeService {
   private _vehicules$: BehaviorSubject<Vehicule[]> = new BehaviorSubject<Vehicule[]>( []);
   vehiculeCourant: Vehicule = new Vehicule();
   private _vehicule$: BehaviorSubject<Vehicule> = new BehaviorSubject<Vehicule>(null);
+  private _nbVehicules$: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   /** constructor */
   constructor(private httpClient: HttpClient,private notification: NotificationService,private globals: Globals) { }
 
@@ -36,11 +35,10 @@ export class VehiculeService {
     return this.httpClient.post<Vehicule>(this.url + '/enregistrer', vehicule)
       .pipe(
         tap((res:Vehicule)=> {
-          console.log("l'exploitation est enregistré ", res);
-          this.notification.success("le site d'exploitation est enregistré avec sucess")
+          this.notification.success("Le véhicule est enregistré avec sucess")
         }),
         catchError((err) => {
-          this.notification.error("erreur enregistrement du  site d'exploitation")
+          this.notification.error("erreur enregistrement du véhicule")
           return throwError(() => err) // RXJS 7+
         })
       );
@@ -68,7 +66,16 @@ export class VehiculeService {
    * @returns véhicule modifier
    */
   modifierVehicule(vehicule: Vehicule): Observable<Vehicule> {
-    return this.httpClient.post<Vehicule>(this.url + '/modifier', vehicule).pipe(share());
+    return this.httpClient.put<Vehicule>(this.url + '/modifier', vehicule)
+      .pipe(
+        tap((res:Vehicule)=> {
+          this.notification.success("Le véhicule a été modifié avec succés")
+        }),
+        catchError((err) => {
+          this.notification.error("Erreur lors de la modification du véhicule")
+          return throwError(() => err) // RXJS 7+
+        })
+      );
   }
 
   /**
@@ -78,7 +85,18 @@ export class VehiculeService {
    */
   supprimerVehicule(vehicule: Vehicule): Observable<boolean> {
     //const param = new HttpParams().set('id',id);
-    return this.httpClient.post<boolean>(this.url + '/supprimer', vehicule).pipe(share());
+    return this.httpClient.post<boolean>(this.url + '/supprimer', vehicule).pipe(
+      tap((res:boolean)=> {
+        console.log("suppression du Vehicule d'id: ", vehicule.id);
+        this.removeVehicule(vehicule.id)
+        this.globals.loading=false
+      }),
+      catchError((err) => {
+        this.globals.loading=false
+        this.notification.error("Erreur lors de la suppression du Vehicule");
+        return throwError(() => err)
+      }
+    ));
   }
   get vehicules$(): Observable<Vehicule[]> { // getter ou selector
     return this._vehicules$.asObservable()
@@ -116,13 +134,22 @@ export class VehiculeService {
   getVehiculeCourant() {
     return this.vehiculeCourant ;
   }
-  chargementVehiculeParCritere(critereRecherche:CritereRecherche ) {
+  chargementVehiculeParCritere(critereRecherche:CritereRecherche, scroll?: boolean) {
     this.globals.loading = true;
-    return this.httpClient.post<Vehicule[]>(this.url+"/rechercheBy",critereRecherche)
+    return this.httpClient.post<Page<Vehicule>>(this.url+"/rechercheBy",critereRecherche)
       .pipe(
-        tap((res:Vehicule[]) => {
-          this.globals.loading = false;
-          this.setVehicules(res);
+        tap((res: Page<Vehicule>) => {
+          this.setNbVehicules(res.totalElements);
+          if(res.totalElements==0){
+            this.setVehicules([])
+          }
+          if (scroll) {
+            const result = Array.from(new Set([...this._vehicules$.getValue(), ...res.content]));
+            this.setVehicules(result);
+          } else {
+            this.setVehicules([...res.content]);
+          }
+          this.globals.loading=false
         }),
         catchError((err) => {
           this.globals.loading = false;
@@ -130,5 +157,23 @@ export class VehiculeService {
           return throwError(() => err)
         })
       )
+  }
+
+  removeVehicule(id: number) {
+    const currents = this._vehicules$.getValue();
+    const filtre=currents.find((res)=>res.id==id)
+    const index=currents.indexOf(filtre)
+    if(index!=-1){
+      currents.splice(index,1)
+      this._vehicules$.next(currents);
+    }
+  }
+  get nbVehicules$(){
+    return this._nbVehicules$.asObservable()
+  }
+
+  /** setSites */
+  setNbVehicules(nombre:number ){
+    return this._nbVehicules$.next(nombre)
   }
 }

@@ -31,10 +31,11 @@ export class RechercheDepotComponent implements OnInit{
   // La pagination
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
+  itemSize:number=0;
+  nb$=this.depotService.nbDepots$
   // nombre de ligne par page
-  pageSizeOptions: number[] = [5, 10, 20];
-  pageSize = 5; // nb ligne par page par défaut
+  pageSizeOptions: number[] = [10, 20, 30];
+  pageSize = 10; // nb ligne par page par défaut
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesDepot$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesDepot$
   constructor(public appConfig: AppConfigService,private router:Router,public depotService:DepotService,
@@ -47,11 +48,11 @@ export class RechercheDepotComponent implements OnInit{
   ngOnInit(): void {
     this.depotService.getAllDepots().subscribe()
     this.depotService.depots$.subscribe((depots) => {
-      console.log("les sites: ", depots);
       //alimentation du tableau
       this.listDepots = new MatTableDataSource<Depot>(depots);
       this.listDepots.paginator=this.paginator;
       this.listDepots.sort=this.sort;
+      this.itemSize=depots.length
     })
     this.search.valueChanges?.pipe(
       debounceTime(300),
@@ -66,7 +67,6 @@ export class RechercheDepotComponent implements OnInit{
       .transform(dateCreation, BuilderDtoJsonAbstract.DATE_FORMAT_SIMPLEJSON);
   }
   chargerDepot(depot:Depot){
-    console.log("vvv")
     this.router.navigate(['recherche/depotChargement'], {queryParams: {'contextInfo':depot.id }});
   }
 

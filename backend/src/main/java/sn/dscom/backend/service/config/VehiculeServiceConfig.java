@@ -2,6 +2,7 @@ package sn.dscom.backend.service.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import sn.dscom.backend.database.repository.TransporteurRepository;
 import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.VehiculeService;
 
@@ -14,14 +15,16 @@ public class VehiculeServiceConfig {
     /**
      * VehiculeService
      *
-     * @param vehiculeRepository
+     * @param vehiculeRepository vehiculeRepository
+     * @param transporteurRepository transporteurRepository
      * @return Bean
      */
     @Bean
-    public VehiculeService VehiculeService(VehiculeRepository vehiculeRepository) {
+    public VehiculeService VehiculeService(VehiculeRepository vehiculeRepository, TransporteurRepository transporteurRepository) {
 
         return VehiculeService.builder()
                 .vehiculeRepository(vehiculeRepository)
+                .transporteurRepository(transporteurRepository)
                 .build();
     }
 }

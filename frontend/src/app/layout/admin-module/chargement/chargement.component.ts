@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Actions } from 'src/app/core/enum/actions';
 import { ActionBtn } from 'src/app/core/interfaces/actionBtn';
@@ -60,12 +60,12 @@ export class ChargementComponent implements OnInit {
     nom: this.nomTransporteur,
     telephone: this.telTransporteur,
   })
-  
+
   /** vehicule form */
   categorie: FormGroup = this.fb.group({
     type: this.classe,
   })
-  
+
   /** vehicule form */
   produit: FormGroup = this.fb.group({
     nomSRC: this.nomProduit,
@@ -120,7 +120,7 @@ export class ChargementComponent implements OnInit {
           this.chargementform.patchValue(this.chargementCourant);
           this.majBtnActive();
         })
-      } 
+      }
     });
     //maj bouton
     this.majBtnActive()
@@ -131,7 +131,7 @@ export class ChargementComponent implements OnInit {
 
   /** initListbtns */
   private initListbtns() {
-    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, true, true, 'keyboard_arrow_left'));
+    this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'), Actions.ANNULER, true, false, false, true, 'keyboard_arrow_left'));
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.modifier'), Actions.MODIFIER, true, true, true, true, 'create'));
     return this.btns;
   }
@@ -140,6 +140,18 @@ export class ChargementComponent implements OnInit {
   chargementAction(event: Actions){
     //Le click sur le bouton ENREGISTRER
     if (event === Actions.MODIFIER) {
+      let chargementAmodifier = this.chargementCourant;
+      //le produit
+      let newProduit = new Produit();
+      newProduit.nomSRC = this.getProduit.value;
+      newProduit.nomNORM = this.getProduit.value;
+      // la destination
+      chargementAmodifier.destination = this.getDestination?.value
+      chargementAmodifier.produit = newProduit;
+      this.chargementService.modifierChargement(chargementAmodifier).subscribe((data) => {
+        this.chargementform.patchValue(data);
+        this.modalService.ouvrirModalConfirmation('Le chargement a été bien modifié.' );
+      });
     }
 
     //Le click sur le bouton Annuler
@@ -150,7 +162,7 @@ export class ChargementComponent implements OnInit {
 
   /**
    * reset
-   * @param formToReset 
+   * @param formToReset
    */
   reset(formToReset:any){
     this.chargementform.controls[formToReset]?.setValue('');
@@ -162,7 +174,7 @@ export class ChargementComponent implements OnInit {
     this.chargementform?.valueChanges.subscribe((res)=>{
       if(this.chargementform.invalid){
             this.majBtnState(Actions.MODIFIER, true, true);
-          
+
       }
 
       // Formulaire valid
@@ -172,7 +184,7 @@ export class ChargementComponent implements OnInit {
     })
 
   }
-  
+
     /** ouvrir Modale Annulation */
     majBtnState(a: Actions, disabled: boolean, display: boolean) {
       this.btns.forEach(b => {
@@ -182,5 +194,9 @@ export class ChargementComponent implements OnInit {
         }
       });
     }
+  
+  // get data
+  get getDestination(): AbstractControl { return this.chargementform?.get("destination");}
+  get getProduit(): AbstractControl { return this.produit?.get("nomSRC");}
 
 }

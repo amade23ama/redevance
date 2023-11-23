@@ -2,7 +2,6 @@ package sn.dscom.backend.database.entite;
 
 import lombok.*;
 
-//import javax.persistence.*;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -32,6 +31,8 @@ public class VehiculeEntity {
     //private  String nom;
     //@Column(name = "VOLUME")
     //private  Double volume;
+    @Column(name = "POIDS_VIDE")
+    private Double poidsVide;
     @Column(name ="DATECREATION")
     private Date dateCreation;
     @Column(name ="DATEMODIFICATION")

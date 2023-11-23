@@ -5,6 +5,7 @@ import {AutocompleteRecherche} from "../../../core/interfaces/autocomplete.reche
 import {Observable, of} from "rxjs";
 import {AutocompleteRechercheService} from "../../../core/services/autocomplete.recherche.service";
 import {ReferenceService} from "../../../core/services/reference.service";
+import {AppConfigService} from "../../../core/services/app-config.service";
 
 @Component({
   selector: 'app-actions-critere-btns',
@@ -25,15 +26,19 @@ export class ActionsCritereBtnsComponent implements OnInit{
   @Output() btnAnnulerFiltre= new EventEmitter();
   @Input() critereRecherches:Observable<AutocompleteRecherche[]>
   @Output() btnExport= new EventEmitter();
+  @Output() btnSupprimer= new EventEmitter();
   @Input() critereDate:string
   @Input() visibleDate:boolean
   @Input() visibleBtnExport:boolean
   @Input() visibleBtnCreation:boolean
   @Input() searchDate:FormControl;
+  @Input() visibleBtnSupprimer:boolean
+  @Input() disableBtnSupprimer:boolean
+  @Input() disableBtnExport:boolean
   selectable: boolean = true;
   removable: boolean = true;
   annees$=this.referenceService.annees$
-  constructor(public readonly  referenceService:ReferenceService) {
+  constructor(public readonly  referenceService:ReferenceService,public appConfig:AppConfigService) {
   }
   ngOnInit() {
 
@@ -49,5 +54,8 @@ export class ActionsCritereBtnsComponent implements OnInit{
   }
   export(critereRecherches:Observable<AutocompleteRecherche[]>){
       this.btnExport.emit(critereRecherches)
+  }
+  supprimer(critereRecherches:Observable<AutocompleteRecherche[]>){
+    this.btnSupprimer.emit(critereRecherches)
   }
 }

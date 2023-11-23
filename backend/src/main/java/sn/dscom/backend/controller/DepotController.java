@@ -97,36 +97,28 @@ public class DepotController {
     public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
         // la liste des colonnes du fichier
         List<String> header = null;
-
         // Le fichier contient des colonnes à ne pas mapper
         List<String> colonnesToIgnore = Splitter.on(",").splitToList(environment.getProperty("list.file.colonne.to.ignore"));
-
-        log.info(" entete du fichier ");
+        DepotController.log.info(" entete du fichier ");
         if (file.isEmpty()) {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
         try{
-            Reader reader = new InputStreamReader(file.getInputStream());
-            CSVReader csvReader = new CSVReader(reader) ;
+            CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream())) ;
             header = tabToList(csvReader.readNext());
-
-            log.info(" entete du fichier "+header);
+            DepotController.log.info(" entete du fichier "+header);
         }catch (IOException | CsvValidationException e) {
             e.printStackTrace();
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
         }
-
         // la liste épurée des colonnes à mapper
        List<String> colonnesToMap = header.stream()
                 .filter(Predicates.compose(colonnesToIgnore::contains, Functions.identity()).negate())
                 .toList();
-
-
-        FileInfoDTO fileInfoDTO = FileInfoDTO.builder()
+        return  ResponseEntity.ok(FileInfoDTO.builder()
                 .enteteFile(colonnesToMap)
                 .colonneTable(Arrays.asList(environment.getProperty("list.table.colonne").split(",")))
-                .build();
-        return  ResponseEntity.ok(fileInfoDTO);
+                .build());
     }
 
     /**
@@ -268,39 +260,6 @@ public class DepotController {
     }
 
     /**
-     * uplaod file
-     *
-     * @param depotDTO transporteurDTO
-     * @return le transporteur
-     */
-    @PostMapping(path = "/uploadFile")
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<DepotDTO> deposer(@RequestBody DepotDTO depotDTO) {
-        // Controle du fichier
-        DepotDTO depot = new DepotDTO();
-        File file = depotDTO.getFile();
-       // File file = new File("C:\\Users\\diome\\Downloads\\BDD SEPTEMBRE 2021 OUROSSOGUI.csv");
-        try(CSVReader reader
-                    = new CSVReader(new FileReader(file)))
-        {
-            String [] nextLine;
-            String[] header = reader.readNext();
-
-            //Read one line at a time
-            while ((nextLine = reader.readNext()) != null)
-            {
-                //reader
-                System.out.println(Arrays.toString(nextLine));
-            }
-        }
-        catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-        }
-        //enregistrer ou modifier Depot
-        return  ResponseEntity.ok(depot);
-    }
-
-    /**
      * rechercher depots
      * @return la liste
      */
@@ -348,12 +307,6 @@ public class DepotController {
                 .peek(listDepotDTO -> DepotController.log.info(String.format("DepotController -> rechercherDepotByCriteres: %s", listDepotDTO.size())))
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<Boolean> supprimerDepot(@RequestBody DepotDTO depotDTO) {
-        //supprimer Depot
-        return  ResponseEntity.ok(depotService.supprimerDepot(depotDTO).booleanValue());
     }
 
     /**

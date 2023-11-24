@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +35,8 @@ import sn.dscom.backend.service.mail.IMailService;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -139,14 +142,13 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<Long> uploadFile(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("mapEntete") String mapEnteteJson,
-                                                   @RequestParam("nom") String nomDepot) throws IOException {
-        // Utilisateur
-        UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
-        // On charge tous les référentiels
-        List<ProduitDTO> referentielProduits = this.produitService.rechercherProduits().get();
-        List<ExploitationDTO> referentielSitesExploitation = this.exploitationService.rechercherSitesExploitation().get();
-        List<CategorieDTO> referentielCategorie = this.categorieService.rechercherCategories().get();
-        List<SiteDTO> referentielSite = this.siteService.rechercherSites().get();
+                                                   @RequestParam("nom") String nomDepot) throws IOException, ExecutionException, InterruptedException {
+        // // On charge tous les référentiels en parallele
+        UtilisateurDTO utilisateurDTO = this.getConnectedUtilisateur().get();
+        List<ProduitDTO> referentielProduits = this.getReferentielProduit().get();
+        List<ExploitationDTO> referentielSitesExploitation = this.getReferentielSitesExploitation().get();
+        List<CategorieDTO> referentielCategorie = this.getReferentielCategories().get();
+        List<SiteDTO> referentielSite = this.getReferentielSites().get();
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
         // Le Depot
@@ -230,6 +232,55 @@ public class DepotController {
         }
         // return id du depot
         return   ResponseEntity.ok(depot.getId());
+    }
+
+    /**
+     * getReferentielProduit
+     * @return CompletableFuture<List<ProduitDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<ProduitDTO>> getReferentielProduit(){
+        List<ProduitDTO> referentielProduits = this.produitService.rechercherProduits().get();
+        return CompletableFuture.completedFuture(referentielProduits);
+    }
+
+    /**
+     * getReferentielSitesExploitation
+     * @return CompletableFuture<List<ExploitationDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<ExploitationDTO>> getReferentielSitesExploitation(){
+        List<ExploitationDTO> referentielSitesExploitation = this.exploitationService.rechercherSitesExploitation().get();
+        return CompletableFuture.completedFuture(referentielSitesExploitation);
+    }
+
+    /**
+     * getReferentielCategories
+     * @return CompletableFuture<List<ExploitationDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<CategorieDTO>> getReferentielCategories(){
+        List<CategorieDTO> referentielCategorie = this.categorieService.rechercherCategories().get();
+        return CompletableFuture.completedFuture(referentielCategorie);
+    }
+
+    /**
+     * getReferentielSites
+     * @return CompletableFuture<List<SiteDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<SiteDTO>> getReferentielSites(){
+        List<SiteDTO> referentielSite = this.siteService.rechercherSites().get();
+        return CompletableFuture.completedFuture(referentielSite);
+    }
+
+    /**
+     * getConnectedUtilisateur
+     * @return CompletableFuture<UtilisateurDTO>
+     */
+    @Async
+    protected CompletableFuture<UtilisateurDTO> getConnectedUtilisateur(){
+        return CompletableFuture.completedFuture(UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur()));
     }
 
     /**

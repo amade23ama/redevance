@@ -87,6 +87,14 @@ public class DepotController {
     @Autowired
     private IMailService mailService;
 
+    /** exploitation Service */
+    @Autowired
+    private IExploitationService exploitationService;
+
+    /** categorie Service */
+    @Autowired
+    private ICategorieService categorieService;
+
     /**
      * get header
      *
@@ -134,20 +142,19 @@ public class DepotController {
                                                    @RequestParam("nom") String nomDepot) throws IOException {
         // Utilisateur
         UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
-        // La liste des produits en base
+        // On charge tous les référentiels
         List<ProduitDTO> referentielProduits = this.produitService.rechercherProduits().get();
+        List<ExploitationDTO> referentielSitesExploitation = this.exploitationService.rechercherSitesExploitation().get();
+        List<CategorieDTO> referentielCategorie = this.categorieService.rechercherCategories().get();
+        List<SiteDTO> referentielSite = this.siteService.rechercherSites().get();
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
         // Le Depot
         DepotDTO depot = new DepotDTO();
         String nom;
         SiteDTO siteDTO = null;
-
         // Controle sur le fichier
-        if (file.isEmpty()) {
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
-        }
-
+        if (file.isEmpty()) {throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);}
         try {
             Map<String, String> mapDatabaseEnteteFile = objectMapper.readValue(mapEnteteJson,new TypeReference<Map<String, String>>() {});
             nom = objectMapper.readValue(nomDepot, new TypeReference<String>() {});
@@ -158,38 +165,42 @@ public class DepotController {
             depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom, StatutEnum.ENCOURS.getCode())).get();
             List<String> header = null;
             try{
-                Reader reader = new InputStreamReader(file.getInputStream());
-                CSVReader csvReader = new CSVReader(reader) ;
+                CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
                 header = tabToList(csvReader.readNext());
                 // next Line
                 String [] nextLine;
-
                 // Chaque ligne du fichier est un chargement
                 while ((nextLine = csvReader.readNext()) != null)
                 {
                     // Ligne de chargement
                     List<String> chargement = tabToList(nextLine);
+                    DepotController.log.info(String.format("Chargement de ligne : %s", chargement));
                     //Certains fichier csv peuvent contenir de ligne vide dans ce cas on ne traite pas la ligne
                     if (chargement.size() != 0){
                         // rechercher Site
                         if(null == siteDTO) {
-                            siteDTO = this.rechercherSite(chargement, mapInverse, header);
+                            siteDTO = this.rechercherSite(chargement, mapInverse, header, referentielSite);
                         }
                         // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
                         String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
-                        Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
-
-                        if(produitDTO.isPresent()){
+                        Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.trim().equals(produit.getNomSRC())).findFirst();
+                        // On recupère le siteExploitation dans le chagement: On fait un chargement que pour les sites qui existe
+                        String siteExploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).toUpperCase();
+                        Optional<ExploitationDTO> exploitationDTO = referentielSitesExploitation.stream().filter(exploita -> siteExploitation.trim().equals(exploita.getNom())).findFirst();
+                        // On recupère le siteExploitation dans le chagement: On fait un chargement que pour les sites qui existe
+                        String categorie = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).toUpperCase();
+                        Optional<CategorieDTO> categorieDTO = referentielCategorie.stream().filter(classe -> categorie.trim().equals(classe.getType())).findFirst();
+                        if(produitDTO.isPresent() && exploitationDTO.isPresent()  && categorieDTO.isPresent() && siteDTO != null){
                             //Chargement d'une ligne du fichier
-                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot, produitDTO.get());
+                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot, produitDTO.get(), exploitationDTO.get(), categorieDTO.get(), siteDTO);
                         }else{
                             DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
+                            assert siteDTO != null;
+                            DepotController.log.info(String.format("Le site d'explitation %s, le site de pessage %s ou la classe de la voiture %s n'existe pas dans le reférentiel.",
+                                    siteExploitation, siteDTO.getNom(), categorie));
                         }
                     }
                 }
-
-                // On modifie le depot avec la liste des chargements et l'heure de fin
-                /*depot.setChargementDTOList(listChargementAEffectuer);*/
                 //rechercherDepotById
                 DepotDTO depotCreat = this.depotService.rechercherDepotById(depot.getId()).get();
                 depot.setDateHeureFinDepot( new Date());
@@ -217,7 +228,6 @@ public class DepotController {
             this.definirDepot(depot);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
-
         // return id du depot
         return   ResponseEntity.ok(depot.getId());
     }
@@ -328,18 +338,14 @@ public class DepotController {
      * @param mapCorrespondance maps
      * @return l'objet enregisté
      */
-    private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
+    private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, List<SiteDTO> referentielSite){
 
         // Table SITE: nom et localité db_site_nom et db_site_localite
         //REFERIENTIEL: nom -> site sur fichier et alimenter la localité
-        String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
+        String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom")))).toUpperCase();
+        Optional<SiteDTO> siteDTO = referentielSite.stream().filter(site -> siteName.trim().equals(site.getNom())).findFirst();
+        return siteDTO.orElse(null);
 
-        return Iterables.getOnlyElement(Try.of(() -> SiteDTO.builder()
-                        .nom(siteName.trim().toUpperCase())
-                        .build())
-                .mapTry(this.siteService::rechercherSite)
-                .onFailure(e -> DepotController.log.error(String.format("Erreur lors de la recherche du Site : %s",e.getMessage())))
-                .get().get());
     }
 
     /**

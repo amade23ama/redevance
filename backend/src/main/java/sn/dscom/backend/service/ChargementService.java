@@ -197,22 +197,16 @@ public class ChargementService implements IChargementService {
      * @param header header
      */
     @Override
-    public void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depot, ProduitDTO produitDTO) throws DscomTechnicalException {
-        ChargementService.log.info(String.format("Chargement de ligne : %s", ligneChargement));
-        // rechercher du site d'Exploitation
-        ExploitationDTO exploitationDTO = this.rechercherExploitation(ligneChargement, mapCorrespondance, header);
-        // rechercher la catégorie dans le référentiel
-        CategorieDTO categorieDTO = this.rechercherCategorie(ligneChargement, mapCorrespondance, header);
+    public void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depot,
+                                    ProduitDTO produitDTO, ExploitationDTO exploitationDTO, CategorieDTO categorieDTO, SiteDTO siteDTO) throws DscomTechnicalException {
         // rechercher Site
-        SiteDTO siteDTO = this.rechercherSite(ligneChargement, mapCorrespondance, header);
+        //SiteDTO siteDTO = this.rechercherSite(ligneChargement, mapCorrespondance, header);
         // si on trouve pas la class, exploitation, site pessage
-        if (exploitationDTO != null && categorieDTO != null && siteDTO != null){
+        //if (exploitationDTO != null && categorieDTO != null && siteDTO != null){
             //rechercherDepotById
             DepotDTO depotCreat = this.depotService.rechercherDepotById(depot.getId()).get();
             // Enregistrement du véhicule
             VehiculeDTO vehiculeDTO = this.enregistrerVehicule(ligneChargement, mapCorrespondance, header, categorieDTO);
-            // rechercher Produit
-            //ProduitDTO produitDTO = this.rechercherProduit(ligneChargement, mapCorrespondance, header);
             // Enregistrement du véhicule
             String destination = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.destination"))));
             String poidsMesure = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.chargement.poids"))));
@@ -249,13 +243,13 @@ public class ChargementService implements IChargementService {
             depot.setChargementDTOList(lisCharge);
             this.depotService.enregistrerDepot(depot);
 
-        }else {
+       /* }else {
             String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
             String classeVehicule = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.categorie.type"))));
             String exploitationName = ligneChargement.get(header.indexOf(mapCorrespondance.get(environment.getProperty("db.exploitation.nom"))));
 
             ChargementService.log.info(String.format("Le site d'explitation %s, le site de pessage %s ou la classe de la voiture %s n'existe pas dans le reférentiel.", exploitationName, siteName, classeVehicule));
-        }
+        }*/
 
     }
 
@@ -449,7 +443,6 @@ public class ChargementService implements IChargementService {
      * @param mapCorrespondance mapCorrespondance
      * @param header header
      * @return l'objet enregisté
-     */
     private ExploitationDTO rechercherExploitation(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
         //site: site_origine et region
         //exploitation: nom -> Prevenance
@@ -463,7 +456,7 @@ public class ChargementService implements IChargementService {
                 .onFailure(e -> ChargementService.log.error(String.format("Erreur lors de la recherche du Site d'exploitation: %s",e.getMessage())))
                 .get()
                 .get());
-    }
+    }*/
 
     /**
      * rechercher Produit
@@ -514,7 +507,7 @@ public class ChargementService implements IChargementService {
      * @param mapCorrespondance mapCorrespondance
      * @param header header
      * @return l'objet enregisté
-     */
+
     private CategorieDTO rechercherCategorie(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header) throws DscomTechnicalException {
         //CATEGORIE:
         // type -> class dans le fichier et volume à voir
@@ -526,7 +519,7 @@ public class ChargementService implements IChargementService {
                 .mapTry(this.categorieService::rechercherCategorie)
                 .onFailure(e -> ChargementService.log.error(String.format(" Erreur lors de la rechercher de la categorie: %s", e.getMessage())))
                 .get().get());
-    }
+    }*/
 
     /**
      * save en base

@@ -39,9 +39,7 @@ export class DepotCreationComponent implements  OnInit{
   ngOnInit(): void {
    this. initListbtns()
     this.majBtnActive()
-    this.file.valueChanges.subscribe((files: File[]) =>
-      console.log(this.file.value, this.file.valid)
-    );
+    this.file.valueChanges.subscribe();
   }
 
   private initListbtns() {
@@ -91,7 +89,6 @@ export class DepotCreationComponent implements  OnInit{
     const file=files[0]
     const formData = new FormData();
     formData.append('file', file);
-    console.log("File changed!");
   }
 
   /** Action sur les boutons ENREGISTRER ou ANNULER */

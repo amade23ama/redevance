@@ -36,7 +36,6 @@ export class DepotService{
     this.setFichierCourant(formData)
     return this.http.post<any>(this.url + '/fileHeader', formData).pipe(
       tap((res:FileInfo)=> {
-        console.log("depot en cours de creation ", res);
         this.notification.success("depot en cours de creation")
         this.setFileInfoCourant(res)
       }),
@@ -49,7 +48,6 @@ export class DepotService{
   deposerFichier(formData: FormData){
       return this.http.post<any>(this.url + '/upload',formData).pipe(
         tap((res)=> {
-          console.log("confirmation depot ",res);
           this.notification.success("confirmation depot")
           this.setNumeroDepot(res as number)
         }),

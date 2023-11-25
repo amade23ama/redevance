@@ -30,7 +30,7 @@ export class DepotValidationColumnPopupComponent implements OnInit{
     this.initierfichierColonnes()
     this.createForm()
     this.majBtnActive()
-
+    this.setCollumnCorrespondantFichierdb()
   }
   private initListbtns() {
     this.btns.push(new ActionBtn(this.appConfig.getLabel('dcsom.actions.annuler'),
@@ -90,5 +90,43 @@ export class DepotValidationColumnPopupComponent implements OnInit{
         b.disabled=false
       });
     }
+  }
+  setCollumnCorrespondantFichierdb(){
+    this.fichierColonnes.forEach(entete => {
+      const cleanedEntete = entete.toLowerCase().replace(/[\s.]+/g, '')
+      const colonneCorrespondante = this.dbColonnes.find(colonne => colonne.toLowerCase().includes(cleanedEntete.toLowerCase()));
+      if (colonneCorrespondante && this.mappingForm.get(entete) && cleanedEntete!=="poids") {
+        this.mappingForm.controls[entete].setValue(colonneCorrespondante);
+      }
+      else if(("Prov").toLowerCase().includes(cleanedEntete.toLowerCase())){
+        const res = this.dbColonnes.find(colonne => colonne.toLowerCase().includes(("Origine").toLowerCase()));
+        if (res!=null) {
+          this.mappingForm.controls[entete].setValue(res);
+        }
+      }
+      else if(("Poids Maximum").toLowerCase().replace(/[\s.]+/g, '').includes(cleanedEntete) && cleanedEntete!=="poids"){
+        const res = this.dbColonnes.find(colonne => colonne.toLowerCase().includes(("Poids Maximum").toLowerCase()));
+        if (res!=null) {
+          this.mappingForm.controls[entete].patchValue(res);
+        }
+      }
+      else if("poids"===cleanedEntete){
+        const res = this.dbColonnes.find(colonne => colonne.toLowerCase().includes(("Poids mesuré").toLowerCase()));
+        if (res!=null) {
+          this.mappingForm.controls[entete].setValue(res);
+        }
+      }
+
+      else if(cleanedEntete.toLowerCase().includes(("produits").toLowerCase())){
+        const res = this.dbColonnes.find(colonne => colonne.toLowerCase().includes(("Produit").toLowerCase()));
+        if (res!=null) {
+          this.mappingForm.controls[entete].setValue(res);
+        }
+      }
+     else {
+        this.mappingForm.get(entete).setValue("Ignorer");
+      }
+
+    });
   }
 }

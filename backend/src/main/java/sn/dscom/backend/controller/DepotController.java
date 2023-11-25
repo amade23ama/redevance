@@ -184,22 +184,14 @@ public class DepotController {
                             siteDTO = this.rechercherSite(chargement, mapInverse, header, referentielSite);
                         }
                         // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
-                        String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
-                        Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.trim().equals(produit.getNomSRC())).findFirst();
+                        Optional<ProduitDTO> produitDTO = this.getCurrentProduct(chargement, mapInverse, header, referentielProduits).get();
                         // On recupère le siteExploitation dans le chagement: On fait un chargement que pour les sites qui existe
-                        String siteExploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).toUpperCase();
-                        Optional<ExploitationDTO> exploitationDTO = referentielSitesExploitation.stream().filter(exploita -> siteExploitation.trim().equals(exploita.getNom())).findFirst();
+                        Optional<ExploitationDTO> exploitationDTO = this.getCurrentExploitation(chargement, mapInverse, header, referentielSitesExploitation).get();
                         // On recupère le siteExploitation dans le chagement: On fait un chargement que pour les sites qui existe
-                        String categorie = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).toUpperCase();
-                        Optional<CategorieDTO> categorieDTO = referentielCategorie.stream().filter(classe -> categorie.trim().equals(classe.getType())).findFirst();
+                        Optional<CategorieDTO> categorieDTO = this.getCurrentCategorie(chargement, mapInverse, header, referentielCategorie).get();
                         if(produitDTO.isPresent() && exploitationDTO.isPresent()  && categorieDTO.isPresent() && siteDTO != null){
                             //Chargement d'une ligne du fichier
                             this.chargementService.effectuerChargement(chargement, mapInverse, header, depot, produitDTO.get(), exploitationDTO.get(), categorieDTO.get(), siteDTO);
-                        }else{
-                            DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
-                            assert siteDTO != null;
-                            DepotController.log.info(String.format("Le site d'explitation %s, le site de pessage %s ou la classe de la voiture %s n'existe pas dans le reférentiel.",
-                                    siteExploitation, siteDTO.getNom(), categorie));
                         }
                     }
                 }
@@ -232,6 +224,48 @@ public class DepotController {
         }
         // return id du depot
         return   ResponseEntity.ok(depot.getId());
+    }
+
+    /**
+     * getCurrentProduct
+     * @return CompletableFuture<Optional<ProduitDTO>>
+     */
+    @Async
+    protected CompletableFuture<Optional<ExploitationDTO>> getCurrentExploitation(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<ExploitationDTO> ref){
+        String siteExploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).toUpperCase();
+        Optional<ExploitationDTO> exploitationDTO = ref.stream().filter(exploita -> siteExploitation.trim().equals(exploita.getNom())).findFirst();
+        if (exploitationDTO.isEmpty()) {
+            DepotController.log.info(String.format("Le site d'explitation %s n'existe pas dans le reférentiel.", siteExploitation));
+        }
+        return CompletableFuture.completedFuture(exploitationDTO);
+    }
+
+    /**
+     * getCurrentProduct
+     * @return CompletableFuture<Optional<ProduitDTO>>
+     */
+    @Async
+    protected CompletableFuture<Optional<ProduitDTO>> getCurrentProduct(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<ProduitDTO> referentielProduits){
+        String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
+        Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.trim().equals(produit.getNomSRC())).findFirst();
+        if (produitDTO.isEmpty()) {
+            DepotController.log.info(String.format("Le produit %s n'existe pas dans le reférentiel.", nomProduit));
+        }
+        return CompletableFuture.completedFuture(produitDTO);
+    }
+
+    /**
+     * getCurrentCategorie
+     * @return CompletableFuture<Optional<CategorieDTO>>
+     */
+    @Async
+    protected CompletableFuture<Optional<CategorieDTO>> getCurrentCategorie(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<CategorieDTO> ref){
+        String categorie = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).toUpperCase();
+        Optional<CategorieDTO> categorieDTO = ref.stream().filter(classe -> categorie.trim().equals(classe.getType())).findFirst();
+        if (categorieDTO.isEmpty()) {
+            DepotController.log.info(String.format("La catégorie %s n'existe pas dans le reférentiel.", categorie));
+        }
+        return CompletableFuture.completedFuture(categorieDTO);
     }
 
     /**
@@ -390,11 +424,11 @@ public class DepotController {
      * @return l'objet enregisté
      */
     private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, List<SiteDTO> referentielSite){
-
-        // Table SITE: nom et localité db_site_nom et db_site_localite
-        //REFERIENTIEL: nom -> site sur fichier et alimenter la localité
         String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom")))).toUpperCase();
         Optional<SiteDTO> siteDTO = referentielSite.stream().filter(site -> siteName.trim().equals(site.getNom())).findFirst();
+        if (siteDTO.isEmpty()) {
+            DepotController.log.info(String.format("Le site de pesage %s n'existe pas dans le reférentiel.", siteName));
+        }
         return siteDTO.orElse(null);
 
     }

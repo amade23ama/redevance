@@ -123,6 +123,12 @@ export class DepotValidationColumnPopupComponent implements OnInit{
           this.mappingForm.controls[entete].setValue(res);
         }
       }
+      else if(cleanedEntete.includes("Proprietaire".toLowerCase())){
+        const res = this.dbColonnes.find(colonne => colonne.toLowerCase().includes(("transporteur").toLowerCase()));
+        if (res!=null) {
+          this.mappingForm.controls[entete].patchValue(res);
+        }
+      }
      else {
         this.mappingForm.get(entete).setValue("Ignorer");
       }

@@ -100,7 +100,7 @@ public class CategorieService implements ICategorieService {
     @Override
     public Optional<List<CategorieDTO>> rechercherCategories() {
 
-        CategorieService.log.error("Recherche des catégories");
+        CategorieService.log.info("Recherche des catégories");
         // On charge l'ensemble des Categories
         List<CategorieEntity> listCategorieFind = this.categorieRepository.findAll();
 

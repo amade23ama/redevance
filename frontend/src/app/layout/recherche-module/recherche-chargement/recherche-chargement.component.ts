@@ -2,6 +2,7 @@ import { SelectionModel } from "@angular/cdk/collections";
 import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatSort } from "@angular/material/sort";
 import { MatTableDataSource } from "@angular/material/table";
@@ -14,10 +15,9 @@ import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
 import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { ChargementService } from "../../../core/services/chargement.service";
+import { ModalService } from "../../../core/services/modal.service";
 import { ReferenceService } from "../../../core/services/reference.service";
-import {ModalService} from "../../../core/services/modal.service";
-import {SuppressionComponent} from "../../shared-Module/dialog/suppression/suppression.component";
-import {MatDialog} from "@angular/material/dialog";
+import { SuppressionComponent } from "../../shared-Module/dialog/suppression/suppression.component";
 
 @Component({
   selector: 'app-recherche-chargement',
@@ -129,15 +129,26 @@ export  class RechercheChargementComponent implements  OnInit{
           dateFin :new Date(),
         } as CritereRecherche
         this.searchDate.valueChanges.subscribe((value)=>{
-          this.croll=false
+          if (critereRecherche.annee !== this.searchDate.value) {
+            this.croll=false
+            critereRecherche.annee=this.searchDate.value;
+            this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
+          }
+        })
+
+        if ((critereRecherche.annee === this.searchDate.value) || this.croll) {
           critereRecherche.annee=this.searchDate.value;
           this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
-        })
-        critereRecherche.annee=this.searchDate.value;
-        this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
+          this.croll=false
+        }
+
       }
 
     })
+  }
+
+  initRechargementChargement(critereRecherche: CritereRecherche){
+    this.chargementService.chargementChargementParCritere(critereRecherche, true).subscribe()
   }
 
   isAllSelected() {
@@ -206,7 +217,22 @@ export  class RechercheChargementComponent implements  OnInit{
       const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
       this.newPage = newIndex;
       this.croll = true
-      this.rechargementChargement();
+
+      this.critereRecherches$.subscribe((res)=>{
+        if(res) {
+          const critereRecherche   = {
+            autocompleteRecherches:res,
+            page :this.newPage,
+            size :this.size,
+            dateDebut :new Date(),
+            dateFin :new Date(),
+          } as CritereRecherche;
+          this.initRechargementChargement(critereRecherche);
+        }
+  
+      })
+
+      
     }
   }
 

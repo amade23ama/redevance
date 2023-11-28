@@ -45,6 +45,8 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
 
     private CategorieRepository categorieRepository;
 
+    private DepotRepository depotRepository;
+
     /** matcherGlobal */
     private final ExampleMatcher matcherGlobal = ExampleMatcher.matchingAny()
             .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
@@ -60,7 +62,7 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     public AutocompleteRechercheService(UtilisateurRepository utilisateurRepository, ProduitRepository produitRepository, ExploitationRepository exploitationRepository,
                                         ProfilRepository profilRepository, SiteRepository siteRepository, VehiculeRepository vehiculeRepository,
                                         ChargementRepository chargementRepository,
-                                        CategorieRepository categorieRepository) {
+                                        CategorieRepository categorieRepository, DepotRepository depotRepository) {
         this.profilRepository=profilRepository;
         this.utilisateurRepository=utilisateurRepository;
         this.produitRepository=produitRepository;
@@ -69,6 +71,7 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
         this.vehiculeRepository=vehiculeRepository;
         this.chargementRepository=chargementRepository;
         this.categorieRepository=categorieRepository;
+        this.depotRepository=depotRepository;
 
     }
     @Transactional(readOnly = true)
@@ -295,6 +298,26 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
             }
         }
         return listAutocompleteRecherche;
+    }
+
+    /**
+     * @param capture capture
+     * @return capture
+     */
+    @Override
+    public List<AutocompleteRecherche> getDepotAutocompleteRecherche(String capture) {
+        if (!Strings.isNullOrEmpty(capture)) {
+            List<DepotEntity> list = Try.of(() -> DepotEntity.builder()
+                            .nom(capture)
+                            .build())
+                    .map(depot -> this.depotRepository.findAll(Example.of(depot, matcherGlobal)))
+                    .getOrElse(ArrayList::new);
+
+            if(!list.isEmpty()){
+                return  list.stream().map(AutocompleteRecherche::new).collect(Collectors.toList());
+            }
+        }
+        return new ArrayList<>();
     }
 
 

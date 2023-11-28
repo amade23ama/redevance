@@ -1,5 +1,7 @@
 package sn.dscom.backend.service.interfaces;
 
+import org.springframework.data.domain.Page;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.DepotDTO;
 
 import java.time.LocalDateTime;
@@ -53,4 +55,11 @@ public interface IDepotService {
      * @return le DepotDTO
      */
     Optional<DepotDTO> rechercherDepotById(long id);
+
+    /**
+     * rechargement Par Critere
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+    Page<DepotDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
 }

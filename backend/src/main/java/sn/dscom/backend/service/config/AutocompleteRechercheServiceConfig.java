@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import sn.dscom.backend.database.repository.*;
 import sn.dscom.backend.service.AutocompleteRechercheService;
+import sn.dscom.backend.service.DepotService;
 
 /**
  * configuration CategorieService
@@ -29,7 +30,7 @@ public class AutocompleteRechercheServiceConfig {
                                                                      ProduitRepository produitRepository,
                                                                      ProfilRepository profilRepository,
                                                                      ChargementRepository chargementRepository,
-                                                                     CategorieRepository categorieRepository) {
+                                                                     CategorieRepository categorieRepository, DepotRepository depotRepository) {
         return AutocompleteRechercheService.builder()
                 .profilRepository(profilRepository)
                 .utilisateurRepository(utilisateurRepository)
@@ -39,6 +40,7 @@ public class AutocompleteRechercheServiceConfig {
                 .vehiculeRepository(vehiculeRepository)
                 .chargementRepository(chargementRepository)
                 .categorieRepository(categorieRepository)
+                .depotRepository(depotRepository)
                 .build();
     }
 }

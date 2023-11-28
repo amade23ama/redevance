@@ -175,4 +175,15 @@ public class AutocompleteRechercheController {
                         .get()
         );
     }
+
+    @GetMapping("/depot/{capture}")
+    public ResponseEntity<List<AutocompleteRecherche>> getDepotAutocompleteRecherche(@PathVariable String capture) {
+
+        return ResponseEntity.ok(
+                Try.of(() -> capture)
+                        .mapTry(this.autocompleteRechercheService::getDepotAutocompleteRecherche)
+                        .onFailure(Throwable::getStackTrace)
+                        .get()
+        );
+    }
 }

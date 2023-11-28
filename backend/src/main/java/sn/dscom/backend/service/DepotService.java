@@ -1,18 +1,31 @@
 package sn.dscom.backend.service;
 
 import lombok.Builder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
+import sn.dscom.backend.common.dto.AutocompleteRecherche;
+import sn.dscom.backend.common.dto.CritereRecherche;
 import sn.dscom.backend.common.dto.DepotDTO;
+import sn.dscom.backend.common.dto.ExploitationDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.DepotEntity;
+import sn.dscom.backend.database.entite.ExploitationEntity;
 import sn.dscom.backend.database.repository.DepotRepository;
 import sn.dscom.backend.service.converter.DepotConverter;
 import sn.dscom.backend.service.interfaces.IDepotService;
+import sn.dscom.backend.service.util.DepotSpecifications;
+import sn.dscom.backend.service.util.ExploitationSpecifications;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,11 +36,13 @@ import java.util.stream.Collectors;
  */
 @Transactional
 public class DepotService implements IDepotService {
+    /** Logger Factory */
+    private static final Logger logger = LoggerFactory.getLogger(DepotService.class);
 
     /**
      * depot Repository
      */
-    private DepotRepository depotRepository;
+    private final DepotRepository depotRepository;
 
     /**
      * explitation Converteur
@@ -36,7 +51,7 @@ public class DepotService implements IDepotService {
 
     /**
      * DepotService
-     * @param depotRepository
+     * @param depotRepository depotRepository
      */
     @Builder
     public DepotService(DepotRepository depotRepository) {
@@ -68,7 +83,7 @@ public class DepotService implements IDepotService {
 
         //retourne la liste
         return Optional.of(listDeposFind.stream()
-                .map(depoEntity -> this.depotConverteur.reverse(depoEntity))
+                .map(this.depotConverteur::reverse)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList()));
     }
@@ -94,7 +109,7 @@ public class DepotService implements IDepotService {
     public Boolean supprimerDepot(DepotDTO depotDTO) {
         // todo
         final Optional<DepotEntity> depotEntity = depotRepository.findById(depotDTO.getId());
-        if (!depotEntity.isPresent()) {
+        if (depotEntity.isEmpty()) {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_CONTRAT_NOT_FOUND);
 
         }
@@ -122,18 +137,55 @@ public class DepotService implements IDepotService {
      */
     @Override
     public Optional<DepotDTO> rechercherDepotById(long id) {
-        try {
-            Optional<DepotEntity> depotEntity = depotRepository.findById(id);
-            if (depotEntity.isPresent()) {
-                return Optional.of(this.depotConverteur.reverse(depotEntity.get()));
-            }
-            // retourner un message d'erreur édéquat: ici "le site avec {id} n'existe pas -> 404"
-            // ce n'est pas une erreur inattendue: ErreurEnum.ERR_INATTENDUE
-            throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_INATTENDUE);
-        } catch (CommonMetierException e) {
-            //todo
-            throw e;
-
+        Optional<DepotEntity> depotEntity = depotRepository.findById(id);
+        if (depotEntity.isPresent()) {
+            return Optional.of(this.depotConverteur.reverse(depotEntity.get()));
         }
+        throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_INATTENDUE);
+    }
+
+    /**
+     * rechargement Par Critere
+     *
+     * @param critereRecherche critereRecherche
+     * @return liste
+     */
+    @Override
+    public Page<DepotDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        DepotService.logger.info("Recherche de dépot");
+        if (critereRecherche.getAutocompleteRecherches().size() == 0){
+            Page<DepotEntity> listDepotsFind = this.depotRepository.findAll(pageRequest);
+            // On charge l'ensemble des site
+            List<DepotDTO>listSites= listDepotsFind.getContent().stream()
+                    .map(this.depotConverteur::reverse)
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
+
+            return new PageImpl<>(listSites, pageRequest, listDepotsFind.getTotalElements());
+        }
+
+       List<Long> idsDepot = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == DepotEntity.class)
+                .map(item -> Long.parseLong(((AutocompleteRecherche) item).getId().toString()))
+                .toList());
+
+        List<String> valueNom = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
+                .filter(item -> item instanceof AutocompleteRecherche)
+                .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == String.class)
+                .filter(item -> ((AutocompleteRecherche) item).getOrigine().equals("Nom"))
+                .map(item ->((AutocompleteRecherche) item).getId())
+                .toList());
+
+        Specification<DepotEntity> spec = Specification.where(DepotSpecifications.withDepot(idsDepot, valueNom));
+
+        Page<DepotEntity> listDepotFind= this.depotRepository.findAll(spec,pageRequest);
+        List<DepotDTO> listDepot = listDepotFind.getContent().stream()
+                .map(this.depotConverteur::reverse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(listDepot, pageRequest, listDepotFind.getTotalElements());
     }
 }

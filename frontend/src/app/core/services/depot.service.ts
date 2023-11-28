@@ -1,19 +1,17 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {Exploitation} from "../interfaces/exploitation";
-import {BehaviorSubject, catchError, of, tap, throwError} from "rxjs";
-import {NotificationService} from "./notification.service";
-import {MatDialog, MatDialogConfig} from "@angular/material/dialog";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
+import { BehaviorSubject, catchError, tap, throwError } from "rxjs";
+import { Globals } from "src/app/app.constants";
+import { environment } from "../../../environments/environment";
 import {
   DepotValidationColumnPopupComponent
 } from "../../layout/depot-module/depot-validation-column-popup/depot-validation-column-popup.component";
-import {FileInfo} from "../interfaces/file.info";
-import {Site} from "../interfaces/site";
-import {Depot} from "../interfaces/depot";
-import {Utilisateur} from "../interfaces/utilisateur";
-import {AutocompleteRecherche} from "../interfaces/autocomplete.recherche";
-import {CritereRecherche} from "../interfaces/critere.recherche";
+import { CritereRecherche } from "../interfaces/critere.recherche";
+import { Depot } from "../interfaces/depot";
+import { FileInfo } from "../interfaces/file.info";
+import { Page } from "../interfaces/page";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn:"root"
@@ -30,7 +28,7 @@ export class DepotService{
   private _depot: BehaviorSubject<Depot> = new BehaviorSubject<Depot>( {}as null);
   private _nbDepots: BehaviorSubject<number> = new BehaviorSubject<number>(null);
   constructor(private http:HttpClient,private notification: NotificationService,
-              public dialog: MatDialog,) {
+              public dialog: MatDialog, private globals: Globals) {
   }
   creerDepot(formData: FormData){
     this.setFichierCourant(formData)
@@ -143,6 +141,32 @@ export class DepotService{
         })
       )
   }
+
+  chargementDepotsParCritere(critereRecherche:CritereRecherche,scroll?: boolean ) {
+    this.globals.loading=true
+    return this.http.post<Page<Depot>>(this.url+"/rechercheBy",critereRecherche)
+      .pipe(
+        tap((res:Page<Depot>) => {
+          this.setNbDepots(res.totalElements);
+          if(res.totalElements==0){
+            this.setDepots([])
+          }
+          if(scroll){
+          const result = Array.from(new Set([...this._depots.getValue(),...res.content]));
+            this.setDepots(result);
+          }else{
+            this.setDepots([...res.content]);
+          }
+          this.globals.loading=false
+        }),
+        catchError((err) => {
+          this.globals.loading=false
+          this.notification.error(" erreurr de recuperation Utilisateur ")
+          return throwError(() => err)
+        })
+      )
+  }
+  
   get nbDepots$(){
     return this._nbDepots.asObservable()
   }

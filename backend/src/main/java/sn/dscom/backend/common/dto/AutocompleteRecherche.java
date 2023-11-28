@@ -142,6 +142,20 @@ public class AutocompleteRecherche <T> implements Serializable {
             return element.substring(0, 1).toUpperCase() + element.substring(1).toLowerCase();
         }).collect(Collectors.joining(""));
     }
+    /**
+     * AutocompleteRecherche
+     * @param depotEntity chargement
+     */
+    public AutocompleteRecherche(DepotEntity depotEntity) {
+
+        this.id = depotEntity.getId().toString();
+        this.libelle = new StringBuilder().
+                append("[NOM] ")
+                .append(depotEntity.getNom())
+                .toString();
+        this.typeClass = DepotEntity.class;
+        this.origine = this.typeClass.getSimpleName();
+    }
 
     public void setId(String id) {
         this.id = id;

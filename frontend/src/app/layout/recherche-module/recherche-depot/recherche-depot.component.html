@@ -18,7 +18,10 @@
   </div>
 
   <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
-    <cdk-virtual-scroll-viewport itemSize="10" class="cdk-virtual-scroll-viewport">
+    <cdk-virtual-scroll-viewport
+    [itemSize]="getItemSize()"
+    (scrolledIndexChange)="onScrollEnd($event)"
+     class="cdk-virtual-scroll-viewport">
 
     <table mat-table matSort  [dataSource]="listDepots"  class="mat-elevation-z0 table-parent" matSort>
       <ng-container matColumnDef="id">
@@ -102,12 +105,12 @@
 
     </table>
     </cdk-virtual-scroll-viewport>
-    <div class="parging" >
+    <!--<div class="parging" >
     <mat-paginator [pageSize]="pageSize"
                    [pageSizeOptions]="pageSizeOptions"
                    showFirstLastButtons>
     </mat-paginator>
-    </div>
+    </div>-->
 
   </div>
 </div>

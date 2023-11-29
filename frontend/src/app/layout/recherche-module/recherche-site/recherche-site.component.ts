@@ -134,7 +134,7 @@ export class RechercheSiteComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result >= 0) {
+      if (result) {
         this.siteService.supprimerSite(site.id).subscribe((idDelete) => {
           if (idDelete) {
             this.rechargementSite();

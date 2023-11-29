@@ -124,7 +124,7 @@ export class RechercheCategorieComponent implements  OnInit{
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result >= 0) {
+      if (result) {
         this.categorieService.supprimerCategories(categorie.id).subscribe((idDelete) => {
           if (idDelete) {
             this.rechargementCategorie();

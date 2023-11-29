@@ -127,7 +127,7 @@ export class RechercheProduitComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-        if (result >= 0) {
+        if (result) {
           this.produitService.supprimerProduits(produit.id).subscribe((idDelete) => {
             if (idDelete) {
               this.rechargementProduit();

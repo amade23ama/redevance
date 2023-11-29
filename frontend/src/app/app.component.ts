@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {Globals} from "./app.constants";
-import {AuthService} from "./core/services/auth.service";
-import {Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { Router } from "@angular/router";
+import { Globals } from "./app.constants";
+import { AuthService } from "./core/services/auth.service";
+import { UrlService } from './core/services/url.service';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,7 @@ import {Router} from "@angular/router";
 })
 export class AppComponent  implements OnInit {
   isLoggedIn = false;
-  constructor(public authService :AuthService,public globals: Globals,public router:Router) {
+  constructor(public authService :AuthService,public globals: Globals,public router:Router, public urlService: UrlService) {
     // Affichage d`un spinner lors du chargement
     globals.loading = false;
     this.authService.isLoggedIn()

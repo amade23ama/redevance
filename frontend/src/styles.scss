@@ -502,3 +502,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .cdk-virtual-scroll-viewport::-webkit-scrollbar-thumb:hover {
   background:$black;
 }
+
+.mat-icon-error {
+  color: red;
+}
+
+.mat-icon-working {
+  color: blue;
+}
+
+.mat-icon-succes {
+  color: green;
+}

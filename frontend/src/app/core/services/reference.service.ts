@@ -1,11 +1,8 @@
-import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../environments/environment";
-import {HomeCard} from "../interfaces/infotuiles/homeCard";
-import {BehaviorSubject, catchError, map, Observable, tap, throwError} from "rxjs";
-import {Produit} from "../interfaces/produit";
-import {NotificationService} from "./notification.service";
-import {Site} from "../interfaces/site";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { BehaviorSubject, catchError, Observable, tap, throwError } from "rxjs";
+import { environment } from "../../../environments/environment";
+import { NotificationService } from "./notification.service";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +18,7 @@ export class ReferenceService{
     return this.httpClient.get<number[]>(this.url + `/v1/reporting/getAnnees`)
       .pipe(
         tap((res)=>{
-            this.setAnneeMax(res[0])
+            this.setAnneeMax(res.length>0 ? Math.max(...res) : new Date().getFullYear())
             this.setAnnees(res)
           },
           catchError((err) => {

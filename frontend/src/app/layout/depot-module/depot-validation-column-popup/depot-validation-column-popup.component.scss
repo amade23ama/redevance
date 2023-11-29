@@ -24,8 +24,7 @@
 }
 .container-form{
   padding: 2em!important;
-  min-height: 50vh!important;
-  max-height: 50vh!important;
+  height: calc(60vh - 32px)!important;
   overflow: auto;
   border-bottom: solid $orange-1 !important;
   margin-bottom: 0.5em!important;

@@ -45,7 +45,8 @@ public interface IChargementService {
      * @param header header
      * @param depotDTO depotDTO
      */
-    void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depotDTO) throws DscomTechnicalException;
+    void effectuerChargement(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, DepotDTO depotDTO,
+                             ProduitDTO produitDTO, ExploitationDTO exploitationDTO, CategorieDTO categorieDTO, SiteDTO siteDTO) throws DscomTechnicalException;
 
     /**
      * rechercher Chargements par:

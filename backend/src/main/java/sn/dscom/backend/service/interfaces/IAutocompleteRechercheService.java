@@ -65,4 +65,6 @@ public interface IAutocompleteRechercheService {
      * @return
      */
     List<AutocompleteRecherche> getCategorieAutocompleteRecherche(String capture);
+
+    List<AutocompleteRecherche> getDepotAutocompleteRecherche(String capture);
 }

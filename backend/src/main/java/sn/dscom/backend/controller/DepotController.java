@@ -14,8 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,6 +36,8 @@ import sn.dscom.backend.service.mail.IMailService;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -87,6 +91,14 @@ public class DepotController {
     @Autowired
     private IMailService mailService;
 
+    /** exploitation Service */
+    @Autowired
+    private IExploitationService exploitationService;
+
+    /** categorie Service */
+    @Autowired
+    private ICategorieService categorieService;
+
     /**
      * get header
      *
@@ -97,36 +109,28 @@ public class DepotController {
     public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
         // la liste des colonnes du fichier
         List<String> header = null;
-
         // Le fichier contient des colonnes à ne pas mapper
         List<String> colonnesToIgnore = Splitter.on(",").splitToList(environment.getProperty("list.file.colonne.to.ignore"));
-
-        log.info(" entete du fichier ");
+        DepotController.log.info(" entete du fichier ");
         if (file.isEmpty()) {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
         try{
-            Reader reader = new InputStreamReader(file.getInputStream());
-            CSVReader csvReader = new CSVReader(reader) ;
+            CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream())) ;
             header = tabToList(csvReader.readNext());
-
-            log.info(" entete du fichier "+header);
+            DepotController.log.info(" entete du fichier "+header);
         }catch (IOException | CsvValidationException e) {
             e.printStackTrace();
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
         }
-
         // la liste épurée des colonnes à mapper
        List<String> colonnesToMap = header.stream()
                 .filter(Predicates.compose(colonnesToIgnore::contains, Functions.identity()).negate())
                 .toList();
-
-
-        FileInfoDTO fileInfoDTO = FileInfoDTO.builder()
+        return  ResponseEntity.ok(FileInfoDTO.builder()
                 .enteteFile(colonnesToMap)
                 .colonneTable(Arrays.asList(environment.getProperty("list.table.colonne").split(",")))
-                .build();
-        return  ResponseEntity.ok(fileInfoDTO);
+                .build());
     }
 
     /**
@@ -139,70 +143,59 @@ public class DepotController {
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<Long> uploadFile(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("mapEntete") String mapEnteteJson,
-                                                   @RequestParam("nom") String nomDepot)
-            throws IOException {
-
-        // Utilisateur
-        UtilisateurDTO utilisateurDTO = UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur());
-        // La liste des produits en base
-        List<ProduitDTO> produitDTOS = this.produitService.rechercherProduits().get();
+                                                   @RequestParam("nom") String nomDepot) throws IOException, ExecutionException, InterruptedException {
+        // // On charge tous les référentiels en parallele
+        UtilisateurDTO utilisateurDTO = this.getConnectedUtilisateur().get();
+        List<ProduitDTO> referentielProduits = this.getReferentielProduit().get();
+        List<ExploitationDTO> referentielSitesExploitation = this.getReferentielSitesExploitation().get();
+        List<CategorieDTO> referentielCategorie = this.getReferentielCategories().get();
+        List<SiteDTO> referentielSite = this.getReferentielSites().get();
         // Mapper
         ObjectMapper objectMapper = new ObjectMapper();
         // Le Depot
         DepotDTO depot = new DepotDTO();
         String nom;
         SiteDTO siteDTO = null;
-
         // Controle sur le fichier
-        if (file.isEmpty()) {
-            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
-        }
-
+        if (file.isEmpty()) {throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);}
         try {
             Map<String, String> mapDatabaseEnteteFile = objectMapper.readValue(mapEnteteJson,new TypeReference<Map<String, String>>() {});
             nom = objectMapper.readValue(nomDepot, new TypeReference<String>() {});
             Map<String, String> mapInverse = new HashMap<>();
-            //TODO: à enlever
-            mapDatabaseEnteteFile.forEach((k, v) -> {
-                mapInverse.put(v,k);
-            });
+            //La map est inversée
+            mapDatabaseEnteteFile.forEach((k, v) -> {mapInverse.put(v,k);});
             // enregister le depot
             depot = this.depotService.enregistrerDepot(buildDepot(file, utilisateurDTO, nom, StatutEnum.ENCOURS.getCode())).get();
             List<String> header = null;
             try{
-                Reader reader = new InputStreamReader(file.getInputStream());
-                CSVReader csvReader = new CSVReader(reader) ;
+                CSVReader csvReader = new CSVReader(new InputStreamReader(file.getInputStream()));
                 header = tabToList(csvReader.readNext());
                 // next Line
                 String [] nextLine;
-
                 // Chaque ligne du fichier est un chargement
                 while ((nextLine = csvReader.readNext()) != null)
                 {
                     // Ligne de chargement
                     List<String> chargement = tabToList(nextLine);
+                    DepotController.log.info(String.format("Chargement de ligne : %s", chargement));
                     //Certains fichier csv peuvent contenir de ligne vide dans ce cas on ne traite pas la ligne
                     if (chargement.size() != 0){
                         // rechercher Site
                         if(null == siteDTO) {
-                            siteDTO = this.rechercherSite(chargement, mapInverse, header);
+                            siteDTO = this.rechercherSite(chargement, mapInverse, header, referentielSite);
                         }
                         // On recupère le produit dans le chagement: On fait un chargement que pour les produit qui existe
-                        String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
-                        Optional<ProduitDTO> produitDTO = produitDTOS.stream().filter(produit -> nomProduit.equals(produit.getNomSRC())).findFirst();
-
-                        if(produitDTO.isPresent()){
+                        Optional<ProduitDTO> produitDTO = this.getCurrentProduct(chargement, mapInverse, header, referentielProduits).get();
+                        // On recupère le siteExploitation dans le chagement: On fait un chargement que pour les sites qui existe
+                        Optional<ExploitationDTO> exploitationDTO = this.getCurrentExploitation(chargement, mapInverse, header, referentielSitesExploitation).get();
+                        // On recupère le siteExploitation dans le chagement: On fait un chargement que pour les sites qui existe
+                        Optional<CategorieDTO> categorieDTO = this.getCurrentCategorie(chargement, mapInverse, header, referentielCategorie).get();
+                        if(produitDTO.isPresent() && exploitationDTO.isPresent()  && categorieDTO.isPresent() && siteDTO != null){
                             //Chargement d'une ligne du fichier
-                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot);
-                            //listChargementAEffectuer.add(chargementDTO);
-                        }else{
-                            DepotController.log.info(String.format("Le produit %s n'existe pas dans le référentiel.", nomProduit));
+                            this.chargementService.effectuerChargement(chargement, mapInverse, header, depot, produitDTO.get(), exploitationDTO.get(), categorieDTO.get(), siteDTO);
                         }
                     }
                 }
-
-                // On modifie le depot avec la liste des chargements et l'heure de fin
-                /*depot.setChargementDTOList(listChargementAEffectuer);*/
                 //rechercherDepotById
                 DepotDTO depotCreat = this.depotService.rechercherDepotById(depot.getId()).get();
                 depot.setDateHeureFinDepot( new Date());
@@ -230,9 +223,99 @@ public class DepotController {
             this.definirDepot(depot);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
-
         // return id du depot
         return   ResponseEntity.ok(depot.getId());
+    }
+
+    /**
+     * getCurrentProduct
+     * @return CompletableFuture<Optional<ProduitDTO>>
+     */
+    @Async
+    protected CompletableFuture<Optional<ExploitationDTO>> getCurrentExploitation(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<ExploitationDTO> ref){
+        String siteExploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).toUpperCase();
+        Optional<ExploitationDTO> exploitationDTO = ref.stream().filter(exploita -> siteExploitation.trim().equals(exploita.getNom())).findFirst();
+        if (exploitationDTO.isEmpty()) {
+            DepotController.log.info(String.format("Le site d'explitation %s n'existe pas dans le reférentiel.", siteExploitation));
+        }
+        return CompletableFuture.completedFuture(exploitationDTO);
+    }
+
+    /**
+     * getCurrentProduct
+     * @return CompletableFuture<Optional<ProduitDTO>>
+     */
+    @Async
+    protected CompletableFuture<Optional<ProduitDTO>> getCurrentProduct(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<ProduitDTO> referentielProduits){
+        String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
+        Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.trim().equals(produit.getNomSRC())).findFirst();
+        if (produitDTO.isEmpty()) {
+            DepotController.log.info(String.format("Le produit %s n'existe pas dans le reférentiel.", nomProduit));
+        }
+        return CompletableFuture.completedFuture(produitDTO);
+    }
+
+    /**
+     * getCurrentCategorie
+     * @return CompletableFuture<Optional<CategorieDTO>>
+     */
+    @Async
+    protected CompletableFuture<Optional<CategorieDTO>> getCurrentCategorie(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<CategorieDTO> ref){
+        String categorie = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).toUpperCase();
+        Optional<CategorieDTO> categorieDTO = ref.stream().filter(classe -> categorie.trim().equals(classe.getType())).findFirst();
+        if (categorieDTO.isEmpty()) {
+            DepotController.log.info(String.format("La catégorie %s n'existe pas dans le reférentiel.", categorie));
+        }
+        return CompletableFuture.completedFuture(categorieDTO);
+    }
+
+    /**
+     * getReferentielProduit
+     * @return CompletableFuture<List<ProduitDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<ProduitDTO>> getReferentielProduit(){
+        List<ProduitDTO> referentielProduits = this.produitService.rechercherProduits().get();
+        return CompletableFuture.completedFuture(referentielProduits);
+    }
+
+    /**
+     * getReferentielSitesExploitation
+     * @return CompletableFuture<List<ExploitationDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<ExploitationDTO>> getReferentielSitesExploitation(){
+        List<ExploitationDTO> referentielSitesExploitation = this.exploitationService.rechercherSitesExploitation().get();
+        return CompletableFuture.completedFuture(referentielSitesExploitation);
+    }
+
+    /**
+     * getReferentielCategories
+     * @return CompletableFuture<List<ExploitationDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<CategorieDTO>> getReferentielCategories(){
+        List<CategorieDTO> referentielCategorie = this.categorieService.rechercherCategories().get();
+        return CompletableFuture.completedFuture(referentielCategorie);
+    }
+
+    /**
+     * getReferentielSites
+     * @return CompletableFuture<List<SiteDTO>>
+     */
+    @Async
+    protected CompletableFuture<List<SiteDTO>> getReferentielSites(){
+        List<SiteDTO> referentielSite = this.siteService.rechercherSites().get();
+        return CompletableFuture.completedFuture(referentielSite);
+    }
+
+    /**
+     * getConnectedUtilisateur
+     * @return CompletableFuture<UtilisateurDTO>
+     */
+    @Async
+    protected CompletableFuture<UtilisateurDTO> getConnectedUtilisateur(){
+        return CompletableFuture.completedFuture(UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur()));
     }
 
     /**
@@ -265,39 +348,6 @@ public class DepotController {
                 .dateHeureDepot(new Date())
                 .deposeur(utilisateurDTO)
                 .build();
-    }
-
-    /**
-     * uplaod file
-     *
-     * @param depotDTO transporteurDTO
-     * @return le transporteur
-     */
-    @PostMapping(path = "/uploadFile")
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<DepotDTO> deposer(@RequestBody DepotDTO depotDTO) {
-        // Controle du fichier
-        DepotDTO depot = new DepotDTO();
-        File file = depotDTO.getFile();
-       // File file = new File("C:\\Users\\diome\\Downloads\\BDD SEPTEMBRE 2021 OUROSSOGUI.csv");
-        try(CSVReader reader
-                    = new CSVReader(new FileReader(file)))
-        {
-            String [] nextLine;
-            String[] header = reader.readNext();
-
-            //Read one line at a time
-            while ((nextLine = reader.readNext()) != null)
-            {
-                //reader
-                System.out.println(Arrays.toString(nextLine));
-            }
-        }
-        catch (IOException | CsvValidationException e) {
-            e.printStackTrace();
-        }
-        //enregistrer ou modifier Depot
-        return  ResponseEntity.ok(depot);
     }
 
     /**
@@ -350,12 +400,6 @@ public class DepotController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
-    public ResponseEntity<Boolean> supprimerDepot(@RequestBody DepotDTO depotDTO) {
-        //supprimer Depot
-        return  ResponseEntity.ok(depotService.supprimerDepot(depotDTO).booleanValue());
-    }
-
     /**
      * a la fin du dépot ou lors que le depot est en erreur
      *
@@ -380,18 +424,26 @@ public class DepotController {
      * @param mapCorrespondance maps
      * @return l'objet enregisté
      */
-    private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header){
+    private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, List<SiteDTO> referentielSite){
+        String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom")))).toUpperCase();
+        Optional<SiteDTO> siteDTO = referentielSite.stream().filter(site -> siteName.trim().equals(site.getNom())).findFirst();
+        if (siteDTO.isEmpty()) {
+            DepotController.log.info(String.format("Le site de pesage %s n'existe pas dans le reférentiel.", siteName));
+        }
+        return siteDTO.orElse(null);
 
-        // Table SITE: nom et localité db_site_nom et db_site_localite
-        //REFERIENTIEL: nom -> site sur fichier et alimenter la localité
-        String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom"))));
+    }
 
-        return Iterables.getOnlyElement(Try.of(() -> SiteDTO.builder()
-                        .nom(siteName.trim().toUpperCase())
-                        .build())
-                .mapTry(this.siteService::rechercherSite)
-                .onFailure(e -> DepotController.log.error(String.format("Erreur lors de la recherche du Site : %s",e.getMessage())))
-                .get().get());
+    /**
+     * rechargementParCritere
+     * @param critereRecherche critereRecherche
+     * @return la list
+     */
+    @PostMapping (value = "/rechercheBy")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public ResponseEntity<Page<DepotDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
+        Page<DepotDTO> list=this.depotService.rechargementParCritere(critereRecherche);
+        return ResponseEntity.ok(list);
     }
 
     /**

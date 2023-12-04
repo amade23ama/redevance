@@ -1,6 +1,7 @@
 package sn.dscom.backend.service.interfaces;
 import org.springframework.data.domain.Page;
 import sn.dscom.backend.common.dto.CritereRecherche;
+import sn.dscom.backend.common.dto.ExploitationDTO;
 import sn.dscom.backend.common.dto.ProduitDTO;
 
 import java.util.List;
@@ -65,4 +66,5 @@ public interface IProduitService {
      * @return Boolean
      */
     Boolean supprimerProduit(Long id);
+    ProduitDTO rechercherProduitByNom(String nom);
 }

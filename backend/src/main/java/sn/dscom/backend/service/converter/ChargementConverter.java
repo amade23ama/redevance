@@ -3,14 +3,12 @@ package sn.dscom.backend.service.converter;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+import org.springframework.util.CollectionUtils;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.*;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -25,7 +23,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
 
     /** Site Converteur */
     private Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
-
+    private Transformer<DepotDTO, DepotEntity> depotConverteur = new DepotConverter();
     /**
      * explitation Converteur
      */
@@ -51,7 +49,10 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
         }
         // On récupère le dernier dépot
         //List<DepotEntity> listDepotEntity = chargementEntity.getDepots().stream().sorted(Comparator.comparing(DepotEntity::getDateHeureDepot)).toList();
-        DepotEntity depotEntity = Iterables.getFirst(MoreObjects.firstNonNull(chargementEntity.getDepots(), Collections.emptyList()), new DepotEntity());
+        //DepotEntity depotEntity = Iterables.getFirst(MoreObjects.firstNonNull(chargementEntity.getDepots(), Collections.emptyList()), new DepotEntity());
+        //List<ChargementEntity> listChargement = MoreObjects.firstNonNull(chargementEntity.getDepots(), Collections.emptyList());
+        List<DepotDTO> listDepotDTO= chargementEntity.getDepots().stream()
+                .map(this.depotConverteur::reverse).collect(Collectors.toList());
 
         return ChargementDTO.builder()
                 .id(chargementEntity.getId())
@@ -69,7 +70,9 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .site(this.siteConverteur.reverse(chargementEntity.getSiteEntity()))
                 .exploitation(exploitationConverteur.reverse(chargementEntity.getExploitationEntity()))
                 .produit(this.produitConverter.reverse(chargementEntity.getProduitEntity()))
-                .idDepot(depotEntity.getId())
+                //.idDepot(depotEntity.getId())
+                .idDepot(1L)
+                .depotDTOList(listDepotDTO)
                 .build();
     }
 
@@ -98,7 +101,8 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
         if (chargementDTO == null) {
             return null;
         }
-
+        List<DepotEntity> listDepotEntity= chargementDTO.getDepotDTOList().stream()
+                .map(this.depotConverteur::transform).collect(Collectors.toList());
         return ChargementEntity.builder()
                 .id(chargementDTO.getId() == null ? null : chargementDTO.getId())
                 .dateCreation(chargementDTO.getId() == null ? new Date() :chargementDTO.getDateCreation())
@@ -115,6 +119,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .siteEntity(this.siteConverteur.transform(chargementDTO.getSite()))
                 .exploitationEntity(this.exploitationConverteur.transform(chargementDTO.getExploitation()))
                 .produitEntity(this.produitConverter.transform(chargementDTO.getProduit()))
+                .depots(listDepotEntity)
                 .build();
     }
 }

@@ -1,9 +1,11 @@
 package sn.dscom.backend.common.dto;
 import lombok.*;
+import sn.dscom.backend.database.entite.DepotEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Objet pivot: ChargementDTO
@@ -65,4 +67,52 @@ public class ChargementDTO {
 
     /**  d'produit */
     private ProduitDTO produit;
+    /** le fichier à charger */
+    private List<DepotDTO> depotDTOList ;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ChargementDTO other = (ChargementDTO) obj;
+
+        // Compare all relevant fields for equality
+        return Objects.equals(id, other.id) &&
+                Objects.equals(site.getId(), other.site.getId()) &&
+                Objects.equals(produit.getId(), other.produit.getId()) &&
+                Objects.equals(vehicule.getId(), other.vehicule.getId()) &&
+                Objects.equals(destination, other.destination) &&
+                Objects.equals(poids, other.poids) &&
+                Objects.equals(poidsMax, other.poidsMax) &&
+                Objects.equals(poidsSubst, other.poidsSubst) &&
+                Objects.equals(volumeSubst, other.volumeSubst) &&
+                Objects.equals(volumeMoyen, other.volumeMoyen) &&
+                Objects.equals(ecart, other.ecart) ;
+        /* &&
+                Objects.equals(destination, other.destination) &&
+                Objects.equals(datePesage, other.datePesage) &&
+                Objects.equals(poids, other.poids) &&
+                Objects.equals(poidsMax, other.poidsMax) &&
+                Objects.equals(poidsSubst, other.poidsSubst) &&
+                Objects.equals(volumeSubst, other.volumeSubst) &&
+                Objects.equals(volumeMoyen, other.volumeMoyen) &&
+                Objects.equals(ecart, other.ecart) &&
+                Objects.equals(dateCreation, other.dateCreation) &&
+                Objects.equals(dateModif, other.dateModif) &&
+                Objects.equals(subtance, other.subtance) &&
+                Objects.equals(plateforme, other.plateforme) &&
+                Objects.equals(idDepot, other.idDepot) &&
+                Objects.equals(site.getId(), other.site.getId()) &&
+                Objects.equals(vehicule.getId(), other.vehicule.getId()) &&
+                Objects.equals(exploitation.getId(), other.exploitation.getId()) &&
+                Objects.equals(produit.getId(), other.produit.getId());*/
+    }
+
+    @Override
+    public int hashCode() {
+        // Use all relevant fields for hashing
+        return Objects.hash(id, destination, poids, poidsMax, poidsSubst,
+                volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(), produit.getId()
+                );
+    }
+
 }

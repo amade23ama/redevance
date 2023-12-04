@@ -213,4 +213,17 @@ public class SiteService implements ISiteService {
                 .toList();
         return new PageImpl<>(listSite, pageRequest, listSitesFind.getTotalElements());
     }
+
+    @Override
+    public SiteDTO rechercherSiteByNom(String nom) {
+        SiteEntity site = this.siteRepository.rechercherSiteByNom(nom);
+        if (site!=null) {
+            return this.siteConverteur.reverse(site);
+        } else {
+            logger.error("Le nom du Site "+nom+" n'exist pas");
+            return null;
+            //throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
+        }
+    }
+
 }

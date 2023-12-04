@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
@@ -210,5 +211,31 @@ public class VehiculeService implements IVoitureService{
                 .toList();
 
         return new PageImpl<>(listVehicule, pageRequest, listVehiculeFind.getTotalElements());
+    }
+
+    @Override
+    public VehiculeDTO rechercherVehiculeByMatricule(String matricule) {
+        VehiculeEntity vehicule = this.vehiculeRepository.isVehiculeExist(matricule.toUpperCase());
+        if (vehicule!=null) {
+            return this.vehiculeConverter.reverse(vehicule);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public VehiculeDTO rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(String matricule, long idTransport, long idCategorie) {
+        VehiculeEntity vehicule = this.vehiculeRepository. rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(matricule.toUpperCase(),idTransport,idCategorie);
+        if (vehicule!=null) {
+            return this.vehiculeConverter.reverse(vehicule);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public VehiculeDTO saveVehicule(VehiculeDTO vehiculeDTO) {
+        VehiculeEntity vehicule = this.vehiculeRepository.saveAndFlush(this.vehiculeConverter.transform(vehiculeDTO));
+        return this.vehiculeConverter.reverse(vehicule);
     }
 }

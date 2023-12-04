@@ -222,4 +222,17 @@ public class ProduitService implements IProduitService {
         }
         return false;
     }
+
+    @Override
+    public ProduitDTO rechercherProduitByNom(String nom) {
+        ProduitEntity produitEntity = this.produitRepository.rechercherProduitByCriteres(nom, nom);
+        if (produitEntity != null) {
+            return this.produitConverteur.reverse(produitEntity);
+        }else {
+                logger.error("Le nom du produit "+nom+" n'exist pas");
+                return null;
+                //throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
+            }
+        }
+
 }

@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import io.vavr.control.Try;
 import lombok.Builder;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
@@ -399,6 +401,7 @@ public class ChargementService implements IChargementService {
                 .site(siteDTO)
                 .exploitation(exploitationDTO)
                 .produit(produitDTO)
+                .depotDTOList(new ArrayList<>())
                 .build();
     }
 
@@ -717,6 +720,32 @@ public class ChargementService implements IChargementService {
         return listChrgmentToDelete.stream().allMatch(this::supprimerChargement);
     }
 
+    @Override
+    public ChargementDTO genereLineChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax, String date, String heure) {
+         ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, date, heure);
+        return chargementDTO;
+    }
+
+    @Override
+    public ChargementDTO recherChargementByEntity(ChargementDTO chargementDTO) {
+         ChargementEntity chargementEntity=this.chargementRepository.rechercheChargementByChargementDTO(
+                 chargementDTO.getSite().getId(),
+                 chargementDTO.getProduit().getId(),
+                 chargementDTO.getVehicule().getId(),
+                 chargementDTO.getDestination(),
+                 chargementDTO.getPoids(),
+                 chargementDTO.getPoidsMax()
+                 );
+         if(chargementEntity!=null) {
+             return this.chargementConverter.reverse(chargementEntity);
+         }else {
+             return null;
+         }
+
+    }
+
+
+
     /**
      * supprimerChargement
      * @param chargementDTO chargementDTO
@@ -742,5 +771,9 @@ public class ChargementService implements IChargementService {
         }
         return  false;
     }
-
+    @Override
+    public ChargementDTO miseAjourChargement(ChargementDTO chargementDTO) {
+        ChargementEntity chargementEntity= this.chargementRepository.save(this.chargementConverter.transform(chargementDTO));
+        return this.chargementConverter.reverse(chargementEntity);
+    }
 }

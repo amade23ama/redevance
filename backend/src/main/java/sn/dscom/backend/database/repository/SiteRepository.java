@@ -61,4 +61,6 @@ public interface SiteRepository extends JpaRepository<SiteEntity,Long>{
      * @return Page<SiteEntity>
      */
     Page<SiteEntity> findAll(Specification<SiteEntity> spec, Pageable pageable);
+    @Query("SELECT site FROM SiteEntity site where site.nom =:nom")
+    SiteEntity rechercherSiteByNom(@Param("nom") String nom);
 }

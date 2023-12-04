@@ -28,27 +28,23 @@ public class ChargementEntity {
     @Column(name = "HEUREPASSAGE")
     private Date  heurePassage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_SITE", nullable = false)
     private SiteEntity siteEntity ;
-
-    /*@ManyToOne
-    @JoinColumn(name = "ID_DEPOT", nullable = false)
-    private DepotEntity depotEntity;*/
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinTable(name = "DEPOT_CHARGEMENT",
             joinColumns = @JoinColumn(name = "ID_CHARGEMENT"),
             inverseJoinColumns = @JoinColumn(name = "ID_DEPOT"))
     private List<DepotEntity> depots;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_SITE_EXPLOITATION", nullable = false)
     private ExploitationEntity exploitationEntity;
 
     @Column(name = "DESTINATION")
     private String destination;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_PRODUIT", nullable = false)
     private ProduitEntity produitEntity;
 

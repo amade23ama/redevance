@@ -41,7 +41,7 @@ public class TransporteurEntity {
     private Date dateModification;
 
     // TODO: à voir avec l'équipe
-    @OneToMany(cascade = CascadeType.ALL, fetch =FetchType.EAGER,mappedBy = "transporteurEntity",orphanRemoval =true)
+    @OneToMany(mappedBy = "transporteurEntity")
     private List<VehiculeEntity> vehiculeEntityListes;
 
     public void setVehiculeEntityListes( List<VehiculeEntity> nouvelleListe) {

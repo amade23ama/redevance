@@ -244,4 +244,15 @@ public class CategorieService implements ICategorieService {
             }
 
     }
+
+    @Override
+    public CategorieDTO rechercheCategorieByType(String type) {
+        CategorieEntity categorie = categorieRepository.rechercherCategorieByType(type);
+        if (categorie!=null) {
+            return this.categorieConverter.reverse(categorie);
+        } else {
+            log.error("Le Type de Categorie "+type+" n'exist pas");
+            return null;
+        }
+    }
 }

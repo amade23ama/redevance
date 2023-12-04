@@ -29,7 +29,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
     /**
      * chargement Transformer
      */
-    private final Transformer<ChargementDTO, ChargementEntity> chargementConverter = new ChargementConverter();
+   // private final Transformer<ChargementDTO, ChargementEntity> chargementConverter = new ChargementConverter();
 
     /** Site Converteur */
     private final Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
@@ -49,7 +49,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
         }
 
         // On recupère la liste des Chargements
-        List<ChargementEntity> listChargement = MoreObjects.firstNonNull(depotEntity.getChargementEntityList(), Collections.emptyList());
+        //List<ChargementEntity> listChargement = MoreObjects.firstNonNull(depotEntity.getChargementEntityList(), Collections.emptyList());
 
         return DepotDTO.builder()
                 .id(depotEntity.getId())
@@ -63,9 +63,11 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nomFichier(depotEntity.getNomFichier())
                 .nbChargementReDeposes(depotEntity.getNbChargementReDeposes())
                 .site(this.siteConverteur.reverse(depotEntity.getSiteEntity()))
-                .chargementDTOList(listChargement.stream()
+                /*.chargementDTOList(listChargement.stream()
                         .map(this.chargementConverter::reverse)
                         .collect(Collectors.toList()))
+                        */
+
                 .build();
     }
 
@@ -83,23 +85,23 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
         }
 
         // On recupère la liste des Chargements
-        List<ChargementDTO> listChargement = MoreObjects.firstNonNull(depotDTO.getChargementDTOList(), Collections.emptyList());
+       // List<ChargementDTO> listChargement = MoreObjects.firstNonNull(depotDTO.getChargementDTOList(), Collections.emptyList());
 
         return DepotEntity.builder()
                 .id(depotDTO.getId())
                 .statut(depotDTO.getStatut())
                 .nom(Strings.isNullOrEmpty(depotDTO.getNom()) ? depotDTO.getNom() : depotDTO.getNom().trim().toUpperCase())
                 .dateHeureDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureDepot())
-                .dateHeureFinDepot(depotDTO.getId() == null ? new Date() :depotDTO.getDateHeureFinDepot())
+                .dateHeureFinDepot(depotDTO.getDateHeureFinDepot() == null ? null :depotDTO.getDateHeureFinDepot())
                 .deposeur(this.utilisateurTransformer.transform(depotDTO.getDeposeur()))
                 .nbChargementDeposes(depotDTO.getNbChargementDeposes())
                 .nbChargementErreur(depotDTO.getNbChargementErreur())
                 .nomFichier(depotDTO.getNomFichier())
                 .nbChargementReDeposes(depotDTO.getNbChargementReDeposes())
                 .siteEntity(this.siteConverteur.transform(depotDTO.getSite()))
-                .chargementEntityList(listChargement.stream()
+                /*.chargementEntityList(listChargement.stream()
                         .map(this.chargementConverter::transform)
-                        .collect(Collectors.toList()))
+                        .collect(Collectors.toList()))*/
                 .build();
     }
 }

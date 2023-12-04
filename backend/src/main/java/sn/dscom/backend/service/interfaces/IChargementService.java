@@ -131,4 +131,8 @@ public interface IChargementService {
      * @return  true or false
      */
     Boolean supprimerChargementBycritere(CritereRecherche critereRecherche);
+
+    ChargementDTO genereLineChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax, String date, String heure);
+    ChargementDTO recherChargementByEntity(ChargementDTO chargementDTO);
+    ChargementDTO miseAjourChargement(ChargementDTO chargementDTO);
 }

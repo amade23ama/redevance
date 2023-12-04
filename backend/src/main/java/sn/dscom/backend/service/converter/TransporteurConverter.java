@@ -1,10 +1,14 @@
 package sn.dscom.backend.service.converter;
 import com.google.common.base.Strings;
 import sn.dscom.backend.common.dto.TransporteurDTO;
+import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.TransporteurEntity;
+import sn.dscom.backend.database.entite.VehiculeEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Converteur de {@link TransporteurEntity} en {@link TransporteurDTO}
@@ -24,6 +28,18 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
         if (transporteurEntity == null) {
             return null;
         }
+        // Mapping de la liste de VehiculeDTO (si elle est disponible dans l'entité)
+        List<VehiculeDTO> vehiculeDTOList = new ArrayList<>();
+        if (transporteurEntity.getVehiculeEntityListes() != null) {
+            for (VehiculeEntity vehiculeEntity : transporteurEntity.getVehiculeEntityListes()) {
+                VehiculeDTO vehiculeDTO = new VehiculeDTO();
+                // Effectuer le mapping des propriétés de VehiculeEntity à VehiculeDTO
+                // ...
+                vehiculeDTOList.add(vehiculeDTO);
+            }
+        }
+      //  transporteurDTO.setVehiculeDTOListes(vehiculeDTOList);
+
         return TransporteurDTO.builder()
                 .id(transporteurEntity.getId())
                 .type(transporteurEntity.getType())
@@ -34,6 +50,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
                 .adresse(transporteurEntity.getAdresse())
                 .dateCreation(transporteurEntity.getDateCreation())
                 .dateModification(transporteurEntity.getDateModification())
+                .vehiculeListes(vehiculeDTOList)
                 .build();
     }
 

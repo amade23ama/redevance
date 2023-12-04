@@ -58,4 +58,5 @@ public interface ISiteService {
      * @return liste
      */
     Page<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
+    SiteDTO rechercherSiteByNom(String nom);
 }

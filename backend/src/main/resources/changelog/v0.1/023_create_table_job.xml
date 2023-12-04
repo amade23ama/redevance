@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="023_create_table_job" author="amade">
+        <createTable tableName="BATCH_JOB_INSTANCE">
+            <column name="JOB_INSTANCE_ID" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="VERSION" type="bigint">
+            </column>
+            <column name="JOB_NAME" type="varchar(100)">
+            </column>
+            <column name="JOB_KEY" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+
+        </createTable>
+        <addUniqueConstraint columnNames="JOB_NAME, JOB_KEY"
+                             constraintName="JOB_INST_UN"
+                             tableName="BATCH_JOB_INSTANCE"/>
+    </changeSet>
+
+</databaseChangeLog>

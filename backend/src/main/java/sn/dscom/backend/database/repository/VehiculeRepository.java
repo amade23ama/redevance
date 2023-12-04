@@ -56,5 +56,9 @@ public interface VehiculeRepository extends JpaRepository<VehiculeEntity,Long> {
 
 
     Page<VehiculeEntity> findAll(Specification<VehiculeEntity> spec, Pageable pageable);
-
+    @Query(value = "select vehicule from VehiculeEntity vehicule where vehicule.immatriculation = :matricule " +
+            "and vehicule.categorieEntity.id=:idCategorie and vehicule.transporteurEntity.id=:idTransport")
+    VehiculeEntity  rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(@Param("matricule") String matricule,
+                                                                                 @Param("idTransport")long idTransport,
+                                                                                 @Param("idCategorie")long idCategorie);
 }

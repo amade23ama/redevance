@@ -43,12 +43,9 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     public void write(Chunk<? extends List<ChargementDTO>> chunk) throws Exception {
         int i=1;
         for (List<ChargementDTO> chargementDTOList : chunk.getItems()) {
-            // Process each item in the list, e.g., save to a database
 
             AtomicInteger indexCounter = new AtomicInteger(0);
             for (ChargementDTO chargementDTO : chargementDTOList) {
-                // Your processing logic here
-
                 log.info("Enregistrement ChargementDTO: {}", indexCounter.getAndIncrement());
                 if(chargementDTO.getVehicule().getTransporteur().getId()==null){
                     TransporteurDTO transporteurDTO=this.transporteurService.recherchercheTransporteurByNom(chargementDTO.getVehicule().getTransporteur().getNom());

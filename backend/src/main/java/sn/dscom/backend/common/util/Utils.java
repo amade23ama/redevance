@@ -13,21 +13,18 @@ public class Utils {
         return login;
     }
     public static String supprimerCaracteresSpeciaux(String chaine) {
-        // Utiliser une expression régulière pour ne garder que les lettres et les chiffres
         Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
         Matcher matcher = pattern.matcher(chaine);
         String chainePropre = matcher.replaceAll("");
         return chainePropre;
     }
     public static String supprimerCaracteresSpeciauxSaufEspace(String chaine) {
-        // Utiliser une expression régulière pour ne garder que les lettres et les chiffres
         Pattern pattern = Pattern.compile("[^a-zA-Z0-9\\s]");
         Matcher matcher = pattern.matcher(chaine);
         String chainePropre = matcher.replaceAll("");
         return chainePropre;
     }
     public static String supprimerCaracteresSpeciauxSaufEspaceTiret(String chaine) {
-        // Utiliser une expression régulière pour ne garder que les lettres, les chiffres, les espaces et les tirets
         Pattern pattern = Pattern.compile("[^a-zA-Z0-9\\s-]");
         Matcher matcher = pattern.matcher(chaine);
         String chainePropre = matcher.replaceAll("");

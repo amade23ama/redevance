@@ -49,7 +49,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             for (ChargementDTO chargementDTO : chargementDTOList) {
                 // Your processing logic here
 
-                log.info("Processing ChargementDTO: {}", indexCounter.getAndIncrement());
+                log.info("Enregistrement ChargementDTO: {}", indexCounter.getAndIncrement());
                 if(chargementDTO.getVehicule().getTransporteur().getId()==null){
                     TransporteurDTO transporteurDTO=this.transporteurService.recherchercheTransporteurByNom(chargementDTO.getVehicule().getTransporteur().getNom());
                     if(transporteurDTO==null){
@@ -80,7 +80,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
         Optional<DepotDTO>  depotDTO=depotService.rechercherDepotById(depot.getId());
         if(depotDTO.isPresent()){
             DepotDTO depotFinal=depotDTO.get();
-            depotFinal.setNbChargementDeposes(i);
+            depotFinal.setNbChargementDeposes(i-1);
             depotFinal.setDateHeureFinDepot( new Date());
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);

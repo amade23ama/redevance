@@ -83,9 +83,9 @@ public class BatchConfiguration {
                 .reader(myItemReader() )
                 .processor(myItemProcessor())
                 .writer(myItemWriter())
-                .faultTolerant()
-                .skipPolicy(new CommonMetierExceptionSkipper())
-                .skipLimit(10)
+                //.faultTolerant()
+                //.skipPolicy(new CommonMetierExceptionSkipper())
+                //.skipLimit(10)
                 //.listener(new MySkipListener())
                 .build();
     }

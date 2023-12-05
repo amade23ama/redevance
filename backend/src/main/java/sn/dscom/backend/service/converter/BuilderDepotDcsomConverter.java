@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import sn.dscom.backend.batchs.FileListItemReader;
 import sn.dscom.backend.common.dto.DepotDcsomDTO;
+import sn.dscom.backend.common.util.Utils;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -32,29 +33,29 @@ public class BuilderDepotDcsomConverter {
                 .filter(chargement -> !chargement.isEmpty())
                 .map(chargement -> {
                     log.info("Lecture de la ligne : " + indexCounter.getAndIncrement());
-                    String nomSite = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.site.nom")))).toUpperCase();
-                    String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
-                    String matricule = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.voiture.immatriculation")))).toUpperCase();
-                    String type = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).toUpperCase();
-                    String destination = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.destination")))).toUpperCase();
-                    String poidsMesure = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.poids")))).toUpperCase();
-                    String poidsMax = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.poidsMax")))).toUpperCase();
-                    String datePesage = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.date")))).toUpperCase();
-                    String heurePesage = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.heure")))).toUpperCase();
-                    String exploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).toUpperCase();
-                    String nomTransport = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.transporteur.nom")))).toUpperCase();
+                    String nomSite = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.site.nom")))).trim().toUpperCase();
+                    String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).trim().toUpperCase();
+                    String matricule = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.voiture.immatriculation")))).trim().toUpperCase();
+                    String type = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).trim().toUpperCase();
+                    String destination = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.destination")))).trim().toUpperCase();
+                    String poidsMesure = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.poids")))).trim().toUpperCase();
+                    String poidsMax = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.poidsMax")))).trim().toUpperCase();
+                    String datePesage = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.date")))).trim().toUpperCase();
+                    String heurePesage = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.chargement.heure")))).trim().toUpperCase();
+                    String exploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).trim().toUpperCase();
+                    String nomTransport = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.transporteur.nom")))).trim().toUpperCase();
                     return DepotDcsomDTO.builder()
-                            .nomSite(nomSite)
-                            .nomProduit(nomProduit)
-                            .nomTransport(nomTransport)
-                            .type(type)
-                            .matricule(matricule)
-                            .exploitation(exploitation)
+                            .nomSite(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(nomSite))
+                            .nomProduit(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(nomProduit))
+                            .nomTransport(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(nomTransport))
+                            .type(Utils.supprimerCaracteresSpeciaux(type))
+                            .matricule(Utils.supprimerCaracteresSpeciaux(matricule))
+                            .exploitation(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(exploitation))
                             .poidsMesure(poidsMesure)
                             .poidsMax(poidsMax)
                             .heurePesage(heurePesage)
                             .datePesage(datePesage)
-                            .destination(destination)
+                            .destination(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(destination))
                             .build();
                 })
                 .collect(Collectors.toList());

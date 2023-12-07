@@ -30,7 +30,8 @@ public class AutocompleteRechercheServiceConfig {
                                                                      ProduitRepository produitRepository,
                                                                      ProfilRepository profilRepository,
                                                                      ChargementRepository chargementRepository,
-                                                                     CategorieRepository categorieRepository, DepotRepository depotRepository) {
+                                                                     CategorieRepository categorieRepository, DepotRepository depotRepository,
+                                                                     TransporteurRepository transporteurRepository) {
         return AutocompleteRechercheService.builder()
                 .profilRepository(profilRepository)
                 .utilisateurRepository(utilisateurRepository)
@@ -41,6 +42,7 @@ public class AutocompleteRechercheServiceConfig {
                 .chargementRepository(chargementRepository)
                 .categorieRepository(categorieRepository)
                 .depotRepository(depotRepository)
+                .transporteurRepository(transporteurRepository)
                 .build();
     }
 }

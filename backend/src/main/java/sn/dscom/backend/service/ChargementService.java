@@ -215,7 +215,7 @@ public class ChargementService implements IChargementService {
 
 
             // build Chargement
-            ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, datePesage, heurePesage);
+            ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, datePesage, heurePesage,null);
 
             Optional<ChargementEntity> chargementEntity = this.chargementRepository.isChargementExist(this.siteConverteur.transform(chargementDTO.getSite()),
                     this.produitConverteur.transform(chargementDTO.getProduit()),
@@ -375,7 +375,9 @@ public class ChargementService implements IChargementService {
      * @param poidsMax poidsMax
      * @return ChargementDTO
      */
-    private static ChargementDTO buildChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax, String date, String heure) {
+    private static ChargementDTO buildChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO,
+                                                 ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax,
+                                                 String date, String heure,TransporteurDTO transporteurDTO) {
 
         Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax), vehiculeDTO.getPoidsVide());
 
@@ -402,6 +404,7 @@ public class ChargementService implements IChargementService {
                 .exploitation(exploitationDTO)
                 .produit(produitDTO)
                 .depotDTOList(new ArrayList<>())
+                .transporteur(transporteurDTO)
                 .build();
     }
 
@@ -721,8 +724,9 @@ public class ChargementService implements IChargementService {
     }
 
     @Override
-    public ChargementDTO genereLineChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax, String date, String heure) {
-         ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, date, heure);
+    public ChargementDTO genereLineChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination,
+                                              String poidsMesure, String poidsMax, String date, String heure,TransporteurDTO transporteurDTO) {
+         ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, date, heure,transporteurDTO);
         return chargementDTO;
     }
 
@@ -734,7 +738,8 @@ public class ChargementService implements IChargementService {
                  chargementDTO.getVehicule().getId(),
                  chargementDTO.getDestination(),
                  chargementDTO.getPoids(),
-                 chargementDTO.getPoidsMax()
+                 chargementDTO.getPoidsMax(),
+                 chargementDTO.getTransporteur().getId()
                  );
          if(chargementEntity!=null) {
              return this.chargementConverter.reverse(chargementEntity);

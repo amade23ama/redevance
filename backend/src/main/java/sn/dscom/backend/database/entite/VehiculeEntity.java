@@ -24,9 +24,10 @@ public class VehiculeEntity {
      * Id du Transporteur.
      */
     //@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "ID_TRANSPORTEUR", nullable = false)
     private TransporteurEntity transporteurEntity;
+    */
     //@Column(name = "NOM")
     //private  String nom;
     //@Column(name = "VOLUME")

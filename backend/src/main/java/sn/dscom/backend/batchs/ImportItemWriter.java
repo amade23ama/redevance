@@ -47,17 +47,17 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             AtomicInteger indexCounter = new AtomicInteger(0);
             for (ChargementDTO chargementDTO : chargementDTOList) {
                 log.info("Enregistrement ChargementDTO: {}", indexCounter.getAndIncrement());
-                if(chargementDTO.getVehicule().getTransporteur().getId()==null){
-                    TransporteurDTO transporteurDTO=this.transporteurService.recherchercheTransporteurByNom(chargementDTO.getVehicule().getTransporteur().getNom());
+                if(chargementDTO.getTransporteur().getId()==null){
+                    TransporteurDTO transporteurDTO=this.transporteurService.recherchercheTransporteurByNom(chargementDTO.getTransporteur().getNom());
                     if(transporteurDTO==null){
-                        transporteurDTO= this.transporteurService.saveTransporteur(chargementDTO.getVehicule().getTransporteur());
+                        transporteurDTO= this.transporteurService.saveTransporteur(chargementDTO.getTransporteur());
 
                     }
-                    chargementDTO.getVehicule().getTransporteur().setId(transporteurDTO.getId());
+                    chargementDTO.getTransporteur().setId(transporteurDTO.getId());
                 }
                 if(chargementDTO.getVehicule().getId()==null){
                     VehiculeDTO vehiculeDTO= this.voitureService.rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(
-                            chargementDTO.getVehicule().getImmatriculation(),chargementDTO.getVehicule().getTransporteur().getId(),
+                            chargementDTO.getVehicule().getImmatriculation(),
                             chargementDTO.getVehicule().getCategorie().getId());
                     if(vehiculeDTO==null){
                         vehiculeDTO= this.voitureService.saveVehicule(chargementDTO.getVehicule());
@@ -65,7 +65,6 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
                     chargementDTO.getVehicule().setId(vehiculeDTO.getId());
                 }
 
-                //chargementDTO.setIdDepot(depot.getId());
                 depot.setSite(chargementDTO.getSite());
                 depot.setNbChargementDeposes(i);
                 chargementDTO.getDepotDTOList().add(depot);

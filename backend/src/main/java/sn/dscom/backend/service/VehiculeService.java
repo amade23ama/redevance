@@ -116,7 +116,7 @@ public class VehiculeService implements IVoitureService{
             Optional<TransporteurEntity> transporteurEntityOptional = transporteurRepository.findById(transporteurDTO.getId());
             if (transporteurEntityOptional.isPresent()) {
                 TransporteurEntity transporteurEntityToSave = transporteurEntityOptional.get();
-                transporteurEntityToSave.setVehiculeEntityListes(null);
+                //transporteurEntityToSave.setVehiculeEntityListes(null);
                 transporteurEntityToSave.setNom(transporteurDTO.getNom());
                 transporteurEntityToSave.setTelephone(transporteurDTO.getTelephone());
                 transporteurEntityToSave.setDateModification( new Date());
@@ -204,7 +204,7 @@ public class VehiculeService implements IVoitureService{
                 .where(VehiculeSpecifications.withVehiculeIdsAndCategorieIds(idsVehicule,idsCategorie,
                         volumes));
 
-        Page<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec, pageRequest);
+        Page<VehiculeEntity> listVehiculeFind= this.vehiculeRepository.findAll(spec,pageRequest);
         List<VehiculeDTO> listVehicule = listVehiculeFind.getContent().stream()
                 .map(this.vehiculeConverter::reverse)
                 .filter(Objects::nonNull)
@@ -224,8 +224,8 @@ public class VehiculeService implements IVoitureService{
     }
 
     @Override
-    public VehiculeDTO rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(String matricule, long idTransport, long idCategorie) {
-        VehiculeEntity vehicule = this.vehiculeRepository. rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(matricule.toUpperCase(),idTransport,idCategorie);
+    public VehiculeDTO rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(String matricule, long idCategorie) {
+        VehiculeEntity vehicule = this.vehiculeRepository. rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(matricule.toUpperCase(),idCategorie);
         if (vehicule!=null) {
             return this.vehiculeConverter.reverse(vehicule);
         } else {

@@ -98,30 +98,30 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                 //transporteurDTO= this.transporteurService.saveTransporteur(transporteurDTO);
 
             }
-            if(categorieDTO.getId()==null){
-                log.error("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-            }
-            if(transporteurDTO.getId()!=null && categorieDTO.getId()!=null){
+
+            if(categorieDTO.getId()!=null){
                 vehiculeDTO= this.voitureService.rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(
-                        depotDcsomDTO.getMatricule(),transporteurDTO.getId(),categorieDTO.getId());
+                        depotDcsomDTO.getMatricule(),categorieDTO.getId());
             }
             if (vehiculeDTO == null) {
                 vehiculeDTO = VehiculeDTO.builder()
                         .immatriculation(depotDcsomDTO.getMatricule())
                         .categorie(categorieDTO)
-                        .transporteur(transporteurDTO)
+                        //.transporteur(transporteurDTO)
                         .build();
                 //vehiculeDTO = this.voitureService.saveVehicule(vehiculeDTO);
             }
             //vehiculeDTO.setTransporteur(null);
-            if(vehiculeDTO.getId()!=null&&vehiculeDTO.getTransporteur()!=null && !vehiculeDTO.getTransporteur().getVehiculeListes().isEmpty()){
+           /* if(vehiculeDTO.getId()!=null&&vehiculeDTO.getTransporteur()!=null && !vehiculeDTO.getTransporteur().getVehiculeListes().isEmpty()){
                 vehiculeDTO.getTransporteur().getVehiculeListes().clear();
             }
-          if(produitDTO!=null && siteDTO!=null && exploitationDTO!=null&& vehiculeDTO!=null && depotDcsomDTO.getDestination()!=null &&depotDcsomDTO.getPoidsMax()!=null &&depotDcsomDTO.getPoidsMax()!=null){
+            */
+          if(produitDTO!=null && siteDTO!=null && exploitationDTO!=null&& vehiculeDTO!=null && depotDcsomDTO.getDestination()!=null
+                  &&depotDcsomDTO.getPoidsMax()!=null &&depotDcsomDTO.getPoidsMax()!=null && transporteurDTO!=null){
               chargementDTO=chargementService.genereLineChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO,
                       depotDcsomDTO.getDestination(), depotDcsomDTO.getPoidsMesure(),
                       depotDcsomDTO.getPoidsMax(), depotDcsomDTO.getDatePesage(),
-                      depotDcsomDTO.getHeurePesage());
+                      depotDcsomDTO.getHeurePesage(),transporteurDTO);
               ChargementDTO chargementDTOTrouve= chargementService.recherChargementByEntity(chargementDTO);
               if(chargementDTOTrouve!=null){
                   this.lNbChargementReDeposes++;

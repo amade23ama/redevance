@@ -10,25 +10,25 @@
         <insert tableName="VEHICULE">
             <column name="ID_VEHICULE" valueComputed="NEXTVAL('mydscm.SEQ_VEHICULE')"/>
             <column name="IMMATRICULATION" value="MLT5365A" />
-            <column name="ID_TRANSPORTEUR" value="4" />
+            <!--<column name="ID_TRANSPORTEUR" value="4" />-->
             <column name="ID_CATEGORIE" value="1" />
         </insert>
         <insert tableName="VEHICULE">
             <column name="ID_VEHICULE" valueComputed="NEXTVAL('mydscm.SEQ_VEHICULE')"/>
             <column name="IMMATRICULATION" value="8727TTD1" />
-            <column name="ID_TRANSPORTEUR" value="3" />
+            <!--<column name="ID_TRANSPORTEUR" value="3" />-->
             <column name="ID_CATEGORIE" value="2" />
         </insert>
         <insert tableName="VEHICULE">
             <column name="ID_VEHICULE" valueComputed="NEXTVAL('mydscm.SEQ_VEHICULE')"/>
             <column name="IMMATRICULATION" value="TH6987L" />
-            <column name="ID_TRANSPORTEUR" value="2" />
+            <!--<column name="ID_TRANSPORTEUR" value="2" />-->
             <column name="ID_CATEGORIE" value="1" />
         </insert>
         <insert tableName="VEHICULE">
             <column name="ID_VEHICULE" valueComputed="NEXTVAL('mydscm.SEQ_VEHICULE')"/>
             <column name="IMMATRICULATION" value="AA540DS" />
-            <column name="ID_TRANSPORTEUR" value="1" />
+            <!--<column name="ID_TRANSPORTEUR" value="1" />-->
             <column name="ID_CATEGORIE" value="1" />
         </insert>
     </changeSet>

@@ -41,7 +41,7 @@ public class TransporteurEntity {
     private Date dateModification;
 
     // TODO: à voir avec l'équipe
-    @OneToMany(mappedBy = "transporteurEntity")
+    /*@OneToMany(mappedBy = "transporteurEntity")
     private List<VehiculeEntity> vehiculeEntityListes;
 
     public void setVehiculeEntityListes( List<VehiculeEntity> nouvelleListe) {
@@ -54,6 +54,6 @@ public class TransporteurEntity {
             vehiculeEntityListes.addAll(nouvelleListe);
         }
     }
-
+*/
 
 }

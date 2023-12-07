@@ -6,6 +6,7 @@ import { Produit } from "./produit";
 import { Site } from "./site";
 import { Subtance } from "./subtance";
 import { Vehicule } from "./vehicule";
+import {Transporteur} from "./transporteur";
 
 export class Chargement extends BuilderDtoJsonAbstract{
   /** l'id */
@@ -58,4 +59,5 @@ export class Chargement extends BuilderDtoJsonAbstract{
 
   /**  id du dernier dépot */
   idDepot: number;
+  transporteur:Transporteur;
 }

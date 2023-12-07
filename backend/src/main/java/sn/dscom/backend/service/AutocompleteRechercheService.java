@@ -46,6 +46,7 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     private CategorieRepository categorieRepository;
 
     private DepotRepository depotRepository;
+    private  TransporteurRepository transporteurRepository;
 
     /** matcherGlobal */
     private final ExampleMatcher matcherGlobal = ExampleMatcher.matchingAny()
@@ -62,7 +63,7 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
     public AutocompleteRechercheService(UtilisateurRepository utilisateurRepository, ProduitRepository produitRepository, ExploitationRepository exploitationRepository,
                                         ProfilRepository profilRepository, SiteRepository siteRepository, VehiculeRepository vehiculeRepository,
                                         ChargementRepository chargementRepository,
-                                        CategorieRepository categorieRepository, DepotRepository depotRepository) {
+                                        CategorieRepository categorieRepository, DepotRepository depotRepository,TransporteurRepository transporteurRepository) {
         this.profilRepository=profilRepository;
         this.utilisateurRepository=utilisateurRepository;
         this.produitRepository=produitRepository;
@@ -72,6 +73,8 @@ public class AutocompleteRechercheService implements IAutocompleteRechercheServi
         this.chargementRepository=chargementRepository;
         this.categorieRepository=categorieRepository;
         this.depotRepository=depotRepository;
+        this.transporteurRepository=transporteurRepository;
+
 
     }
     @Transactional(readOnly = true)

@@ -24,6 +24,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
     /** Site Converteur */
     private Transformer<SiteDTO, SiteEntity> siteConverteur = new SiteConverter();
     private Transformer<DepotDTO, DepotEntity> depotConverteur = new DepotConverter();
+    private Transformer<TransporteurDTO, TransporteurEntity> transportConverteur = new TransporteurConverter();
     /**
      * explitation Converteur
      */
@@ -70,6 +71,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .site(this.siteConverteur.reverse(chargementEntity.getSiteEntity()))
                 .exploitation(exploitationConverteur.reverse(chargementEntity.getExploitationEntity()))
                 .produit(this.produitConverter.reverse(chargementEntity.getProduitEntity()))
+                .transporteur(this.transportConverteur.reverse(chargementEntity.getTransporteurEntity()))
                 //.idDepot(depotEntity.getId())
                 .idDepot(1L)
                 .depotDTOList(listDepotDTO)
@@ -119,6 +121,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .siteEntity(this.siteConverteur.transform(chargementDTO.getSite()))
                 .exploitationEntity(this.exploitationConverteur.transform(chargementDTO.getExploitation()))
                 .produitEntity(this.produitConverter.transform(chargementDTO.getProduit()))
+                .transporteurEntity(this.transportConverteur.transform(chargementDTO.getTransporteur()))
                 .depots(listDepotEntity)
                 .build();
     }

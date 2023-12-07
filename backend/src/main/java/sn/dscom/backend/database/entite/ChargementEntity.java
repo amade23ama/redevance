@@ -51,6 +51,9 @@ public class ChargementEntity {
     @ManyToOne
     @JoinColumn(name = "ID_VEHICULE", nullable = false)
     private VehiculeEntity vehiculeEntity;
+    @ManyToOne
+    @JoinColumn(name = "ID_TRANSPORTEUR", nullable = false)
+    private TransporteurEntity transporteurEntity;
 
     @Column(name = "POIDS")
     private Double poids;

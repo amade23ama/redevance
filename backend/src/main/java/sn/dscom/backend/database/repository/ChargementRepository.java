@@ -126,14 +126,15 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
 
     @Query(value = "SELECT c from ChargementEntity c where c.siteEntity.id = :siteId " +
             "AND c.produitEntity.id = :produitId AND c.vehiculeEntity.id = :vehiculeId " +
-            "AND c.destination = :destination AND c.poids = :poids AND c.poidsMax = :poidsMax")
+            "AND c.destination = :destination AND c.poids = :poids AND c.poidsMax = :poidsMax AND c.transporteurEntity.id =:transporteurId")
 
     ChargementEntity rechercheChargementByChargementDTO(@Param("siteId")Long siteId,
                                                         @Param("produitId")Long produitId,
                                                         @Param("vehiculeId")Long vehiculeId,
                                                         @Param("destination")String destination,
                                                         @Param("poids")Double poids,
-                                                        @Param("poidsMax")Double poidsMax);
+                                                        @Param("poidsMax")Double poidsMax,
+                                                        @Param("transporteurId")Long transporteurId);
 
 
 

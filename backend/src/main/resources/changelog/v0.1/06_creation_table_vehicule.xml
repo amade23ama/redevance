@@ -20,10 +20,11 @@
         <column name="IMMATRICULATION" type="varchar(50)" remarks="Identifiant technique de la voiture">
             <constraints nullable="false"/>
         </column>
-
+        <!--
         <column name="ID_TRANSPORTEUR" type="bigint" remarks="Identifiant technique du transporteur">
             <constraints foreignKeyName="FK_TRANSPORTEUR" nullable="false"/>
         </column>
+        -->
         <column name="ID_CATEGORIE" type="bigint" remarks="Identifiant technique du categorie">
             <constraints foreignKeyName="FK_CATEGORIE" nullable="false"/>
         </column>
@@ -44,14 +45,16 @@
         </column>
 
     </createTable>
-        <addUniqueConstraint columnNames="IMMATRICULATION, ID_TRANSPORTEUR"
+        <addUniqueConstraint columnNames="IMMATRICULATION,ID_CATEGORIE"
                              constraintName="uk_unique_combination"
                              tableName="VEHICULE"/>
+        <!--
         <addForeignKeyConstraint baseColumnNames="ID_TRANSPORTEUR"
                                  baseTableName="VEHICULE"
                                  constraintName="fk_ID_TRANSPORTEUR"
                                  referencedColumnNames="ID_TRANSPORTEUR"
                                  referencedTableName="TRANSPORTEUR"/>
+        -->
         <addForeignKeyConstraint baseColumnNames="ID_CATEGORIE"
                                  baseTableName="VEHICULE"
                                  constraintName="fk_ID_CATEGORIE"

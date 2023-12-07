@@ -61,6 +61,7 @@
                   <div class="d-flex">{{element.categorie.volume}}</div>
                 </td>
             </ng-container>
+        <!--
         <ng-container matColumnDef="NomRS">
           <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
             <div class="d-flex">Nom complet / RS</div>
@@ -78,6 +79,7 @@
             <div class="d-flex">{{element?.transporteur.telephone}}</div>
           </td>
         </ng-container>
+        -->
           <ng-container matColumnDef="dateCreation">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
               <div class="d-flex">Date de création</div>
@@ -134,8 +136,10 @@
         <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
           <div class="titre-prenom">{{voiture.immatriculation}}</div>
           <div class="titre-second">{{voiture.categorie.type}} - {{voiture.categorie.volume}} (cm3)</div>
+          <!--
           <div class="titre-second">{{voiture.transporteur.nom}}</div>
           <div class="titre-second">{{voiture.transporteur.telephone}}
+            -->
             <mat-icon> local_phone</mat-icon>
           </div>
         </div>

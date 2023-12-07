@@ -52,7 +52,7 @@ public interface IVoitureService {
      */
     Page<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche);
     VehiculeDTO rechercherVehiculeByMatricule(String matricule);
-    VehiculeDTO rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(String matricule,long idTransport,long idCategorie);
+    VehiculeDTO rechercherVehiculeByMatriculeAndIdTransporteurAndIdCategorie(String matricule,long idCategorie);
 
     VehiculeDTO saveVehicule(VehiculeDTO vehiculeDTO);
 }

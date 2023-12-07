@@ -29,7 +29,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
             return null;
         }
         // Mapping de la liste de VehiculeDTO (si elle est disponible dans l'entité)
-        List<VehiculeDTO> vehiculeDTOList = new ArrayList<>();
+      /*  List<VehiculeDTO> vehiculeDTOList = new ArrayList<>();
         if (transporteurEntity.getVehiculeEntityListes() != null) {
             for (VehiculeEntity vehiculeEntity : transporteurEntity.getVehiculeEntityListes()) {
                 VehiculeDTO vehiculeDTO = new VehiculeDTO();
@@ -38,6 +38,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
                 vehiculeDTOList.add(vehiculeDTO);
             }
         }
+        */
       //  transporteurDTO.setVehiculeDTOListes(vehiculeDTOList);
 
         return TransporteurDTO.builder()
@@ -50,7 +51,7 @@ public class TransporteurConverter implements Transformer<TransporteurDTO, Trans
                 .adresse(transporteurEntity.getAdresse())
                 .dateCreation(transporteurEntity.getDateCreation())
                 .dateModification(transporteurEntity.getDateModification())
-                .vehiculeListes(vehiculeDTOList)
+               // .vehiculeListes(vehiculeDTOList)
                 .build();
     }
 

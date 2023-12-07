@@ -32,7 +32,9 @@
         <column name="ID_VEHICULE" type="bigint" remarks="Identifiant technique du vehicule">
             <constraints foreignKeyName="FK_VEHICULE" nullable="false"/>
         </column>
-
+        <column name="ID_TRANSPORTEUR" type="bigint" remarks="Identifiant technique du transporteur">
+            <constraints foreignKeyName="FK_TRANSPORTEUR" nullable="false"/>
+        </column>
         <column name="DATEPASSAGE" type="timestamp" defaultValueDate="${now}">
             <constraints nullable="false"/>
         </column>
@@ -57,7 +59,8 @@
     </createTable>
 
         <addUniqueConstraint
-                columnNames="ID_SITE,ID_PRODUIT,ID_VEHICULE,DESTINATION,POIDS,POIDS_MAX,POIDS_SUBST,VOLUME_SUBST,VOLUME_MOYEN,ECART"
+                columnNames="ID_SITE,ID_PRODUIT,ID_VEHICULE,DESTINATION,ID_TRANSPORTEUR,POIDS,POIDS_MAX,POIDS_SUBST,
+                VOLUME_SUBST,VOLUME_MOYEN,ECART"
                 constraintName="UQ_Chargement"
                 tableName="CHARGEMENT"
         />
@@ -67,6 +70,11 @@
                                  constraintName="fk_SITE"
                                  referencedColumnNames="ID_SITE"
                                  referencedTableName="SITE"/>
+        <addForeignKeyConstraint baseColumnNames="ID_TRANSPORTEUR"
+                                 baseTableName="CHARGEMENT"
+                                 constraintName="fk_TRANSPORTEUR"
+                                 referencedColumnNames="ID_TRANSPORTEUR"
+                                 referencedTableName="TRANSPORTEUR"/>
 
         <addForeignKeyConstraint baseColumnNames="ID_PRODUIT"
                                  baseTableName="CHARGEMENT"

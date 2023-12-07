@@ -156,5 +156,16 @@
             <column name="NOM" value="KIDIRA" />
             <column name="LOCALITE" value="KIDIRA" />
         </insert>
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="SINDIA" />
+            <column name="LOCALITE" value="SINDIA" />
+        </insert>
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="BANDIA" />
+            <column name="LOCALITE" value="BANDIA" />
+        </insert>
+
     </changeSet>
 </databaseChangeLog>

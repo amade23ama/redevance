@@ -69,6 +69,8 @@ public class ChargementDTO {
     private ProduitDTO produit;
     /** le fichier à charger */
     private List<DepotDTO> depotDTOList ;
+    /** le transporteur transporteur */
+    private TransporteurDTO transporteur;
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -80,6 +82,7 @@ public class ChargementDTO {
                 Objects.equals(site.getId(), other.site.getId()) &&
                 Objects.equals(produit.getId(), other.produit.getId()) &&
                 Objects.equals(vehicule.getId(), other.vehicule.getId()) &&
+                Objects.equals(transporteur.getId(), other.transporteur.getId()) &&
                 Objects.equals(destination, other.destination) &&
                 Objects.equals(poids, other.poids) &&
                 Objects.equals(poidsMax, other.poidsMax) &&
@@ -111,7 +114,7 @@ public class ChargementDTO {
     public int hashCode() {
         // Use all relevant fields for hashing
         return Objects.hash(id, destination, poids, poidsMax, poidsSubst,
-                volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(), produit.getId()
+                volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(),transporteur.getId(), produit.getId()
                 );
     }
 

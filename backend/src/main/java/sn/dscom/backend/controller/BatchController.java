@@ -116,22 +116,13 @@ public class BatchController {
         log.info("----fin-----");
         long timer2 = System.currentTimeMillis();
         log.info("----duree----: " +(timer2-timer1) +"ms");
-        return   ResponseEntity.ok(2L);
+        return   ResponseEntity.ok(depot.getId());
     }
     @Async
     protected CompletableFuture<UtilisateurDTO> getConnectedUtilisateur(){
         return CompletableFuture.completedFuture(UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur()));
     }
-   /* public void launchJobAsync(JobParametersBuilder jobParametersBuilder) {
-        taskExecutor.execute(() -> {
-            try {
-                jobLauncher.run(myJob, jobParametersBuilder.toJobParameters());
-            } catch (Exception e) {
-                // Gérer les exceptions
-            }
-        });
-    }
-    */
+
 
     public JobExecution runJob(Job job, JobParameters jobParameters) throws ExecutionException, InterruptedException {
         CompletableFuture<JobExecution> completableFuture = new CompletableFuture<>();

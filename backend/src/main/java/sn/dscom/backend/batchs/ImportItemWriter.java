@@ -98,6 +98,11 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);
         }
+        log.info("numImport :{}",depot.getId());
+        log.info("total Chargement           :{}",totalChargement);
+        log.info("nombre Chargement Deposes  :{}",lNbChargementDeposes);
+        log.info("nombre Chargement Doublons :{}",lNbChargementDoublons);
+        log.info("nombre Chargement Error    :{}",lNbChargementError);
     }
 
 }

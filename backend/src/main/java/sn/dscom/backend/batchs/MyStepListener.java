@@ -13,7 +13,6 @@ public class MyStepListener implements StepExecutionListener {
     @Override
     public void beforeStep(StepExecution stepExecution) {
         this.stepExecution = stepExecution;
-        log.info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
         stepExecution.getJobExecution().getExecutionContext().putInt("totalChargement",0);
         stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementReDeposes",0);
         stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposes",0);
@@ -26,8 +25,6 @@ public class MyStepListener implements StepExecutionListener {
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        // Perform logic after the step completes
-        log.info("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        return null;
+        return stepExecution.getExitStatus();
     }
 }

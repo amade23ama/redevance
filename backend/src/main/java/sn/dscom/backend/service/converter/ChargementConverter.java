@@ -72,8 +72,7 @@ public class ChargementConverter implements Transformer<ChargementDTO, Chargemen
                 .exploitation(exploitationConverteur.reverse(chargementEntity.getExploitationEntity()))
                 .produit(this.produitConverter.reverse(chargementEntity.getProduitEntity()))
                 .transporteur(this.transportConverteur.reverse(chargementEntity.getTransporteurEntity()))
-                //.idDepot(depotEntity.getId())
-                .idDepot(1L)
+                .idDepot(chargementEntity.getDepots().stream().max(Comparator.comparingLong(DepotEntity::getId)).get().getId())
                 .depotDTOList(listDepotDTO)
                 .build();
     }

@@ -19,6 +19,7 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
         } else {
             log.error("Step Failed: ");
             log.error("Job Execution Erreur");
+            throw new RuntimeException();
         }
     }
 }

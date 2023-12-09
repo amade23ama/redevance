@@ -136,11 +136,11 @@ export  class RechercheChargementComponent implements  OnInit{
           }
         })
 
-        if ((critereRecherche.annee === this.searchDate.value) || this.croll) {
+      //  if ((critereRecherche.annee === this.searchDate.value) || this.croll) {
           critereRecherche.annee=this.searchDate.value;
           this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
           this.croll=false
-        }
+       // }
 
       }
 
@@ -229,10 +229,10 @@ export  class RechercheChargementComponent implements  OnInit{
           } as CritereRecherche;
           this.initRechargementChargement(critereRecherche);
         }
-  
+
       })
 
-      
+
     }
   }
 

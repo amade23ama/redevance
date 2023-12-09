@@ -8,6 +8,7 @@ import { MaterialModule } from "../material.module";
 import { LayoutComponent } from './layout.component';
 import { layoutRouter } from "./layout.router";
 import { SharedModule } from "./shared-Module/shared.module";
+import {Globals} from "../app.constants";
 
 @NgModule({
   declarations: [
@@ -24,6 +25,6 @@ import { SharedModule } from "./shared-Module/shared.module";
         NgIf,
     ],
   exports: [RouterModule],
-  providers:[SessionTimerService]
+  providers:[SessionTimerService,Globals]
 })
 export class LayoutModule {}

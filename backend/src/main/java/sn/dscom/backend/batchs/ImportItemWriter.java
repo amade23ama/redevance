@@ -35,6 +35,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     @Autowired
     private IDepotService depotService;
     private StepExecution stepExecution;
+    private  int lNbReDeposes=1;
 
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
@@ -72,7 +73,9 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
                     }
                     chargementDTO.getVehicule().setId(vehiculeDTO.getId());
                 }
-
+                if(chargementDTO.getId()!=null){
+                    this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementReDeposes",this.lNbReDeposes++);
+                }
                 depot.setSite(chargementDTO.getSite());
                 depot.setNbChargementDeposes(i);
                 chargementDTO.getDepotDTOList().add(depot);
@@ -98,9 +101,10 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);
         }
-        log.info("numImport :{}",depot.getId());
+        log.info("numImport                  :{}",depot.getId());
         log.info("total Chargement           :{}",totalChargement);
         log.info("nombre Chargement Deposes  :{}",lNbChargementDeposes);
+        log.info("nombre Chargement ReDeposes:{}",lNbChargementReDeposes);
         log.info("nombre Chargement Doublons :{}",lNbChargementDoublons);
         log.info("nombre Chargement Error    :{}",lNbChargementError);
     }

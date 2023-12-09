@@ -87,6 +87,7 @@ public class BatchConfiguration {
                 //.skipPolicy(new CommonMetierExceptionSkipper())
                 //.skipLimit(10)
                 //.listener(new MySkipListener())
+                .listener(myStepListener())
                 .build();
     }
 
@@ -133,5 +134,9 @@ public class BatchConfiguration {
     @Bean
     public TaskExecutor asyncTaskExecutor() {
         return new SimpleAsyncTaskExecutor();
+    }
+    @Bean
+    public MyStepListener myStepListener() {
+        return new MyStepListener();
     }
 }

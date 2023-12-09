@@ -2,6 +2,8 @@ package sn.dscom.backend.batchs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,12 +46,19 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     private int lNbChargementDeposesSucces=0;
     private int lNbChargementError = 0;
     private int totalChargement=0;
+    private StepExecution stepExecution;
+
+    @BeforeStep
+    public void beforeStep(StepExecution stepExecution) {
+        this.stepExecution = stepExecution;
+    }
     @Override
     public List<ChargementDTO> process(List<DepotDcsomDTO>  depotDcsomDTOList) throws CommonMetierException {
         List<ChargementDTO> processedList = new ArrayList<>();
         List<ChargementDTO> listchargementDTO = new ArrayList<>();
 
         this.totalChargement=depotDcsomDTOList.size();
+        stepExecution.getJobExecution().getExecutionContext().putInt("totalChargement",this.totalChargement);
         int i =1;
         List<CommonMetierException> errors = new ArrayList<>();
         for (DepotDcsomDTO depotDcsomDTO : depotDcsomDTOList) {
@@ -64,18 +73,20 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
             catch (CommonMetierException e) {
                 log.error("Erreur lors du traitement de la ligne : " + i);
                 this.lNbChargementError++;
-                errors.add(e);  // Ajouter l'exception à la liste des erreurs
+                this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
+                errors.add(e);
             } catch (Exception e) {
                 log.error("Erreur non métier lors du traitement de la ligne : " + i);
                 this.lNbChargementError++;
-                // Ignorez l'exception non métier et continuez le traitement
+                this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
             }
         i++;
         }
         Set<ChargementDTO> listChargementDTOUnique = new HashSet<>(processedList);
         this.lNbChargementDoublons=processedList.size()-(listChargementDTOUnique.size());
         this.lNbChargementDeposesSucces=listChargementDTOUnique.size();
-
+        this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",this.lNbChargementDeposesSucces);
+        this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",this.lNbChargementDoublons);
         return listChargementDTOUnique.stream().toList();
     }
 
@@ -95,7 +106,6 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                 transporteurDTO= TransporteurDTO.builder().nom(depotDcsomDTO.getNomTransport())
                         .type("S")
                         .build();
-                //transporteurDTO= this.transporteurService.saveTransporteur(transporteurDTO);
 
             }
 
@@ -107,15 +117,8 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                 vehiculeDTO = VehiculeDTO.builder()
                         .immatriculation(depotDcsomDTO.getMatricule())
                         .categorie(categorieDTO)
-                        //.transporteur(transporteurDTO)
                         .build();
-                //vehiculeDTO = this.voitureService.saveVehicule(vehiculeDTO);
             }
-            //vehiculeDTO.setTransporteur(null);
-           /* if(vehiculeDTO.getId()!=null&&vehiculeDTO.getTransporteur()!=null && !vehiculeDTO.getTransporteur().getVehiculeListes().isEmpty()){
-                vehiculeDTO.getTransporteur().getVehiculeListes().clear();
-            }
-            */
           if(produitDTO!=null && siteDTO!=null && exploitationDTO!=null&& vehiculeDTO!=null && depotDcsomDTO.getDestination()!=null
                   &&depotDcsomDTO.getPoidsMax()!=null &&depotDcsomDTO.getPoidsMax()!=null && transporteurDTO!=null){
               chargementDTO=chargementService.genereLineChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO,
@@ -126,25 +129,15 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
               if(chargementDTOTrouve!=null){
                   this.lNbChargementReDeposes++;
                   log.info("chargement existe id: "+chargementDTOTrouve.getId());
+                  this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementReDeposes",this.lNbChargementReDeposes);
                   chargementDTO=chargementDTOTrouve;
               }
           }
                 this.lNbChargementDeposes++;
+            this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposes",this.lNbChargementDeposes);
         }
 
             return chargementDTO;
-
-
-
-        //siteDTOx=siteDTO;
-       // depotDTO.setSite(siteDTO);
-       /* if(lNbChargementDeposes%20==0){
-            depotDTO.setNbChargementErreur(lNbChargementError);
-            depotDTO.setNbChargementDeposes(lNbChargementDeposes);
-            depotDTO.setNbChargementReDeposes(lNbChargementReDeposes);
-            this.depotService.enregistrerDepot(depotDTO);
-        }
-        */
 
         }catch (CommonMetierException e){
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);

@@ -3,6 +3,8 @@ package sn.dscom.backend.batchs;
 import org.hibernate.tool.schema.TargetType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,12 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     private ITransporteurService transporteurService;
     @Autowired
     private IDepotService depotService;
+    private StepExecution stepExecution;
+
+    @BeforeStep
+    public void beforeStep(StepExecution stepExecution) {
+        this.stepExecution = stepExecution;
+    }
     ImportItemWriter(DepotDTO depot){
         if(depot!=null) {
             this.depot = depot;
@@ -73,10 +81,19 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             }
 
         }
+
+        int totalChargement = stepExecution.getJobExecution().getExecutionContext().getInt("totalChargement", 0);
+        int lNbChargementReDeposes =  stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementReDeposes",0);
+        int lNbChargementDeposes =   stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementDeposes",0);
+        int lNbChargementDoublons =  stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementDoublons",0);
+        int lNbChargementDeposesSucces =   stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementDeposesSucces",0);
+        int lNbChargementError = stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementError",0);
         Optional<DepotDTO>  depotDTO=depotService.rechercherDepotById(depot.getId());
         if(depotDTO.isPresent()){
             DepotDTO depotFinal=depotDTO.get();
             depotFinal.setNbChargementDeposes(i-1);
+            depotFinal.setNbChargementReDeposes(lNbChargementReDeposes);
+            depotFinal.setNbChargementErreur(lNbChargementError);
             depotFinal.setDateHeureFinDepot( new Date());
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);

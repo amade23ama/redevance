@@ -3,6 +3,8 @@ package sn.dscom.backend.batchs;
 import com.opencsv.CSVReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.annotation.BeforeStep;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.NonTransientResourceException;
 import org.springframework.batch.item.ParseException;
@@ -29,7 +31,15 @@ public class FileListItemReader implements ItemReader<List<DepotDcsomDTO>> {
     Map<String, String> mapInverse ;
     private  Environment environment;
     private static final int THREAD_POOL_SIZE = 5;
-
+    private int totalChargement; // assuming this is the property you want to modify
+    private StepExecution stepExecution;
+    /*@BeforeStep
+    public void beforeStep(StepExecution stepExecution) {
+        this.stepExecution=stepExecution;
+        // Retrieve the value from job execution context
+        //totalChargement = stepExecution.getJobExecution().getExecutionContext().getInt("totalChargement", 0);
+    }
+*/
     FileListItemReader(MultipartFile multipartFile, Map<String, String> mapInverse, Environment environment) {
         try {
             this.environment=environment;
@@ -57,7 +67,9 @@ public class FileListItemReader implements ItemReader<List<DepotDcsomDTO>> {
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
 
         }
+            //this.stepExecution.getJobExecution().getExecutionContext().putInt("totalChargement",listDepotDcsomDTO.size());
         }
+
         return listDepotDcsomDTO.isEmpty() ? null : listDepotDcsomDTO;
     }
     private static List<String> tabToList(String[] nextLine) {

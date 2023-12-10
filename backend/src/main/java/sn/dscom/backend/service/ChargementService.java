@@ -529,6 +529,7 @@ public class ChargementService implements IChargementService {
                 .filter(Objects::nonNull)
                 .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
                 .map(this.chargementConverter::reverse)
+                .peek(chargementDTO -> {if (!idsDepot.isEmpty()) {chargementDTO.setIdDepot(idsDepot.get(0));}})
                 .toList();
 
         return new PageImpl<>(dtoList, pageRequest, listChargementFind.getTotalElements());

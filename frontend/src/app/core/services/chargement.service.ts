@@ -53,14 +53,11 @@ export class ChargementService{
       .pipe(
         tap((res: Page<Chargement>) => {
           this.setNbChargements(res.totalElements);
-          if(res.totalElements==0){
-            this.setChargements([])
-          }
-          if (scroll) {
+          if(critereRecherche.page==0){
+            this.setChargements([...res.content])
+          }else{
             const result = Array.from(new Set([...this._chargements$.getValue(), ...res.content]));
             this.setChargements(result);
-          } else {
-            this.setChargements([...res.content]);
           }
           this.globals.loading=false
         }),

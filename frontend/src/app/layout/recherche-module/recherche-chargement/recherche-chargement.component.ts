@@ -41,10 +41,12 @@ export  class RechercheChargementComponent implements  OnInit{
   page = 0;
   size = 10;
   itemsPerPage = 10;
+  currentPage=0;
   newPage=0
   croll:boolean=false;
   private lastScrollIndex = 0;
   rechercheChargements: Chargement[] = [];
+  critereRecherche :CritereRecherche
   nb$=this.chargementService.nbChargements$
   // les noms des colones  'Date Modification',,'categorie'
   displayedColumns: string[] =['numImport' ,'datePesage', 'site','produit','exploitation', 'destination','vehicule','transporteur'
@@ -57,12 +59,11 @@ export  class RechercheChargementComponent implements  OnInit{
               private dialog: MatDialog,) {
   }
   ngOnInit() {
-    this.referenceService.getAllAnnee().subscribe()
-    this.chargementService.setChargements([]);
-    this.rechargementChargement();
+    this.referenceService.getAllAnnee().subscribe((res)=>{
+      this.searchDate.setValue(this.referenceService.getAnneeMax())
+      this.initialRechargementChargement()
+    })
     this.referenceService.getAnneeMax()
-    this.searchDate.setValue(this.referenceService.getAnneeMax())
-
     this.chargementService.chargements$.subscribe((chargements) => {
       if(chargements!==null){
         this.rechercheChargements=chargements
@@ -119,38 +120,6 @@ export  class RechercheChargementComponent implements  OnInit{
   annulerFiltre(autocompleteRecherche:AutocompleteRecherche){
     this.autocompleteRechercheService.removeAutocompleteRechercheChargement(autocompleteRecherche)
   }
-  rechargementChargement(){
-    this.critereRecherches$.subscribe((res)=>{
-      if(res) {
-        const critereRecherche   = {
-          autocompleteRecherches:res,
-          page :this.newPage,
-          size :this.size,
-          dateDebut :new Date(),
-          dateFin :new Date(),
-        } as CritereRecherche
-        this.searchDate.valueChanges.subscribe((value)=>{
-          if (critereRecherche.annee !== this.searchDate.value) {
-            this.croll=false
-            critereRecherche.annee=this.searchDate.value;
-            this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
-          }
-        })
-
-      //  if ((critereRecherche.annee === this.searchDate.value) || this.croll) {
-          critereRecherche.annee=this.searchDate.value;
-          this.chargementService.chargementChargementParCritere(critereRecherche, this.croll).subscribe()
-          this.croll=false
-       // }
-
-      }
-
-    })
-  }
-
-  initRechargementChargement(critereRecherche: CritereRecherche){
-    this.chargementService.chargementChargementParCritere(critereRecherche, true).subscribe()
-  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -203,7 +172,7 @@ export  class RechercheChargementComponent implements  OnInit{
       });
     } else {
       this.chargementService.supprimerById(this.selection.selected).subscribe(() => {
-        this.rechargementChargement();
+       this.rechargementChargement();
       });
     }
 
@@ -213,31 +182,48 @@ export  class RechercheChargementComponent implements  OnInit{
     const isScrollingDown = index > this.lastScrollIndex;
     this.lastScrollIndex = index;
     if (isScrollingDown) {
-      this.page++
+      this.page=this.page+1
       const totalLoadedItems = this.page * this.itemsPerPage;
       const newIndex = Math.floor(totalLoadedItems / this.itemsPerPage)
       this.newPage = newIndex;
       this.croll = true
-
-      this.critereRecherches$.subscribe((res)=>{
-        if(res) {
-          const critereRecherche   = {
-            autocompleteRecherches:res,
-            page :this.newPage,
-            size :this.size,
-            dateDebut :new Date(),
-            dateFin :new Date(),
-          } as CritereRecherche;
-          this.initRechargementChargement(critereRecherche);
-        }
-
-      })
-
-
+      this.critereRecherche.page=this.page
+      this.critereRecherche.size=this.itemsPerPage
+      this.chargementService.chargementChargementParCritere(this.critereRecherche, this.croll).subscribe()
     }
   }
 
   getItemSize() {
     return 50;
+  }
+  initialRechargementChargement(){
+    this.rechargementChargement()
+  }
+  rechargementChargement(){
+    this.critereRecherches$.subscribe((res)=>{
+        if (res) {
+          this.page=0;
+          const critereRecherche :CritereRecherche = {
+            autocompleteRecherches: res,
+            page: this.page,
+            size: this.itemsPerPage,
+            dateDebut: new Date(),
+            dateFin: new Date(),
+          } as  CritereRecherche;
+          critereRecherche.annee=this.searchDate.value;
+          this.critereRecherche=critereRecherche
+          this.chargementService.chargementChargementParCritere(this.critereRecherche, this.croll).subscribe()
+        }
+
+    })
+    this.searchDate.valueChanges.subscribe((value)=>{
+      if(value){
+        this.page=0;
+        this.critereRecherche.annee=value
+        this.critereRecherche.page=this.page
+        this.critereRecherche.size=this.itemsPerPage
+        this.chargementService.chargementChargementParCritere(this.critereRecherche, this.croll).subscribe()
+      }
+    })
   }
 }

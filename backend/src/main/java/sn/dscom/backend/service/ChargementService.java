@@ -589,7 +589,7 @@ public class ChargementService implements IChargementService {
                         localites,critereRecherche.getAnnee()
                         ,idsDepot));
 
-        List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
+        List<ChargementEntity> listSitesFind= this.chargementRepository.findAll(spec);
         return listSitesFind.stream()
                 .filter(Objects::nonNull)
                 .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)

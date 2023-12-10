@@ -107,6 +107,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             depotFinal.setNbChargementReDeposes(lNbChargementReDeposes);
             depotFinal.setNbChargementErreur(lNbChargementError);
             depotFinal.setDateHeureFinDepot( new Date());
+            //depotFinal.setSite();
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);
         }

@@ -107,11 +107,12 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             depotFinal.setNbChargementReDeposes(lNbChargementReDeposes);
             depotFinal.setNbChargementErreur(lNbChargementError);
             depotFinal.setDateHeureFinDepot( new Date());
-            //depotFinal.setSite();
+            depotFinal.setSite(depot.getSite());
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);
         }
         log.info("numImport                  :{}",depot.getId());
+        log.info("Site de Depot              :{}",depot.getSite().getNom());
         log.info("total Chargement           :{}",totalChargement);
         log.info("nombre Chargement Deposes  :{}",lNbChargementDeposes);
         log.info("nombre Chargement ReDeposes:{}",lNbChargementReDeposes);

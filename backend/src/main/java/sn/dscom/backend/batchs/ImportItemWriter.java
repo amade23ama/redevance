@@ -9,20 +9,18 @@ import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import sn.dscom.backend.common.constants.Enum.StatutEnum;
-import sn.dscom.backend.common.dto.ChargementDTO;
-import sn.dscom.backend.common.dto.DepotDTO;
-import sn.dscom.backend.common.dto.TransporteurDTO;
-import sn.dscom.backend.common.dto.VehiculeDTO;
+import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.database.entite.DepotEntity;
+import sn.dscom.backend.service.ReferenceAnneeService;
 import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IDepotService;
 import sn.dscom.backend.service.interfaces.ITransporteurService;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     private DepotDTO depot;
@@ -36,6 +34,8 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     private IDepotService depotService;
     private StepExecution stepExecution;
     private  int lNbReDeposes=1;
+    @Autowired
+    ReferenceAnneeService referenceAnneeService;
 
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
@@ -50,11 +50,14 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
 
     @Override
     public void write(Chunk<? extends List<ChargementDTO>> chunk) throws Exception {
+        List<Long> listannes=referenceAnneeService.getAllAnnee().stream().map(rech -> rech.getAnnee()).collect(Collectors.toList());
+        Set<Long> newListAnnee= new HashSet<>();
         int i=1;
         for (List<ChargementDTO> chargementDTOList : chunk.getItems()) {
 
             AtomicInteger indexCounter = new AtomicInteger(0);
             for (ChargementDTO chargementDTO : chargementDTOList) {
+                newListAnnee.add(this.getYear(chargementDTO.getDatePesage()));
                 log.info("Enregistrement ChargementDTO: {}", indexCounter.getAndIncrement());
                 if(chargementDTO.getTransporteur().getId()==null){
                     TransporteurDTO transporteurDTO=this.transporteurService.recherchercheTransporteurByNom(chargementDTO.getTransporteur().getNom());
@@ -84,7 +87,13 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             }
 
         }
-
+        newListAnnee.removeAll(listannes);
+        if(!newListAnnee.isEmpty()){
+            List<ReferenceAnneeDTO> referenceAnneeDTOS = newListAnnee.stream()
+                    .map(value -> ReferenceAnneeDTO.builder().annee(value).build())
+                    .collect(Collectors.toList());
+           this.referenceAnneeService.saveAll(referenceAnneeDTOS);
+        }
         int totalChargement = stepExecution.getJobExecution().getExecutionContext().getInt("totalChargement", 0);
         int lNbChargementReDeposes =  stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementReDeposes",0);
         int lNbChargementDeposes =   stepExecution.getJobExecution().getExecutionContext().getInt("lNbChargementDeposes",0);
@@ -108,5 +117,8 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
         log.info("nombre Chargement Doublons :{}",lNbChargementDoublons);
         log.info("nombre Chargement Error    :{}",lNbChargementError);
     }
-
+    private static Long getYear(Date date) {
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        return Long.parseLong(yearFormat.format(date));
+    }
 }

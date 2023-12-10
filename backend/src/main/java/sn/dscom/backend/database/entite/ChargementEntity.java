@@ -31,7 +31,7 @@ public class ChargementEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_SITE", nullable = false)
     private SiteEntity siteEntity ;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
     @JoinTable(name = "DEPOT_CHARGEMENT",
             joinColumns = @JoinColumn(name = "ID_CHARGEMENT"),
             inverseJoinColumns = @JoinColumn(name = "ID_DEPOT"))

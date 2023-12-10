@@ -7,13 +7,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sn.dscom.backend.common.dto.BilanDTO;
+import sn.dscom.backend.common.dto.ReferenceAnneeDTO;
 import sn.dscom.backend.common.util.ChargementUtils;
+import sn.dscom.backend.service.interfaces.IReferenceAnneeService;
 import sn.dscom.backend.service.interfaces.IReportingService;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ReportingController
@@ -32,6 +35,8 @@ public class ReportingController {
      */
     @Autowired
     private IReportingService reportingService;
+    @Autowired
+    private IReferenceAnneeService referenceAnneeService;
 
     /**
      * rechercher Reporting Chargemnet
@@ -81,10 +86,11 @@ public class ReportingController {
      * @return le liste
      */
     @GetMapping(path = "/getAnnees")
-    public ResponseEntity<List<Integer>> getListAnnees() {
-        List<Integer> listAnnee = reportingService.getListeAnnees();
-        //Par ordre décroissant
-        Collections.reverse(listAnnee);
+    public ResponseEntity<List<Long>> getListAnnees() {
+        List<Long> listAnnee= referenceAnneeService.getAllAnnee().stream()
+                        .sorted(Comparator.comparing(ReferenceAnneeDTO::getAnnee))
+                        .map(ReferenceAnneeDTO::getAnnee)
+                        .collect(Collectors.toList());
         return ResponseEntity.ok(listAnnee);
     }
 

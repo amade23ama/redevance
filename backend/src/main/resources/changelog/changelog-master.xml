@@ -32,5 +32,8 @@
   <include file="changelog/v0.1/021_changer_contraint__table_transporteur.xml" relativeToChangelogFile="false"/>
   <include file="/changelog/v0.1/022_changer_contraint_table_vehicule.xml" relativeToChangelogFile="false"/>
   <include file="/changelog/v0.1/023_changer_contraint_table_depot_chargement.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/024_creation_table_reference_annee.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/025_inserer_data_table_reference_annee.xml" relativeToChangelogFile="false"/>
+
 
 </databaseChangeLog>

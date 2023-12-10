@@ -54,9 +54,10 @@ export  class RechercheChargementComponent implements  OnInit{
   constructor(public appConfig: AppConfigService,public chargementService:ChargementService,
               private router:Router, private autocompleteRechercheService:AutocompleteRechercheService,
               public readonly  referenceService:ReferenceService,public modalService: ModalService,
-              private dialog: MatDialog) {
+              private dialog: MatDialog,) {
   }
   ngOnInit() {
+    this.referenceService.getAllAnnee().subscribe()
     this.chargementService.setChargements([]);
     this.rechargementChargement();
     this.referenceService.getAnneeMax()

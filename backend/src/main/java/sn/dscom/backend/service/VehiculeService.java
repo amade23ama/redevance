@@ -7,23 +7,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.AutocompleteRecherche;
 import sn.dscom.backend.common.dto.CritereRecherche;
-import sn.dscom.backend.common.dto.TransporteurDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.CategorieEntity;
-import sn.dscom.backend.database.entite.TransporteurEntity;
 import sn.dscom.backend.database.entite.VehiculeEntity;
 import sn.dscom.backend.database.repository.TransporteurRepository;
 import sn.dscom.backend.database.repository.VehiculeRepository;
 import sn.dscom.backend.service.converter.VehiculeConverter;
-import sn.dscom.backend.service.interfaces.ITransporteurService;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 import sn.dscom.backend.service.util.VehiculeSpecifications;
 
@@ -110,22 +106,6 @@ public class VehiculeService implements IVoitureService{
 
         // s'il existe, on l'a modifie
         if (vehiculeFind.isPresent()){
-            // on modifie le transpoteur lié au véhicule
-            TransporteurDTO transporteurDTO = vehiculeDTO.getTransporteur();
-
-            Optional<TransporteurEntity> transporteurEntityOptional = transporteurRepository.findById(transporteurDTO.getId());
-            if (transporteurEntityOptional.isPresent()) {
-                TransporteurEntity transporteurEntityToSave = transporteurEntityOptional.get();
-                //transporteurEntityToSave.setVehiculeEntityListes(null);
-                transporteurEntityToSave.setNom(transporteurDTO.getNom());
-                transporteurEntityToSave.setTelephone(transporteurDTO.getTelephone());
-                transporteurEntityToSave.setDateModification( new Date());
-
-                Try.of(() -> transporteurEntityToSave)
-                        .mapTry(this.transporteurRepository::save)
-                        .onFailure(e -> TransporteurService.logger.info(String.format("Erreur de l'nregistrement du Transporteur: %s", e.getMessage())))
-                        .get();
-            }
 
             return Optional.of(this.vehiculeConverter.reverse(Try.of(() -> this.vehiculeConverter.transform(vehiculeDTO))
                     .mapTry(this.vehiculeRepository::save).get()));

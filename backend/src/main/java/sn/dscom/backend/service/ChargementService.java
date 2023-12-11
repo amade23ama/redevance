@@ -441,7 +441,7 @@ public class ChargementService implements IChargementService {
 
         return Try.of(() -> VehiculeDTO.builder()
                                 .dateCreation(new Date())
-                                .transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
+                                //.transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
                                 .categorie(categorieDTO)
                                 .immatriculation(ChargementUtils.replaceAllSpecialCarater(immatriculation.toUpperCase()))
                                 .build())

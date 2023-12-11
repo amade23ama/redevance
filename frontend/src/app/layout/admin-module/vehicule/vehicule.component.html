@@ -1,9 +1,7 @@
 
 <form class="mt-1" [formGroup]="myform">
   <fieldset>
-    <legend class="titre-form">Transporteur</legend>
-    <fieldset>
-      <legend class="titre-form">{{titre}}</legend>
+    <legend class="titre-form">{{titre}}</legend>
       <div class="mt-05" fxLayout fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-around" fxLayoutGap="10px">
         <!-- Immatriculation -->
         <mat-form-field class="champ--operateur"  appearance="outline" fxFlex="50" floatLabel="always">
@@ -45,102 +43,8 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <!-- Volume
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-            <mat-label>Volume </mat-label>
-            <input matInput  type="number" [formControl]="volume" readonly/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="resetCategorie('volume')">
-              <mat-icon>close</mat-icon>
-            </button>
-            <mat-error *ngIf="volume.errors?.hasOwnProperty('required')">
-              {{appConfig.getLabel('error.champ.obligatoire')}}
-            </mat-error>
-          </mat-form-field>-->
         </div>
       </div>
-    </fieldset>
-    <fieldset class="mt-05">
-      <legend class="titre-form">{{titreTransport}}</legend>
-      <div formGroupName="transporteur" class="mt-05">
-        <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-          <!-- Type transporteur
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-            <mat-label>Type transporteur </mat-label>
-            <mat-select [formControl]="transType"  [value]="transType" placeholder="selectionner le type de transporteur">
-              <mat-option *ngFor="let typ of types" [value]="typ.code">
-                {{ typ.code }} - {{ typ.libelle }}
-              </mat-option>
-            </mat-select>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transType')">
-              <mat-icon>close</mat-icon>
-            </button>
-            <mat-error *ngIf="transType.errors?.hasOwnProperty('required')">
-              {{appConfig.getLabel('error.champ.obligatoire')}}
-            </mat-error>
-          </mat-form-field>-->
-          <!-- Adresse
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" fxFlex.lt-md="100" floatLabel="always">
-            <mat-label>Adresse</mat-label>
-            <input matInput [formControl]="transAdresse"/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transAdresse')">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>-->
-        </div>
-        <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-          <!-- nom ou  numero Siret-->
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-            <mat-label>Nom complet/RS</mat-label>
-            <input matInput  type="text" [formControl]="transNom"/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transNom')">
-              <mat-icon>close</mat-icon>
-            </button>
-            <mat-error *ngIf="transporteur.get('nom').hasError('pattern')">{{appConfig?.getLabel('error.caractere.invalid')}}</mat-error>
-            <mat-error *ngIf="nom.errors?.hasOwnProperty('required')">
-              {{appConfig.getLabel('error.champ.obligatoire')}}
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" floatLabel="always">
-            <mat-label>Téléphone</mat-label>
-            <input matInput  type="tel" [formControl]="transTelephone"/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transTelephone')">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <!-- prenom
-          <mat-form-field  *ngIf="transType.value==='P'" class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-            <mat-label>Prenom </mat-label>
-            <input matInput  type="text" [formControl]="transPrenom"/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transPrenom')">
-              <mat-icon>close</mat-icon>
-            </button>
-            <mat-error *ngIf="transporteur.get('prenom').hasError('pattern')">{{appConfig?.getLabel('error.caractere.invalid')}}</mat-error>
-            <mat-error *ngIf="transPrenom.errors?.hasOwnProperty('required')">
-              {{appConfig.getLabel('error.champ.obligatoire')}}
-            </mat-error>
-          </mat-form-field>-->
-        </div>
-        <div fxLayout fxLayoutGap="10px" fxLayout.xs="column"fxLayout.sm="column" >
-          <!-- E-mail
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="100" floatLabel="always">
-            <mat-label>Mail </mat-label>
-            <input matInput  type="email" [formControl]="transEmail"/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transEmail')">
-              <mat-icon>close</mat-icon>
-            </button>
-            <mat-error *ngIf="transporteur.get('email').hasError('pattern') || transporteur.get('email').hasError('email')">{{appConfig?.getLabel('error.email.invalid')}}</mat-error>
-          </mat-form-field>-->
-          <!-- Téléphone
-          <mat-form-field class="champ--operateur" appearance="outline" fxFlex="50" floatLabel="always">
-            <mat-label>Téléphone</mat-label>
-            <input matInput  type="tel" [formControl]="transTelephone"/>
-            <button  matSuffix mat-icon-button aria-label="Clear" (click)="reset('transTelephone')">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field> -->
-        </div>
-      </div>
-    </fieldset>
   </fieldset>
 </form>
 <div class="mat-elevation-z0 mt-1">

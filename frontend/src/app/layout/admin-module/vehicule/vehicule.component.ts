@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { RegexConstantes } from 'src/app/core/constantes/regexConstantes';
 import { Categorie } from 'src/app/core/interfaces/categorie';
 import { CategorieService } from 'src/app/core/services/categorie.service';
 import { ModalService } from 'src/app/core/services/modal.service';
@@ -30,35 +29,18 @@ export class VehiculeComponent implements OnInit {
   dateCreation: FormControl = new FormControl();
   dateModification:FormControl = new FormControl();
 
-  transId: FormControl = new FormControl();
- // transPrenom: FormControl = new FormControl('', {validators: [Validators.pattern(RegexConstantes.REGEX_NOM_PRENOM)]});
-  transNom: FormControl = new FormControl('', {validators: [Validators.pattern(RegexConstantes.REGEX_NOM_PRENOM)]});
-  //transType: FormControl = new FormControl();
-  //transAdresse: FormControl = new FormControl();
-  transTelephone: FormControl = new FormControl();
-  transEmail:FormControl = new FormControl('', {validators: [Validators.email, Validators.pattern(RegexConstantes.REGEX_MAIL)]});
   categorieId: FormControl = new FormControl();
   type: FormControl = new FormControl('',[Validators.required]);
   categorie:FormGroup = this.builder.group({
     id:this.categorieId,
-    //volume:this.volume,
     type:this.type
 })
-  transporteur: FormGroup = this.builder.group({
-    id:this.transId ,
-    //adresse: this.transAdresse,
-    nom: this.transNom,
-   // prenom:this.transPrenom,
-    telephone:this.transTelephone,
-   // email:this.transEmail,
-    //type:this.transType
-  });
+
   myform: FormGroup = this.builder.group({
     id: this. id,
     immatriculation: this.immatriculation,
     dateCreation: this.dateCreation,
     dateModification: this.dateModification,
-    transporteur:this.transporteur,
     categorie:this.categorie,
     poidsVide: this.poidsVide,
   })
@@ -84,7 +66,6 @@ export class VehiculeComponent implements OnInit {
 
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
-        //this.titre="Modification Site"
         this.isModeModification = true;
         this.vehiculeService.getVehiculeById(params['contextInfo']).subscribe(()=>{
           this.vehiculeCourant=this.vehiculeService.getVehiculeCourant()
@@ -93,7 +74,6 @@ export class VehiculeComponent implements OnInit {
         })
       } else {
         this.isModeModification = false;
-        //this.titre="Creation Site";
         this.majBtnActive()
       }
       this.initListbtns();
@@ -137,9 +117,7 @@ export class VehiculeComponent implements OnInit {
       let vehiculeAmodifier = this.vehiculeCourant;
       vehiculeAmodifier.immatriculation = this.getImmatriculation.value;
       vehiculeAmodifier.poidsVide = this.getPoidsVide.value;
-      vehiculeAmodifier.transporteur.nom = this.getNom.value;
       vehiculeAmodifier.categorie = this.listCategories.find((categorie) => categorie.type === this.getType?.value);
-      vehiculeAmodifier.transporteur.telephone = this.getTelephone.value;
       this.vehiculeService.modifierVehicule(vehiculeAmodifier).subscribe()
     }
 
@@ -214,9 +192,6 @@ majBtnActive(){
   // get data véhicule
   get getImmatriculation(): AbstractControl { return this.myform?.get("immatriculation");}
   get getPoidsVide(): AbstractControl { return this.myform?.get("poidsVide");}
-  // get data transpoteur
-  get getTelephone(): AbstractControl { return this.transporteur?.get("telephone");}
-  get getNom(): AbstractControl { return this.transporteur?.get("nom");}
 
   get getType(): AbstractControl { return this.categorie?.get("type");}
 }

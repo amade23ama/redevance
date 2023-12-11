@@ -22,7 +22,7 @@ public class VehiculeDTO implements Serializable {
     private  String immatriculation;
 
     /** le transporteur transporteur */
-    private TransporteurDTO transporteur;
+    //private TransporteurDTO transporteur;
 
     /** categorie du véhicule */
     private  CategorieDTO categorie;

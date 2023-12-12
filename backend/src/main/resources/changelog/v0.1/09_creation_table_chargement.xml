@@ -60,7 +60,7 @@
 
         <addUniqueConstraint
                 columnNames="ID_SITE,ID_PRODUIT,ID_VEHICULE,DESTINATION,ID_TRANSPORTEUR,POIDS,POIDS_MAX,POIDS_SUBST,
-                VOLUME_SUBST,VOLUME_MOYEN,ECART"
+                VOLUME_SUBST,VOLUME_MOYEN,ECART,DATEPASSAGE"
                 constraintName="UQ_Chargement"
                 tableName="CHARGEMENT"
         />

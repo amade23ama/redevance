@@ -89,7 +89,8 @@ public class ChargementDTO {
                 Objects.equals(poidsSubst, other.poidsSubst) &&
                 Objects.equals(volumeSubst, other.volumeSubst) &&
                 Objects.equals(volumeMoyen, other.volumeMoyen) &&
-                Objects.equals(ecart, other.ecart) ;
+                Objects.equals(ecart, other.ecart)&&
+                Objects.equals(datePesage, other.datePesage);
         /* &&
                 Objects.equals(destination, other.destination) &&
                 Objects.equals(datePesage, other.datePesage) &&
@@ -114,7 +115,7 @@ public class ChargementDTO {
     public int hashCode() {
         // Use all relevant fields for hashing
         return Objects.hash(id, destination, poids, poidsMax, poidsSubst,
-                volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(),transporteur.getId(), produit.getId()
+                volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(),transporteur.getId(), produit.getId(), datePesage
                 );
     }
 

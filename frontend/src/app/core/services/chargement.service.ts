@@ -203,7 +203,7 @@ export class ChargementService{
     const index=currentChargements.indexOf(filtre)
     if(index!=-1){
       currentChargements.splice(index,1)
-      this._chargements$.next(currentChargements);
+      this._chargements$.next([...currentChargements]);
     }
   }
   get nbChargements$(){

@@ -138,10 +138,11 @@ export  class RechercheChargementComponent implements  OnInit{
 
   }
     checkboxToggle(event: any, chargement: Chargement) {
-      this.btnSelectAll=event.checked
+
       if (event.checked) {
         this.selection.select(chargement);
       } else {
+        this.btnSelectAll=event.checked
         this.selection.deselect(chargement)
       }
       this.disableBtnSupprimer = this.selection.selected.length > 0 ? false : true;

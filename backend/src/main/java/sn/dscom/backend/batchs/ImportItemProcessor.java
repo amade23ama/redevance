@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
+import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.service.interfaces.*;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -94,6 +95,11 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     private ChargementDTO processSingleChargement(DepotDcsomDTO depotDcsomDTO) throws CommonMetierException {
         try {
 
+
+        Double volumeEstime=null;
+        Double ecart=null;
+        Double volumeMoyen=null;
+        Double poidsEstime=null;
         VehiculeDTO vehiculeDTO=null;
         ChargementDTO chargementDTO= null;
         ProduitDTO produitDTO=this.produitService.rechercherProduitByNom(depotDcsomDTO.getNomProduit());
@@ -119,6 +125,12 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                         .categorie(categorieDTO)
                         .build();
             }
+            if (vehiculeDTO.getId()!=null && vehiculeDTO.getPoidsVide()!=null && vehiculeDTO.getPoidsVide()>0){
+                volumeEstime = ChargementUtils.getVolumeEstime(Double.parseDouble(depotDcsomDTO.getPoidsMesure()) , produitDTO.getDensiteKGM());
+                ecart = ChargementUtils.getEcart(volumeEstime, categorieDTO.getVolume());
+                volumeMoyen = ChargementUtils.getVolumeMoyen(volumeEstime, categorieDTO.getVolume());
+                poidsEstime = ChargementUtils.getPoidsEstime(Double.parseDouble(depotDcsomDTO.getPoidsMesure()),Double.parseDouble(depotDcsomDTO.getPoidsMax()),vehiculeDTO.getPoidsVide());
+            }
           if(produitDTO!=null && siteDTO!=null && exploitationDTO!=null&& vehiculeDTO!=null && depotDcsomDTO.getDestination()!=null
                   &&depotDcsomDTO.getPoidsMax()!=null &&depotDcsomDTO.getPoidsMax()!=null && transporteurDTO!=null){
               chargementDTO=chargementService.genereLineChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO,
@@ -131,6 +143,12 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                   log.info("chargement existe id: "+chargementDTOTrouve.getId());
                   this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementReDeposes",this.lNbChargementReDeposes);
                   chargementDTO=chargementDTOTrouve;
+              }
+              if(volumeEstime!=null && ecart!=null){
+ //                 chargementDTO.setPoidsSubst(volumeEstime);
+                  chargementDTO.setEcart(ecart);
+                  chargementDTO.setVolumeMoyen(volumeMoyen);
+                  chargementDTO.setPoidsSubst(poidsEstime);
               }
           }
                 this.lNbChargementDeposes++;

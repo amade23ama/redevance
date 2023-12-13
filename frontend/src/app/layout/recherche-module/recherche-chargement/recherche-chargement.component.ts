@@ -162,19 +162,25 @@ export  class RechercheChargementComponent implements  OnInit{
     }
 
   supprimerchargement(critereRecherches: Observable<AutocompleteRecherche[]>) {
-    const critereRecherche: CritereRecherche = new CritereRecherche()
-    critereRecherches.subscribe((res) => {
-      critereRecherche.autocompleteRecherches = res;
-    })
-    critereRecherche.annee = this.searchDate.value
-    if (this.isAllSelected()) {
+
+    if (this.btnSelectAll==true) {
+      const critereRecherche: CritereRecherche = new CritereRecherche()
+      critereRecherches.subscribe((res) => {
+        critereRecherche.autocompleteRecherches = res;
+      })
+      critereRecherche.annee = this.searchDate.value
       this.chargementService.supprimer(critereRecherche).subscribe(() => {
+        this.selection.clear()
         this.rechargementChargement();
-      });
+      },
+        ()=>{}
+        );
     } else {
       this.chargementService.supprimerById(this.selection.selected).subscribe(() => {
-       this.rechargementChargement();
-      });
+        this.selection.clear()
+        this.rechargementChargement();
+      },
+        ()=>{});
     }
 
   }

@@ -184,9 +184,6 @@ export class ChargementService{
     return this.http.delete<boolean>(this.url+"/supprimerById",{body:chargements })
       .pipe(
         tap((res) => {
-          chargements.forEach((chargement)=>{
-           this.removeChargement(chargement)
-          });
           this.globals.loading = false;
           this.notification.success("suppresion avec sucess ")
         }),

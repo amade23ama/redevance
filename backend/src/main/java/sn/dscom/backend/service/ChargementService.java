@@ -761,18 +761,16 @@ public class ChargementService implements IChargementService {
         // Find the chargement
         Optional<ChargementEntity> chargementEntityFind = this.chargementRepository.findById(chargementDTO.getId());
         if (chargementEntityFind.isPresent()) {
+            Optional<DepotDTO> depotDTO = this.depotService.rechercherDepotById(chargementDTO.getIdDepot());
             ChargementEntity chargementEntity = chargementEntityFind.get();
-            if (chargementEntity.getDepots().size() == 1 || chargementEntity.getDepots().size() == 0) {
-                chargementEntity.setDepots(null);
-                ChargementEntity chargementToDelete = this.chargementRepository.save(chargementEntity);
-                this.chargementRepository.deleteChargement(chargementToDelete.getId());
-            } else {
-                var list = chargementEntity.getDepots().subList(1, chargementEntity.getDepots().size());
-                chargementEntity.setDepots(list);
-                this.chargementRepository.save(chargementEntity);
-                //this.chargementRepository.deleteById(chargementEntity.getId());
-           }
-
+            if(depotDTO.isPresent()){
+             if(chargementEntity.getDepots().size()>1){
+                 chargementEntity.getDepots().removeIf(depotEntity -> depotEntity.getId()==chargementDTO.getIdDepot());
+                 this.chargementRepository.save(chargementEntity);
+             }else {
+                 this.chargementRepository.deleteById(chargementEntity.getId());
+             }
+            }
            return true;
         }
         return  false;

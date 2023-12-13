@@ -68,17 +68,19 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                 ChargementDTO chargementDTO = processSingleChargement(depotDcsomDTO);
                 if(chargementDTO!=null){
                     processedList.add(chargementDTO);
+                }else {
+                    this.lNbChargementError=lNbChargementError+1;
                 }
 
             }
             catch (CommonMetierException e) {
                 log.error("Erreur lors du traitement de la ligne : " + i);
-                this.lNbChargementError++;
+                this.lNbChargementError=lNbChargementError+1;
                 this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
                 errors.add(e);
             } catch (Exception e) {
                 log.error("Erreur non métier lors du traitement de la ligne : " + i);
-                this.lNbChargementError++;
+                this.lNbChargementError=lNbChargementError+1;
                 this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
             }
         i++;
@@ -88,6 +90,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         this.lNbChargementDeposesSucces=listChargementDTOUnique.size();
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",this.lNbChargementDeposesSucces);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",this.lNbChargementDoublons);
+        this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
         return listChargementDTOUnique.stream().toList();
     }
 
@@ -139,16 +142,16 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                       depotDcsomDTO.getHeurePesage(),transporteurDTO);
               ChargementDTO chargementDTOTrouve= chargementService.recherChargementByEntity(chargementDTO);
               if(chargementDTOTrouve!=null){
-                  this.lNbChargementReDeposes++;
+                  this.lNbChargementReDeposes=this.lNbChargementReDeposes+1;
                   log.info("chargement existe id: "+chargementDTOTrouve.getId());
                   this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementReDeposes",this.lNbChargementReDeposes);
                   chargementDTO=chargementDTOTrouve;
               }
               if(volumeEstime!=null && ecart!=null){
  //                 chargementDTO.setPoidsSubst(volumeEstime);
-                  chargementDTO.setEcart(ecart);
-                  chargementDTO.setVolumeMoyen(volumeMoyen);
-                  chargementDTO.setPoidsSubst(poidsEstime);
+                  //chargementDTO.setEcart(ecart);
+                //  chargementDTO.setVolumeMoyen(volumeMoyen);
+                 // chargementDTO.setPoidsSubst(poidsEstime);
               }
           }
                 this.lNbChargementDeposes++;

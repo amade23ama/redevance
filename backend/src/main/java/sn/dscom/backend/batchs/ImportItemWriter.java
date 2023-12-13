@@ -114,10 +114,14 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
         log.info("numImport                  :{}",depot.getId());
         log.info("Site de Depot              :{}",depot.getSite().getNom());
         log.info("total Chargement           :{}",totalChargement);
-        log.info("nombre Chargement Deposes  :{}",lNbChargementDeposes);
+        log.info("nombre Chargement Deposes  :{}",(i-1));
         log.info("nombre Chargement ReDeposes:{}",lNbChargementReDeposes);
         log.info("nombre Chargement Doublons :{}",lNbChargementDoublons);
         log.info("nombre Chargement Error    :{}",lNbChargementError);
+
+        this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",0);
+        this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",0);
+        this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",0);
     }
     private static Long getYear(Date date) {
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");

@@ -77,7 +77,6 @@ public class ChargementDTO {
         if (obj == null || getClass() != obj.getClass()) return false;
         ChargementDTO other = (ChargementDTO) obj;
 
-        // Compare all relevant fields for equality
         return Objects.equals(id, other.id) &&
                 Objects.equals(site.getId(), other.site.getId()) &&
                 Objects.equals(produit.getId(), other.produit.getId()) &&
@@ -91,29 +90,10 @@ public class ChargementDTO {
                 Objects.equals(volumeMoyen, other.volumeMoyen) &&
                 Objects.equals(ecart, other.ecart)&&
                 Objects.equals(datePesage, other.datePesage);
-        /* &&
-                Objects.equals(destination, other.destination) &&
-                Objects.equals(datePesage, other.datePesage) &&
-                Objects.equals(poids, other.poids) &&
-                Objects.equals(poidsMax, other.poidsMax) &&
-                Objects.equals(poidsSubst, other.poidsSubst) &&
-                Objects.equals(volumeSubst, other.volumeSubst) &&
-                Objects.equals(volumeMoyen, other.volumeMoyen) &&
-                Objects.equals(ecart, other.ecart) &&
-                Objects.equals(dateCreation, other.dateCreation) &&
-                Objects.equals(dateModif, other.dateModif) &&
-                Objects.equals(subtance, other.subtance) &&
-                Objects.equals(plateforme, other.plateforme) &&
-                Objects.equals(idDepot, other.idDepot) &&
-                Objects.equals(site.getId(), other.site.getId()) &&
-                Objects.equals(vehicule.getId(), other.vehicule.getId()) &&
-                Objects.equals(exploitation.getId(), other.exploitation.getId()) &&
-                Objects.equals(produit.getId(), other.produit.getId());*/
     }
 
     @Override
     public int hashCode() {
-        // Use all relevant fields for hashing
         return Objects.hash(id, destination, poids, poidsMax, poidsSubst,
                 volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(),transporteur.getId(), produit.getId(), datePesage
                 );

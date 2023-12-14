@@ -12,10 +12,8 @@ import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.ChargementUtils;
 import sn.dscom.backend.service.interfaces.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import java.util.*;
 
 public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , List<ChargementDTO>> {
     private static final Logger log= LoggerFactory.getLogger(ImportItemProcessor.class);
@@ -128,12 +126,6 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                         .categorie(categorieDTO)
                         .build();
             }
-            if (vehiculeDTO.getId()!=null && vehiculeDTO.getPoidsVide()!=null && vehiculeDTO.getPoidsVide()>0){
-                volumeEstime = ChargementUtils.getVolumeEstime(Double.parseDouble(depotDcsomDTO.getPoidsMesure()) , produitDTO.getDensiteKGM());
-                ecart = ChargementUtils.getEcart(volumeEstime, categorieDTO.getVolume());
-                volumeMoyen = ChargementUtils.getVolumeMoyen(volumeEstime, categorieDTO.getVolume());
-                poidsEstime = ChargementUtils.getPoidsEstime(Double.parseDouble(depotDcsomDTO.getPoidsMesure()),Double.parseDouble(depotDcsomDTO.getPoidsMax()),vehiculeDTO.getPoidsVide());
-            }
           if(produitDTO!=null && siteDTO!=null && exploitationDTO!=null&& vehiculeDTO!=null && depotDcsomDTO.getDestination()!=null
                   &&depotDcsomDTO.getPoidsMax()!=null &&depotDcsomDTO.getPoidsMax()!=null && transporteurDTO!=null){
               chargementDTO=chargementService.genereLineChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO,
@@ -145,13 +137,14 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                   this.lNbChargementReDeposes=this.lNbChargementReDeposes+1;
                   log.info("chargement existe id: "+chargementDTOTrouve.getId());
                   this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementReDeposes",this.lNbChargementReDeposes);
+                  if(vehiculeDTO.getId()!=null && vehiculeDTO.getPoidsVide()!=null) {
+                      chargementDTOTrouve.setPoidsSubst(chargementDTO.getPoidsSubst());
+                      chargementDTOTrouve.setVolumeSubst(chargementDTO.getVolumeSubst());
+                      chargementDTOTrouve.setVolumeMoyen(chargementDTO.getVolumeMoyen());
+                      chargementDTOTrouve.setEcart(chargementDTO.getEcart());
+                  }
+                  chargementDTOTrouve.setDateModif(new Date());
                   chargementDTO=chargementDTOTrouve;
-              }
-              if(volumeEstime!=null && ecart!=null){
- //                 chargementDTO.setPoidsSubst(volumeEstime);
-                  //chargementDTO.setEcart(ecart);
-                //  chargementDTO.setVolumeMoyen(volumeMoyen);
-                 // chargementDTO.setPoidsSubst(poidsEstime);
               }
           }
                 this.lNbChargementDeposes++;

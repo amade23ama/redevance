@@ -740,7 +740,9 @@ public class ChargementService implements IChargementService {
                  chargementDTO.getDestination(),
                  chargementDTO.getPoids(),
                  chargementDTO.getPoidsMax(),
-                 chargementDTO.getTransporteur().getId()
+                 chargementDTO.getTransporteur().getId(),
+                 chargementDTO.getDatePesage(),
+                 chargementDTO.getExploitation().getId()
                  );
          if(chargementEntity!=null) {
              return this.chargementConverter.reverse(chargementEntity);

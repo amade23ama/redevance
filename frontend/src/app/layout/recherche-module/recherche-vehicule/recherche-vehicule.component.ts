@@ -41,7 +41,7 @@ export class RechercheVehiculeComponent implements OnInit{
   private lastScrollIndex = 0;
   // les noms des colones
   //displayedColumns: string[] = ['id','Immatriculation', 'Classe', 'Volume','NomRS', 'Téléphone','dateCreation','actions'];
-  displayedColumns: string[] = ['id','Immatriculation', 'Classe', 'Volume','dateCreation','actions'];
+  displayedColumns: string[] = ['id','Immatriculation', 'Classe', 'Volume','poidsVide','dateCreation','actions'];
   vehicules$=this.vehiculeService.vehicules$
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesVehicule$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesVehicule$

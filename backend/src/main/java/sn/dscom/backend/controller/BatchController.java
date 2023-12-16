@@ -86,7 +86,7 @@ public class BatchController {
         DepotDTO depot = new DepotDTO();
         try {
             UtilisateurDTO utilisateurDTO = this.getConnectedUtilisateur().get();
-
+            log.info("depot effectuer par {}",utilisateurDTO.getLogin());
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, String> mapInverse = new HashMap<>();
             nom = objectMapper.readValue(nom, new TypeReference<String>() {});
@@ -122,6 +122,7 @@ public class BatchController {
     protected CompletableFuture<UtilisateurDTO> getConnectedUtilisateur(){
         return CompletableFuture.completedFuture(UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur()));
     }
+
 
 
     public JobExecution runJob(Job job, JobParameters jobParameters) throws ExecutionException, InterruptedException {

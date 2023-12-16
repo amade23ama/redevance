@@ -96,11 +96,6 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     private ChargementDTO processSingleChargement(DepotDcsomDTO depotDcsomDTO) throws CommonMetierException {
         try {
 
-
-        Double volumeEstime=null;
-        Double ecart=null;
-        Double volumeMoyen=null;
-        Double poidsEstime=null;
         VehiculeDTO vehiculeDTO=null;
         ChargementDTO chargementDTO= null;
         ProduitDTO produitDTO=this.produitService.rechercherProduitByNom(depotDcsomDTO.getNomProduit());

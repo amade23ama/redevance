@@ -5,12 +5,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.CritereRecherche;
+import sn.dscom.backend.common.dto.FileInfoDTO;
+import sn.dscom.backend.common.dto.UtilisateurConnectedDTO;
 import sn.dscom.backend.common.dto.VehiculeDTO;
+import sn.dscom.backend.common.exception.CommonMetierException;
+import sn.dscom.backend.service.ConnectedUtilisateurService;
 import sn.dscom.backend.service.interfaces.IVoitureService;
 
 import java.util.List;
@@ -25,7 +32,8 @@ public class VehiculeController {
 
     /** Logger Factory */
     private static final Logger LOGGER = LoggerFactory.getLogger(VehiculeController.class);
-
+    @Autowired
+    private ConnectedUtilisateurService connectedUtilisateurService;
     /** voitureService */
     @Autowired
     private IVoitureService voitureService;
@@ -114,5 +122,23 @@ public class VehiculeController {
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public ResponseEntity<Page<VehiculeDTO>> rechargementParCritere(@RequestBody CritereRecherche<?> critereRecherche) {
         return ResponseEntity.ok(this.voitureService.rechargementParCritere(critereRecherche));
+    }
+    @PostMapping(path = "/fileHeader")
+    @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
+    public ResponseEntity<FileInfoDTO> getFileHeader(@RequestParam("file") MultipartFile file){
+        UtilisateurConnectedDTO user=connectedUtilisateurService.getConnectedUtilisateur();
+        LOGGER.info("depot effectuer par {}",user.getLogin());
+        if (file.isEmpty()) {
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
+        }
+        try {
+          this.voitureService.ChargementVehicule(file);
+        }
+        catch (Exception e){
+            LOGGER.error("depot du fichier vehicule {}",file.getName());
+            throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
+
+        }
+        return null;
     }
 }

@@ -16,6 +16,8 @@ import {SharedModule} from "../shared-Module/shared.module";
 import {RechercheDepotComponent} from "./recherche-depot/recherche-depot.component";
 import {RechercheChargementDepotComponent} from "./recherche-chargement-depot/recherche-chargement-depot.component";
 import {RechercheCategorieComponent} from "./recherche-categorie/recherche-categorie.component";
+import {ReactiveFormsModule} from "@angular/forms";
+import {NgxFileDragDropModule} from "ngx-file-drag-drop";
 
 @NgModule({
   declarations:[RechercheComponent,RechercheUtilisateurComponent, RechercheSiteComponent,
@@ -23,7 +25,7 @@ import {RechercheCategorieComponent} from "./recherche-categorie/recherche-categ
     RechercheChargementComponent,RechercheDepotComponent,RechercheChargementDepotComponent,
     RechercheCategorieComponent],
   imports: [RechercheRouter, MatTableModule, NgForOf,
-    MatIconModule, MaterialModule, NgIf, LayoutModule, AsyncPipe, SharedModule],
+    MatIconModule, MaterialModule, NgIf, LayoutModule, AsyncPipe, SharedModule, ReactiveFormsModule, NgxFileDragDropModule],
   exports:[]
 })
 export class  RechercheModule{}

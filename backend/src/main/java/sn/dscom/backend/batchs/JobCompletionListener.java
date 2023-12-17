@@ -16,7 +16,7 @@ import java.util.Optional;
 public class JobCompletionListener extends JobExecutionListenerSupport {
     @Autowired
     private IDepotService depotService;
-    private  BatchConfiguration batchConfiguration;
+    //private  BatchConfiguration batchConfiguration;
     private static final Logger log= LoggerFactory.getLogger(JobCompletionListener.class);
 
     @Override
@@ -28,9 +28,8 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
 
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("Fin de Traiement du Job completed successfully");
-        } else {
-            log.error("Fin de Traiement du Job avec Erreur: ");
-            if(BatchConfiguration.getDepotDTO()!=null){
+        }else{
+            if(jobExecution.getStatus() == BatchStatus.STOPPED ||jobExecution.getStatus() == BatchStatus.FAILED){
                 Optional<DepotDTO> depotDTO=depotService.rechercherDepotById(BatchConfiguration.getDepotDTO().getId());
                 if(depotDTO.isPresent()){
                     DepotDTO depotFinal=depotDTO.get();
@@ -39,6 +38,7 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
                     depotService.enregistrerDepot(depotFinal);
                 }
             }
+            log.info("Fin de Traiement du Job avec erreur");
         }
 
     }

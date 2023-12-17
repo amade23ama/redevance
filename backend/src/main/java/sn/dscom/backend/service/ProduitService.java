@@ -233,7 +233,6 @@ public class ProduitService implements IProduitService {
         }else {
                 logger.error("Le nom du produit "+nom+" n'exist pas");
                 return null;
-                //throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_INATTENDUE);
             }
         }
 

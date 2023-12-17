@@ -224,7 +224,6 @@ public class SiteService implements ISiteService {
         } else {
             logger.error("Le nom du Site "+nom+" n'exist pas");
             return null;
-            //throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
     }
 

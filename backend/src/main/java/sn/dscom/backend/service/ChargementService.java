@@ -619,8 +619,8 @@ public class ChargementService implements IChargementService {
         //on parcours la liste des chargements pour contruire un ligne du fichier
         datas.forEach(data -> {
             csvBuilder.append(data.getSite().getNom()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(Utils.getDate(data.getDateCreation())).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(Utils.getTime(data.getDateCreation())).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(Utils.getDate(data.getDatePesage())).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(Utils.getTime(data.getDatePesage())).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getNom()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getRegion()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getDestination()).append(POINT_VIRGULE_SEPARATEUR)

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -175,7 +176,8 @@ public class SiteService implements ISiteService {
      */
     @Override
     public Page<SiteDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        Sort sort = Sort.by(Sort.Order.asc("id"));
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize(),sort);
 
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             // On charge l'ensemble des site

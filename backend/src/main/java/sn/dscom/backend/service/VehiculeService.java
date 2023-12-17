@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -161,7 +162,8 @@ public class VehiculeService implements IVoitureService{
      */
     @Override
     public Page<VehiculeDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        Sort sort = Sort.by(Sort.Order.asc("id"));
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize(),sort);
         //S'il n'y a pas de critère on remonte tout
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             Page<VehiculeEntity> list = this.vehiculeRepository.findAll(pageRequest);

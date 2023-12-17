@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -477,7 +478,8 @@ public class ChargementService implements IChargementService {
 
     @Override
     public Page<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        Sort sort = Sort.by(Sort.Order.asc("id"));
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize(),sort);
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)

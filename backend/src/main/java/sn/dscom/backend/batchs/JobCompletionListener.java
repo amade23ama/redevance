@@ -34,6 +34,7 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
                 Optional<DepotDTO> depotDTO=depotService.rechercherDepotById(BatchConfiguration.getDepotDTO().getId());
                 if(depotDTO.isPresent()){
                     DepotDTO depotFinal=depotDTO.get();
+                    depotFinal.setDateHeureFinDepot(new Date());
                     depotFinal.setStatut(StatutEnum.ERREUR.getCode());
                     depotService.enregistrerDepot(depotFinal);
                 }

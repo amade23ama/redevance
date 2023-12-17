@@ -613,7 +613,7 @@ public class ChargementService implements IChargementService {
         // Le builder
         StringBuilder csvBuilder= new StringBuilder();
         // L'en-tête
-        csvBuilder.append("SITE;DATE DE PESAGE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
+        csvBuilder.append("SITE;DATE DE PESAGE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDSMAX;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
 
         //on parcours la liste des chargements pour contruire un ligne du fichier
         datas.forEach(data -> {
@@ -628,6 +628,7 @@ public class ChargementService implements IChargementService {
                     .append(data.getVehicule().getImmatriculation()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVehicule().getCategorie().getType()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getPoids()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getPoidsMax()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getPoidsSubst()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVolumeSubst()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVolumeMoyen()).append(POINT_VIRGULE_SEPARATEUR)

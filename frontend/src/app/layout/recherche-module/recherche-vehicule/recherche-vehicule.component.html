@@ -24,12 +24,12 @@
           <ngx-file-drag-drop class="ajout-file" style="height: 30px;"
             [formControl]="file"
             [accept]=typeFile
-            emptyPlaceholder="Téléchargez le fichiers ici"
+            [emptyPlaceholder]="appConfig.getLabel('label.telecharger.vehicule')"
             (valueChanged)="onValueChange($event)">
           </ngx-file-drag-drop>
         </div>
         <div>
-         <button mat-mini-fab
+         <button mat-mini-fab color="primary"
                  [disabled]="myform.invalid"
                  (click)="valider()"><mat-icon>done</mat-icon></button>
         </div>

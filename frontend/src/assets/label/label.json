@@ -129,6 +129,7 @@
     "label.tooltip.exporter":"exporter le chargement",
     "label.tooltip.supprimer":"supprimer la selection",
     "label.info.mail": "Nous avons envoyé le login et mot de passe à l'adresse:",
+    "label.telecharger.vehicule": "Téléchargez le fichier ici",
     "footer.donnee.perso": "Données personelles",
     "footer.contact": "Contact",
     "bilan.import": "Bilan de l'import et interaction avec les depots précédents",

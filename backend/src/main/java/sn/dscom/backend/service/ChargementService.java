@@ -22,6 +22,7 @@ import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.ChargementUtils;
+import sn.dscom.backend.common.util.Utils;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.*;
 import sn.dscom.backend.database.repository.ChargementRepository;
@@ -613,12 +614,13 @@ public class ChargementService implements IChargementService {
         // Le builder
         StringBuilder csvBuilder= new StringBuilder();
         // L'en-tête
-        csvBuilder.append("SITE;DATE DE PESAGE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDSMAX;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
+        csvBuilder.append("SITE;DATE DE PESAGE;HEURE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDSMAX;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
 
         //on parcours la liste des chargements pour contruire un ligne du fichier
         datas.forEach(data -> {
             csvBuilder.append(data.getSite().getNom()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(data.getDateCreation().toString()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(Utils.getDate(data.getDateCreation().toString())).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(Utils.getTime(data.getDateCreation().toString())).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getNom()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getRegion()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getDestination()).append(POINT_VIRGULE_SEPARATEUR)

@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * VehiculeDTO
@@ -35,5 +36,19 @@ public class VehiculeDTO implements Serializable {
 
     /** date Modification */
     private Date dateModification;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        VehiculeDTO other = (VehiculeDTO) obj;
 
+        return Objects.equals(id, other.id) &&
+                Objects.equals(immatriculation, other.immatriculation) &&
+                Objects.equals(categorie.getType(), other.categorie.getType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, immatriculation,categorie.getType());
+    }
 }

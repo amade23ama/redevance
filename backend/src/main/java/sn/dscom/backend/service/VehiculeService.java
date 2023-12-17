@@ -303,8 +303,9 @@ public class VehiculeService implements IVoitureService{
                     .filter(chargement -> !Arrays.stream(chargement).allMatch(String::isEmpty))
                     .map(chargement -> convertLineToJournal(chargement))
                     .collect(Collectors.toList());
+            Set<VehiculeDTO> listVehiculeEntityNewUnique = new HashSet<>(listVehicule);
+            vehiculeDTOList.addAll(listVehiculeEntityNewUnique.stream().toList());
 
-            vehiculeDTOList.addAll(listVehicule);
         }
         catch (Exception e){
             log.error("Erreur de lecture du fichier", e);

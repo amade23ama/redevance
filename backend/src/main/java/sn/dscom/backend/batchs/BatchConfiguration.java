@@ -38,6 +38,9 @@ public class BatchConfiguration {
     public static MultipartFile getBatchFile() {
         return batchFileThreadLocal.get();
     }
+    public static DepotDTO getDepotDTO() {
+        return depot;
+    }
     private static Map<String, String> mapInverse;
     private static Environment environment;
     private static DepotDTO depot;

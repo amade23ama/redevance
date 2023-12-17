@@ -105,13 +105,6 @@ public class BatchController {
         }catch (Exception e){
             log.info("finnnnxxxxxxxxxxxxxx"+e.getMessage());
             e.printStackTrace();
-            Optional<DepotDTO> depotDTO=depotService.rechercherDepotById(depot.getId());
-            if(depotDTO.isPresent()){
-                DepotDTO depotFinal=depotDTO.get();
-                depotFinal.setDateHeureFinDepot( new Date());
-                depotFinal.setStatut(StatutEnum.ERREUR.getCode());
-                depotService.enregistrerDepot(depotFinal);
-            }
         }
         log.info("----fin-----");
         long timer2 = System.currentTimeMillis();

@@ -34,26 +34,13 @@ public class Utils {
         return chainePropre;
     }
 
-    public static String getDate(String dateTimeString) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat(CommonConstants.DATE_AND_HEURE);
-        try {
-            Date date = inputFormat.parse(dateTimeString);
-            SimpleDateFormat dateFormat = new SimpleDateFormat(CommonConstants.DATE_COURT);
-            return dateFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+
+    public static String getDate(Date dateTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(CommonConstants.DATE_COURT);
+        return dateFormat.format(dateTime);
     }
-    public static String getTime(String dateTimeString) {
-        SimpleDateFormat inputFormat = new SimpleDateFormat(CommonConstants.DATE_AND_HEURE);
-        try {
-            Date date = inputFormat.parse(dateTimeString);
-            SimpleDateFormat timeFormat = new SimpleDateFormat(CommonConstants.DATE_HEURE);
-            return timeFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public static String getTime(Date dateTime) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(CommonConstants.DATE_HEURE);
+        return dateFormat.format(dateTime);
     }
 }

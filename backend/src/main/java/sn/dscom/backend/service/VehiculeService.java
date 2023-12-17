@@ -239,9 +239,9 @@ public class VehiculeService implements IVoitureService{
         try {
             List<VehiculeDTO> vehiculeDTOList= this.readFileMultipart(file);
             totalChargement=vehiculeDTOList.size();
-            List<VehiculeEntity> listVehiculeEntityNew=this.buildVehicule(vehiculeDTOList);
-            Set<VehiculeEntity> listVehiculeEntityNewUnique = new HashSet<>(listVehiculeEntityNew);
-            lNbChargementDoublons=listVehiculeEntityNew.size()-listVehiculeEntityNewUnique.size();
+            Set<VehiculeDTO> listVehiculeDTONewUnique = new HashSet<>(vehiculeDTOList);
+            lNbChargementDoublons=totalChargement-listVehiculeDTONewUnique.size();
+            List<VehiculeEntity> listVehiculeEntityNewUnique=this.buildVehicule(listVehiculeDTONewUnique.stream().toList());
             List<VehiculeEntity> listVehiculeEntitySave = new ArrayList<>();
             lNbChargementReDeposes=listVehiculeEntityNewUnique.stream().parallel().filter(vehiculeEntity ->vehiculeEntity.getId()!=null ).toList().size();
             for(VehiculeEntity vehiculeEntity:listVehiculeEntityNewUnique.stream().toList()){
@@ -303,8 +303,8 @@ public class VehiculeService implements IVoitureService{
                     .filter(chargement -> !Arrays.stream(chargement).allMatch(String::isEmpty))
                     .map(chargement -> convertLineToJournal(chargement))
                     .collect(Collectors.toList());
-            Set<VehiculeDTO> listVehiculeEntityNewUnique = new HashSet<>(listVehicule);
-            vehiculeDTOList.addAll(listVehiculeEntityNewUnique.stream().toList());
+
+            vehiculeDTOList.addAll(listVehicule);
 
         }
         catch (Exception e){

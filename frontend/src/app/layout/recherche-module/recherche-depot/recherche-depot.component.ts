@@ -23,7 +23,7 @@ import {ReferenceService} from "../../../core/services/reference.service";
 export class RechercheDepotComponent implements OnInit{
   search:FormControl =new FormControl('');
   displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','dateHeureFinDepot','statut','deposeur'
-  ,'nbChargementDeposes','nbChargementReDeposes','nbChargementErreur'];
+  ,'nbChargementTotal','nbChargementDeposes','nbChargementReDeposes','nbChargementErreur'];
   depots$=this.depotService.depots$;
   listDepots: MatTableDataSource<Depot>;
   // La pagination

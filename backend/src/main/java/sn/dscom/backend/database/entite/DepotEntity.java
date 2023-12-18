@@ -44,6 +44,9 @@ public class DepotEntity {
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
     private UtilisateurEntity deposeur;
 
+    @Column(name = "NB_CHARGEMENT_TOTAL")
+    private Integer nbChargementTotal;
+
     @Column(name = "NB_CHARGEMENT_DEPOT")
     private Integer nbChargementDeposes;
 

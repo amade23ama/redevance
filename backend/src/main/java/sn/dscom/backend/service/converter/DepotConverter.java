@@ -49,8 +49,6 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
         }
 
         // On recupère la liste des Chargements
-        //List<ChargementEntity> listChargement = MoreObjects.firstNonNull(depotEntity.getChargementEntityList(), Collections.emptyList());
-
         return DepotDTO.builder()
                 .id(depotEntity.getId())
                 .statut(depotEntity.getStatut())
@@ -63,11 +61,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nomFichier(depotEntity.getNomFichier())
                 .nbChargementReDeposes(depotEntity.getNbChargementReDeposes())
                 .site(this.siteConverteur.reverse(depotEntity.getSiteEntity()))
-                /*.chargementDTOList(listChargement.stream()
-                        .map(this.chargementConverter::reverse)
-                        .collect(Collectors.toList()))
-                        */
-
+                .nbChargementTotal(depotEntity.getNbChargementTotal())
                 .build();
     }
 
@@ -85,8 +79,6 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
         }
 
         // On recupère la liste des Chargements
-       // List<ChargementDTO> listChargement = MoreObjects.firstNonNull(depotDTO.getChargementDTOList(), Collections.emptyList());
-
         return DepotEntity.builder()
                 .id(depotDTO.getId())
                 .statut(depotDTO.getStatut())
@@ -99,9 +91,7 @@ public class DepotConverter implements Transformer<DepotDTO, DepotEntity> {
                 .nomFichier(depotDTO.getNomFichier())
                 .nbChargementReDeposes(depotDTO.getNbChargementReDeposes())
                 .siteEntity(this.siteConverteur.transform(depotDTO.getSite()))
-                /*.chargementEntityList(listChargement.stream()
-                        .map(this.chargementConverter::transform)
-                        .collect(Collectors.toList()))*/
+                .nbChargementTotal(depotDTO.getNbChargementTotal())
                 .build();
     }
 }

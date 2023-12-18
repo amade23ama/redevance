@@ -108,6 +108,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
             depotFinal.setNbChargementErreur(lNbChargementError);
             depotFinal.setDateHeureFinDepot( new Date());
             depotFinal.setSite(depot.getSite());
+            depotFinal.setNbChargementTotal(totalChargement);
             depotFinal.setStatut(StatutEnum.SUCCES.getCode());
             depotService.enregistrerDepot(depotFinal);
         }
@@ -118,7 +119,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
         log.info("nombre Chargement ReDeposes:{}",lNbChargementReDeposes);
         log.info("nombre Chargement Doublons :{}",lNbChargementDoublons);
         log.info("nombre Chargement Error    :{}",lNbChargementError);
-
+        stepExecution.getJobExecution().getExecutionContext().putInt("totalChargement",0);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",0);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",0);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",0);

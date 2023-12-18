@@ -51,6 +51,8 @@ public class DepotDTO implements Serializable {
     /** nb Chargement Erreur */
     private Integer nbChargementErreur;
 
+    private Integer  nbChargementTotal;
+
     /** le fichier à charger */
     private File file;
 

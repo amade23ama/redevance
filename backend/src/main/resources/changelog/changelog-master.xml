@@ -34,6 +34,7 @@
   <include file="/changelog/v0.1/023_changer_contraint_table_depot_chargement.xml" relativeToChangelogFile="false"/>
   <include file="/changelog/v0.1/024_creation_table_reference_annee.xml" relativeToChangelogFile="false"/>
   <include file="/changelog/v0.1/025_inserer_data_table_reference_annee.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/026_add_column_total_table_depot.xml" relativeToChangelogFile="false"/>
 
 
 </databaseChangeLog>

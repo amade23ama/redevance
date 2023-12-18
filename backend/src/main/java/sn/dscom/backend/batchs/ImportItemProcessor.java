@@ -45,6 +45,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     private int lNbChargementDeposesSucces=0;
     private int lNbChargementError = 0;
     private int totalChargement=0;
+    private int nbChargementTotal=0;
     private StepExecution stepExecution;
 
     @BeforeStep

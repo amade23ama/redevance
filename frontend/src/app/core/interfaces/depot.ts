@@ -33,6 +33,7 @@ export class Depot extends BuilderDtoJsonAbstract{
   /** nb Chargement Erreur */
   nbChargementErreur :number;
   site:Site;
+  nbChargementTotal:number;
   static fromJson<T>(json: any, ctor?: NoParamConstructor<T>): T {
     const depot: any = BuilderDtoJsonAbstract.fromJson(json, Depot);
     if (json.dateHeureDepot) {

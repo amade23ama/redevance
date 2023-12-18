@@ -42,10 +42,10 @@
       [itemSize]="getItemSize()"
       (scrolledIndexChange)="onScrollEnd($event)"
        class="cdk-virtual-scroll-viewport">
-      <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
+      <table mat-table   [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
         <ng-container matColumnDef="id">
-          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
             <div class="d-flex">N°</div>
           </th>
           <td mat-cell *matCellDef="let element">
@@ -54,8 +54,8 @@
         </ng-container>
 
 
-            <ng-container matColumnDef="Immatriculation">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="immatriculation">
+                <th class="table-contact-header table-header"  mat-header-cell mat-sort-header *matHeaderCellDef>
                   <div class="d-flex">Immatriculation</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -64,8 +64,8 @@
             </ng-container>
 
             <!-- COLONNE : Classe -->
-            <ng-container matColumnDef="Classe">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="type">
+                <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Classe</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -74,8 +74,8 @@
             </ng-container>
 
             <!-- COLONNE : Volume -->
-            <ng-container matColumnDef="Volume">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="volume">
+                <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Volume(m3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -84,7 +84,7 @@
             </ng-container>
 
         <ng-container matColumnDef="poidsVide">
-          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
             <div class="d-flex">poids Vide</div>
           </th>
           <td mat-cell *matCellDef="let element">
@@ -92,7 +92,7 @@
           </td>
         </ng-container>
           <ng-container matColumnDef="dateCreation">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
               <div class="d-flex">Date de création</div>
             </th>
             <td mat-cell *matCellDef="let element">
@@ -100,7 +100,7 @@
             </td>
           </ng-container>
         <ng-container matColumnDef="dateModification">
-          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
             <div class="d-flex">Date de modification</div>
           </th>
           <td mat-cell *matCellDef="let element">

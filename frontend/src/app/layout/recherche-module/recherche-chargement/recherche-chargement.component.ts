@@ -74,6 +74,9 @@ export  class RechercheChargementComponent implements  OnInit{
         this.listChargements.sort=this.sort;
         this.itemSize=chargements.length
         this.totalItems = 100;
+        this.listChargements.sortingDataAccessor = (item, property) => {
+          return this.getPropertyValue(item, property);
+        };
       }
       })
     this.search.valueChanges?.pipe(
@@ -87,7 +90,16 @@ export  class RechercheChargementComponent implements  OnInit{
       })
     ).subscribe();
   }
-
+  private getPropertyValue(item: any, property: string): any {
+    switch(property) {
+      case 'vehicule': return item.vehicule.immatriculation;
+      case 'site': return item.site.nom;
+      case 'produit': return item.produit.nomNORM;
+      case 'exploitation': return item.exploitation?.nom;
+      case 'transporteur': return item.transporteur.nom;
+      default: return item[property];
+    }
+  }
   ouvreNouveauChargement(){
     this.router.navigate(['depot/creer'])
   }

@@ -21,39 +21,26 @@
       [itemSize]="getItemSize()"
       (scrolledIndexChange)="onScrollEnd($event)"
        class="cdk-virtual-scroll-viewport">
-        <table mat-table matSort  [dataSource]="listProduit"  class="mat-elevation-z0 table-parent" matSort>
+        <table mat-table matSort [dataSource]="listProduit"  class="mat-elevation-z0 table-parent" >
             <!-- COLONNE : PRENOM -->
           <ng-container matColumnDef="id">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <th class="table-contact-header table-header"  mat-header-cell mat-sort-header *matHeaderCellDef>
               <div class="d-flex">N°</div>
             </th>
             <td mat-cell *matCellDef="let element">
               <div class="d-flex">{{element?.id}}</div>
             </td>
           </ng-container>
-            <ng-container matColumnDef="Nom SRC">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="nomSRC">
+                <th class="table-contact-header table-header"  mat-header-cell mat-sort-header *matHeaderCellDef>
                   <div class="d-flex">Nom</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element?.nomSRC}}</div>
                 </td>
             </ng-container>
-
-            <!-- COLONNE : NOM -->
-          <!--
-            <ng-container matColumnDef="Nom NORM">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-                  <div class="d-flex">Nom NORM</div>
-                </th>
-                <td mat-cell *matCellDef="let element">
-                  <div class="d-flex">{{element?.nomNORM}}</div>
-                </td>
-            </ng-container>
-          -->
-
-            <ng-container matColumnDef="Densité GCM">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="densiteGRM">
+                <th class="table-contact-header table-header"  mat-header-cell  mat-sort-header *matHeaderCellDef>
                   <div class="d-flex">Densité (gr/cm3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -62,8 +49,8 @@
             </ng-container>
 
             <!-- COLONNE : EMAIL-->
-            <ng-container matColumnDef="Densité KGM">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="densiteKGM">
+                <th class="table-contact-header table-header"  mat-header-cell mat-sort-header *matHeaderCellDef>
                   <div class="d-flex">Densité (kg/m3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -71,7 +58,7 @@
                 </td>
             </ng-container>
           <ng-container matColumnDef="dateCreation">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <th class="table-contact-header table-header"  mat-header-cell mat-sort-header *matHeaderCellDef>
               <div class="d-flex">Date de création</div>
             </th>
             <td mat-cell *matCellDef="let element">
@@ -99,13 +86,6 @@
 
         </table>
     </cdk-virtual-scroll-viewport>
-        <!-- container de pagination
-    <div>
-        <mat-paginator [pageSize]="pageSize"
-                 [pageSizeOptions]="pageSizeOptions"
-                 showFirstLastButtons>
-        </mat-paginator>
-    </div>-->
     </div>
 
 

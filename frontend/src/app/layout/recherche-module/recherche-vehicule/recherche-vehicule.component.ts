@@ -42,7 +42,7 @@ export class RechercheVehiculeComponent implements OnInit{
   croll:boolean=false;
   private lastScrollIndex = 0;
   // les noms des colones
-  displayedColumns: string[] = ['id','Immatriculation', 'Classe', 'Volume','poidsVide','dateCreation','dateModification','actions'];
+  displayedColumns: string[] = ['id','immatriculation', 'type', 'volume','poidsVide','dateCreation','dateModification','actions'];
   vehicules$=this.vehiculeService.vehicules$
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesVehicule$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesVehicule$
@@ -67,6 +67,9 @@ export class RechercheVehiculeComponent implements OnInit{
     this.listVehicule.sort=this.sort;
     this.itemSize=data.length
     this.totalItems = 100;
+      this.listVehicule.sortingDataAccessor = (item, property) => {
+        return this.getPropertyValue(item, property);
+      };
     });
     this.search.valueChanges?.pipe(
       debounceTime(300),
@@ -80,7 +83,13 @@ export class RechercheVehiculeComponent implements OnInit{
     ).subscribe();
 
   }
-
+  private getPropertyValue(item: any, property: string): any {
+    switch(property) {
+      case 'type': return item.categorie.type;
+      case 'volume': return item.categorie.volume;
+      default: return item[property];
+    }
+  }
   redirect(vehicule: Vehicule) {
   }
   chargervehicule(vehicule: Vehicule){

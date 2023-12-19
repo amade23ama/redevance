@@ -99,9 +99,8 @@ public class BatchController {
             batchConfiguration.processDepot(depot);
             JobParametersBuilder jobParametersBuilder = new JobParametersBuilder();
             jobParametersBuilder.addLong("time", System.currentTimeMillis());
-            String test=myJob.getName();
             JobExecution jobExecution = jobLauncher.run(myJob, jobParametersBuilder.toJobParameters());
-            log.info("lancer");
+            log.info("fin de lancement");
         }catch (Exception e){
             log.info("finnnnxxxxxxxxxxxxxx"+e.getMessage());
             e.printStackTrace();

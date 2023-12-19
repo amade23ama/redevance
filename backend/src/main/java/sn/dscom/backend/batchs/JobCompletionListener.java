@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sn.dscom.backend.common.constants.Enum.StatutEnum;
 import sn.dscom.backend.common.dto.DepotDTO;
 import sn.dscom.backend.service.interfaces.IDepotService;
+import sn.dscom.backend.service.mail.EmailDetails;
+import sn.dscom.backend.service.mail.IMailService;
 
 import java.util.Date;
 import java.util.Optional;
@@ -16,18 +18,28 @@ import java.util.Optional;
 public class JobCompletionListener extends JobExecutionListenerSupport {
     @Autowired
     private IDepotService depotService;
-    //private  BatchConfiguration batchConfiguration;
     private static final Logger log= LoggerFactory.getLogger(JobCompletionListener.class);
-
+    @Autowired
+    private IMailService mailService;
     @Override
     public void beforeJob(JobExecution jobExecution) {
         log.info("démarrage du Job de traitement Chargement");
+        if(BatchConfiguration.getDepotDTO()!=null){
+            EmailDetails emailDetails=getmailDebutTraitement(BatchConfiguration.getDepotDTO());
+            this.mailService.envoiMail(emailDetails,true);
+        }
+
     }
     @Override
     public void afterJob(JobExecution jobExecution) {
 
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("Fin de Traiement du Job completed successfully");
+            if(BatchConfiguration.getDepotDTO()!=null){
+                EmailDetails emailDetails=getmailFinTraitement(BatchConfiguration.getDepotDTO());
+                this.mailService.envoiMail(emailDetails,true);
+            }
+
         }else{
             if(jobExecution.getStatus() == BatchStatus.STOPPED ||jobExecution.getStatus() == BatchStatus.FAILED){
                 Optional<DepotDTO> depotDTO=depotService.rechercherDepotById(BatchConfiguration.getDepotDTO().getId());
@@ -38,8 +50,56 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
                     depotService.enregistrerDepot(depotFinal);
                 }
             }
-            log.info("Fin de Traiement du Job avec erreur");
+            log.error("Fin de Traiement du Job avec erreur");
+            if(BatchConfiguration.getDepotDTO()!=null) {
+                EmailDetails emailDetails = getErrorTraitement(BatchConfiguration.getDepotDTO());
+                this.mailService.envoiMail(emailDetails,true);
+            }
         }
+
+    }
+    private  EmailDetails getmailDebutTraitement( DepotDTO depot) {
+        String messageBody = "<html>" +
+                "<body>" +
+                "<p>Bonjour " +depot.getDeposeur().getPrenom()+", </p>" +
+                "<p>Le traitement a commencé pour l import N°" +depot.getId()+"</p>" +
+                "</body>" +
+                "</html>";
+        return EmailDetails.builder()
+                .subject("import")
+                .msgBody(messageBody)
+                .recipient(depot.getDeposeur().getEmail())
+                .build();
+
+    }
+    private  EmailDetails getErrorTraitement( DepotDTO depot) {
+        String messageBody = "<html>" +
+                "<body>" +
+                "<p>Bonjour " +depot.getDeposeur().getPrenom()+", </p>" +
+                "<p>Fin de Traitement error pour l import N°" +depot.getId()+"</p>" +
+                "</body>" +
+                "</html>";
+        return EmailDetails.builder()
+                .subject("import")
+                .msgBody(messageBody)
+                .recipient(depot.getDeposeur().getEmail())
+                .build();
+
+
+
+    }
+    private  EmailDetails getmailFinTraitement( DepotDTO depot) {
+        String messageBody = "<html>" +
+                "<body>" +
+                "<p>Bonjour " +depot.getDeposeur().getPrenom()+",</p>" +
+                "<p>Fin de Traitement succes l import N°" +depot.getId()+"</p>" +
+                "</body>" +
+                "</html>";
+        return EmailDetails.builder()
+                .subject("import")
+                .msgBody(messageBody)
+                .recipient(depot.getDeposeur().getEmail())
+                .build();
 
     }
 }

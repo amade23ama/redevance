@@ -51,7 +51,10 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
         this.stepExecution = stepExecution;
+        this.lNbChargementError=0;
+
     }
+
     @Override
     public List<ChargementDTO> process(List<DepotDcsomDTO>  depotDcsomDTOList) throws CommonMetierException {
         List<ChargementDTO> processedList = new ArrayList<>();
@@ -72,12 +75,16 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                 }
 
             }
-            catch (CommonMetierException e) {
+          /*  catch (CommonMetierException e) {
                 log.error("Erreur lors du traitement de la ligne : " + i);
                 this.lNbChargementError=lNbChargementError+1;
                 this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
                 errors.add(e);
-            } catch (Exception e) {
+            }
+
+           */
+            catch (Exception e) {
+
                 log.error("Erreur non métier lors du traitement de la ligne : " + i);
                 this.lNbChargementError=lNbChargementError+1;
                 this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);

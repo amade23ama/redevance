@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <changeSet id="028_inserer_data_table_site" author="waly">
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="BANDIA" />
+            <column name="LOCALITE" value="BANDIA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="BIGNONA" />
+            <column name="LOCALITE" value="BIGNONA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="BRIGADE MOBILE" />
+            <column name="LOCALITE" value="BRIGADE MOBILE" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="DAHRA" />
+            <column name="LOCALITE" value="DAHRA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="DAHRA DJOLOF" />
+            <column name="LOCALITE" value="DAHRA DJOLOF" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="DIAMNIADIO" />
+            <column name="LOCALITE" value="DIAMNIADIO" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="KAFFRINE" />
+            <column name="LOCALITE" value="KAFFRINE" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="KAOLACK" />
+            <column name="LOCALITE" value="KAOLACK" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="KEDOUGOU" />
+            <column name="LOCALITE" value="KEDOUGOU" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="KIDIRA" />
+            <column name="LOCALITE" value="KIDIRA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="MBOUR" />
+            <column name="LOCALITE" value="MBOUR" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="NDIANE" />
+            <column name="LOCALITE" value="NDIANE" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="NGOUNDIANE" />
+            <column name="LOCALITE" value="NGOUNDIANE" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="OUROSSOGUI" />
+            <column name="LOCALITE" value="OUROSSOGUI" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="PASSY" />
+            <column name="LOCALITE" value="PASSY" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="ROSSO" />
+            <column name="LOCALITE" value="ROSSO" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="SAINT-LOUIS" />
+            <column name="LOCALITE" value="SAINT-LOUIS" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="SANGALKAM" />
+            <column name="LOCALITE" value="SANGALKAM" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="SINDIA" />
+            <column name="LOCALITE" value="SINDIA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="TAMBA" />
+            <column name="LOCALITE" value="TAMBA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="THIES" />
+            <column name="LOCALITE" value="THIES" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="THILLE BOUBACAR" />
+            <column name="LOCALITE" value="THILLE BOUBACAR" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="TIVAOUANE" />
+            <column name="LOCALITE" value="TIVAOUANE" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="VELINGARA" />
+            <column name="LOCALITE" value="VELINGARA" />
+        </insert>
+
+        <insert tableName="SITE">
+            <column name="ID_SITE" valueComputed="NEXTVAL('mydscm.seq_site')"/>
+            <column name="NOM" value="ZIGUINCHOR" />
+            <column name="LOCALITE" value="ZIGUINCHOR" />
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>

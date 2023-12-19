@@ -12,13 +12,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
-import sn.dscom.backend.common.dto.CritereRecherche;
-import sn.dscom.backend.common.dto.FileInfoDTO;
-import sn.dscom.backend.common.dto.UtilisateurConnectedDTO;
-import sn.dscom.backend.common.dto.VehiculeDTO;
+import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
 import sn.dscom.backend.service.interfaces.IVoitureService;
+import sn.dscom.backend.service.mail.EmailDetails;
+import sn.dscom.backend.service.mail.IMailService;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +28,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/vehicule")
 public class VehiculeController {
-
+    @Autowired
+    private IMailService mailService;
     /** Logger Factory */
     private static final Logger LOGGER = LoggerFactory.getLogger(VehiculeController.class);
     @Autowired
@@ -132,13 +132,67 @@ public class VehiculeController {
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
         }
         try {
-          this.voitureService.ChargementVehicule(file);
+            EmailDetails emailDetails=this.getmailDebutTraitement(user);
+            this.mailService.envoiMail(emailDetails,true);
+            this.voitureService.ChargementVehicule(file);
+            EmailDetails emailSucces=this.getmailFinTraitement(user);
+            this.mailService.envoiMail(emailSucces,true);
         }
         catch (Exception e){
             LOGGER.error("depot du fichier vehicule {}",file.getName());
+            EmailDetails emailError=this.getErrorTraitement(user);
+            this.mailService.envoiMail(emailError,true);
             throw new CommonMetierException(HttpStatus.NOT_ACCEPTABLE.value(), ErreurEnum.ERR_FiLE_NOT_FOUND);
 
         }
         return null;
+    }
+    private  EmailDetails getmailDebutTraitement( UtilisateurConnectedDTO user) {
+        String messageBody = "<html>" +
+                "<body>" +
+                "<p>Bonjour " +user.getPrenom()+", </p>" +
+                "<p>La mise à jour du référentiel des véhicules a été lancée avec succès.</p>" +
+                "<br>"+
+                "<p>Cordialement</p>" +
+                "</body>" +
+                "</html>";
+        return EmailDetails.builder()
+                .subject("Début d'importation")
+                .msgBody(messageBody)
+                .recipient(user.getEmail())
+                .build();
+
+    }
+    private EmailDetails getErrorTraitement(UtilisateurConnectedDTO user) {
+        String messageBody = "<html>" +
+                "<body>" +
+                "<p>Bonjour " +user.getPrenom()+", </p>" +
+                "<p>La mise à jour du référentiel des véhicules a échoué. Veuillez consulter les logs de l'application.</p>" +
+                "<br>"+
+                "<p>Cordialement</p>" +
+                "</body>" +
+                "</html>";
+        return EmailDetails.builder()
+                .subject("Echec d'importation")
+                .msgBody(messageBody)
+                .recipient(user.getEmail())
+                .build();
+
+    }
+    private  EmailDetails getmailFinTraitement( UtilisateurConnectedDTO user) {
+        String messageBody = "<html>" +
+                "<body>" +
+                "<p>Bonjour " +user.getPrenom()+",</p>" +
+                "<p>La mise à jour du référentiel des véhicules s'est terminée avec succès.</p>" +
+                "<br>"+
+                "<p>Cordialement</p>" +
+                "</body>" +
+                "</html>";
+        return EmailDetails.builder()
+                .subject("Importation succès")
+                .msgBody(messageBody)
+                .recipient(user.getEmail())
+                .build();
+
     }
 }

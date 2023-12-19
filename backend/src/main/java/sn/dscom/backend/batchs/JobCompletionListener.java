@@ -62,11 +62,13 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
         String messageBody = "<html>" +
                 "<body>" +
                 "<p>Bonjour " +depot.getDeposeur().getPrenom()+", </p>" +
-                "<p>Le traitement a commencé pour l import N°" +depot.getId()+"</p>" +
+                "<p>Votre importation de données numéro " +depot.getId()+" a été lancée avec succès.</p>" +
+                "<br>"+
+                "<p>Cordialement</p>" +
                 "</body>" +
                 "</html>";
         return EmailDetails.builder()
-                .subject("import")
+                .subject("Début d'importation")
                 .msgBody(messageBody)
                 .recipient(depot.getDeposeur().getEmail())
                 .build();
@@ -76,11 +78,13 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
         String messageBody = "<html>" +
                 "<body>" +
                 "<p>Bonjour " +depot.getDeposeur().getPrenom()+", </p>" +
-                "<p>Fin de Traitement error pour l import N°" +depot.getId()+"</p>" +
+                "<p>Votre importation de données numéro " +depot.getId()+" s'est terminée en erreur.</p>" +
+                "<br>"+
+                "<p>Cordialement</p>" +
                 "</body>" +
                 "</html>";
         return EmailDetails.builder()
-                .subject("import")
+                .subject("Echec d'importation")
                 .msgBody(messageBody)
                 .recipient(depot.getDeposeur().getEmail())
                 .build();
@@ -92,11 +96,13 @@ public class JobCompletionListener extends JobExecutionListenerSupport {
         String messageBody = "<html>" +
                 "<body>" +
                 "<p>Bonjour " +depot.getDeposeur().getPrenom()+",</p>" +
-                "<p>Fin de Traitement succes l import N°" +depot.getId()+"</p>" +
+                "<p>Votre importation de données numéro " +depot.getId()+" s'est terminée avec succès.</p>" +
+                "<br>"+
+                "<p>Cordialement</p>" +
                 "</body>" +
                 "</html>";
         return EmailDetails.builder()
-                .subject("import")
+                .subject("Importation succès")
                 .msgBody(messageBody)
                 .recipient(depot.getDeposeur().getEmail())
                 .build();

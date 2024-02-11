@@ -43,4 +43,11 @@ public class Utils {
         SimpleDateFormat dateFormat = new SimpleDateFormat(CommonConstants.DATE_HEURE);
         return dateFormat.format(dateTime);
     }
+    public static String convertToNull(String value) {
+        if (value == "") {
+            return null;
+        } else {
+            return value;
+        }
+    }
 }

@@ -111,7 +111,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         ExploitationDTO exploitationDTO=this.exploitationService.rechercheSiteExploitationByNom(depotDcsomDTO.getExploitation());
         CategorieDTO categorieDTO=this.categorieService.rechercheCategorieByType(depotDcsomDTO.getType());
         TransporteurDTO transporteurDTO=this.transporteurService.recherchercheTransporteurByNom(depotDcsomDTO.getNomTransport());
-        if(siteDTO!=null ||produitDTO!=null||exploitationDTO!=null||categorieDTO!=null){
+        if((siteDTO!=null ||produitDTO!=null||exploitationDTO!=null||categorieDTO!=null) && depotDcsomDTO.getDatePesage()!=null &&  depotDcsomDTO.getHeurePesage()!=null ){
             if(transporteurDTO==null){
                 transporteurDTO= TransporteurDTO.builder().nom(depotDcsomDTO.getNomTransport())
                         .type("S")

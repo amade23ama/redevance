@@ -53,8 +53,8 @@ public class BuilderDepotDcsomConverter {
                             .exploitation(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(exploitation))
                             .poidsMesure(poidsMesure)
                             .poidsMax(poidsMax)
-                            .heurePesage(heurePesage)
-                            .datePesage(datePesage)
+                            .heurePesage(Utils.convertToNull(heurePesage))
+                            .datePesage(Utils.convertToNull(datePesage))
                             .destination(Utils.supprimerCaracteresSpeciauxSaufEspaceTiret(destination))
                             .build();
                 })

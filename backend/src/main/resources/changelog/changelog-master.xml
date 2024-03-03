@@ -39,4 +39,6 @@
   <include file="/changelog/v0.1/029_creation_table_type_erreur.xml" relativeToChangelogFile="false"/>
   <include file="/changelog/v0.1/030_insert_data_table_type_erreur.xml" relativeToChangelogFile="false"/>
 
+  <include file="/changelog/v0.1/031_creation_table_erreur_depot.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/032_insert_data_table_erreur_depot.xml" relativeToChangelogFile="false"/>
 </databaseChangeLog>

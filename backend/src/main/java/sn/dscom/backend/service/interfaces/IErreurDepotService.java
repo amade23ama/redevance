@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface IErreurDepotService {
     Optional<ErreurDepotDTO> enregistrerErreurDepot(ErreurDepotDTO erreurDepotDTO);
     Optional<List<ErreurDepotDTO>> rechercherErreurDepotByCriteres(ErreurDepotDTO erreurDepotDTO);
+    Optional<List<ErreurDepotDTO>> enregistrerAllErreurDepot(List<ErreurDepotDTO> erreurDepotDTOList);
 }

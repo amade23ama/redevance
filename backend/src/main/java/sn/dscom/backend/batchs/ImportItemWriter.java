@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import sn.dscom.backend.common.constants.Enum.StatutEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.database.entite.DepotEntity;
+import sn.dscom.backend.service.ErreurDepotService;
 import sn.dscom.backend.service.ReferenceAnneeService;
 import sn.dscom.backend.service.interfaces.IChargementService;
 import sn.dscom.backend.service.interfaces.IDepotService;
@@ -36,7 +37,7 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     private  int lNbReDeposes=1;
     @Autowired
     ReferenceAnneeService referenceAnneeService;
-
+    private ErreurDepotService erreurDepotService;
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
         this.stepExecution = stepExecution;
@@ -50,11 +51,12 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
 
     @Override
     public void write(Chunk<? extends List<ChargementDTO>> chunk) throws Exception {
+
         List<Long> listannes=referenceAnneeService.getAllAnnee().stream().map(rech -> rech.getAnnee()).collect(Collectors.toList());
         Set<Long> newListAnnee= new HashSet<>();
         int i=1;
         for (List<ChargementDTO> chargementDTOList : chunk.getItems()) {
-
+            List<ErreurDepotDTO> listErreur = ((ImportItemProcessor) chargementDTOList).getListErreur();
             AtomicInteger indexCounter = new AtomicInteger(0);
             for (ChargementDTO chargementDTO : chargementDTOList) {
                 newListAnnee.add(this.getYear(chargementDTO.getDatePesage()));

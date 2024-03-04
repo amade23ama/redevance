@@ -47,7 +47,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     private int totalChargement=0;
     private int nbChargementTotal=0;
     private StepExecution stepExecution;
-
+    private List<ErreurDepotDTO> listErreur = new ArrayList<>();
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
         this.stepExecution = stepExecution;
@@ -57,6 +57,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
 
     @Override
     public List<ChargementDTO> process(List<DepotDcsomDTO>  depotDcsomDTOList) throws CommonMetierException {
+        List<ErreurDepotDTO> listErreur = new ArrayList<>();
         List<ChargementDTO> processedList = new ArrayList<>();
         List<ChargementDTO> listchargementDTO = new ArrayList<>();
 
@@ -159,5 +160,8 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         }catch (CommonMetierException e){
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
+    }
+    public List<ErreurDepotDTO> getListErreur() {
+        return listErreur;
     }
 }

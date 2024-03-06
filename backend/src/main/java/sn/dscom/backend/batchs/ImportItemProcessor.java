@@ -190,12 +190,12 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         }
 
         if (depotDcsomDTO.getDatePesage()==null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Date Pesage non renseigné : " + depotDcsomDTO.getDatePesage()).build());
+            erreurs.add(ErreurDepotDTO.builder().message("Date Pesage non renseigné : ").build());
             return true;
         }
 
         if (depotDcsomDTO.getHeurePesage()==null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Heure Pesage non renseigné : " + depotDcsomDTO.getHeurePesage()).build());
+            erreurs.add(ErreurDepotDTO.builder().message("Heure Pesage non renseigné : ").build());
             return true;
         }
         return false;

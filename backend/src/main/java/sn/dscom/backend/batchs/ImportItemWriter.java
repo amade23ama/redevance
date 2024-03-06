@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
+public class ImportItemWriter implements ItemWriter<ImportProcessingDTO> {
     private DepotDTO depot;
     @Autowired
     private IChargementService chargementService;
@@ -50,13 +50,14 @@ public class ImportItemWriter implements ItemWriter<List<ChargementDTO>> {
     private static final Logger log= LoggerFactory.getLogger(ImportItemWriter.class);
 
     @Override
-    public void write(Chunk<? extends List<ChargementDTO>> chunk) throws Exception {
+    public void write(Chunk<? extends ImportProcessingDTO> chunk) throws Exception {
 
         List<Long> listannes=referenceAnneeService.getAllAnnee().stream().map(rech -> rech.getAnnee()).collect(Collectors.toList());
         Set<Long> newListAnnee= new HashSet<>();
         int i=1;
-        for (List<ChargementDTO> chargementDTOList : chunk.getItems()) {
-            List<ErreurDepotDTO> listErreur = ((ImportItemProcessor) chargementDTOList).getListErreur();
+        for (ImportProcessingDTO result : chunk.getItems()) {
+            List<ChargementDTO> chargementDTOList = result.getProcessedItems();
+            List<ErreurDepotDTO> errorList = result.getErrorItems();
             AtomicInteger indexCounter = new AtomicInteger(0);
             for (ChargementDTO chargementDTO : chargementDTOList) {
                 newListAnnee.add(this.getYear(chargementDTO.getDatePesage()));

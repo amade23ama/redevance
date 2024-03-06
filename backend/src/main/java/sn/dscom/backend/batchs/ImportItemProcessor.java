@@ -15,7 +15,7 @@ import sn.dscom.backend.service.interfaces.*;
 
 import java.util.*;
 
-public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , List<ChargementDTO>> {
+public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , ImportProcessingDTO> {
     private static final Logger log= LoggerFactory.getLogger(ImportItemProcessor.class);
     private int nbChargementRedeposes;
     @Autowired
@@ -56,7 +56,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
     }
 
     @Override
-    public List<ChargementDTO> process(List<DepotDcsomDTO>  depotDcsomDTOList) throws CommonMetierException {
+    public ImportProcessingDTO process(List<DepotDcsomDTO>  depotDcsomDTOList) throws CommonMetierException {
         List<ErreurDepotDTO> listErreur = new ArrayList<>();
         List<ChargementDTO> processedList = new ArrayList<>();
         List<ChargementDTO> listchargementDTO = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         for (DepotDcsomDTO depotDcsomDTO : depotDcsomDTOList) {
             log.info("traiment de la ligne : "+i);
             try {
-                ChargementDTO chargementDTO = processSingleChargement(depotDcsomDTO);
+                ChargementDTO chargementDTO = processSingleChargement(depotDcsomDTO,listErreur);
                 if(chargementDTO!=null){
                     processedList.add(chargementDTO);
                 }else {
@@ -98,11 +98,12 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",this.lNbChargementDeposesSucces);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",this.lNbChargementDoublons);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
-        return listChargementDTOUnique.stream().toList();
+        //return listChargementDTOUnique.stream().toList();
+        return new ImportProcessingDTO(listChargementDTOUnique.stream().toList(), listErreur);
     }
 
 
-    private ChargementDTO processSingleChargement(DepotDcsomDTO depotDcsomDTO) throws CommonMetierException {
+    private ChargementDTO processSingleChargement(DepotDcsomDTO depotDcsomDTO,List<ErreurDepotDTO> listErreur) throws CommonMetierException {
         try {
 
         VehiculeDTO vehiculeDTO=null;
@@ -151,17 +152,53 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
                   chargementDTO=chargementDTOTrouve;
               }
           }
-                this.lNbChargementDeposes++;
+            this.lNbChargementDeposes++;
             this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposes",this.lNbChargementDeposes);
         }
-
+            this.buildErreur(depotDcsomDTO,listErreur,produitDTO,siteDTO,exploitationDTO,categorieDTO,transporteurDTO);
             return chargementDTO;
 
         }catch (CommonMetierException e){
             throw new CommonMetierException(HttpStatus.NOT_FOUND.value(), ErreurEnum.ERR_NOT_FOUND);
         }
     }
-    public List<ErreurDepotDTO> getListErreur() {
-        return listErreur;
+    private boolean buildErreur(DepotDcsomDTO depotDcsomDTO,
+                             List<ErreurDepotDTO> erreurs,
+                             ProduitDTO produitDTO,
+                             SiteDTO siteDTO ,
+                             ExploitationDTO exploitationDTO,
+                             CategorieDTO categorieDTO,
+                             TransporteurDTO transporteurDTO){
+
+        if (produitDTO == null) {
+            erreurs.add(ErreurDepotDTO.builder().message("Produit non trouvé : " + depotDcsomDTO.getNomProduit()).build());
+            return true;
+        }
+
+        if (siteDTO == null) {
+            erreurs.add(ErreurDepotDTO.builder().message("Site de Pesage non trouvé : " + depotDcsomDTO.getNomSite()).build());
+            return true;
+        }
+        if (exploitationDTO == null) {
+            erreurs.add(ErreurDepotDTO.builder().message("Site exploitation non trouvé : " + depotDcsomDTO.getExploitation()).build());
+            return true;
+        }
+
+        if (categorieDTO == null) {
+            erreurs.add(ErreurDepotDTO.builder().message("Categorie non trouvé : " + depotDcsomDTO.getType()).build());
+            return true;
+        }
+
+        if (depotDcsomDTO.getDatePesage()==null) {
+            erreurs.add(ErreurDepotDTO.builder().message("Date Pesage non renseigné : " + depotDcsomDTO.getDatePesage()).build());
+            return true;
+        }
+
+        if (depotDcsomDTO.getHeurePesage()==null) {
+            erreurs.add(ErreurDepotDTO.builder().message("Heure Pesage non renseigné : " + depotDcsomDTO.getHeurePesage()).build());
+            return true;
+        }
+        return false;
     }
+
 }

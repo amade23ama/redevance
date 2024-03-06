@@ -82,7 +82,7 @@ public class BatchConfiguration {
         return new StepBuilder("sampleStep")
 
                 .repository(jobRepository)
-                .<List<DepotDcsomDTO>,List<ChargementDTO>>chunk(10,transactionManager)
+                .<List<DepotDcsomDTO>,ImportProcessingDTO>chunk(10,transactionManager)
                 .reader(myItemReader() )
                 .processor(myItemProcessor())
                 .writer(myItemWriter())

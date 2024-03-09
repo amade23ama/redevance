@@ -28,6 +28,7 @@ import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 import sn.dscom.backend.service.ChargementService;
 import sn.dscom.backend.service.ConnectedUtilisateurService;
+import sn.dscom.backend.service.ErreurDepotService;
 import sn.dscom.backend.service.converter.UtilisateurConverter;
 import sn.dscom.backend.service.exeptions.DscomTechnicalException;
 import sn.dscom.backend.service.interfaces.*;
@@ -56,18 +57,8 @@ public class DepotController {
      */
     @Autowired
     private IDepotService depotService;
-
-    /**
-     * chargement Service
-     */
-    //@Autowired
-   // private IChargementService chargementService;
-
-    /**
-     * exploitation Service
-     */
-   // @Autowired
-   // private IProduitService produitService;
+    @Autowired
+    private ErreurDepotService erreurDepotService;
 
     /**
      * environment
@@ -470,5 +461,15 @@ public class DepotController {
                 .msgBody("Votre chargement est terminé.")
                 .build());
     }
-
+    /**
+     * rechercher depot by id
+     * @param id TransporteurDTO
+     * @return la liste avec une aucurence
+     */
+    @GetMapping(path = "/rechercherrechercherErreurById/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
+    public List<ErreurDepotDTO> rechercherErreurDepotById(@PathVariable long id) {
+        ErreurDepotDTO erreurDepotDTO=ErreurDepotDTO.builder().idDepot(id).build();
+        return  erreurDepotService.rechercherErreurDepotByCriteres(erreurDepotDTO).get();
+    }
 }

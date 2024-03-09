@@ -9,7 +9,10 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./recherche-chargement-depot.component.scss']
 })
 export class RechercheChargementDepotComponent implements OnInit{
+  fxtitre=60
+  fxresult=40
   depot$=this.depotService.depot$
+  errorDepot$=this.depotService.errosDepots$;
   constructor(public appConfig:AppConfigService,public depotService:DepotService,
               private readonly activatedRoute: ActivatedRoute) {
   }
@@ -17,6 +20,7 @@ export class RechercheChargementDepotComponent implements OnInit{
     this.activatedRoute.queryParams?.subscribe(async params => {
       if (params['contextInfo']) {
         this.depotService.getDepotParId(params['contextInfo']).subscribe();
+        this.depotService.getErrorDepotParId(params['contextInfo']).subscribe();
       }
     });
   }

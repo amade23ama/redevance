@@ -1,57 +1,83 @@
 @charset "UTF-8";
 @import "src/assets/css/DSCOM-variables.scss";
-.entete-import{
-  color: #191C1B!important;
-  font-family: Calibri;
+.bilan-depot{
+  padding: 8px!important;
+  margin-top:8px!important; ;
+}
+.container-libelle-bilan{
+  color: black!important;
+  font-style: normal;
+  font-weight: 700!important;
+  font-size: 15px!important;
+}
+.result-titre{
+  color: #8a8f8f !important;
+  font-family: Calibri!important;
   font-size: 14px!important;
   font-style: normal!important;
   font-weight: 700!important;
-  padding: 15px!important;
-  font-weight: 900;
-  background-color: $orange-40 !important;
-  color: white!important;
-}
-.sepDiv{
-   // width: 2px!important;
-    background-color: $white;
-    min-height: 100% !important;
-}
-.titre{
-  font-size: 13px!important;
-  font-style: normal!important;
-}
-.result-titre{
-  color: #7B8583;
-  font-family: Calibri;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
+  line-height: 16px!important;
 
 }
 .result-continue{
-  color: #191C1B;
-  font-family: Calibri;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-}
-.bilan{
-  padding: 15px!important;
-  background: linear-gradient(90deg, #fff, #fffbfb);
- // border-bottom: solid 1px $orange-40 !important;
-}
-.titre-demande{
-  font-size: 14px!important;
+  color: #191C1B!important;
+  font-family: Calibri!important;
+  font-size: 16px!important;
+  font-style: normal!important;
+  font-weight: 400!important;
+  line-height: 18px!important;
+
 }
 .depot-continue{
-  font-family: Calibri;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
+  font-family: Calibri!important;
+  font-size: 14px!important;
+  font-style: normal!important;
+  font-weight: 400!important;
+  line-height: 18px!important;
 }
-.bilan-depot{
-  border: solid 1px $orange-40 !important;
+
+.container-detail{
+  padding: 12px!important;
+  border-radius: 8px!important;
+  background: white!important;
+}
+.container-depot{
+  padding: 8px!important;
+  border-radius: 8px!important;
+  border:1px solid red;
+}
+.libelle-titre-depot{
+  color: black!important;
+  font-style: normal;
+  font-weight: 700!important;
+  font-size: 14px!important;
+}
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.header-cell {
+  width: 20%!important;
+  text-align: left!important;
+  background-color: #f2f2f2!important;
+  padding: 8px !important;
+  font-size: 13px!important;
+  font-style: normal!important;
+}
+
+.depot-cell {
+  width: 20%!important;
+  text-align: left!important;
+  padding: 8px!important;
+  font-size: 12px!important;
+  font-style: normal!important;
+}
+
+tr:nth-child(odd) {
+  background-color: #f2f2f2!important;
+}
+.depot-cell-message{
+  font-size: 12px!important;
+  font-style: normal!important;
 }

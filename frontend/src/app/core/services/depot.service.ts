@@ -12,6 +12,7 @@ import { Depot } from "../interfaces/depot";
 import { FileInfo } from "../interfaces/file.info";
 import { Page } from "../interfaces/page";
 import { NotificationService } from "./notification.service";
+import {ErreurDepot} from "../interfaces/erreur-depot";
 
 @Injectable({
   providedIn:"root"
@@ -27,6 +28,8 @@ export class DepotService{
   private _depots: BehaviorSubject<Depot[]> = new BehaviorSubject<Depot[]>( []);
   private _depot: BehaviorSubject<Depot> = new BehaviorSubject<Depot>( {}as null);
   private _nbDepots: BehaviorSubject<number> = new BehaviorSubject<number>(null);
+
+  private _errosDepots$: BehaviorSubject<ErreurDepot[]> = new BehaviorSubject<ErreurDepot[]>( []);
   constructor(private http:HttpClient,private notification: NotificationService,
               public dialog: MatDialog, private globals: Globals) {
   }
@@ -174,5 +177,25 @@ export class DepotService{
   /** setExploitations */
   setNbDepots(nombre: number ){
     return this._nbDepots.next(nombre)
+  }
+
+  setErrosDepots(erreurDepots:ErreurDepot[]){
+    this._errosDepots$.next(erreurDepots)
+  }
+  get errosDepots$(){
+    return this._errosDepots$.asObservable()
+  }
+  getErrorDepotParId(id: number) {
+    return this.http.get<ErreurDepot[]>(this.url+`/rechercherErreurById/${id}`)
+      .pipe(
+        tap((res) => {
+           const erreurDepots= res.map(err=>ErreurDepot.fromJson(err,ErreurDepot))
+            this.setErrosDepots(erreurDepots);
+        }),
+        catchError((err) => {
+          this.notification.error(" erreurr de recuperation depot ")
+          return throwError(() => err)
+        })
+      )
   }
 }

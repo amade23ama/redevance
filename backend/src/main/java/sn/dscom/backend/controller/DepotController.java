@@ -466,7 +466,7 @@ public class DepotController {
      * @param id TransporteurDTO
      * @return la liste avec une aucurence
      */
-    @GetMapping(path = "/rechercherrechercherErreurById/{id}")
+    @GetMapping(path = "/rechercherErreurById/{id}")
     @PreAuthorize("hasAnyRole('ADMIN','CONSULT','EDIT')")
     public List<ErreurDepotDTO> rechercherErreurDepotById(@PathVariable long id) {
         ErreurDepotDTO erreurDepotDTO=ErreurDepotDTO.builder().idDepot(id).build();

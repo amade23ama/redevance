@@ -12,7 +12,7 @@ public class ErreurDepotConverter implements Transformer<ErreurDepotDTO, ErreurD
         }
         return ErreurDepotDTO.builder()
                 .id(erreurDepotEntity.getId())
-                .depot(erreurDepotEntity.getDepot())
+                .idDepot(erreurDepotEntity.getIdDepot())
                 .message(erreurDepotEntity.getMessage())
                 .build();
     }
@@ -20,7 +20,7 @@ public class ErreurDepotConverter implements Transformer<ErreurDepotDTO, ErreurD
     @Override
     public ErreurDepotEntity transform(ErreurDepotDTO erreurDepotDTO) {
         return ErreurDepotEntity.builder()
-                .depot(erreurDepotDTO.getDepot())
+                .idDepot(erreurDepotDTO.getIdDepot())
                 .message(erreurDepotDTO.getMessage())
                 .id(erreurDepotDTO.getId())
                 .build();

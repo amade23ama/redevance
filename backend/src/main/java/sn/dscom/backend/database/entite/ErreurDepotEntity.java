@@ -2,7 +2,7 @@ package sn.dscom.backend.database.entite;
 
 import lombok.*;
 
-//import javax.persistence.*;
+
 import jakarta.persistence.*;
 @Getter
 @Setter
@@ -18,10 +18,9 @@ public class ErreurDepotEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = ID_SEQUENCE_NAME)
     @SequenceGenerator(name = ID_SEQUENCE_NAME, sequenceName = ID_SEQUENCE_NAME, allocationSize = 1)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "ID_DEPOT", nullable = false)
-    private DepotEntity depot;
-    @Column(name = "messages")
+    @Column(name = "ID_DEPOT")
+    private Long idDepot;
+    @Column(name = "message")
     private String  message;
 
 }

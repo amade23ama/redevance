@@ -98,8 +98,8 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",this.lNbChargementDeposesSucces);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",this.lNbChargementDoublons);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
-        //return listChargementDTOUnique.stream().toList();
-        return new ImportProcessingDTO(listChargementDTOUnique.stream().toList(), listErreur);
+        Set<ErreurDepotDTO> listErreurUnique= new HashSet<>(listErreur);
+        return new ImportProcessingDTO(listChargementDTOUnique.stream().toList(), listErreurUnique.stream().toList());
     }
 
 

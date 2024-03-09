@@ -37,6 +37,7 @@ public class ImportItemWriter implements ItemWriter<ImportProcessingDTO> {
     private  int lNbReDeposes=1;
     @Autowired
     ReferenceAnneeService referenceAnneeService;
+    @Autowired
     private ErreurDepotService erreurDepotService;
     @BeforeStep
     public void beforeStep(StepExecution stepExecution) {
@@ -57,7 +58,9 @@ public class ImportItemWriter implements ItemWriter<ImportProcessingDTO> {
         int i=1;
         for (ImportProcessingDTO result : chunk.getItems()) {
             List<ChargementDTO> chargementDTOList = result.getProcessedItems();
-            List<ErreurDepotDTO> errorList = result.getErrorItems();
+            List<ErreurDepotDTO> errorList = result.getErrorItems().stream()
+                    .map(error -> {error.setIdDepot(depot.getId());return error;})
+                    .collect(Collectors.toList());
             AtomicInteger indexCounter = new AtomicInteger(0);
             for (ChargementDTO chargementDTO : chargementDTOList) {
                 newListAnnee.add(this.getYear(chargementDTO.getDatePesage()));
@@ -88,7 +91,9 @@ public class ImportItemWriter implements ItemWriter<ImportProcessingDTO> {
                 this.chargementService.miseAjourChargement(chargementDTO);
                 i=i+1;
             }
-
+            for(ErreurDepotDTO erreurDepotDTO: errorList){
+                this.erreurDepotService.enregistrerErreurDepot(erreurDepotDTO);
+            }
         }
         newListAnnee.removeAll(listannes);
         if(!newListAnnee.isEmpty()){

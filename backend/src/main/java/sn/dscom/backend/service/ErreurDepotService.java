@@ -32,7 +32,11 @@ public class ErreurDepotService implements IErreurDepotService {
 
     @Override
     public Optional<List<ErreurDepotDTO>> rechercherErreurDepotByCriteres(ErreurDepotDTO erreurDepotDTO) {
-        return Optional.empty();
+
+       return Optional.of((this.erreurDepotRepository.findAllByIdDepot(erreurDepotDTO.getIdDepot()))
+                .stream().map(this.erreurDepotConverteur::reverse)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()));
     }
 
     @Override

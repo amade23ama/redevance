@@ -155,9 +155,9 @@
     "modal.confirmation.activation": "L’utilisateur {0} a été activé",
     "modal.confirmation.desactivation": "L’utilisateur {0} a été désactivé",
 
-    "titre.graphe.produit": "Exploitation minière par type de produit",
-    "titre.graphe.region":"Exploitation minière par région",
-    "titre.graphe.annuel":"Evolution annuelle de l’exploitation minière",
+    "titre.graphe.produit": "Diagramme de répartition des quantités produites par substances minières",
+    "titre.graphe.region":"Répartition des quantités de substances minières par région",
+    "titre.graphe.annuel":"Évolution annuelle de la production minière",
 
     "reset.password.title": "Récupération de compte",
     "reset.password.confirmation.message": "Votre nouveau mot de passe a été envoyé par email",

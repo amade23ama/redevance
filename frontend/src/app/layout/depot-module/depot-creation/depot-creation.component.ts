@@ -23,7 +23,7 @@ export class DepotCreationComponent implements  OnInit{
   typeFile=".txt,.csv"
   btns: ActionBtn[] = [];
   id: FormControl = new FormControl()
-  nom: FormControl = new FormControl('test',[Validators.required])
+  nom: FormControl = new FormControl('',[Validators.required])
   file: FormControl = new FormControl('', [FileValidators.required, FileValidators.maxFileCount(3)])
   myform: FormGroup = this.builder.group({
     nom: this.nom,

@@ -17,7 +17,7 @@ export class DcsomGrapheBarComponent  implements  OnInit{
     name: 'myScheme',
     selectable: true,
     group: ScaleType.Ordinal,
-    domain: ['#c77930', '#ef9555', '#8c4006']
+    domain: ['#DC7633', '#F39C12', '#EDBB99', '#F39C12', '#FAD7A0', '#F5B7B1']
   };
   constructor(private breakpointObserver: BreakpointObserver) {
 

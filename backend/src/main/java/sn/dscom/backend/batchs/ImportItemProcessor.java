@@ -176,26 +176,26 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         }
 
         if (siteDTO == null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Site de Pesage non trouvé : " + depotDcsomDTO.getNomSite()).build());
+            erreurs.add(ErreurDepotDTO.builder().message("Site de pesage non trouvé : " + depotDcsomDTO.getNomSite()).build());
             return true;
         }
         if (exploitationDTO == null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Site exploitation non trouvé : " + depotDcsomDTO.getExploitation()).build());
+            erreurs.add(ErreurDepotDTO.builder().message("Provenance non trouvée : " + depotDcsomDTO.getExploitation()).build());
             return true;
         }
 
         if (categorieDTO == null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Categorie non trouvé : " + depotDcsomDTO.getType()).build());
+            erreurs.add(ErreurDepotDTO.builder().message("Catégorie non trouvée : " + depotDcsomDTO.getType()).build());
             return true;
         }
 
         if (depotDcsomDTO.getDatePesage()==null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Date Pesage non renseigné : ").build());
+            erreurs.add(ErreurDepotDTO.builder().message("Date de pesage non renseignée : ").build());
             return true;
         }
 
         if (depotDcsomDTO.getHeurePesage()==null) {
-            erreurs.add(ErreurDepotDTO.builder().message("Heure Pesage non renseigné : ").build());
+            erreurs.add(ErreurDepotDTO.builder().message("Heure de pesage non renseignée : ").build());
             return true;
         }
         return false;

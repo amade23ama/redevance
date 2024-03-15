@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
 
     <property name="now" value="current_timestamp" dbms="postgresql"/>
-    <changeSet id="033_ajoter_colonne_nombre_erreur_depot" author="amade">
+    <changeSet id="033_ajouter_colonne_nombre_erreur_depot" author="amade">
         <addColumn tableName="ERREUR_DEPOT">
             <column name="NB_ERREUR" type="DOUBLE">
             </column>

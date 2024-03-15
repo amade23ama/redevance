@@ -20,6 +20,8 @@ public class ErreurDepotEntity {
     private Long id;
     @Column(name = "ID_DEPOT")
     private Long idDepot;
+    @Column(name = "NB_ERREUR")
+    private Long nombreErreur;
     @Column(name = "message")
     private String  message;
 

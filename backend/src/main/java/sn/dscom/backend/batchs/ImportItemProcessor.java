@@ -11,6 +11,7 @@ import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.ChargementUtils;
+import sn.dscom.backend.common.util.ErreurUtils;
 import sn.dscom.backend.service.interfaces.*;
 
 import java.util.*;
@@ -98,8 +99,10 @@ public class ImportItemProcessor implements ItemProcessor<List<DepotDcsomDTO> , 
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDeposesSucces",this.lNbChargementDeposesSucces);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementDoublons",this.lNbChargementDoublons);
         this.stepExecution.getJobExecution().getExecutionContext().putInt("lNbChargementError",this.lNbChargementError);
-        Set<ErreurDepotDTO> listErreurUnique= new HashSet<>(listErreur);
-        return new ImportProcessingDTO(listChargementDTOUnique.stream().toList(), listErreurUnique.stream().toList());
+
+        List<ErreurDepotDTO> listErreurUnique =ErreurUtils.generateListWithOccurrences(listErreur);
+
+        return new ImportProcessingDTO(listChargementDTOUnique.stream().toList(), listErreurUnique);
     }
 
 

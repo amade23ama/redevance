@@ -61,10 +61,13 @@
     <table class="custom-table" *ngIf="erreurDepots.length>0">
       <tr>
         <th class="header-cell">Numero Dépot</th>
+        <th class="header-cell">Occurence</th>
         <th class="header-cell">Message Erreur</th>
+
       </tr>
       <tr *ngFor="let erreur of erreurDepots">
         <td class="depot-cell">{{erreur?.idDepot}}</td>
+        <td class="depot-cell">{{erreur?.nombreErreur}}</td>
         <td class="depot-cell-message">{{erreur?.message}}</td>
       </tr>
     </table>

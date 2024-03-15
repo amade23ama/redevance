@@ -12,6 +12,7 @@ public class ErreurDepotConverter implements Transformer<ErreurDepotDTO, ErreurD
         }
         return ErreurDepotDTO.builder()
                 .id(erreurDepotEntity.getId())
+                .nombreErreur(erreurDepotEntity.getNombreErreur())
                 .idDepot(erreurDepotEntity.getIdDepot())
                 .message(erreurDepotEntity.getMessage())
                 .build();
@@ -21,6 +22,7 @@ public class ErreurDepotConverter implements Transformer<ErreurDepotDTO, ErreurD
     public ErreurDepotEntity transform(ErreurDepotDTO erreurDepotDTO) {
         return ErreurDepotEntity.builder()
                 .idDepot(erreurDepotDTO.getIdDepot())
+                .nombreErreur(erreurDepotDTO.getNombreErreur())
                 .message(erreurDepotDTO.getMessage())
                 .id(erreurDepotDTO.getId())
                 .build();

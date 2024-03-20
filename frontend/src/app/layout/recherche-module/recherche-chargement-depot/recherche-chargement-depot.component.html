@@ -5,9 +5,9 @@
   </div>
   <div fxLayout.lt-md="column" fxLayout="row" class="container-detail" fxLayoutGap="32px">
   <div fxLayout="column" [fxFlex]="50" [fxFlex.lt-md]="100" class="container-depot" fxLayoutAlign="start stretch" fxLayoutGap="2px">
-    <div fxLayout="row" class="libelle-titre-depot"> Information du depot</div>
+    <div fxLayout="row" class="libelle-titre-depot"> Détails de l'importation</div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Numéro</div>
+      <div class="result-titre" [fxFlex]="fxtitre">N° importation :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.id}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
@@ -15,15 +15,15 @@
       <div class="result-continue" [fxFlex]="fxresult"><span>{{depot?.site?.nom}}</span></div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Nom du fichier de l'importer :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Nom du fichier :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.nomFichier}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Date Debut de l'import :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Date de début :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.dateHeureDepot}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Date Fin de l'import :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Date de fin :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.dateHeureFinDepot}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
@@ -31,38 +31,38 @@
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.statut}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Deposeur du Fichier :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Auteur :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.deposeur.prenom}} - {{depot?.deposeur.nom}}</div>
     </div>
   </div>
   <!-- --->
   <div fxLayout="column" [fxFlex]="50" [fxFlex.lt-md]="100" class="container-depot" fxLayoutGap="2px">
-    <div fxLayout="row" class="libelle-titre-depot"> Information de la quantité du depot</div>
+    <div fxLayout="row" class="libelle-titre-depot"> Statut importation</div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Total de chargement:</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Nombre de lignes du fichier :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.nbChargementTotal}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Total de chargement deposé :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Nombre de lignes importées :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.nbChargementDeposes}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Total de chargement redeposé :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Nombre de lignes mises à jour :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.nbChargementReDeposes}}</div>
     </div>
     <div fxLayout="row" fxLayoutAlign="start center"  fxLayoutGap="4px">
-      <div class="result-titre" [fxFlex]="fxtitre">Total de chargement en erreur :</div>
+      <div class="result-titre" [fxFlex]="fxtitre">Nombre de lignes en erreur :</div>
       <div class="result-continue" [fxFlex]="fxresult">{{depot?.nbChargementErreur}}</div>
     </div>
   </div>
   </div>
   <div fxLayout="column"    *ngIf="errorDepot$ |async as erreurDepots" class="container-detail" fxLayoutGap="4px">
-    <div fxLayout="row"  fxLayoutAlign="start center" class="libelle-titre-depot"> Information des erreurs de l'import</div>
+    <div fxLayout="row"  fxLayoutAlign="start center" class="libelle-titre-depot">Détail des erreurs d'importation</div>
     <table class="custom-table" *ngIf="erreurDepots.length>0">
       <tr>
-        <th class="header-cell">Numero Dépot</th>
-        <th class="header-cell">Occurence</th>
-        <th class="header-cell">Message Erreur</th>
+        <th class="header-cell">N° importation</th>
+        <th class="header-cell">Nombre d'erreurs</th>
+        <th class="header-cell">Types d'erreurs</th>
 
       </tr>
       <tr *ngFor="let erreur of erreurDepots">

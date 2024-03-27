@@ -125,14 +125,6 @@ public class AutocompleteRechercheController {
                 .mapTry(this.autocompleteRechercheService::getVoitureAutocompleteRecherche)
                 .onFailure(Throwable::getStackTrace)
                 .get();
-
-        //Chargement
-    /*    List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
-                .mapTry(this.autocompleteRechercheService::getChargementAutocompleteRecherche)
-                .onFailure(Throwable::getStackTrace)
-                .get();
-                 listRechercheByOrigine.stream(),
-*/
         List<AutocompleteRecherche> listRechercheByOrigine = Try.of(() -> capture)
                 .mapTry(this.autocompleteRechercheService::getChargementAutocompleteRecherche)
                 .onFailure(Throwable::getStackTrace)

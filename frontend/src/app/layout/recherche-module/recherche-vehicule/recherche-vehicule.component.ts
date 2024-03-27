@@ -1,6 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -13,6 +13,7 @@ import { AutocompleteRecherche } from "../../../core/interfaces/autocomplete.rec
 import { CritereRecherche } from "../../../core/interfaces/critere.recherche";
 import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
+import {FileValidators} from "ngx-file-drag-drop";
 
 @Component({
   selector: 'recherche-vehicule',
@@ -20,6 +21,7 @@ import { AutocompleteRechercheService } from "../../../core/services/autocomplet
   styleUrls: ['./recherche-vehicule.component.scss']
 })
 export class RechercheVehiculeComponent implements OnInit{
+  disableBtnSupprimer:boolean=true
   search:FormControl =new FormControl('');
   /** la liste des véhicules */
   listVehicule: MatTableDataSource<Vehicule>;
@@ -40,12 +42,17 @@ export class RechercheVehiculeComponent implements OnInit{
   croll:boolean=false;
   private lastScrollIndex = 0;
   // les noms des colones
-  displayedColumns: string[] = ['id','Immatriculation', 'Classe', 'Volume','NomRS', 'Téléphone','dateCreation','actions'];
+  displayedColumns: string[] = ['id','immatriculation', 'type', 'volume','poidsVide','dateCreation','dateModification','actions'];
   vehicules$=this.vehiculeService.vehicules$
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesVehicule$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesVehicule$
+  file: FormControl = new FormControl('', [FileValidators.required, FileValidators.maxFileCount(1)])
+  myform: FormGroup = this.builder.group({
+    file:this.file
+  })
+  typeFile=".txt,.csv"
   /** constructor */
-  constructor(public appConfig: AppConfigService, public vehiculeService: VehiculeService,
+  constructor(public appConfig: AppConfigService, public vehiculeService: VehiculeService,private builder: FormBuilder,
               private router:Router,private autocompleteRechercheService:AutocompleteRechercheService) {}
 
 
@@ -60,6 +67,9 @@ export class RechercheVehiculeComponent implements OnInit{
     this.listVehicule.sort=this.sort;
     this.itemSize=data.length
     this.totalItems = 100;
+      this.listVehicule.sortingDataAccessor = (item, property) => {
+        return this.getPropertyValue(item, property);
+      };
     });
     this.search.valueChanges?.pipe(
       debounceTime(300),
@@ -73,9 +83,14 @@ export class RechercheVehiculeComponent implements OnInit{
     ).subscribe();
 
   }
-
+  private getPropertyValue(item: any, property: string): any {
+    switch(property) {
+      case 'type': return item.categorie.type;
+      case 'volume': return item.categorie.volume;
+      default: return item[property];
+    }
+  }
   redirect(vehicule: Vehicule) {
-    console.log("ertyhjk", vehicule);
   }
   chargervehicule(vehicule: Vehicule){
     this.router.navigate(['admin/vehicule'], {queryParams: {'contextInfo':vehicule.id }});
@@ -129,5 +144,17 @@ export class RechercheVehiculeComponent implements OnInit{
 
   getItemSize() {
     return 50;
+  }
+  onValueChange(files: File[]) {
+    const file=files[0]
+    const formData = new FormData();
+    formData.append('file', file);
+  }
+  valider(){
+    const file: File = this.myform.value.file[0];
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    this.vehiculeService.creerDepot(formData).subscribe()
+    this.file.setValue(null);
   }
 }

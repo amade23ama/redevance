@@ -74,7 +74,7 @@ export class ChargementComponent implements OnInit {
   /** vehicule form */
   vehicule: FormGroup = this.fb.group({
     immatriculation: this.immatriculation,
-    transporteur: this.transporteur,
+    //transporteur: this.transporteur,
     categorie: this.categorie,
   })
 
@@ -93,6 +93,7 @@ export class ChargementComponent implements OnInit {
     site: this.site,
     vehicule: this.vehicule,
     produit: this.produit,
+    transporteur: this.transporteur,
   })
 
   /** ActionBtn */

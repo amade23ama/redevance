@@ -44,7 +44,7 @@ export class RechercheProduitComponent implements OnInit {
   private lastScrollIndex = 0;
   nb$=this.produitService.nbProduit$;
   // les noms des colones
-  displayedColumns: string[] = ['id','Nom SRC', 'Densité GCM', 'Densité KGM','dateCreation','actions'];
+  displayedColumns: string[] = ['id','nomSRC', 'densiteGRM', 'densiteKGM','dateCreation','actions'];
   produits$=this.produitService.produits$;
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesProduit$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesProduit$

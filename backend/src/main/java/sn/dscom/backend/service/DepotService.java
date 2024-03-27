@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -152,7 +153,8 @@ public class DepotService implements IDepotService {
      */
     @Override
     public Page<DepotDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        Sort sort = Sort.by(Sort.Order.desc("id"));
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize(),sort);
         DepotService.logger.info("Recherche de dépot");
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             Page<DepotEntity> listDepotsFind = this.depotRepository.findAll(pageRequest);

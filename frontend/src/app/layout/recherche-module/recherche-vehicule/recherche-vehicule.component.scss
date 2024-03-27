@@ -5,13 +5,7 @@
   overflow: auto!important;
 }
 
-/*.table-content-wrapper{
-  background-color: red!important;
-  min-height: 10vh!important;
-  max-height: 20vh!important;
-  overflow: auto;
-}
-*/
+
 
 
 .nb-pastille {
@@ -20,7 +14,6 @@
 }
 
 .nb-label {
-  // margin: 12px;
   font-size: 13px;
 }
 .mat-header-utilisateur{
@@ -46,7 +39,6 @@ mat-card{
 }
 
 .blue-label {
-  //color: $orange-500!important;
   font-size: 13px !important;
   font-family: Calibri !important;
 }
@@ -80,7 +72,6 @@ tr{
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  /*background-color: $orange-500!important;*/
   background-color: $orange-50!important;
   color: #ffffff;
   border: none;
@@ -139,6 +130,21 @@ tr{
 }
 
 .result{
-  //font-family: normal;
   font-size: 13px!important;
 }
+.stepper--conteneur{
+  height: 20px !important;
+}
+ngx-file-drag-drop{
+  padding: 0px !important;
+  height: 20px !important ;
+  margin: 0px!important;
+  border: 1px solid $orange-40 !important;
+  min-height: 32px!important;
+  margin: 0px auto;
+  padding: 4px!important;
+  padding-right: 1em!important;
+  padding-left: 1em!important;
+  cursor: pointer
+}
+

@@ -53,4 +53,7 @@ public interface ProduitRepository extends JpaRepository<ProduitEntity,Long>{
      * @return Page<ProduitEntity>
      */
     Page<ProduitEntity> findAll(Specification<ProduitEntity> spec, Pageable pageable);
+
+    @Query("SELECT produit FROM ProduitEntity produit where produit.nomSRC =:nomSRC or produit.nomNORM =:nomNORM")
+    ProduitEntity rechercherProduitByProduit(@Param("nomSRC") String nomSRC, @Param("nomNORM") String nomNORM);
 }

@@ -29,5 +29,13 @@
   <include file="changelog/v0.1/018_inserer_data_table_chargement.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/019_add_column_poids_vide_table_vehicule.xml" relativeToChangelogFile="false"/>
   <include file="changelog/v0.1/020_inserer_data_table_depot.xml" relativeToChangelogFile="false"/>
+  <include file="changelog/v0.1/021_changer_contraint__table_transporteur.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/022_changer_contraint_table_vehicule.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/023_changer_contraint_table_depot_chargement.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/024_creation_table_reference_annee.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/025_inserer_data_table_reference_annee.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/026_add_column_total_table_depot.xml" relativeToChangelogFile="false"/>
+  <include file="/changelog/v0.1/027_inserer_data_table_produit.xml" relativeToChangelogFile="false"/>
+
 
 </databaseChangeLog>

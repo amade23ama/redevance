@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+
+    <changeSet id="027_inserer_data_table_produit" author="waly">
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="PHOSPHOGYPSE" />
+            <column name="NOM_NORM" value="PHOSPHOGYPSE" />
+            <column name="DENSITE_GRM" value="2.3" />
+            <column name="DENSITE_KGM" value="2300" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="CLINCKER" />
+            <column name="NOM_NORM" value="CLINCKER" />
+            <column name="DENSITE_GRM" value="3.1" />
+            <column name="DENSITE_KGM" value="3100" />
+        </insert>
+        <insert tableName="PRODUIT">
+            <column name="ID_PRODUIT" valueComputed="NEXTVAL('mydscm.seq_produit')"/>
+            <column name="NOM_SRC" value="GYPSE" />
+            <column name="NOM_NORM" value="GYPSE" />
+            <column name="DENSITE_GRM" value="2.35" />
+            <column name="DENSITE_KGM" value="2350" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>
+

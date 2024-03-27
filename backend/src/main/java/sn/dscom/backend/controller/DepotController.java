@@ -60,14 +60,14 @@ public class DepotController {
     /**
      * chargement Service
      */
-    @Autowired
-    private IChargementService chargementService;
+    //@Autowired
+   // private IChargementService chargementService;
 
     /**
      * exploitation Service
      */
-    @Autowired
-    private IProduitService produitService;
+   // @Autowired
+   // private IProduitService produitService;
 
     /**
      * environment
@@ -84,11 +84,11 @@ public class DepotController {
     /**
      * site Service
      */
-    @Autowired
-    private ISiteService siteService;
+  //  @Autowired
+  //  private ISiteService siteService;
 
     /** mailService */
-    @Autowired
+  //  @Autowired
     private IMailService mailService;
 
     /** exploitation Service */
@@ -139,7 +139,7 @@ public class DepotController {
      * @param file transporteurDTO
      * @return l'entete
      */
-    @PostMapping(path = "/upload")
+    /*@PostMapping(path = "/upload")
     @PreAuthorize("hasAnyRole('ADMIN','EDIT')")
     public ResponseEntity<Long> uploadFile(@RequestParam("file") MultipartFile file,
                                                    @RequestParam("mapEntete") String mapEnteteJson,
@@ -226,12 +226,13 @@ public class DepotController {
         // return id du depot
         return   ResponseEntity.ok(depot.getId());
     }
+    */
 
     /**
      * getCurrentProduct
      * @return CompletableFuture<Optional<ProduitDTO>>
      */
-    @Async
+   /* @Async
     protected CompletableFuture<Optional<ExploitationDTO>> getCurrentExploitation(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<ExploitationDTO> ref){
         String siteExploitation = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.exploitation.nom")))).toUpperCase();
         Optional<ExploitationDTO> exploitationDTO = ref.stream().filter(exploita -> siteExploitation.trim().equals(exploita.getNom())).findFirst();
@@ -240,12 +241,13 @@ public class DepotController {
         }
         return CompletableFuture.completedFuture(exploitationDTO);
     }
+    */
 
     /**
      * getCurrentProduct
      * @return CompletableFuture<Optional<ProduitDTO>>
      */
-    @Async
+   /* @Async
     protected CompletableFuture<Optional<ProduitDTO>> getCurrentProduct(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<ProduitDTO> referentielProduits){
         String nomProduit = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.produit.nom")))).toUpperCase();
         Optional<ProduitDTO> produitDTO = referentielProduits.stream().filter(produit -> nomProduit.trim().equals(produit.getNomSRC())).findFirst();
@@ -254,12 +256,13 @@ public class DepotController {
         }
         return CompletableFuture.completedFuture(produitDTO);
     }
+    */
 
     /**
      * getCurrentCategorie
      * @return CompletableFuture<Optional<CategorieDTO>>
      */
-    @Async
+   /* @Async
     protected CompletableFuture<Optional<CategorieDTO>> getCurrentCategorie(List<String> chargement, Map<String, String> mapInverse, List<String> header,List<CategorieDTO> ref){
         String categorie = chargement.get(header.indexOf(mapInverse.get(environment.getProperty("db.categorie.type")))).toUpperCase();
         Optional<CategorieDTO> categorieDTO = ref.stream().filter(classe -> categorie.trim().equals(classe.getType())).findFirst();
@@ -268,55 +271,64 @@ public class DepotController {
         }
         return CompletableFuture.completedFuture(categorieDTO);
     }
+    */
+
 
     /**
      * getReferentielProduit
      * @return CompletableFuture<List<ProduitDTO>>
      */
-    @Async
+    /*@Async
     protected CompletableFuture<List<ProduitDTO>> getReferentielProduit(){
         List<ProduitDTO> referentielProduits = this.produitService.rechercherProduits().get();
         return CompletableFuture.completedFuture(referentielProduits);
     }
+    */
 
     /**
      * getReferentielSitesExploitation
      * @return CompletableFuture<List<ExploitationDTO>>
      */
-    @Async
+   /* @Async
     protected CompletableFuture<List<ExploitationDTO>> getReferentielSitesExploitation(){
         List<ExploitationDTO> referentielSitesExploitation = this.exploitationService.rechercherSitesExploitation().get();
         return CompletableFuture.completedFuture(referentielSitesExploitation);
     }
+    */
 
     /**
      * getReferentielCategories
      * @return CompletableFuture<List<ExploitationDTO>>
      */
-    @Async
+    /*@Async
     protected CompletableFuture<List<CategorieDTO>> getReferentielCategories(){
         List<CategorieDTO> referentielCategorie = this.categorieService.rechercherCategories().get();
         return CompletableFuture.completedFuture(referentielCategorie);
     }
+    */
+
 
     /**
      * getReferentielSites
      * @return CompletableFuture<List<SiteDTO>>
      */
+    /*
     @Async
     protected CompletableFuture<List<SiteDTO>> getReferentielSites(){
         List<SiteDTO> referentielSite = this.siteService.rechercherSites().get();
         return CompletableFuture.completedFuture(referentielSite);
     }
-
+*/
     /**
      * getConnectedUtilisateur
      * @return CompletableFuture<UtilisateurDTO>
      */
-    @Async
+    /*@Async
     protected CompletableFuture<UtilisateurDTO> getConnectedUtilisateur(){
         return CompletableFuture.completedFuture(UtilisateurConverter.toUtilisateurDTO(connectedUtilisateurService.getConnectedUtilisateur()));
     }
+    */
+
 
     /**
      * tabToList
@@ -424,7 +436,7 @@ public class DepotController {
      * @param mapCorrespondance maps
      * @return l'objet enregisté
      */
-    private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, List<SiteDTO> referentielSite){
+   /* private SiteDTO rechercherSite(List<String> ligneChargement, Map<String, String> mapCorrespondance, List<String> header, List<SiteDTO> referentielSite){
         String siteName = ligneChargement.get(header.indexOf(mapCorrespondance.get(this.environment.getProperty("db.site.nom")))).toUpperCase();
         Optional<SiteDTO> siteDTO = referentielSite.stream().filter(site -> siteName.trim().equals(site.getNom())).findFirst();
         if (siteDTO.isEmpty()) {
@@ -433,6 +445,7 @@ public class DepotController {
         return siteDTO.orElse(null);
 
     }
+    */
 
     /**
      * rechargementParCritere

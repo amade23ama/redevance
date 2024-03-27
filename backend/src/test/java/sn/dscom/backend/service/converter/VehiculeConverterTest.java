@@ -39,7 +39,7 @@ class VehiculeConverterTest {
                         .type("AUDI")
                         .volume(20.2)
                         .build())
-                .transporteurEntity(TransporteurEntity.builder()
+               /* .transporteurEntity(TransporteurEntity.builder()
                         .id(1L)
                         .dateCreation(new Date())
                         .dateModification(new Date())
@@ -49,6 +49,7 @@ class VehiculeConverterTest {
                         .nom("NOM")
                         .prenom("PRENOM")
                         .build())
+                */
                 .dateCreation(new Date())
                 .dateModification(new Date())
                 .build();
@@ -60,7 +61,7 @@ class VehiculeConverterTest {
                 () -> Assertions.assertEquals(actual.getId(), expected.getId()),
                 () -> Assertions.assertEquals(actual.getDateCreation(), expected.getDateCreation()),
                 () -> Assertions.assertEquals(actual.getDateModification(), expected.getDateModification()),
-                () -> Assertions.assertEquals(actual.getTransporteur().getPrenom(), expected.getTransporteurEntity().getPrenom()),
+               // () -> Assertions.assertEquals(actual.getTransporteur().getPrenom(), expected.getTransporteurEntity().getPrenom()),
                 () -> Assertions.assertEquals(actual.getCategorie().getId(), expected.getCategorieEntity().getId())
         );
 
@@ -83,7 +84,7 @@ class VehiculeConverterTest {
                         .type("AUDI")
                         .volume(20.2)
                         .build())
-                .transporteur(TransporteurDTO.builder()
+               /* .transporteur(TransporteurDTO.builder()
                         .id(1L)
                         .dateCreation(new Date())
                         .dateModification(new Date())
@@ -93,6 +94,7 @@ class VehiculeConverterTest {
                         .nom("NOM")
                         .prenom("PRENOM")
                         .build())
+                */
                 .dateCreation(new Date())
                 .dateModification(new Date())
                 .build();
@@ -104,7 +106,7 @@ class VehiculeConverterTest {
                 () -> Assertions.assertEquals(actual.getId(), expected.getId()),
                 () -> Assertions.assertEquals(actual.getDateCreation(), expected.getDateCreation()),
                 //() -> Assertions.assertNotEquals(actual.getDateModification(), expected.getDateModification()),
-                () -> Assertions.assertEquals(actual.getTransporteurEntity().getPrenom(), expected.getTransporteur().getPrenom()),
+               // () -> Assertions.assertEquals(actual.getTransporteurEntity().getPrenom(), expected.getTransporteur().getPrenom()),
                 () -> Assertions.assertEquals(actual.getCategorieEntity().getId(), expected.getCategorie().getId())
         );
     }

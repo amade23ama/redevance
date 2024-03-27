@@ -48,4 +48,6 @@ public interface ITransporteurService {
      * @return le nombre de site d'Exploitation
      */
     Integer compterTransporteurs(LocalDateTime dateMiseEnService);
+    TransporteurDTO recherchercheTransporteurByNom(String nom);
+    TransporteurDTO saveTransporteur(TransporteurDTO transporteurDTO);
 }

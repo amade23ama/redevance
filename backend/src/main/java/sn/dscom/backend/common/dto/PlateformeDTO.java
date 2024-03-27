@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 @Builder
 public class PlateformeDTO {
+    private Long id;
 
     /** emplacement */
     public String emplacement;

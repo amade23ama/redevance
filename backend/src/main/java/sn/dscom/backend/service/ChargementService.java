@@ -5,6 +5,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Streams;
 import io.vavr.control.Try;
 import lombok.Builder;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,16 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import sn.dscom.backend.common.constants.Enum.ErreurEnum;
 import sn.dscom.backend.common.dto.*;
 import sn.dscom.backend.common.exception.CommonMetierException;
 import sn.dscom.backend.common.util.ChargementUtils;
+import sn.dscom.backend.common.util.Utils;
 import sn.dscom.backend.common.util.pojo.Transformer;
 import sn.dscom.backend.database.entite.*;
 import sn.dscom.backend.database.repository.ChargementRepository;
@@ -213,7 +217,7 @@ public class ChargementService implements IChargementService {
 
 
             // build Chargement
-            ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, datePesage, heurePesage);
+            ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, datePesage, heurePesage,null);
 
             Optional<ChargementEntity> chargementEntity = this.chargementRepository.isChargementExist(this.siteConverteur.transform(chargementDTO.getSite()),
                     this.produitConverteur.transform(chargementDTO.getProduit()),
@@ -373,7 +377,9 @@ public class ChargementService implements IChargementService {
      * @param poidsMax poidsMax
      * @return ChargementDTO
      */
-    private static ChargementDTO buildChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax, String date, String heure) {
+    private static ChargementDTO buildChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO,
+                                                 ProduitDTO produitDTO, String destination, String poidsMesure, String poidsMax,
+                                                 String date, String heure,TransporteurDTO transporteurDTO) {
 
         Double poidsEstime = ChargementUtils.getPoidsEstime(Double.valueOf(poidsMesure),Double.valueOf(poidsMax), vehiculeDTO.getPoidsVide());
 
@@ -399,6 +405,8 @@ public class ChargementService implements IChargementService {
                 .site(siteDTO)
                 .exploitation(exploitationDTO)
                 .produit(produitDTO)
+                .depotDTOList(new ArrayList<>())
+                .transporteur(transporteurDTO)
                 .build();
     }
 
@@ -435,7 +443,7 @@ public class ChargementService implements IChargementService {
 
         return Try.of(() -> VehiculeDTO.builder()
                                 .dateCreation(new Date())
-                                .transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
+                                //.transporteur(this.enregistrerTransporteur(ligneChargement, mapCorrespondance, header))
                                 .categorie(categorieDTO)
                                 .immatriculation(ChargementUtils.replaceAllSpecialCarater(immatriculation.toUpperCase()))
                                 .build())
@@ -471,7 +479,8 @@ public class ChargementService implements IChargementService {
 
     @Override
     public Page<ChargementDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        Sort sort = Sort.by(Sort.Order.asc("id"));
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize(),sort);
         List<Long> idsSite = new ArrayList<>(critereRecherche.getAutocompleteRecherches().stream()
                 .filter(item -> item instanceof AutocompleteRecherche)
                 .filter(item -> ((AutocompleteRecherche) item).getTypeClass() == SiteEntity.class)
@@ -523,6 +532,7 @@ public class ChargementService implements IChargementService {
                 .filter(Objects::nonNull)
                 .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
                 .map(this.chargementConverter::reverse)
+                .peek(chargementDTO -> {if (!idsDepot.isEmpty()) {chargementDTO.setIdDepot(idsDepot.get(0));}})
                 .toList();
 
         return new PageImpl<>(dtoList, pageRequest, listChargementFind.getTotalElements());
@@ -582,7 +592,7 @@ public class ChargementService implements IChargementService {
                         localites,critereRecherche.getAnnee()
                         ,idsDepot));
 
-        List<ChargementEntity> listSitesFind= chargementRepository.findAll(spec);
+        List<ChargementEntity> listSitesFind= this.chargementRepository.findAll(spec);
         return listSitesFind.stream()
                 .filter(Objects::nonNull)
                 .filter(ChargementEntity -> ChargementEntity.getDepots().size() > 0)
@@ -604,20 +614,23 @@ public class ChargementService implements IChargementService {
         // Le builder
         StringBuilder csvBuilder= new StringBuilder();
         // L'en-tête
-        csvBuilder.append("DATE DE PESAGE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
+        csvBuilder.append("SITE;DATE DE PESAGE;HEURE;ORIGINE;REGION;DESTINATION;PRODUIT;TRANSPORTEUR;TELEPHONE;VEHICULE;CLASSE;POIDS;POIDSMAX;POIDS ESTIME;VOLUME;VOLUME MOYEN;ECART\r\n");
 
         //on parcours la liste des chargements pour contruire un ligne du fichier
         datas.forEach(data -> {
-            csvBuilder.append(data.getDateCreation().toString()).append(POINT_VIRGULE_SEPARATEUR)
+            csvBuilder.append(data.getSite().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(Utils.getDate(data.getDatePesage())).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(Utils.getTime(data.getDatePesage())).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getNom()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getExploitation().getRegion()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getDestination()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getProduit().getNomSRC()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(data.getVehicule().getTransporteur().getNom()).append(POINT_VIRGULE_SEPARATEUR)
-                    .append(data.getVehicule().getTransporteur().getTelephone()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getTransporteur().getNom()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getTransporteur().getTelephone()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVehicule().getImmatriculation()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVehicule().getCategorie().getType()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getPoids()).append(POINT_VIRGULE_SEPARATEUR)
+                    .append(data.getPoidsMax()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getPoidsSubst()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVolumeSubst()).append(POINT_VIRGULE_SEPARATEUR)
                     .append(data.getVolumeMoyen()).append(POINT_VIRGULE_SEPARATEUR)
@@ -717,6 +730,36 @@ public class ChargementService implements IChargementService {
         return listChrgmentToDelete.stream().allMatch(this::supprimerChargement);
     }
 
+    @Override
+    public ChargementDTO genereLineChargement(VehiculeDTO vehiculeDTO, SiteDTO siteDTO, ExploitationDTO exploitationDTO, ProduitDTO produitDTO, String destination,
+                                              String poidsMesure, String poidsMax, String date, String heure,TransporteurDTO transporteurDTO) {
+         ChargementDTO chargementDTO = buildChargement(vehiculeDTO, siteDTO, exploitationDTO, produitDTO, destination, poidsMesure, poidsMax, date, heure,transporteurDTO);
+        return chargementDTO;
+    }
+
+    @Override
+    public ChargementDTO recherChargementByEntity(ChargementDTO chargementDTO) {
+         ChargementEntity chargementEntity=this.chargementRepository.rechercheChargementByChargementDTO(
+                 chargementDTO.getSite().getId(),
+                 chargementDTO.getProduit().getId(),
+                 chargementDTO.getVehicule().getId(),
+                 chargementDTO.getDestination(),
+                 chargementDTO.getPoids(),
+                 chargementDTO.getPoidsMax(),
+                 chargementDTO.getTransporteur().getId(),
+                 chargementDTO.getDatePesage(),
+                 chargementDTO.getExploitation().getId()
+                 );
+         if(chargementEntity!=null) {
+             return this.chargementConverter.reverse(chargementEntity);
+         }else {
+             return null;
+         }
+
+    }
+
+
+
     /**
      * supprimerChargement
      * @param chargementDTO chargementDTO
@@ -726,21 +769,23 @@ public class ChargementService implements IChargementService {
         // Find the chargement
         Optional<ChargementEntity> chargementEntityFind = this.chargementRepository.findById(chargementDTO.getId());
         if (chargementEntityFind.isPresent()) {
+            Optional<DepotDTO> depotDTO = this.depotService.rechercherDepotById(chargementDTO.getIdDepot());
             ChargementEntity chargementEntity = chargementEntityFind.get();
-            if (chargementEntity.getDepots().size() == 1 || chargementEntity.getDepots().size() == 0) {
-                chargementEntity.setDepots(null);
-                ChargementEntity chargementToDelete = this.chargementRepository.save(chargementEntity);
-                this.chargementRepository.deleteChargement(chargementToDelete.getId());
-            } else {
-                var list = chargementEntity.getDepots().subList(1, chargementEntity.getDepots().size());
-                chargementEntity.setDepots(list);
-                this.chargementRepository.save(chargementEntity);
-                //this.chargementRepository.deleteById(chargementEntity.getId());
-           }
-
+            if(depotDTO.isPresent()){
+             if(chargementEntity.getDepots().size()>1){
+                 chargementEntity.getDepots().removeIf(depotEntity -> depotEntity.getId()==chargementDTO.getIdDepot());
+                 this.chargementRepository.save(chargementEntity);
+             }else {
+                 this.chargementRepository.deleteById(chargementEntity.getId());
+             }
+            }
            return true;
         }
         return  false;
     }
-
+    @Override
+    public ChargementDTO miseAjourChargement(ChargementDTO chargementDTO) {
+        ChargementEntity chargementEntity= this.chargementRepository.save(this.chargementConverter.transform(chargementDTO));
+        return this.chargementConverter.reverse(chargementEntity);
+    }
 }

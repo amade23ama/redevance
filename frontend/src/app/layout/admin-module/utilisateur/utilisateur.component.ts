@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { ModalService } from 'src/app/core/services/modal.service';
@@ -16,7 +16,7 @@ import { UtilisateurService } from "../../../core/services/utilisateur.service";
   templateUrl: './utilisateur.component.html',
   styleUrls: ['./utilisateur.component.scss']
 })
-export class UtilisateurComponent implements OnInit{
+export class UtilisateurComponent implements OnInit, AfterViewInit{
   utilisateurCourant:Utilisateur
   id: FormControl = new FormControl();
   prenom: FormControl=new FormControl('',
@@ -54,6 +54,13 @@ export class UtilisateurComponent implements OnInit{
       profils: this.profils
     });
   }
+  
+  ngAfterViewInit(): void {
+    //on simule le click sur champ telephone
+    // si le forme du tel n'était pas valide en base, le formulaire sera incorrect
+    let element:HTMLElement = document.getElementById('idTel') as HTMLElement;
+    element.click();
+  }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams?.subscribe(async params => {
@@ -68,6 +75,7 @@ export class UtilisateurComponent implements OnInit{
           this.majBtnActive()
           this.droit()
         })
+
       } else {
         this.titre="Nouveau"
         this.isModeModification = false;
@@ -77,6 +85,8 @@ export class UtilisateurComponent implements OnInit{
         this.droit()
       }
     });
+
+
 
   }
   sauvegarder() {

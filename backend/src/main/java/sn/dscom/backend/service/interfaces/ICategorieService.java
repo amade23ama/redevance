@@ -73,4 +73,5 @@ public interface ICategorieService {
      * @return CategorieDTO
      */
     public CategorieDTO chargerCategorieDTOParId(Long id) ;
+    CategorieDTO rechercheCategorieByType(String type);
 }

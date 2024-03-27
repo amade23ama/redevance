@@ -26,17 +26,24 @@ import java.util.stream.Collectors;
 @Transactional
 public class TransporteurService implements ITransporteurService {
 
-    /** Logger Factory */
+    /**
+     * Logger Factory
+     */
     static Logger logger = LoggerFactory.getLogger(TransporteurService.class);
 
-    /** transporteur Repository */
+    /**
+     * transporteur Repository
+     */
     private final TransporteurRepository transporteurRepository;
 
-    /** transporteur Converter */
+    /**
+     * transporteur Converter
+     */
     private final Transformer<TransporteurDTO, TransporteurEntity> transporteurConverter = new TransporteurConverter();
 
     /**
      * TransporteurService
+     *
      * @param transporteurRepository transporteurRepository
      */
     @Builder
@@ -58,15 +65,15 @@ public class TransporteurService implements ITransporteurService {
         TransporteurEntity transporteurEntity = this.transporteurRepository.isTransporteurExist(transporteurDTO.getNom().trim().toUpperCase(), transporteurDTO.getTelephone().trim().toUpperCase());
 
         // s'il existe on renvoit le site existant
-        if(transporteurEntity != null && transporteurDTO.getId() == null ){
+        if (transporteurEntity != null && transporteurDTO.getId() == null) {
             TransporteurService.logger.info(String.format("Le Transporteur existe déja en base: %s", transporteurEntity));
             return Optional.of(this.transporteurConverter.reverse(transporteurEntity));
         }
 
         return Optional.of(this.transporteurConverter.reverse(Try.of(() -> this.transporteurConverter.transform(transporteurDTO))
-                                                        .mapTry(this.transporteurRepository::save)
-                                                        .onFailure(e -> TransporteurService.logger.info(String.format("Erreur de l'nregistrement du Transporteur: %s", e.getMessage())))
-                                                        .get()));
+                .mapTry(this.transporteurRepository::save)
+                .onFailure(e -> TransporteurService.logger.info(String.format("Erreur de l'nregistrement du Transporteur: %s", e.getMessage())))
+                .get()));
     }
 
     /**
@@ -117,7 +124,7 @@ public class TransporteurService implements ITransporteurService {
             // on supprime par id
             this.transporteurRepository.deleteById(transporteurDTO.getId());
             return true;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new CommonMetierException(HttpStatus.NON_AUTHORITATIVE_INFORMATION.value(), ErreurEnum.ERR_INATTENDUE);
 
         }
@@ -133,4 +140,24 @@ public class TransporteurService implements ITransporteurService {
     public Integer compterTransporteurs(LocalDateTime dateMiseEnService) {
         return transporteurRepository.compterTransporteurPardate(dateMiseEnService);
     }
+
+    @Override
+    public TransporteurDTO recherchercheTransporteurByNom(String nom) {
+        TransporteurEntity transporteurEntity = this.transporteurRepository.rechercheTransporteurByNom(nom.trim().toUpperCase());
+
+        // s'il existe on renvoit le site existant
+        if (transporteurEntity != null) {
+            return this.transporteurConverter.reverse(transporteurEntity);
+        }
+        else {
+            return null;
+        }
+    }
+    @Transactional
+    @Override
+    public TransporteurDTO saveTransporteur(TransporteurDTO transporteurDTO) {
+        TransporteurEntity transporteurEntity= this.transporteurRepository.saveAndFlush(this.transporteurConverter.transform(transporteurDTO));
+        return this.transporteurConverter.reverse(transporteurEntity);
+    }
+
 }

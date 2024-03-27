@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
@@ -164,7 +165,8 @@ public class ProduitService implements IProduitService {
      */
     @Override
     public Page<ProduitDTO> rechargementParCritere(CritereRecherche<?> critereRecherche) {
-        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize());
+        Sort sort = Sort.by(Sort.Order.asc("id"));
+        PageRequest pageRequest = PageRequest.of(critereRecherche.getPage(), critereRecherche.getSize(),sort);
         //S'il n'y a pas de critère on remonte tout
         if (critereRecherche.getAutocompleteRecherches().size() == 0){
             try {
@@ -222,4 +224,16 @@ public class ProduitService implements IProduitService {
         }
         return false;
     }
+
+    @Override
+    public ProduitDTO rechercherProduitByNom(String nom) {
+        ProduitEntity produitEntity = this.produitRepository.rechercherProduitByCriteres(nom, nom);
+        if (produitEntity != null) {
+            return this.produitConverteur.reverse(produitEntity);
+        }else {
+                logger.error("Le nom du produit "+nom+" n'exist pas");
+                return null;
+            }
+        }
+
 }

@@ -12,6 +12,7 @@ import java.util.Date;
 @Data
 @Builder
 public class SubtanceDTO {
+    public Long id;
     /** la densite en Gramme par Centimètre */
     public int densiteGrammCm;
 

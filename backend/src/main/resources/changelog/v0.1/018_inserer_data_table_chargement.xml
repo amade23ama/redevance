@@ -13,6 +13,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
             <column name="ID_SITE_EXPLOITATION" value="7" />
             <column name="ID_PRODUIT" value="6" />
             <column name="ID_VEHICULE" value="3" />
+            <column name="ID_TRANSPORTEUR" value="1" />
             <column name="DESTINATION" value="BAMBEY" />
             <column name="POIDS" value="45260" />
             <column name="POIDS_MAX" value="43700" />
@@ -27,6 +28,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
             <column name="ID_SITE_EXPLOITATION" value="7" />
             <column name="ID_PRODUIT" value="6" />
             <column name="ID_VEHICULE" value="2" />
+            <column name="ID_TRANSPORTEUR" value="2" />
             <column name="DESTINATION" value="DAKAR" />
             <column name="POIDS" value="70500" />
             <column name="POIDS_MAX" value="72450" />
@@ -41,6 +43,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
             <column name="ID_SITE_EXPLOITATION" value="7" />
             <column name="ID_PRODUIT" value="6" />
             <column name="ID_VEHICULE" value="4" />
+            <column name="ID_TRANSPORTEUR" value="1" />
             <column name="DESTINATION" value="BAMBEY" />
             <column name="POIDS" value="51100" />
             <column name="POIDS_MAX" value="58650" />
@@ -55,6 +58,7 @@ http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
             <column name="ID_SITE_EXPLOITATION" value="7" />
             <column name="ID_PRODUIT" value="6" />
             <column name="ID_VEHICULE" value="1" />
+            <column name="ID_TRANSPORTEUR" value="1" />
             <column name="DESTINATION" value="DAKAR" />
             <column name="POIDS" value="44060" />
             <column name="POIDS_MAX" value="49450" />

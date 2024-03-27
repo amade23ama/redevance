@@ -1,9 +1,11 @@
 package sn.dscom.backend.common.dto;
 import lombok.*;
+import sn.dscom.backend.database.entite.DepotEntity;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Objet pivot: ChargementDTO
@@ -65,4 +67,36 @@ public class ChargementDTO {
 
     /**  d'produit */
     private ProduitDTO produit;
+    /** le fichier à charger */
+    private List<DepotDTO> depotDTOList ;
+    /** le transporteur transporteur */
+    private TransporteurDTO transporteur;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ChargementDTO other = (ChargementDTO) obj;
+
+        return Objects.equals(id, other.id) &&
+                Objects.equals(site.getId(), other.site.getId()) &&
+                Objects.equals(produit.getId(), other.produit.getId()) &&
+                Objects.equals(vehicule.getId(), other.vehicule.getId()) &&
+                Objects.equals(transporteur.getId(), other.transporteur.getId()) &&
+                Objects.equals(destination, other.destination) &&
+                Objects.equals(poids, other.poids) &&
+                Objects.equals(poidsMax, other.poidsMax) &&
+                Objects.equals(poidsSubst, other.poidsSubst) &&
+                Objects.equals(volumeSubst, other.volumeSubst) &&
+                Objects.equals(volumeMoyen, other.volumeMoyen) &&
+                Objects.equals(ecart, other.ecart)&&
+                Objects.equals(datePesage, other.datePesage);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, destination, poids, poidsMax, poidsSubst,
+                volumeSubst, volumeMoyen, ecart, site.getId(), vehicule.getId(),transporteur.getId(), produit.getId(), datePesage
+                );
+    }
+
 }

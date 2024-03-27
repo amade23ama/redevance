@@ -7,6 +7,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Getter
@@ -43,6 +44,9 @@ public class DepotEntity {
     @JoinColumn(name = "ID_UTILISATEUR", nullable = false)
     private UtilisateurEntity deposeur;
 
+    @Column(name = "NB_CHARGEMENT_TOTAL")
+    private Integer nbChargementTotal;
+
     @Column(name = "NB_CHARGEMENT_DEPOT")
     private Integer nbChargementDeposes;
 
@@ -51,14 +55,6 @@ public class DepotEntity {
 
     @Column(name = "NB_ERREUR")
     private Integer nbChargementErreur;
-
-    @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "DEPOT_CHARGEMENT",
-            joinColumns = @JoinColumn(name = "ID_DEPOT"),
-            inverseJoinColumns = @JoinColumn(name = "ID_CHARGEMENT"))
-    private List<ChargementEntity> chargementEntityList;
-
     @ManyToOne
     @JoinColumn(name = "ID_SITE")
     private SiteEntity siteEntity ;

@@ -23,21 +23,17 @@ public class AutocompleteRecherche <T> implements Serializable {
 
     public AutocompleteRecherche(ProfilEntity profil) {
         this.id = profil.getCode();
-        this.libelle = new StringBuilder()
-                .append("[PROFIL] ")
-                .append(profil.getLibelle())
-                .toString();
+        this.libelle = "[PROFIL] " +
+                profil.getLibelle();
         this.typeClass = ProfilEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
     public AutocompleteRecherche(UtilisateurEntity utilisateur) {
         this.id = utilisateur.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[UTILISATEUR] ")
-                .append(utilisateur.getPrenom())
-                .append(" - ")
-                .append(utilisateur.getNom())
-                .toString();
+        this.libelle = "[UTILISATEUR] " +
+                utilisateur.getPrenom() +
+                " - " +
+                utilisateur.getNom();
         this.typeClass = UtilisateurEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
@@ -48,12 +44,10 @@ public class AutocompleteRecherche <T> implements Serializable {
      */
     public AutocompleteRecherche(ProduitEntity produit) {
         this.id = produit.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[PRODUIT] ")
-                .append(produit.getNomSRC())
-                .append(" - ")
-                .append(produit.getNomNORM())
-                .toString();
+        this.libelle = "[PRODUIT] " +
+                produit.getNomSRC() +
+                " - " +
+                produit.getNomNORM();
         this.typeClass = ProduitEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
@@ -64,12 +58,10 @@ public class AutocompleteRecherche <T> implements Serializable {
      */
     public AutocompleteRecherche(SiteEntity site) {
         this.id = site.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[SITE] ")
-                .append(site.getNom())
-                .append(" - ")
-                .append(site.getLocalite())
-                .toString();
+        this.libelle = "[SITE] " +
+                site.getNom() +
+                " - " +
+                site.getLocalite();
         this.typeClass = SiteEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
@@ -80,12 +72,10 @@ public class AutocompleteRecherche <T> implements Serializable {
      */
     public AutocompleteRecherche(ExploitationEntity siteExploitation) {
         this.id = siteExploitation.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[SITE_EXPLOITATION] ")
-                .append(siteExploitation.getNom())
-                .append(" - ")
-                .append(siteExploitation.getRegion())
-                .toString();
+        this.libelle = "[SITE_EXPLOITATION] " +
+                siteExploitation.getNom() +
+                " - " +
+                siteExploitation.getRegion();
         this.typeClass = ExploitationEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
@@ -96,12 +86,10 @@ public class AutocompleteRecherche <T> implements Serializable {
      */
     public AutocompleteRecherche(VehiculeEntity vehicule) {
         this.id = vehicule.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[VEHICULE] ")
-                .append(vehicule.getImmatriculation())
-                .append(" - ")
-                .append(vehicule.getCategorieEntity().getType())
-                .toString();
+        this.libelle = "[VEHICULE] " +
+                vehicule.getImmatriculation() +
+                " - " +
+                vehicule.getCategorieEntity().getType();
         this.typeClass = VehiculeEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
@@ -112,19 +100,15 @@ public class AutocompleteRecherche <T> implements Serializable {
      */
     public AutocompleteRecherche(ChargementEntity chargement) {
         this.id = chargement.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[CHARGEMENT] ")
-                .append(chargement.getDestination())
-                .toString();
+        this.libelle = "[CHARGEMENT] " +
+                chargement.getDestination();
         this.typeClass = VehiculeEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
     public AutocompleteRecherche(CategorieEntity categorie) {
         this.id = categorie.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[Categorie] ")
-                .append(categorie.getType())
-                .toString();
+        this.libelle = "[Categorie] " +
+                categorie.getType();
         this.typeClass = CategorieEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }
@@ -149,10 +133,8 @@ public class AutocompleteRecherche <T> implements Serializable {
     public AutocompleteRecherche(DepotEntity depotEntity) {
 
         this.id = depotEntity.getId().toString();
-        this.libelle = new StringBuilder().
-                append("[NOM] ")
-                .append(depotEntity.getNom())
-                .toString();
+        this.libelle = "[NOM] " +
+                depotEntity.getNom();
         this.typeClass = DepotEntity.class;
         this.origine = this.typeClass.getSimpleName();
     }

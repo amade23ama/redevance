@@ -18,6 +18,7 @@ import { DisconnectedHomeComponent } from './home/disconnected-home/disconnected
 import { HomeComponent } from './home/home.component';
 import { PublicHomeComponent } from './home/public-home/public-home.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import {StringifyTemplatePipe} from "../../core/directives/stringify-template.pipe";
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ActionsCritereBtnsComponent,
     DscomExtensibleComponent,
     AutorisationDirective,
+    StringifyTemplatePipe
   ],
   imports: [
     CommonModule,
@@ -54,7 +56,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     FormulaireUtilisateurComponent,
     ActionsCritereBtnsComponent,
     DscomExtensibleComponent,
-    AutorisationDirective
+    AutorisationDirective,
+    StringifyTemplatePipe
   ],
   providers: [],
 })

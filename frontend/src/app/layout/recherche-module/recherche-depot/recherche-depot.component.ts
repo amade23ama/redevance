@@ -13,6 +13,7 @@ import { Depot } from "../../../core/interfaces/depot";
 import { AppConfigService } from "../../../core/services/app-config.service";
 import { AutocompleteRechercheService } from "../../../core/services/autocomplete.recherche.service";
 import { DepotService } from "../../../core/services/depot.service";
+import {ReferenceService} from "../../../core/services/reference.service";
 
 @Component({
   selector: 'app-recherche-depot',
@@ -21,8 +22,8 @@ import { DepotService } from "../../../core/services/depot.service";
 })
 export class RechercheDepotComponent implements OnInit{
   search:FormControl =new FormControl('');
-  displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','dateHeureFinDepot','statut','deposeur','nbChargementErreur'
-  ,'nbChargementDeposes'];
+  displayedColumns: string[] = ['id', 'nom','station', 'dateHeureDepot','dateHeureFinDepot','statut','deposeur'
+  ,'nbChargementTotal','nbChargementDeposes','nbChargementReDeposes','nbChargementErreur'];
   depots$=this.depotService.depots$;
   listDepots: MatTableDataSource<Depot>;
   // La pagination
@@ -42,13 +43,15 @@ export class RechercheDepotComponent implements OnInit{
   rechercheSuggestions$=this.autocompleteRechercheService.autoCompleteRecherchesDepot$
   critereRecherches$=this.autocompleteRechercheService.critereRecherchesDepot$
   constructor(public appConfig: AppConfigService,private router:Router,public depotService:DepotService,
-              private autocompleteRechercheService:AutocompleteRechercheService) {
+              private autocompleteRechercheService:AutocompleteRechercheService,
+              private referenceService:ReferenceService) {
   }
   ouvreNouveauDepot(){
     this.router.navigate(['depot/creer'])
   }
 
   ngOnInit(): void {
+    this.referenceService.getAllAnnee().subscribe()
     this.depotService.setDepots([]);
     this.rechargementDepot();
     //this.depotService.getAllDepots().subscribe();

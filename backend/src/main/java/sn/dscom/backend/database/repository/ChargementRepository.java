@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import sn.dscom.backend.common.dto.ChargementDTO;
 import sn.dscom.backend.database.entite.*;
 
 import java.time.LocalDateTime;
@@ -120,4 +121,26 @@ public interface ChargementRepository extends JpaRepository<ChargementEntity,Lon
     @Modifying
     @Query(value = "DELETE FROM ChargementEntity c WHERE c.id=:id_chargement")
     void deleteChargement(@Param("id_chargement") Long id_chargement);
+
+
+
+    @Query(value = "SELECT c from ChargementEntity c where c.siteEntity.id = :siteId " +
+            "AND c.produitEntity.id = :produitId AND c.vehiculeEntity.id = :vehiculeId " +
+            "AND c.destination = :destination AND c.poids = :poids AND c.poidsMax = :poidsMax AND c.transporteurEntity.id =:transporteurId" +
+            " AND c.datePassage=:datePassage AND c.exploitationEntity.id=:exploitationId"
+   )
+
+    ChargementEntity rechercheChargementByChargementDTO(@Param("siteId")Long siteId,
+                                                        @Param("produitId")Long produitId,
+                                                        @Param("vehiculeId")Long vehiculeId,
+                                                        @Param("destination")String destination,
+                                                        @Param("poids")Double poids,
+                                                        @Param("poidsMax")Double poidsMax,
+                                                        @Param("transporteurId")Long transporteurId,
+                                                        @Param("datePassage")Date datePassage,
+                                                        @Param("exploitationId")Long exploitationId);
+
+
+
+
 }

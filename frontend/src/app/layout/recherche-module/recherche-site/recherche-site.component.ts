@@ -65,9 +65,7 @@ export class RechercheSiteComponent implements OnInit {
     this.totalItems = 100;
     })
 
-    this.siteService.nbSites$.subscribe((nb) => {
-      console.log("le nombre de site: ", nb);
-    })
+    this.siteService.nbSites$.subscribe((nb) => {})
 
     this.search.valueChanges?.pipe(
       debounceTime(300),

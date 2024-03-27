@@ -31,4 +31,7 @@ public interface TransporteurRepository extends JpaRepository<TransporteurEntity
      */
     @Query(value = "select transpoteur from TransporteurEntity transpoteur where transpoteur.nom = :nom and  transpoteur.telephone=:telephone")
     TransporteurEntity isTransporteurExist(@Param("nom") String nom, @Param("telephone") String telephone);
+
+    @Query(value = "select transpoteur from TransporteurEntity transpoteur where transpoteur.nom = :nom")
+    TransporteurEntity rechercheTransporteurByNom(@Param("nom") String nom);
 }

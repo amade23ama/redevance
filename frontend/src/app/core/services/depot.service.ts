@@ -44,7 +44,7 @@ export class DepotService{
     );
   }
   deposerFichier(formData: FormData){
-      return this.http.post<any>(this.url + '/upload',formData).pipe(
+      return this.http.post<any>(this.url + '/Batch/upload',formData).pipe(
         tap((res)=> {
           this.notification.success("confirmation depot")
           this.setNumeroDepot(res as number)
@@ -166,7 +166,7 @@ export class DepotService{
         })
       )
   }
-  
+
   get nbDepots$(){
     return this._nbDepots.asObservable()
   }

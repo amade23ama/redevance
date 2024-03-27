@@ -1,5 +1,6 @@
 package sn.dscom.backend.service.mail;
 
+import jakarta.mail.internet.MimeBodyPart;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +24,6 @@ public class EmailDetails {
 
     /** attachment */
     private String attachment;
+
+    private MimeBodyPart mimeBodyPart;
 }

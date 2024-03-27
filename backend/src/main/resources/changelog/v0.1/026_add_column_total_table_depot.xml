@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="026_add_column_total_table_depot" author="amade">
+        <addColumn tableName="DEPOT">
+            <column name="NB_CHARGEMENT_TOTAL" type="DOUBLE">
+            </column>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

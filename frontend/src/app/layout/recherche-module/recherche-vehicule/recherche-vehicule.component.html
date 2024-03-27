@@ -1,19 +1,40 @@
 <div class="mt-05">
-  <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
-    [numberResult]="2"
-    [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
-    [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
-    [tooltip]="appConfig.getLabel('label.tooltip.voiture')"
-    [search]="search"
-     [visibleBtnCreation]="false"
-    (btnAjouter)="ouvreNouveauVehicule()"
-     (btnAjouterFiltre)="ajouterFiltre($event)"
-     (btnAnnulerFiltre)="annulerFiltre($event)"
-     [critereRecherches]="critereRecherches$"
-     [resultautocompleteRecherche]=rechercheSuggestions$>
-  </app-actions-critere-btns>
-  <div fxLayout fxLayout="row" >
-    <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+  <div  fxLayout="row" fxLayoutAlign="space-between center">
+    <div fxFlex="70">
+        <app-actions-critere-btns fxShow="false" fxHide.gt-xs="false"
+          [numberResult]="2"
+          [singulier]="appConfig.getLabel('recherche.utilisateur.singulier.label') "
+          [plurier]="appConfig.getLabel('recherche.utilisateur.pluriel.label')"
+          [tooltip]="appConfig.getLabel('label.tooltip.voiture')"
+          [search]="search"
+           [visibleBtnCreation]="false"
+          (btnAjouter)="ouvreNouveauVehicule()"
+           (btnAjouterFiltre)="ajouterFiltre($event)"
+           (btnAnnulerFiltre)="annulerFiltre($event)"
+           [critereRecherches]="critereRecherches$"
+           [resultautocompleteRecherche]=rechercheSuggestions$>
+        </app-actions-critere-btns>
+        <div fxLayout fxLayout="row" >
+          <mat-label class="result">{{appConfig.getLabel("nombre.element")}}: {{nb$ |async }}</mat-label>
+        </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center" fxFlex="30" class="test">
+      <form  class="stepper--conteneur" [formGroup]="myform" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px">
+        <div>
+          <ngx-file-drag-drop class="ajout-file" style="height: 30px;"
+            [formControl]="file"
+            [accept]=typeFile
+            [emptyPlaceholder]="appConfig.getLabel('label.telecharger.vehicule')"
+            (valueChanged)="onValueChange($event)">
+          </ngx-file-drag-drop>
+        </div>
+        <div>
+         <button mat-mini-fab color="primary"
+                 [disabled]="myform.invalid"
+                 (click)="valider()"><mat-icon>done</mat-icon></button>
+        </div>
+      </form>
+    </div>
   </div>
     <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
     <div fxShow="false" fxHide.gt-xs="false" class="table-container" fxLayout="column" fxLayoutAlign="space-evenly stretch" fxLayoutGap="2px">
@@ -21,10 +42,10 @@
       [itemSize]="getItemSize()"
       (scrolledIndexChange)="onScrollEnd($event)"
        class="cdk-virtual-scroll-viewport">
-      <table mat-table matSort  [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
+      <table mat-table   [dataSource]="listVehicule"  class="mat-elevation-z0 table-parent" matSort>
             <!-- COLONNE : PRENOM -->
         <ng-container matColumnDef="id">
-          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+          <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
             <div class="d-flex">N°</div>
           </th>
           <td mat-cell *matCellDef="let element">
@@ -33,8 +54,8 @@
         </ng-container>
 
 
-            <ng-container matColumnDef="Immatriculation">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="immatriculation">
+                <th class="table-contact-header table-header"  mat-header-cell mat-sort-header *matHeaderCellDef>
                   <div class="d-flex">Immatriculation</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -43,8 +64,8 @@
             </ng-container>
 
             <!-- COLONNE : Classe -->
-            <ng-container matColumnDef="Classe">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="type">
+                <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Classe</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
@@ -53,39 +74,40 @@
             </ng-container>
 
             <!-- COLONNE : Volume -->
-            <ng-container matColumnDef="Volume">
-                <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <ng-container matColumnDef="volume">
+                <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
                   <div class="d-flex">Volume(m3)</div>
                 </th>
                 <td mat-cell *matCellDef="let element">
                   <div class="d-flex">{{element.categorie.volume}}</div>
                 </td>
             </ng-container>
-        <ng-container matColumnDef="NomRS">
-          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-            <div class="d-flex">Nom complet / RS</div>
-          </th>
-          <td mat-cell *matCellDef="let element">
-            <div class="d-flex">{{element?.transporteur.type=='S'?element?.transporteur.nom :element?.transporteur.nom}}</div>
-          </td>
-        </ng-container>
 
-        <ng-container matColumnDef="Téléphone">
-          <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
-            <div class="d-flex">Téléphone</div>
+        <ng-container matColumnDef="poidsVide">
+          <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">poids Vide</div>
           </th>
           <td mat-cell *matCellDef="let element">
-            <div class="d-flex">{{element?.transporteur.telephone}}</div>
+            <div class="d-flex">{{element.poidsVide!=null?element.poidsVide:'-'}}</div>
           </td>
         </ng-container>
           <ng-container matColumnDef="dateCreation">
-            <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
+            <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
               <div class="d-flex">Date de création</div>
             </th>
             <td mat-cell *matCellDef="let element">
               <div class="d-flex">{{formatDate(element.dateCreation)}}</div>
             </td>
           </ng-container>
+        <ng-container matColumnDef="dateModification">
+          <th class="table-contact-header table-header" mat-sort-header mat-header-cell *matHeaderCellDef>
+            <div class="d-flex">Date de modification</div>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <div class="d-flex">{{element.dateModification!=null?formatDate(element.dateModification):'-'}}</div>
+          </td>
+        </ng-container>
+
           <ng-container matColumnDef="actions">
             <th class="table-contact-header table-header" mat-header-cell *matHeaderCellDef>
               <div class="d-flex" fxLayoutAlign="space-evenly center">actions</div>
@@ -102,28 +124,10 @@
 
         </table>
       </cdk-virtual-scroll-viewport>
-       <!-- <div>
-        <mat-paginator [pageSize]="pageSize"
-                 [pageSizeOptions]="pageSizeOptions"
-                 showFirstLastButtons>
-        </mat-paginator>
-      </div>
-    </div> -->
 
 
 
   <div class="user-mobile" fxShow="true" fxHide.gt-xs="true" *ngIf="vehicules$|async as vehicules">
-    <!--<div>
-      <button mat-fab
-              matTooltipPosition="left"
-              matTooltip="{{appConfig.getLabel('header.btn.utilisateur.creer.tooltip')}}"
-              matTooltipClass="custom-tooltip"
-              (keydown)="ouvreNouveauVehicule()" (click)="ouvreNouveauVehicule()"
-              class="new--contract--button-mobil">
-
-        <mat-icon>add</mat-icon>
-      </button>
-    </div>-->
     <div *ngFor="let voiture of vehicules" fxLayout="column" fxLayoutAlign="space-between stretch" class="row-user-mobile">
       <div fxLayout="row" fxLayoutAlign="start none"  >
         <div fxFlex="20"  fxLayout="column" fxLayoutAlign="space-around center">
@@ -134,8 +138,6 @@
         <div class="contenaire-info" fxFlex="80" fxLayout="column" fxLayoutAlign="space-between stretch" fxLayoutGap="2px">
           <div class="titre-prenom">{{voiture.immatriculation}}</div>
           <div class="titre-second">{{voiture.categorie.type}} - {{voiture.categorie.volume}} (cm3)</div>
-          <div class="titre-second">{{voiture.transporteur.nom}}</div>
-          <div class="titre-second">{{voiture.transporteur.telephone}}
             <mat-icon> local_phone</mat-icon>
           </div>
         </div>

@@ -7,6 +7,7 @@ import { CritereRecherche } from "../interfaces/critere.recherche";
 import { Page } from '../interfaces/page';
 import { Vehicule } from '../interfaces/vehicule';
 import { NotificationService } from "./notification.service";
+import {FileInfo} from "../interfaces/file.info";
 
 @Injectable({
   providedIn: 'root'
@@ -175,5 +176,17 @@ export class VehiculeService {
   /** setSites */
   setNbVehicules(nombre:number ){
     return this._nbVehicules$.next(nombre)
+  }
+
+  creerDepot(formData: FormData){
+    return this.httpClient.post<any>(this.url + '/fileHeader', formData).pipe(
+      tap((res:FileInfo)=> {
+        this.notification.success("depot en cours de creation")
+      }),
+      catchError((err) => {
+        this.notification.error("erreur de creation de depot")
+        return throwError(() => err)
+      })
+    );
   }
 }

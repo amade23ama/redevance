@@ -3,12 +3,14 @@ package sn.dscom.backend.common.dto;
 import jakarta.persistence.Column;
 import lombok.*;
 import sn.dscom.backend.database.entite.ChargementEntity;
+import sn.dscom.backend.database.entite.DepotEntity;
 import sn.dscom.backend.database.entite.UtilisateurEntity;
 
 import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * DepotDTO
@@ -49,6 +51,8 @@ public class DepotDTO implements Serializable {
     /** nb Chargement Erreur */
     private Integer nbChargementErreur;
 
+    private Integer  nbChargementTotal;
+
     /** le fichier à charger */
     private File file;
 
@@ -57,5 +61,4 @@ public class DepotDTO implements Serializable {
 
     /** le site*/
     private SiteDTO site;
-
 }

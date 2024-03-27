@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <changeSet id="021_changer_contraint__table_transporteur" author="amade">
+        <sql>
+            ALTER TABLE TRANSPORTEUR
+                ALTER COLUMN TELEPHONE DROP NOT NULL;
+        </sql>
+        <dropUniqueConstraint
+                columnNames="NOM_RAISON_SOCIALE,TELEPHONE"
+                constraintName="UQ_NOM_RAISON_SOCIALE_TELEPHONE"
+                tableName="TRANSPORTEUR"
+        />
+
+
+        <addUniqueConstraint
+                columnNames="NOM_RAISON_SOCIALE"
+                constraintName="NOUVEAU_NOM_DE_CONSTRAINT"
+                tableName="TRANSPORTEUR"
+        />
+    </changeSet>
+</databaseChangeLog>
